@@ -11,7 +11,8 @@ if($_POST['register'] == 'แก้ไข')
 mysqli_query($link, "UPDATE supplier SET
 			`agent` = '$_POST[agent]',
 			`mobile` = '$_POST[mobile]',
-			`email` = '$_POST[email]'
+			`email` = '$_POST[email]',
+			`paydetail` = '$_POST[paydetail]'
 			 WHERE id='$id'
 			") or die(mysqli_error($link));
 
@@ -80,7 +81,9 @@ else
 							<div style="text-align: center;"><big><big>
 							ที่อยู่: &nbsp;<?php echo $rowsp['address'];?></big></big>
 							<br><big><big>โทรศัพท์:&nbsp;<?php  echo $rowsp['tel']	?></big></big>
-							</div>
+							<hr style="width: 80%; height: 2px;">
+							วิธีการชำระเงิน<br>
+							<input name="paydetail" type="text" size=50 value="<?php echo $rowsp['paydetail'];?>"></div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">
 							ตัวแทน: <input tabindex="1" name="agent" value="<?php echo $rowsp['agent'];?>"> 

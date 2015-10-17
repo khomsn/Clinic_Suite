@@ -597,6 +597,7 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   `agent` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `mobile` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `ac_no` int(11) NOT NULL,
+  `paydetail` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -649,6 +650,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_has_avatar` tinyint(1) NOT NULL,
   `user_background` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `catcenable` tinyint(1) NOT NULL,
+  `ddil` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email` (`user_email`),
   FULLTEXT KEY `idx_search` (`full_name`,`address`,`user_email`,`user_name`)
