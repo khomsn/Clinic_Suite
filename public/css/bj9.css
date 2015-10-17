@@ -1,0 +1,80 @@
+	table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+	td, th { vertical-align:top; font-size:10pt;}
+	h1, h2, h3, h4, h5, h6 { clear:both }
+	ol, ul { margin:0; padding:0;}
+	li { list-style: none; margin:0; padding:0;}
+	li span.odfLiEnd { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+	span.footnodeNumber { padding-right:1em; }
+	* { margin:0; }
+	.Default { font-family:Cordia New; font-size:14pt; }
+	.ce1 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-style:none; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce10 { font-size:12pt; font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce11 { font-size:12pt; font-family:Angsana New; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce12 { font-size:12pt; font-family:Angsana New; vertical-align:top; text-align:right ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce13 { font-size:12pt; font-family:Angsana New; vertical-align:top; text-align:right ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce14 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce15 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce16 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce17 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce161 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; text-align:center ! important; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce171 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-align:center ! important; text-decoration:none ! important; font-weight:normal; }
+	.ce18 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-style:none; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:right ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce19 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-style:none; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:right ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce2 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-style:none; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce20 { font-size:12pt; font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce21 { font-size:12pt; font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; vertical-align:top; text-align:left ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce22 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce23 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce24 { font-size:12pt; font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; vertical-align:middle; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce25 { font-size:14pt; font-family:Cordia New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:middle; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce3 { font-size:12pt; font-family:Angsana New; border-style:none; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce4 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-style:none; vertical-align:top; text-align:right ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce40 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-style:none; vertical-align:top; text-align:left ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce5 { font-size:12pt; font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; vertical-align:middle; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce6 { font-size:14pt; font-family:Cordia New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:middle; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+	.ce7 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0351cm; border-top-style:solid; border-top-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce8 { font-size:12pt; font-family:Angsana New; border-bottom-style:none; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce9 { font-size:12pt; font-family:Angsana New; border-bottom-width:0.0351cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0351cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0351cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.co1 { width:0.7992in; }
+	.co2 { width:1.3256in; }
+	.co3 { width:0.6882in; }
+	.co4 { width:2.0236in; }
+	.co5 { width:0.5665in; }
+	.co6 { width:0.9717in; }
+	.co7 { width:0.6472in; }
+	.ro1 { height:0.3in; }
+	.ro2 { height:0.3126in; }
+	.ro3 { height:0.261in; }
+	<!-- ODF styles with no properties representable as CSS -->
+	.ta1 { }
+.page {
+    width: 29.7cm;
+    min-height: 21cm;
+    padding: 1cm;
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 0mm;
+    border: 5px #FFFFFF solid;
+    height: 210mm;
+    outline: 10mm #FFFFFF solid;
+}
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }

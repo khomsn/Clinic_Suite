@@ -1,0 +1,64 @@
+	table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+	td, th { vertical-align:top; font-size:10pt;}
+	h1, h2, h3, h4, h5, h6 { clear:both }
+	ol, ul { margin:0; padding:0;}
+	li { list-style: none; margin:0; padding:0;}
+	li span.odfLiEnd { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+	span.footnodeNumber { padding-right:1em; }
+	* { margin:0; }
+	.Default { font-family:Arial; }
+	.ce1 { font-family:Angsana New; font-size:10pt; }
+	.ce2 { font-family:Angsana New; vertical-align:middle; text-align:center ! important; font-size:10pt; }
+	.ce3 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; vertical-align:middle; text-align:center ! important; margin-left:0in; font-size:10pt; }
+	.ce4 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; text-align:center ! important; margin-left:0in; font-size:10pt; }
+	.ce5 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; font-size:10pt; text-align:center ! important;}
+	.ce6 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; vertical-align:middle; text-align:center ! important; font-size:10pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce7 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; vertical-align:middle; text-align:justify ! important; margin-left:0in; font-size:10pt; }
+	.ce71 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; vertical-align:middle; text-align:center ! important; margin-left:0in; font-size:10pt; }
+	.ce8 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; text-align:center ! important; margin-left:0in; font-size:10pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.ce9 { font-family:Angsana New; border-width:0.0351cm; border-style:solid; border-color:#000000; padding-bottom:0.0193in; padding-left:0.0138in; padding-right:0.0138in; padding-top:0.0193in; text-align:center ! important; font-size:10pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+	.co1 { width:0.6445in; }
+	.co2 { width:1.0591in; }
+	.co3 { width:0.852in; }
+	.co4 { width:0.6335in; }
+	.co5 { width:1.2016in; }
+	.co6 { width:0.3272in; }
+	.co7 { width:1.6929in; }
+	.co8 { width:0.7535in; }
+	.co9 { width:0.6882in; }
+	.ro1 { height:0.178in; }
+	.ro2 { height:0.2693in; }
+	.ro3 { height:0.3209in; }
+	<!-- ODF styles with no properties representable as CSS -->
+	.ta1 { }
+.page {
+    width: 29.7cm;
+    min-height: 21cm;
+    padding: 1cm;
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 0mm;
+    border: 5px #FFFFFF solid;
+    height: 210mm;
+    outline: 10mm #FFFFFF solid;
+}
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }

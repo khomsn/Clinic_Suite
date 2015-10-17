@@ -1,0 +1,55 @@
+p { margin-bottom: 0.1in; direction: ltr; color: #000000; line-height: 120%; widows: 2; orphans: 2 }
+p.western { line-height: 100%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 11pt; so-language: en-US }
+p.western10 { line-height: 100%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 10pt; so-language: en-US }
+p.cjk { font-family: "Times New Roman", serif; font-size: 12pt }
+p.ctl { font-family: "Angsana New", serif; font-size: 10pt; so-language: th-TH }
+a:link { so-language: zxx }
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font: 12pt "Tahoma";
+    height: 148.5mm;
+    width: 210mm;
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.page {
+    width: 210mm;
+    min-height: 148.5mm;
+    padding: 1cm;
+    margin: 1cm auto;
+    border: 1px #FFFFFF solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 0mm;
+    border: 5px #FFFFFF solid;
+    height: 138mm;
+    outline: 10mm #FFFFFF solid;
+}
+@page {
+    size: A5;
+    margin: 0;
+}
+@media print {
+    .page {
+	width: 210mm;
+	height:148.5mm;
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}
+div.pos_r {
+	float: right;
+	right: 10px;
+}
