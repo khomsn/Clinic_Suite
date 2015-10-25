@@ -14,125 +14,167 @@ $date = $ld[0];
 
 $labtable = $_SESSION['ltb'];//"labtmp_".$id."_".$maxid;
 
+
 if($_POST['Save']=="Save")
 {
-$nrow = $_POST['Rownum'];
+  $nrow = $_POST['Rownum'];
     for($i=1;$i<=$nrow;$i++)
       {
-      $inid = "inid".$i;
-      $labid = $_POST[$inid];
-      $labresult = $_POST[$labid];
-      
- 	$sql_insert = "UPDATE `$labtable` SET 
-					`Labresult` = '$labresult'
-				WHERE `Labid` ='$labid' LIMIT 1 ; 
-				";
-	// Now update labtable
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-     
-      }
-   if($_POST['complete']=="1")
-   {
-      // for stat
-      $i=1;
-      //
-      $myin = mysqli_query($link, "select * from $labtable order by Labid ASC");
-      while($compl = mysqli_fetch_array($myin))
-      {
-      // for stat
-         $Labidin[$i]=$compl['Labid'];
-         $i=$i+1;
-      //
-	if(empty($compl_name)) $compl_name = $compl['Labname'];
-	else $compl_name = $compl_name.";".$compl['Labname'];
-	if(empty($compl_rs)) $compl_rs = $compl['Labresult'];
-	else $compl_rs = $compl_rs.";".$compl['Labresult'];
-      }
-      //stat part
-      for($j=1;$j<$i;$j++)
-      {
-	//update volume in lab table
-	//get old volume
-	$myin = mysqli_query($link, "select volume from lab WHERE id = $Labidin[$j]");
-	while($oldvol = mysqli_fetch_array($myin))
-	{
-	$oldvolume = $oldvol['volume'];
-	}
-	$newvol = $oldvolume+1;
-	
-	$sql_update = "UPDATE `lab` SET 
-					`volume` = '$newvol'
-				WHERE `id` ='$Labidin[$j]' LIMIT 1 ; 
-				";
-	// Now update labtable
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
-	// Now in labstat table
-	// 1st check if this labid exist in this month, if yes-> update, no->insert 
-	//$sd = date("d");
-	$sm = date("m");
-	$sy = date("Y");
-	
-	$myin = mysqli_query($link, "select vol from labstat WHERE labid = $Labidin[$j] AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' ");
-	$cvolume = mysqli_fetch_array($myin);
-	$oldvolume =$cvolume[0];
-	
-	if(empty($oldvolume)) // not yet record
-	{
-	    $sql_insert = "INSERT into `labstat`
-		    (`labid`,`MandY`,`vol`)
-		VALUES
-		    ('$Labidin[$j]',now(),'1')"; //order only 1 test each time
-	    // Now insert Patient to "patient_id" table
-	    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-	}
-	else
-	{
-	$newvol = $oldvolume+1;
-	$sql_update = "UPDATE `labstat` SET 
-					`vol` = '$newvol'
-				WHERE `labid` ='$Labidin[$j]'  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' LIMIT 1 ; 
-				";
-	// Now update labtable
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
-	}
-      }
-      //
-      $myla = mysqli_query($linkopd, "select * from $pttable Where `id` ='$maxid'");
-      while($labinfo = mysqli_fetch_array($myla))
-      {
-	$Labname=$labinfo['labid'];
-	$Labresult=$labinfo['labresult'];
-      }
-      if(!empty($Labname)) $compl_name = $Labname.";".$compl_name;
-      if(!empty($Labresult)) $compl_rs = $Labresult.";".$compl_rs;
-      
-	$sql_insert = "UPDATE `$pttable` SET 
-					`labid` = '$compl_name',
-					`labresult` = '$compl_rs'
-				WHERE `id` ='$maxid' LIMIT 1 ; 
-				";
-	// Now update pttable
-	mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
-      
-      //Now remove Pt request table
-      	  $sqlt = "DROP TABLE `$labtable`";
-	  mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
-	  // Now Delete Patient from "pt_to_lab" table if present
-	  mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ") or die(mysqli_error($link));
-	  // Now Delete Patient from "labwait" table
-	  mysqli_query($link, "DELETE FROM labwait WHERE ptid = '$id' ") or die(mysqli_error($link));
-      //rawmat cut process start
-      //rawmat cut process end
-   }
-header("Location: labwait.php");
-}
+	    $inid = "inid".$i;
+	    $labid = $_POST[$inid];
+	    $labresult = $_POST[$labid];
+	  //stat part
+	    //update volume in lab table
+	    //get old volume
+	    $myin = mysqli_query($link, "select * from lab WHERE id = $labid");
+	    while($oldvol = mysqli_fetch_array($myin))
+	    {
+	      $oldvolume=$oldvol['volume'];
+	      $ltr = $oldvol['ltr'];
+	    }
+	    
+	    if (ltrim($labresult) !== '')
+	    {
+	      $sql_insert = "UPDATE `$labtable` SET 
+					      `Labresult` = '$labresult'
+				      WHERE `Labid` ='$labid' LIMIT 1 ; 
+				      ";
+	      // Now update labtable
+	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	    }
 
+	  // RC".$labid.
+		  $checkid = "RC".$labid;
+		  
+	    if($_POST[$checkid]=="1")
+	    {	
+		if (ltrim($labresult) === '') goto emptyresult;
+		
+		$myin = mysqli_query($link, "select * from $labtable WHERE Labid = '$labid' order by Labid ASC");
+		while($compl = mysqli_fetch_array($myin))
+		{
+		// for stat
+		  $labidin=$compl['Labid'];
+		  $compl_name = $compl['Labname'];
+		  $compl_rs = $compl['Labresult'];
+		  if($ltr==1) $compl_rs = $compl_rs.' @('.date('Y-m-d H:i').')'; 
+		  $labsaved = $compl['saved'];
+	         }
+	         
+	         if($labsaved == 1) goto labhassaved;
+	         
+		  $newvolume = $oldvolume+1;
+		  $sql_update = "UPDATE `lab` SET 
+						  `volume` = '$newvolume'
+					  WHERE `id` ='$labidin' LIMIT 1 ; 
+					  ";
+		  // Now update labtable
+		  mysqli_query($link, $sql_update) or die("Update Failed:" . mysqli_error($link));
+		  // Now in labstat table
+		  // 1st check if this labid exist in this month, if yes-> update, no->insert 
+		  //$sd = date("d");
+		  $sm = date("m");
+		  $sy = date("Y");
+		  
+		  $myin = mysqli_query($link, "select vol from labstat WHERE labid = '$labidin' AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' ");
+		  $cvolume = mysqli_fetch_array($myin);
+		  $oldvolume =$cvolume[0];
+		  
+		  if(empty($oldvolume)) // not yet record
+		  {
+		      $sql_insert = "INSERT into `labstat`
+			      (`labid`,`MandY`,`vol`)
+			  VALUES
+			      ('$labidin',now(),'1')"; //order only 1 test each time
+		      // Now insert Patient to "patient_id" table
+		      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		  }
+		  else
+		  {
+		  $newvol = $oldvolume+1;
+		  $sql_update = "UPDATE `labstat` SET 
+						  `vol` = '$newvol'
+					  WHERE `labid` ='$labidin'  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' LIMIT 1 ; 
+					  ";
+		  // Now update labtable
+		  mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+		  }
+		//}
+		//
+		$myla = mysqli_query($linkopd, "select * from $pttable Where `id` ='$maxid'");
+		while($labinfo = mysqli_fetch_array($myla))
+		{
+		  $Labname=$labinfo['labid'];
+		  $Labresult=$labinfo['labresult'];
+		}
+		if(!empty($Labname)) $compl_name = $Labname.";".$compl_name;
+		if(!empty($Labresult)) $compl_rs = $Labresult.";".$compl_rs;
+		
+		  $sql_insert = "UPDATE `$pttable` SET 
+						  `labid` = '$compl_name',
+						  `labresult` = '$compl_rs'
+					  WHERE `id` ='$maxid' LIMIT 1 ; 
+					  ";
+		  // Now update pttable
+		  mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
+		  //update to prevent double insertion
+		  {
+		    $sql_insert = "UPDATE `$labtable` SET 
+						    `saved` = '1'
+					    WHERE `Labid` ='$labid' LIMIT 1 ; 
+					    ";
+		    // Now update labtable
+		    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		  }
+		  //labid has been saved 
+		  labhassaved :
+		  //rawmat cut for lab
+		  
+		  include '../libs/rawmatcutforlab.php';
+		  
+		//Now remove lab id request from table
+		    $rmlab = "DELETE FROM  `$labtable` WHERE `Labid` = '$labid'";
+		//	  $sqlt = "DROP TABLE `$labtable`";
+		    mysqli_query($link, $rmlab) or die("DELETE record Failed:" . mysqli_error($link));
+		    
+	       }
+
+	    // empty result do nothing
+		emptyresult:
+	    
+	  }
+if($_POST['complete']=="1")
+{
+    $myla = mysqli_query($link, "select saved from $labtable");
+    while($labinfo = mysqli_fetch_array($myla))
+    {
+      $checksaved = $labinfo['saved'];
+      if($checksaved == "0") goto notcomplete;
+    }
+
+    //Now remove Pt request table
+	$sqlt = "DROP TABLE `$labtable`";
+	mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
+	
+	// Now Delete Patient from "pt_to_lab" table
+	mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ") or die(mysqli_error($link));
+				
+	// Now Delete Patient from "labwait" table
+	mysqli_query($link, "DELETE FROM labwait WHERE ptid = '$id' ") or die(mysqli_error($link));
+
+}
+header("Location: labwait.php");
+    notcomplete:
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title>Laboratory List</title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
+<!--add menu -->
+	<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
+	<script language="JavaScript" type="text/javascript" src="../public/js/checkthemall.js"></script>
 	<link rel="stylesheet" href="../public/css/styles.css">
 </head>
 <?php 
@@ -187,12 +229,12 @@ else
       ?>
       </h4>
       <h6>Lab ที่ตรวจวันที่ : <?php echo $date?></h6>
-	<form method="post" action="labrfpage.php" name="regForm" id="regForm">
+	<form method="post" action="labrfpage.php"  name="formMultipleCheckBox1" id="formMultipleCheckBox">
 	    <table style="background-color: rgb(255, 204, 153); width: 100%; text-align: center;
 			    margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">									
 		    <tr>
 			    <th>No</th><th >ชื่อ</th><th>Set</th><th>Specimen</th><th>Result</th><th>Unit</th><th>Normal#</th>
-			    <th>Min</th><th>Max</th>
+			    <th>Min</th><th>Max</th><th><input name="checkAll" type="checkbox" id="checkAll" value="1" onclick="javascript:checkThemAll(this);" />RC</th>
 		    </tr>
 		    <?php 
 		    $n=0;
@@ -223,7 +265,7 @@ else
 			    echo "</td><td>";
 			    echo $labspec;
 			    echo "</td><td>";
-			    echo "<input type='text' name=".$labid." value='";
+			    echo "<input type='text' tabindex='".$n."' name=".$labid." value='";
 			    echo $row['Labresult']."'>";
 			    echo "</td><td>";
 			    echo $labunit;
@@ -233,13 +275,15 @@ else
 			    echo $labmin;
 			    echo "</td><td>";
 			    echo $labmax;
+			    echo "</td><td>";
+			    echo "<input type=checkbox  id='checkBoxes' name=RC".$labid." value='1'>";
 			    echo "</td></tr>";
 		    }	
 		   ?>
 	    </table>
 	    <div style="text-align:center;">ถ้าลงข้อมูลครบแล้วทุกตัวและต้องการปิด Lab ของวันนี้ให้เลือก "Completed" ด้วย แต่ถ้าต้องการลงขอมูลอย่างเดียว กด "Save" เท่านั้น</div>
 	    <table width=100%>
-	    <tr><td><input type="checkbox" name="complete" value="1">Completed</td><td><input type="submit" name="Save" value="Save"></td></tr>
+	    <tr><td><input type="checkbox" name="complete" value="1" onclick="javascript:checkThemAll(this);">Completed</td><td><input type="submit" name="Save" value="Save"></td></tr>
 	    </table><input type="hidden" name="Rownum" value="<?php echo $n;?>">
 	</form>
 	</div>
