@@ -65,21 +65,10 @@ CannotPay:
 
 <!DOCTYPE html>
 <html>
-<head profile="http://dublincore.org/documents/dcmi-terms/">
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
-<title xml:lang="th_TH.UTF-8">ใบเสร็จรับเงิน</title>
-<meta name="DCTERMS.title" content="" xml:lang="th_TH.UTF-8"/>
-<meta name="DCTERMS.language" content="th_TH.UTF-8" scheme="DCTERMS.RFC4646"/>
-<meta name="DCTERMS.source" content="http://xml.openoffice.org/odf2xhtml"/>
-<meta name="DCTERMS.issued" content="2014-06-02T11:20:18.323329400" scheme="DCTERMS.W3CDTF"/>
-<meta name="DCTERMS.modified" content="2014-06-02T17:41:05.641561120" scheme="DCTERMS.W3CDTF"/>
-<meta name="DCTERMS.provenance" content="" xml:lang="th_TH.UTF-8"/>
-<meta name="DCTERMS.subject" content="," xml:lang="th_TH.UTF-8"/>
-<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" hreflang="en"/>
-<link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" hreflang="en"/>
-<link rel="schema.DCTYPE" href="http://purl.org/dc/dcmitype/" hreflang="en"/>
-<link rel="schema.DCAM" href="http://purl.org/dc/dcam/" hreflang="en"/>
+<head>
+<title>ใบเสร็จรับเงิน</title>
 <link href="../public/css/recform.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" media="print" href="../public/css/recform_print.css">
 <script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
 
 <script language="javascript">
@@ -93,6 +82,7 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>ใบเสร็จรับเงิน</title>'); 
    docprint.document.write('<link href="../public/css/recform_print.css" rel="stylesheet" type="text/css">'); 
+   docprint.document.write('<link href="../public/css/recform_print.css" rel="stylesheet" type="text/css" media="print">'); 
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
    docprint.document.write('</body></html>'); 
