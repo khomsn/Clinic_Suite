@@ -49,7 +49,6 @@ if ($_POST['todo'] == 'กรอง' )
 		$filter = mysqli_query($link, "select * from lab WHERE  `L_Set` ='SETNAME' ORDER BY `id` ASC");	
 	}
 	
-//	header("Location: prescriptnew.php");  
 }
 
 elseif ($_POST['todo'] == 'OK' ) 

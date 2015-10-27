@@ -121,7 +121,6 @@ if ($_POST['todo'] == 'กรอง' )
 	{
 		$filter = mysqli_query($link, "select * from drug_id WHERE  `groupn` ='$_POST[group]' AND $fdout  ORDER BY `dname` ASC");	
 	}	
-//	header("Location: prescriptnew.php");  
 }
 
 elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close' ) 
