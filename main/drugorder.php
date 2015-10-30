@@ -671,7 +671,7 @@ include '../libs/reloadopener.php';
 	    echo "</td>";
 	    echo "<td>";
 	    echo "<input type='hidden' name='oldvol".$j."' value='".$_SESSION['vol'.$j]."'>";
-	    echo "<input type='number' class=typenumber name='vol".$j."' min=0 step=1 max='".($_SESSION['svol'.$j]-$_SESSION['svolr'.$j]+$_SESSION['vol'.$j])."' value=".$_SESSION['vol'.$j].">";
+	    echo "<input type='number' tabindex=".$j." class=typenumber name='vol".$j."' min=0 step=1 max='".($_SESSION['svol'.$j]-$_SESSION['svolr'.$j]+$_SESSION['vol'.$j])."' value=".$_SESSION['vol'.$j].">";
 	    echo "</td>";
 	    echo "<td><input type=submit name='add' value='เพิ่ม'></td>";
 	    echo "<td><input type=submit name='del".$j."' value='ลบ'></td>";

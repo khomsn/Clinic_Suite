@@ -374,7 +374,7 @@ else
 							echo "' value='ลบ'></td></tr>";
 							}
 						}
-echo "<tr><td></td><td>รวม Lab+Treatment+Drug</td><td>".$alllabprice."</td><td>".$TMPrice."</td><td></td><td>".$allprice."</td><td></td><td></td><td></td></tr>";
+echo "<tr><td></td><td>รวม Lab+Treatment+Drug</td><td>".$alllabprice."</td><td>".$TMPrice."</td><td></td><td>".($allprice+$alllabprice)."</td><td></td><td></td><td></td></tr>";
 						?>
 					</table>		
 					</div>

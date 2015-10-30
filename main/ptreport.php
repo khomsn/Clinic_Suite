@@ -122,6 +122,18 @@ else
 										echo "</th><th style='text-align: right;'>";
 										echo "<span class=currency>".$AllNP."</span>";
 										echo "</th></tr>";
+										echo "<tr><th> ยอดรวม ตั้งแต่ 1 ตุลาคม - 30 กันยายน ปีนี้</th><th  style='text-align: right;'>";
+											$dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE  month ='$i' AND year ='$sy' ");
+											while($row = mysqli_fetch_array($dtype))
+											{
+												$allvs=mysqli_num_rows($dtype);
+											} 
+										echo "<span class=currency>".$AllVS."</span>";
+										echo "</th><th style='text-align: right;' >";
+										echo "<span class=currency>".$AllPt."</span>";
+										echo "</th><th style='text-align: right;'>";
+										echo "<span class=currency>".$AllNP."</span>";
+										echo "</th></tr>";
 									?>
 								</table>
 							</td>

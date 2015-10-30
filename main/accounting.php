@@ -1,6 +1,16 @@
 <?php 
 include '../login/dbc.php';
 page_protect();
+
+if(empty($_SESSION['acstrdate']))
+{
+    $gddmin = mysqli_query($link, "SELECT `date` FROM `daily_account` WHERE id=1 ");
+    $gddate = mysqli_fetch_array($gddmin);
+    $gdm = $gddate[0];
+    $gdm = date_create($gdm);
+    $_SESSION['acstrdate'] = date_format($gdm, 'Y-m-d');
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -66,7 +76,7 @@ else
 		<td width="160" valign="top">
 			<div class="mypage1">
 				<h6 class="titlehdr2" align="center">ประเภทบัญชี</h6>
-				<?php 
+				<?php
 				/*********************** MYACCOUNT MENU ****************************
 				This code shows my account menu only to logged in users. 
 				Copy this code till END and place it in a new html or php where
@@ -74,7 +84,6 @@ else
 				*******************************************************************/
 				if (isset($_SESSION['user_id']))
 				{
-					include 'actmenu.php';
 					date_default_timezone_set('Asia/Bangkok');
 					    $sd = date("d");
 					    $sm = date("m");
@@ -82,6 +91,7 @@ else
 					    $_SESSION['sd'] = $sd;
 					    $_SESSION['sm'] = $sm;
 					    $_SESSION['sy'] = $sy;
+					include 'actmenu.php';
 					
 				} 
 				/*******************************END**************************/

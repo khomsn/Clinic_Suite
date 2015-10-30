@@ -21,9 +21,9 @@ if ($_SESSION['user_level']>1)
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
 			}
-			if ($sy <= date("Y"))
+			if ($sm >= date("m"))
 			{
-				if ($sm > date("m"))
+				if ($sy < date("Y"))
 				{
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}

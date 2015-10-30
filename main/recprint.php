@@ -372,7 +372,7 @@ function Clickheretoprint()
 		</th></tr>
 	</table>
 	<br>
-	รับเงินโดย:<u>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รับเงินโดย:
 	<?php
 	    $staff = mysqli_query($link, "select * from staff WHERE ID = '$_SESSION[staff_id]' ");
 	    while($row_vl = mysqli_fetch_array($staff))
@@ -382,10 +382,9 @@ function Clickheretoprint()
 	      $stlname = $row_vl['L_Name'];
 	    }
 	    echo $prefix.' '.$stfname.' '.$stlname;
-	?></u>
+	?>
    </div></div></div>
 	</td></tr>   
 </table>
-
 </form>
 </body></html>

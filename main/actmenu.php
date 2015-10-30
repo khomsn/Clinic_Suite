@@ -2,7 +2,11 @@
 $fulluri = $_SERVER['REQUEST_URI'];
 $trimString = "/clinic/main/";
 $actsite = trim($fulluri, $trimString);
-//echo $actsite;
+
+$thisdate = date_create();
+date_date_set($thisdate, $sy, $sm, $sd);
+$ddate = date_format($thisdate, 'Y-m-d');
+
 ?>
 <div >
 <form method="post" action="<?php echo $actsite;?>" name="regForm" id="regForm">
@@ -13,10 +17,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 
 		if ($actsite == "dailyaccount.php")
 		{
-		echo "<input type='submit' name='todo' value = '<<'>&nbsp;<input type='submit' name='todo' value = '@'>&nbsp;";
-			$thisdate = date_create();
-			date_date_set($thisdate, $sy, $sm, $sd);
-//			echo date_format($thisdate, 'Y-m-d');
+                        if($ddate>$_SESSION['acstrdate']) echo "<input type='submit' name='todo' value = '<<'>&nbsp;";
+                        else echo "<input type='button' value='*||*'>&nbsp;";
+                        echo "<input type='submit' name='todo' value = '@'>&nbsp;";
 			if (date(date_format($thisdate, 'Y-m-d')) < date("Y-m-d"))
 			{
 				echo "<input type='submit' name='todo' value = '>>'>";
@@ -31,10 +34,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 	
 	if ($actsite == "dailycash.php")
 		{
-		echo "<input type='submit' name='todo' value = '<<'>&nbsp;<input type='submit' name='todo' value = '@'>&nbsp;";
-			$thisdate = date_create();
-			date_date_set($thisdate, $sy, $sm, $sd);
-//			echo date_format($thisdate, 'Y-m-d');
+                        if($ddate>$_SESSION['acstrdate']) echo "<input type='submit' name='todo' value = '<<'>&nbsp;";
+                        else echo "<input type='button' value='*||*'>&nbsp;";
+                        echo "<input type='submit' name='todo' value = '@'>&nbsp;";
 			if (date(date_format($thisdate, 'Y-m-d')) < date("Y-m-d"))
 			{
 				echo "<input type='submit' name='todo' value = '>>'>";
@@ -44,11 +46,17 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 }
 if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 {
-
 	echo "<a href='../main/tcom.php'>บัญชีเงินสด ประจำเดือน</a><br><br>";
 	if ($actsite == "tcom.php")
 		{
-		echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' name='todom' value = '@'>&nbsp;";
+                        if($ddate>$_SESSION['acstrdate'])
+                        {
+                         if( ( (date("Y",strtotime($ddate)))==(date("Y",strtotime($_SESSION['acstrdate']))) ) AND  ((date("m",strtotime($ddate)))==(date("m",strtotime($_SESSION['acstrdate'])))))
+                            echo "<input type='button' value='*||*'>&nbsp;";
+                         else 
+                            echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                        }
+                        echo "<input type='submit' name='todom' value = '@'>&nbsp;";
 			if ($sm < date("m"))
 			{
 				if ($sy <= date("Y"))
@@ -56,9 +64,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
 			}
-			if ($sy <= date("Y"))
+			if ($sm >= date("m"))
 			{
-				if ($sm > date("m"))
+				if ($sy < date("Y"))
 				{
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
@@ -72,10 +80,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 	echo "<a href='../main/sellac.php'>บัญชีขาย ประจำวัน</a><br>";
 	if ($actsite == "sellac.php")
 		{
-		echo "<input type='submit' name='todo' value = '<<'>&nbsp;<input type='submit' name='todo' value = '@'>&nbsp;";
-			$thisdate = date_create();
-			date_date_set($thisdate, $sy, $sm, $sd);
-//			echo date_format($thisdate, 'Y-m-d');
+                        if($ddate>$_SESSION['acstrdate']) echo "<input type='submit' name='todo' value = '<<'>&nbsp;";
+                        else echo "<input type='button' value='*||*'>&nbsp;";
+                        echo "<input type='submit' name='todo' value = '@'>&nbsp;";
 			if (date(date_format($thisdate, 'Y-m-d')) < date("Y-m-d"))
 			{
 				echo "<input type='submit' name='todo' value = '>>'>";
@@ -89,7 +96,14 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 	echo "<a href='../main/sellacm.php'>บัญชีขาย ประจำเดือน</a><br>";
 	if ($actsite == "sellacm.php")
 		{
-		echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' name='todom' value = '@'>&nbsp;";
+                        if($ddate>$_SESSION['acstrdate'])
+                        {
+                         if( ( (date("Y",strtotime($ddate)))==(date("Y",strtotime($_SESSION['acstrdate']))) ) AND  ((date("m",strtotime($ddate)))==(date("m",strtotime($_SESSION['acstrdate'])))))
+                            echo "<input type='button' value='*||*'>&nbsp;";
+                         else 
+                            echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                        }
+                        echo "<input type='submit' name='todom' value = '@'>&nbsp;";
 			if ($sm < date("m"))
 			{
 				if ($sy <= date("Y"))
@@ -97,9 +111,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
 			}
-			if ($sy <= date("Y"))
+			if ($sm >= date("m"))
 			{
-				if ($sm > date("m"))
+				if ($sy < date("Y"))
 				{
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
@@ -109,7 +123,14 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 	echo "<a href='../main/Ledgeraccount.php'>แยกประเภทรายจ่าย ประจำเดือน</a><br>";
 	if ($actsite == "Ledgeraccount.php")
 		{
-		echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' name='todom' value = '@'>&nbsp;";
+                        if($ddate>$_SESSION['acstrdate'])
+                        {
+                         if( ( (date("Y",strtotime($ddate)))==(date("Y",strtotime($_SESSION['acstrdate']))) ) AND  ((date("m",strtotime($ddate)))==(date("m",strtotime($_SESSION['acstrdate'])))))
+                            echo "<input type='button' value='*||*'>&nbsp;";
+                         else 
+                            echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                        }
+                        echo "<input type='submit' name='todom' value = '@'>&nbsp;";
 			if ($sm < date("m"))
 			{
 				if ($sy <= date("Y"))
@@ -117,9 +138,9 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
 			}
-			if ($sy <= date("Y"))
+			if ($sm >= date("m"))
 			{
-				if ($sm > date("m"))
+				if ($sy < date("Y"))
 				{
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
@@ -127,8 +148,6 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 		}
 }
 ?>
-
-<!--<input type="submit" name="todo" value = "<<">&nbsp;<input type="submit" name="todo" value = "@">&nbsp;<input type="submit" name="todo" value = ">>"><br>-->
 <br>
 <?php 
 if ($_SESSION['user_accode']%13 == 0)
@@ -136,7 +155,14 @@ if ($_SESSION['user_accode']%13 == 0)
 	echo "<a href='../main/profit.php'>บัญชีกำไรขาดทุน/เดือน</a><br>";
 	if ($actsite == "profit.php")
 		{
-		echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' name='todom' value = '@'>&nbsp;";
+                         if($ddate>$_SESSION['acstrdate'])
+                        {
+                         if( ( (date("Y",strtotime($ddate)))==(date("Y",strtotime($_SESSION['acstrdate']))) ) AND  ((date("m",strtotime($ddate)))==(date("m",strtotime($_SESSION['acstrdate'])))))
+                            echo "<input type='button' value='*||*'>&nbsp;";
+                         else 
+                            echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                        }
+                        echo "<input type='submit' name='todom' value = '@'>&nbsp;";
 			if ($sm < date("m"))
 			{
 				if ($sy <= date("Y"))
@@ -144,9 +170,9 @@ if ($_SESSION['user_accode']%13 == 0)
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
 			}
-			if ($sy <= date("Y"))
+			if ($sm >= date("m"))
 			{
-				if ($sm > date("m"))
+				if ($sy < date("Y"))
 				{
 				echo "<input type='submit' name='todom' value = '>>'>";
 				}
