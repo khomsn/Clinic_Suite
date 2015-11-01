@@ -67,12 +67,9 @@ if($_POST['finish']=="OK")
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title>ใบรับรองแพทย์</title>
-	<meta name="generator" content="LibreOffice 4.2.3.3 (Linux)">
-	<meta name="author" content="Nuy">
-	<meta name="created" content="20091020;191800000000000">
-	<meta name="changed" content="20140622;111509366091080">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>ใบรับรองแพทย์</title>
+<script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
 <?php
     $agent = $_SERVER['HTTP_USER_AGENT'];
     
@@ -113,7 +110,7 @@ else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medc
 </head>
 <body lang="th-TH" text="#000000" dir="ltr" style="background: transparent">
 <?php if($yess){?>
-<div align="center"><a href="javascript:Clickheretoprint()">Print</a></div><br>
+<div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <?php }?>
 <div class="style3" id="print_content">
 <form method="post" action="Medical_Certificate_2551.php" name="regForm" id="regForm">
@@ -135,8 +132,13 @@ echo $address1." หมู่ที่ ".$address2." ต. ".$address3." อ. ".$
 ?>...<br>
 <?php 
 if(preg_match('/^[0-9][0-9]*$/', $ctz_id)) 
-{
-    echo "หมายเลขบัตรประชาชน........";
+{ 
+  if($ctz_id>1000000000000)    echo "หมายเลขบัตรประชาชน........";
+  else
+  {
+  echo " โปรดตรวจสอบ เลขประจำตัวใหม่ XXXXXXXXXXXXXXXXXXXX"; 
+  break;
+  }
 }
 else echo "หมายเลข PASSPORT.....";
 echo $ctz_id;

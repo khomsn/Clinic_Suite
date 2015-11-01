@@ -167,8 +167,8 @@ if($_POST['set']=="SET")
 
  mysqli_query($linkopd, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ") or die(mysqli_error($linkopd));
  // go on to other step
-  
-	  header("Location: prescriptconfirm.php");   
+  unset($_SESSION['medcert']);
+  header("Location: prescriptconfirm.php");   
  }
 }
 ?>

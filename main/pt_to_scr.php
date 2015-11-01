@@ -13,6 +13,7 @@ $pdir = AVATAR_PATH;
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
 <meta http-equiv="refresh" content="10">
 <link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color1.css">
 <script type="text/javascript">
     if(window.top.location != window.location) 
     {
@@ -20,8 +21,7 @@ $pdir = AVATAR_PATH;
     }
 </script>        
 </head>
-<body>
-
+<body  style="background-image: url(../config/rotate.php); background-size: cover;" alink="#000088" link="#006600" vlink="#660000">
 <!--add menu -->
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr> 
@@ -65,7 +65,7 @@ include 'clinicmenu.php';
 						<?php
 						$result = mysqli_query($link, "SELECT * FROM pt_to_scr ORDER BY time ASC ");
 						$n_of_row = mysqli_num_rows($result);
-						echo "<table border='1'>";
+						echo "<table border='1' class='TFtable'>";
 						echo "<tr><th>เลขทะเบียน</th><th>ยศ</th><th>ชื่อ</th><th>นามสกุล</th><th>";?><div class="avatar">
 									<img src="<?php $avatar = $pdir."default.jpg";
 									echo $avatar; ?>" width="44" height="44" /></div>

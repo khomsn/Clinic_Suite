@@ -1,4 +1,9 @@
 #---------------
+Version 25581101
+
+Add Random rotating background and other things.
+
+#---------------
 Version 25581017 
 
 Update DDIL. Now you can Adjust DDIL per order (Called Ddiltemp) without changing the Default setting. IF DDIL > Ddiltemp, DDIL will be used.

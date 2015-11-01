@@ -132,7 +132,7 @@ $(document).ready(function(){
 
 </head>
 
-<body  style="background-image: url(../image/login.jpeg);">
+<body  style="background-image: url(../image/login.jpeg); background-size: cover;">
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr> 
     <td colspan="3">&nbsp;</td>

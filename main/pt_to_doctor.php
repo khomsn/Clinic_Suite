@@ -13,9 +13,7 @@ page_protect();
 
 <link rel="stylesheet" href="../public/css/styles.css">
 </head>
-
-<body>
-
+<body  style="background-image: url(../config/rotate.php);">
 <!--add menu -->
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr> 

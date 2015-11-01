@@ -37,16 +37,16 @@ list($total) = mysqli_fetch_array($rs_duplicate);
       mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
     }
 }
-/*
+
 for($j=1;$j<=$i;$j++)
 {
-  if($_POST['del'.$j] == 'ลบ')
+  if($_POST['del'] == $j)
   {
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM reccompany WHERE id = '$j' ") or die(mysqli_error($link));
   }
 }
-*/
+
 ?>
 
 <html>
@@ -102,7 +102,7 @@ if(!empty($err))  {
     
     $n_of_row = mysqli_num_rows($result);
     echo "<table border='1' width=100%>";
-    echo "<tr><th>No</th><th width=25%>Company</th><th width=50%>Full Text to print</th><th>+</th></tr>";
+    echo "<tr><th>No</th><th width=25%>Company</th><th width=50%>Full Text to print</th><th>+/-</th></tr>";
     // keeps getting the next row until there are no more to get
 		    // Print out the contents of each row into a table
 		    echo "<tr><th>";
@@ -125,7 +125,8 @@ if(!empty($err))  {
 		    echo $row_settings['comname'];
 		    echo "</th><th>";
 		    echo $row_settings['comdt'];
-		    echo "</th><th>+";
+		    echo "</th><th>";
+		    echo "<input type=submit name='del' value='".$row_settings['id']."'>";
 		    echo "</th></tr>";
 		    
     

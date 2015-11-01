@@ -47,7 +47,7 @@ define('AVATAR_PATH', '../public/avatars/');
 define('PT_AVATAR_PATH', '../public/avatars/');
 define('PT_IMAGE_PATH', '../public/ptimages/');
 define('IMAGE_PATH', '../image/');
-
+define('WALLPAPER', './rotate.php');
 /**
  * Configuration for: Avatars/Gravatar support
  * Set to true if you want to use "Gravatars", a service that automatically gets avatar pictures via using

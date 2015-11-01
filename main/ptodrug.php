@@ -14,6 +14,7 @@ unset($_SESSION['price']);
 <title>ผู้ป่วยรอรับยา</title>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
 <link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color1.css">
 <script type="text/javascript">
     if(window.top.location != window.location) 
     {
@@ -21,8 +22,7 @@ unset($_SESSION['price']);
     }
 </script>        
 </head>
-<body>
-
+<body  style="background-image: url(../config/rotate.php); background-size: cover;">
 <!--add menu -->
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr> 
@@ -75,8 +75,11 @@ include 'clinicmenu.php';
 						$result = mysqli_query($link, "SELECT * FROM pt_to_drug ORDER BY time ASC");
 						
 						$n_of_row = mysqli_num_rows($result);
-						echo "<table border='1'>";
-						echo "<tr><th>เลขทะเบียน</th><th>ยศ</th><th>ชื่อ</th><th>นามสกุล</th></tr>";
+						echo "<table border='1' class='TFtable'>";
+						echo "<tr><th>เลขทะเบียน</th><th>ยศ</th><th>ชื่อ</th><th>นามสกุล</th><th>";?><div class="avatar">
+									<img src="<?php $avatar = $pdir."default.jpg";
+									echo $avatar; ?>" width="44" height="44" /></div>
+								<?php echo "</th></tr>";
 						// keeps getting the next row until there are no more to get
 						$j=1;
 						while($row = mysqli_fetch_array($result))
