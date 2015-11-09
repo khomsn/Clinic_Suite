@@ -17,7 +17,8 @@ if(empty($day)) $day = 1;
 $month = $_POST['month'];
 if(empty($month)) $month = 1;
 $byear = $_POST['year'];
-$year = $byear - 543;
+if($_POST['Era'] == 1) $year = $byear - 543;
+if($_POST['Era'] == 2) $year = $byear;
 $gender = mysqli_real_escape_string($linkopd, $_POST['Gender']);
 $weight = $_POST['weight'];
 
@@ -28,6 +29,7 @@ if(($ctzid<1000000000000))
   if(!preg_match('/[a-zA-Z\.]/i', $ctzid))
   {
   $err[]= "เลขประจำตัวผิด ไม่ครบ 13 หลัก";
+  $ctzid ='';
   }
 }
 // check for duplicated record for ctz_id
@@ -296,6 +298,7 @@ else
 						<td width="732" valign="top">
 							<h3 class="titlehdr">ระบบลงทะเบียนผู้ป่วย</h3>
 							<p>ในการลงทะเบียนผู้ป่วย [ ชื่อ นามสกุล ] <span class="required">*</span> จำเป็นต้องมี. ที่อยู่ สามารถใส่ถึงแค่ ตำบล/อำเภอ ได้ ข้อมูลอื่นๆ ระบบจะใส่ให้</p>
+							<p>เลขประจำตัวประชาชน ถ้าเป็นชาวต่างชาติที่ไม่มีเลขที่บัตร ให้ใช้ เลข Passport แทน โดยใส่ รหัสประเทศ ตามด้วย เลขที่ Passport เช่น "TH-E123456"</p>
 							
 							<form action="PIDregister.php" method="post" name="regForm" id="regForm" enctype="multipart/form-data">
 							
@@ -360,9 +363,9 @@ else
 									<option value="11">พย</option>
 									<option value="12">ธค</option>
 									</select>
-									พ.ศ. <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="2457" max="2657" step="1"><br>
+									<input type="radio" name="Era" value="1" checked>พ.ศ. <input type="radio" name="Era" value="2">ค.ศ. <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="1914" max="2657" step="1" class="typenumber">
 									<hr style="width: 100%; height: 2px;">ส่วนสูง:
-									<input tabindex="9" name="height" size="4" maxlength="3" type="number" value="1"> ซม.
+									<input tabindex="9" name="height" size="4" maxlength="3" type="number" value="1" class="typenumber"> ซม.
 									&nbsp; &nbsp;
 									&nbsp; <!--น้ำหนัก: <input tabindex="9" name="weight" size="4" maxlength="3" type="text"> กก.-->
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -382,7 +385,7 @@ else
 									<hr style="width: 100%; height: 2px;">
 									ที่อยู่:
 									<br>
-									บ้านเลขที่<input tabindex="11" name="address1" type="text" >หมู่ที่<input tabindex="12" name="address2" type="text" >
+									บ้านเลขที่<input tabindex="11" name="address1" type="text" class="typenumber">หมู่ที่<input tabindex="12" name="address2" type="text" class="typenumber">
 									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ตำบล <input tabindex="13" name="address3" type="text" id="tname" >
 									<br>
 									อำเภอ<input tabindex="14" name="address4" type="text" id="aname">

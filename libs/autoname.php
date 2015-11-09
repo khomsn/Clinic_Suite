@@ -8,5 +8,14 @@
 	$("#lname").autocomplete("../libs/lnamelist.php", {
 			selectFirst: true
 		});
+	$("#htel").autocomplete("../libs/plinelist.php", {
+			selectFirst: true
+		});
+	$("#mtel").autocomplete("../libs/cellplist.php", {
+			selectFirst: true
+		});
+	$("#cid").autocomplete("../libs/cidlist.php", {
+			selectFirst: true
+		});
 	});
 	</script>

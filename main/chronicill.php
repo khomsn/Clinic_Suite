@@ -112,11 +112,11 @@ include '../libs/autodruggen.php';
 	echo "<tr><th>Item</th><th>ชื่อยา/กลุ่มยา</th>";
 	while ($row_settings = mysqli_fetch_array($ptin))
 	{
-		echo "<tr><td>1</td><td><input type=text name=dgname1 id=dgname1 value=".$row_settings['drug_alg_1']."></td></tr>";
-		echo "<tr><td>2</td><td><input type=text name=dgname2 id=dgname2 value=".$row_settings['drug_alg_2']."></td></tr>";
-		echo "<tr><td>3</td><td><input type=text name=dgname3 id=dgname3 value=".$row_settings['drug_alg_3']."></td></tr>";
-		echo "<tr><td>4</td><td><input type=text name=dgname4 id=dgname4 value=".$row_settings['drug_alg_4']."></td></tr>";
-		echo "<tr><td>5</td><td><input type=text name=dgname5 id=dgname5 value=".$row_settings['drug_alg_5']."></td></tr>";
+		echo "<tr><td>1</td><td><input type=text name=dgname1 id=dgname1 value='".$row_settings['drug_alg_1']."'></td></tr>";
+		echo "<tr><td>2</td><td><input type=text name=dgname2 id=dgname2 value='".$row_settings['drug_alg_2']."'></td></tr>";
+		echo "<tr><td>3</td><td><input type=text name=dgname3 id=dgname3 value='".$row_settings['drug_alg_3']."'></td></tr>";
+		echo "<tr><td>4</td><td><input type=text name=dgname4 id=dgname4 value='".$row_settings['drug_alg_4']."'></td></tr>";
+		echo "<tr><td>5</td><td><input type=text name=dgname5 id=dgname5 value='".$row_settings['drug_alg_5']."'></td></tr>";
 	}
 	
 	echo "</table>";

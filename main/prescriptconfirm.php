@@ -151,11 +151,13 @@ unset($_SESSION['staff']);
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM pt_to_obs WHERE id = '$checkid' ") or die(mysqli_error($link));
 
-
+	  if(!empty($_SESSION['medcert'])) goto Medcert;
 	  // go on to other step
 	  header("Location: ptlpage.php");  
 }
-
+Medcert :
+if($_SESSION['medcert']=='1'){ header("Location: ../docform/Medical_Certificate_2551.php");}
+if($_SESSION['medcert']=='2'){ header("Location: ../docform/Medical_Certificate.php");}
 ?>
 
 <!DOCTYPE html>
@@ -237,6 +239,8 @@ else
 			  $ptin = mysqli_query($link, "select * from $tmp ");
 			  while ($row = mysqli_fetch_array($ptin))
 			  {
+				  $_SESSION['medcert']=$row['medcert'];
+				  $pricepolicy = $row['pricepolicy'];
 				  for($i = 1;$i<=10;$i++)
 				  {
 				  $idrx="idrx".$i;
@@ -282,7 +286,6 @@ else
 				  echo "</td><td><input type ='submit' name='";
 				  echo $i;
 				  echo "' value='ลบ'></td></tr>";
-				  $pricepolicy = $row['pricepolicy'];
 				  }
 			  }
 			?>

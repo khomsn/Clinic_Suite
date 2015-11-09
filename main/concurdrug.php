@@ -74,16 +74,16 @@ include '../libs/autodruggen.php';
 	<?php 
 	echo "<table style=' width: 80%; text-align: center; margin-left: auto; margin-right: auto;' border='1' cellpadding='1' cellspacing='1'>";
 	echo "<tr><th>Item</th><th>Drug Name or Drug Group</th>";
-	echo "<tr><td>1</td><td><input type=text name=con_drug_1 id=concd1 value=".$charsl[0]."></td></tr>";
-	echo "<tr><td>2</td><td><input type=text name=con_drug_2 id=concd2 value=".$charsl[1]."></td></tr>";
-	echo "<tr><td>3</td><td><input type=text name=con_drug_3 id=concd3 value=".$charsl[2]."></td></tr>";
-	echo "<tr><td>4</td><td><input type=text name=con_drug_4 id=concd4 value=".$charsl[3]."></td></tr>";
-	echo "<tr><td>5</td><td><input type=text name=con_drug_5 id=concd5 value=".$charsl[4]."></td></tr>";
-	echo "<tr><td>6</td><td><input type=text name=con_drug_6 id=concd6 value=".$charsl[5]."></td></tr>";
-	echo "<tr><td>7</td><td><input type=text name=con_drug_7 id=concd7 value=".$charsl[6]."></td></tr>";
-	echo "<tr><td>8</td><td><input type=text name=con_drug_8 id=concd8 value=".$charsl[7]."></td></tr>";
-	echo "<tr><td>9</td><td><input type=text name=con_drug_9 id=concd9 value=".$charsl[8]."></td></tr>";
-	echo "<tr><td>10</td><td><input type=text name=con_drug_10 id=concd10 value=".$charsl[9]."></td></tr>";
+	echo "<tr><td>1</td><td><input type=text name=con_drug_1 id=concd1 value='".$charsl[0]."'></td></tr>";
+	echo "<tr><td>2</td><td><input type=text name=con_drug_2 id=concd2 value='".$charsl[1]."'></td></tr>";
+	echo "<tr><td>3</td><td><input type=text name=con_drug_3 id=concd3 value='".$charsl[2]."'></td></tr>";
+	echo "<tr><td>4</td><td><input type=text name=con_drug_4 id=concd4 value='".$charsl[3]."'></td></tr>";
+	echo "<tr><td>5</td><td><input type=text name=con_drug_5 id=concd5 value='".$charsl[4]."'></td></tr>";
+	echo "<tr><td>6</td><td><input type=text name=con_drug_6 id=concd6 value='".$charsl[5]."'></td></tr>";
+	echo "<tr><td>7</td><td><input type=text name=con_drug_7 id=concd7 value='".$charsl[6]."'></td></tr>";
+	echo "<tr><td>8</td><td><input type=text name=con_drug_8 id=concd8 value='".$charsl[7]."'></td></tr>";
+	echo "<tr><td>9</td><td><input type=text name=con_drug_9 id=concd9 value='".$charsl[8]."'></td></tr>";
+	echo "<tr><td>10</td><td><input type=text name=con_drug_10 id=concd10 value='".$charsl[9]."'></td></tr>";
 	echo "</table>";
 	?>
 	<br>

@@ -47,11 +47,13 @@ elseif($_POST['found'] == 'ชำระหนี้')
 
 <!DOCTYPE html>
 <html><head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type"><title>ค้นหารายชื่อผู้ป่วย</title>
-	<script language="JavaScript" type="text/javascript" src="../public/js/jquery-1.3.2.min.js"></script>
-	<link rel="stylesheet" href="../public/css/styles.css">
+<title>ค้นหารายชื่อผู้ป่วย</title>
+<meta content="text/html; charset=utf8" http-equiv="content-type">
+<script language="JavaScript" type="text/javascript" src="../public/js/jquery-1.3.2.min.js"></script>
+<link rel="stylesheet" href="../public/css/styles.css">
 <?php 
 include '../libs/autoname.php';
+include '../libs/autojatz.php';
 ?>
 
 </head>
@@ -69,7 +71,7 @@ else
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
-  <tr><td width="160" valign="top">
+  <tr><td width="160" valign="top"><div class="pos_l_fix">
 		<?php 
 			/*********************** MYACCOUNT MENU ****************************
 			This code shows my account menu only to logged in users. 
@@ -81,14 +83,9 @@ else
 				include 'clinicmenu.php';
 			} 
 		/*******************************END**************************/
-		?>
-			  <p>&nbsp; </p>
-			  <p>&nbsp;</p>
-			  <p>&nbsp;</p>
-			  <p>&nbsp;</p>
+		?></div>
 		</td>
 		<td width="10" valign="top"><p>&nbsp;</p></td>
-<!--menu-->
 		<td>
 			<?php
 			if($_POST['search'] =='ค้นหา')
@@ -113,14 +110,14 @@ else
 							เลขทะเบียน:<input maxlength="5" size="7" name="ptid">
 							ชื่อ:<input maxlength="15" size="15" tabindex="1" name="fname" id="fname" autofocus>&nbsp;
 							นามสกุล:<input maxlength="20" size="20" tabindex="2" name="lname" id="lname">
-							<br>
-							เลขที่บัตรประชาชน<input maxlength="13" size="13" tabindex="2" name="id">
-							<br>
-							โทรศัพท์บ้าน:<input maxlength="12" size="12" tabindex="3" name="htel" value="02xxx">
-							โทรศัพท์มือถือ <input maxlength="12" size="12" tabindex="4" name="mtel" value="08xxx">
-							<br>
-							<br>
-							<br>
+							<hr style="width: 50%;">
+							เลขที่บัตรประชาชน<input maxlength="13" size="13" tabindex="2" name="id" id="cid">
+							<hr style="width: 30%;">
+							โทรศัพท์บ้าน:<input maxlength="12" size="12" tabindex="3" name="htel" value="02xxx" id="htel">
+							โทรศัพท์มือถือ <input maxlength="12" size="12" tabindex="4" name="mtel" value="08xxx" id="mtel">
+							<hr style="width: 65%;">
+							บ้านเลขที่<input tabindex="6" name="address1" type="text" size="5">หมู่ที่<input tabindex="7" name="address2" type="text" size="3"> ตำบล <input tabindex="8" name="address3" type="text" id="tname" > อำเภอ <input tabindex="14" name="address4" type="text" id="aname"> จังหวัด <input tabindex="15" name="address5" type="text" id="jname">
+							<hr style="width: 85%;">
 							<input tabindex="5" value="ค้นหา" name="search" type="submit">
 						</td>
 					</tr>
@@ -128,64 +125,81 @@ else
 				</div>
 			<?php } ?>	
 			</form>
-			<form action="search_pt.php" method="post" name="submitsearchForm" id="submitsearchForm">
+<form action="search_pt.php" method="post" name="submitsearchForm" id="submitsearchForm">
+<?php
 
-			<?php
-			
-				if($_POST['search'] == 'ค้นหา')  
-				{
-					$result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' or lname='$_POST[lname]' or hometel='$_POST[htel]' or mobile='$_POST[mtel]' OR id='$_POST[ptid]' or ctz_id='$_POST[id]' and ctz_id!=0 ");
-				
-					if (ltrim($_POST['fname']) !== '' and ltrim($_POST['lname']) !== '')
-					{
-					  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' AND lname='$_POST[lname]'");
-					}
-					if (ltrim($_POST['fname']) !== '' and ltrim($_POST['lname']) !== '' and ltrim($_POST['id']) !== '')
-					{
-					  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' AND lname='$_POST[lname]' AND ctz_id='$_POST[id]'");
-					}
-					if (ltrim($_POST['ptid']) !== '')
-					{
-					  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE  id='$_POST[ptid]' ");
-					}
-								echo "<table border='1'>";
-								echo "<tr> <th>เลือก</th><th>เลขทะเบียน</th><th>ยศ</th><th>ชื่อ</th><th>นามสกุล</th><th>เลขบัตรประชาขน</th><th>มือถือ</th><th></th></tr>";
-								// keeps getting the next row until there are no more to get
-								while($row = mysqli_fetch_array($result))
-								 {
-										// Print out the contents of each row into a table
-										echo "<tr><th>";
-			?>							
-										<input type="radio" name="ptid" value="<?php	echo $row['id']; ?>" />
-			<?php
-										echo "</th><th>"; 
-										echo $y = $row['id'];
-										echo "</th><th>"; 
-										echo $row['prefix'];
-										echo "</th><th width=150>"; 
-										echo $row['fname'];
-										echo "</th><th width=150>"; 
-										echo $row['lname'];
-										echo "</th><th width=150>"; 
-										echo $row['ctz_id'];
-										echo "</th><th width=150>"; 
-										echo $row['mobile'];
-										echo "</th><th>";
-								?><div class="avatar">
-									<img src="<?php $avatar = $pdir. "pt_".$y.".jpg";
-									echo $avatar; ?>" width="44" height="44" /></div>
-								<?php		echo "</th></tr>";
-								} 
-								echo "</table>";
-				//}
-			?>
+	if($_POST['search'] == 'ค้นหา')  
+	{
+		$result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' or lname='$_POST[lname]' or hometel='$_POST[htel]' or mobile='$_POST[mtel]' OR id='$_POST[ptid]' or ctz_id='$_POST[id]' and ctz_id!=0 ");
+	
+		if (ltrim($_POST['fname']) !== '' and ltrim($_POST['lname']) !== '')
+		{
+		  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' AND lname='$_POST[lname]'");
+		}
+		if (ltrim($_POST['fname']) !== '' and ltrim($_POST['lname']) !== '' and ltrim($_POST['id']) !== '')
+		{
+		  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE fname='$_POST[fname]' AND lname='$_POST[lname]' AND ctz_id='$_POST[id]'");
+		}
+		if (ltrim($_POST['ptid']) !== '')
+		{
+		  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE  id='$_POST[ptid]' ");
+		}
+		
+		if (ltrim($_POST['address1']) == '') $ft1 = 1;
+		else $ft1 = "address1 = '$_POST[address1]'";
+		if (ltrim($_POST['address2']) == '') $ft2 = 1;
+		else $ft2 = "address2 = '$_POST[address2]'";
+		if (ltrim($_POST['address3']) == '') $ft3 = 1;
+		else $ft3 = "address3 = '$_POST[address3]'";
+		if (ltrim($_POST['address4']) == '') $ft4 = 1;
+		else $ft4 = "address4 = '$_POST[address4]'";
+		if (ltrim($_POST['address5']) == '') $ft5 = 1;
+		else $ft5 = "address5 = '$_POST[address5]'";
+		if(($ft1!=1) OR ($ft2!=1) OR ($ft3!=1) OR ($ft4!=1) OR ($ft5!=1))
+		{
+		  $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE  ($ft1) AND ($ft2) AND  ($ft3) AND  ($ft4) AND ($ft5)" );
+		}
 
-			<br>
-			<br>
-	<?php if($y){?>
-			<input name="found" value="ส่งตรวจ" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="แก้ไขข้อมูล" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="OPD Card" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ใบเสร็จรับเงิน" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ชำระหนี้" type="submit">
+		echo "<table border='1'>";
+		echo "<tr> <th>เลือก</th><th>เลขทะเบียน</th><th>ยศ</th><th>ชื่อ</th><th>นามสกุล</th><th>เลขบัตรประชาขน</th><th>มือถือ</th><th></th><th>ที่อยู่</th></tr>";
+		// keeps getting the next row until there are no more to get
+		while($row = mysqli_fetch_array($result))
+		  {
+				// Print out the contents of each row into a table
+				echo "<tr><th>";
+?>							
+				<input type="radio" name="ptid" value="<?php	echo $row['id']; ?>" />
+<?php
+				echo "</th><th>"; 
+				echo $y = $row['id'];
+				echo "</th><th>"; 
+				echo $row['prefix'];
+				echo "</th><th width=150>"; 
+				echo $row['fname'];
+				echo "</th><th width=150>"; 
+				echo $row['lname'];
+				echo "</th><th width=150>"; 
+				echo $row['ctz_id'];
+				echo "</th><th width=150>"; 
+				echo $row['mobile'];
+				echo "</th><th>";
+?><div class="avatar">
+<img src="<?php $avatar = $pdir. "pt_".$y.".jpg";
+echo $avatar; ?>" width="44" height="44" /></div>
+<?php				echo "</th><th>";
+				echo $row['address1']." ม.".$row['address2']." ต.".$row['address3']." อ.".$row['address4'];
+				echo "</th></tr>";
+} 
+echo "</table>";
+//}
+?>
+
+<br>
+<br>
+<?php if($y){?>
+<input name="found" value="ส่งตรวจ" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="แก้ไขข้อมูล" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="OPD Card" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ใบเสร็จรับเงิน" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ชำระหนี้" type="submit">
 <?php } } ?>
-			</form>
+</form>
 <!--menu end-->
 		</td>
 		<td width="60"></td>

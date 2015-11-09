@@ -32,6 +32,7 @@ if(($ctzidin<1000000000000))
   if(!preg_match('/[a-zA-Z\.]/i', $ctzidin))
   {
   $err[]= "เลขประจำตัวผิด ไม่ครบ 13 หลัก";
+  $ctzidin='';
   }
 }
 if(!empty($_POST['address3']) and empty($_POST['address4']))
@@ -78,7 +79,7 @@ $concurdrug = mysqli_real_escape_string($link, $concurdrug);
 
 // assign insertion pattern WHERE `patient_id`.`id` =1 LIMIT 1 ;
 $sql_insert = "UPDATE `patient_id` SET 
-				`ctz_id` = '$_POST[ctz_id]',
+				`ctz_id` = '$ctzidin',
 				`prefix` = '$_POST[prefix]',
 				`fname` = '$fname',
 				`lname` = '$lname',

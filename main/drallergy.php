@@ -31,14 +31,14 @@ if($_POST['Save']=="Save")
       $alg[$i] = $dgnv;
     }
  }
-	$sql_insert = "UPDATE `patient_id` SET 
-				`drug_alg_1` = '$alg[1]',
-				`drug_alg_2` = '$alg[2]',
-				`drug_alg_3` = '$alg[3]',
-				`drug_alg_4` = '$alg[4]',
-				`drug_alg_5` = '$alg[5]'
-				WHERE `id` = '$id' LIMIT 1 ; 
-				";
+$sql_insert = "UPDATE `patient_id` SET 
+                        `drug_alg_1` = '$alg[1]',
+                        `drug_alg_2` = '$alg[2]',
+                        `drug_alg_3` = '$alg[3]',
+                        `drug_alg_4` = '$alg[4]',
+                        `drug_alg_5` = '$alg[5]'
+                        WHERE `id` = '$id' LIMIT 1 ;
+                        ";
 // Now insert Patient to "patient_id" table
 mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
 header("Location: drallergy.php"); 
@@ -80,11 +80,11 @@ include '../libs/autodruggen.php';
 	echo "<tr><th>Item</th><th>Drug Name or Drug Group</th>";
 	while ($row_settings = mysqli_fetch_array($ptin))
 	{
-		echo "<tr><td>1</td><td><input type=text name=dgn1 id=dgname1 value=".$row_settings['drug_alg_1']."></td></tr>";
-		echo "<tr><td>2</td><td><input type=text name=dgn2 id=dgname2 value=".$row_settings['drug_alg_2']."></td></tr>";
-		echo "<tr><td>3</td><td><input type=text name=dgn3 id=dgname3 value=".$row_settings['drug_alg_3']."></td></tr>";
-		echo "<tr><td>4</td><td><input type=text name=dgn4 id=dgname4 value=".$row_settings['drug_alg_4']."></td></tr>";
-		echo "<tr><td>5</td><td><input type=text name=dgn5 id=dgname5 value=".$row_settings['drug_alg_5']."></td></tr>";
+		echo "<tr><td>1</td><td><input type=text name=dgn1 id=dgname1 value='".$row_settings['drug_alg_1']."'></td></tr>";
+		echo "<tr><td>2</td><td><input type=text name=dgn2 id=dgname2 value='".$row_settings['drug_alg_2']."'></td></tr>";
+		echo "<tr><td>3</td><td><input type=text name=dgn3 id=dgname3 value='".$row_settings['drug_alg_3']."'></td></tr>";
+		echo "<tr><td>4</td><td><input type=text name=dgn4 id=dgname4 value='".$row_settings['drug_alg_4']."'></td></tr>";
+		echo "<tr><td>5</td><td><input type=text name=dgn5 id=dgname5 value='".$row_settings['drug_alg_5']."'></td></tr>";
 	}
 	
 	echo "</table>";
