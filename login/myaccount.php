@@ -28,12 +28,12 @@ $_SESSION['sflc'] = $sf['license'];
 <?php 
 if(!empty($_SESSION['user_background']))
 {
-echo "<body style='background-image: url(".$_SESSION['user_background'].");'>";
+echo "<body style='background-image: url(".$_SESSION['user_background']." ); background-size: cover;'>";
 }
 else
 {
 ?>
-<body  style="background-image: url(../image/mypage.jpg);">
+<body  style="background-image: url(../image/mypage.jpg); background-size: cover;">
 <?php
 }
 ?>
