@@ -83,21 +83,21 @@ $sql_insert = "INSERT into `patient_id`
 // Now insert Patient to "patient_id" table
 mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
 // Then get Patient ID to process to other step.
-$result = mysqli_query($linkopd, "SELECT * FROM patient_id
- WHERE fname='$fname' AND lname='$lname' AND gender='$gender'");
+$result = mysqli_query($linkopd, "SELECT id FROM patient_id
+ WHERE fname='$fname' AND lname='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]'");
 
 $row = mysqli_fetch_array($result);
 // Pass Patient ID as a session parameter.
-$_SESSION['Patient_id']= $row['id'];
+$_SESSION['Patient_id']= $row[0];
 
 include '../libs/pt_table.php';
 
 // Then get Staff ID to process to other step.
-$result = mysqli_query($link, "SELECT * FROM staff WHERE F_Name='$fname' AND L_Name='$lname' AND gender='$gender'");
+$result = mysqli_query($link, "SELECT id FROM staff WHERE F_Name='$fname' AND L_Name='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]");
 
 $row = mysqli_fetch_array($result);
 // Pass Patient ID as a session parameter.
-$staffid = $row['ID'];
+$staffid = $row[0];
 
 //update users table at staff_id
 mysqli_query($link, "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id' ") or die(mysqli_error($link));
