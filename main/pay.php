@@ -327,15 +327,23 @@ if($pricepolicy ==1)//staff
 
 if($pricepolicy ==9)//สงฆ์
 {
-  if ($TT_Yall>$allprice/2) 
+  if ($TT_Yall>($allprice-$alllabprice)/2) 
   {
-    $discount = $allprice - $TT_Yall;
-    $allprice = $TT_Yall;
+    if($allprice-$alllabprice <0)
+    {
+    $discount = $TT_Yall;
+    $allprice = $allprice + $TT_Yall;
+    }
+    else
+    {
+    $discount = $allprice - $TT_Yall -$alllabprice ;
+    $allprice = $TT_Yall + $alllabprice;
+    }
   }
-  if($allprice/2 > $TT_Yall)
+  if(($allprice-$alllabprice)/2 > $TT_Yall)
   {
-    $discount = $allprice/2;
-    $allprice = $discount;
+    $discount = ($allprice-$alllabprice)/2;
+    $allprice = $discount+$alllabprice;
   }
 }
 	//ส่งต่อราคายาและค่ำต่างๆทั้งหมดในวันนี้
