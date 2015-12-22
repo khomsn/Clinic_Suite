@@ -53,6 +53,12 @@ include 'clinicmenu.php';
 	  $err[] = "ผู้ป่วยอยู่ในระบบการบริการแล้ว";
 	  goto checkfound;
 	}
+	$result1 = mysqli_query($link, "SELECT id FROM pt_to_doc WHERE id = $PID");
+	if(mysqli_num_rows($result1) != 0)
+	{
+	  $err[] = "ผู้ป่วยอยู่ในระบบการบริการแล้ว";
+	  goto checkfound;
+	}
 	$result1 = mysqli_query($link, "SELECT id FROM pt_to_obs WHERE id = $PID");
 	if(mysqli_num_rows($result1) != 0)
 	{
