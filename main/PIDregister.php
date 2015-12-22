@@ -42,8 +42,15 @@ $err = urlencode("คำเตือน: มีเลขบัตรประช
 header("Location: PIDregister.php?msg=$err");
 exit();
 }
+
+// format birthday for mysql
+$birthday = $year.'-'.$month.'-'.$day;
+
 // check for duplicated record
 $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and ctz_id='$_POST[ctz_id]'") or die(mysqli_error($linkopd));
+list($total) = mysqli_fetch_array($rs_duplicate);
+// check for duplicated record if same person
+$rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and birthday='$birthday'") or die(mysqli_error($linkopd));
 list($total) = mysqli_fetch_array($rs_duplicate);
 
 if ($total > 0)
@@ -74,9 +81,6 @@ if(!empty($_POST['address3']) and !empty($_POST['address4']))
 		  $_POST['zipcode'] = $row['zipcode'];
 		}
 }
-
-// format birthday for mysql
-$birthday = $year.'-'.$month.'-'.$day;
 // Check for aviable ID 
 $checkid = mysqli_query($linkopd, "select id from patient_id ") or die(mysqli_error($linkopd));
 while ($cid = mysqli_fetch_array($checkid))
