@@ -27,6 +27,17 @@ if(empty($month)) $month = 1;
 $byear = $_POST['year'];
 $year = $byear - 543;
 
+// check for duplicated record for ctz_id
+$rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or die(mysqli_error($linkopd));
+list($total) = mysqli_fetch_array($rs_duplicate);
+
+if ($total > 0)
+{
+$err = urlencode("คำเตือน: มีเลขบัตรประชาชน ".$ctzidin."  อยู่ในบัญชีแล้ว.");
+header("Location: patientupdate.php?msg=$err");
+exit();
+}
+
 if(($ctzidin<1000000000000))
 {
   if(!preg_match('/[a-zA-Z\.]/i', $ctzidin))
@@ -35,6 +46,7 @@ if(($ctzidin<1000000000000))
   $ctzidin='';
   }
 }
+
 if(!empty($_POST['address3']) and empty($_POST['address4']))
 {
 	$sql="SELECT * FROM zip WHERE tname='$_POST[address3]'";
