@@ -136,11 +136,11 @@ $concurdrug = mysqli_real_escape_string($link, $concurdrug);
 // assign insertion pattern
 $sql_insert = "INSERT into `patient_id`
   			(`id`,`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`
-			, `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`, `address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `clinic`  )
+			, `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`, `address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `user_id`, `clinic`  )
 		    VALUES
 		    ('$idtoinsert','$ctzid','$_POST[prefix]','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
 			'$_POST[chro_ill_1]','$_POST[chro_ill_2]','$_POST[chro_ill_3]','$_POST[chro_ill_4]','$_POST[chro_ill_5]','$concurdrug','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
-			'$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_SESSION[clinic]')
+			'$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_SESSION[user_id]','$_SESSION[clinic]')
 			";
 
 
