@@ -27,6 +27,8 @@ if(empty($month)) $month = 1;
 $byear = $_POST['year'];
 $year = $byear - 543;
 
+if($_SESSION['oldctzid']!=$ctzidin)
+{
 // check for duplicated record for ctz_id
 $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or die(mysqli_error($linkopd));
 list($total) = mysqli_fetch_array($rs_duplicate);
@@ -37,7 +39,7 @@ $err = urlencode("คำเตือน: มีเลขบัตรประช
 header("Location: patientupdate.php?msg=$err");
 exit();
 }
-
+}
 if(($ctzidin<1000000000000))
 {
   if(!preg_match('/[a-zA-Z\.]/i', $ctzidin))
@@ -279,6 +281,8 @@ else
 								while($row = mysqli_fetch_array($result))
 								{
 									$ctzid = $row['ctz_id'];
+									//old ctzid to check for change
+									$_SESSION['oldctzid']=$ctzid;
 									$prefix = $row['prefix'];
 									$fname = $row['fname'];
 									$lname = $row['lname'];

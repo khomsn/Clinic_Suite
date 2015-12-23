@@ -41,9 +41,12 @@ if($_POST['todo']=='Close' or $_POST['todo']=='Diag')
 {
   for($j=1;$j<=$i;$j++)
   {
+    if(!empty($_POST['diag'.$j]))
+    {
     $dxx = $j."-".$_POST['diag'.$j];
     $_SESSION['ddx'] = $_SESSION['ddx']." ".$dxx;
     unset($_SESSION['dx'.$j]);
+    }
   }
     unset($_SESSION['DX']);
 }
