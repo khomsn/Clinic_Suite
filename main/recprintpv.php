@@ -28,7 +28,7 @@ elseif ($_POST['todo'] == 'Last' )
 }
 elseif ($_POST['todo'] == '>>' )
 {
-	$pin = mysqli_query($linkopd, "select MAX(id) from $pttable where clinic='$_SESSION[clinic]' and id> '$_SESSION[rid]'");
+	$pin = mysqli_query($linkopd, "select MIN(id) from $pttable where clinic='$_SESSION[clinic]' and id> '$_SESSION[rid]'");
 	$maxrow = mysqli_fetch_array($pin);
 	$_SESSION['rid'] = $maxrow[0];
 //	$_SESSION['rid'] = $_SESSION['rid'] + 1;
