@@ -47,6 +47,7 @@ mysqli_query($link, "UPDATE $tmp SET `preg` = '$_POST[preg]',`pricepolicy` = '$p
 if($_POST['preg'] ==1 )
 {
  $dhist = $dhist.' และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน';
+ $pregmonth = $_POST['pregmon'];
 }
 mysqli_query($linkopd, "UPDATE $pttable SET
 			`dofhis` = '$dhist',
@@ -68,8 +69,8 @@ mysqli_query($linkopd, "UPDATE $pttable SET
 			") or die(mysqli_error($linkopd));
 			
 // go on to other step
-//update height at patient_id
-mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'") or die(mysqli_error($linkopd));
+//update height at patient_id use fup to record pregnancy period.
+mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]', `fup` = '$pregmonth' where id='$id'") or die(mysqli_error($linkopd));
 
 //update diagnosis table
 $d1=$_POST['diag'];
@@ -151,10 +152,13 @@ else
 								$preg = $rowt['preg'];
 								
 								if($row_settings['gender']=="หญิง")
-								{?>
+								{
+                                                                //get pregdate for fup
+                                                                $pregmonth = $row_settings['fup'];
+								?>
 								    <input type="radio" name="preg" value="1" 
 								    <?php 
-								    if($preg == 1)
+								    if($preg == 1 OR $pregmonth !=0 )
 								    {
 								    $ptin2 = mysqli_query($linkopd, "select * from $pttable where  id = '$rid' ");
 								    while ($row2 = mysqli_fetch_array($ptin2))
@@ -167,7 +171,9 @@ else
 								    $newstring = substr($hist, -72);
 								    //echo $str = substr($hist, -72);
 								    $newstring = preg_replace('/\D/', '', $newstring);
-								    echo "checked";}?>>ตั้งครรภ์
+								    echo "checked";}
+								    if($pregmonth > 0 AND $pregmonth <= 10) $newstring = $pregmonth;
+								    ?>>ตั้งครรภ์
 								    <input type=number name=pregmon min=1 max=10 step=1 class=typenumber value='<?php echo $newstring;?>'>
 								    <input type="radio" name="preg" value="0" 
 								    <?php if($preg == 0) echo "checked";?>>ไม่ตั้งครรภ์

@@ -196,9 +196,19 @@ echo "</table>";
 
 <br>
 <br>
-<?php if($y){?>
+<?php 
+if($y)
+{
+?>
 <input name="found" value="ส่งตรวจ" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="แก้ไขข้อมูล" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="OPD Card" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ใบเสร็จรับเงิน" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ชำระหนี้" type="submit">
-<?php } } ?>
+<?php 
+}
+else
+{
+echo "<a href='../main/PIDregister.php'>ลงทะเบียนผู้ป่วยใหม่</a>";
+}
+}
+?>
 </form>
 <!--menu end-->
 		</td>

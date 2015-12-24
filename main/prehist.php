@@ -175,8 +175,10 @@ else
 						echo "</h3>";
 						if($row_settings['gender']=='หญิง')
 						{
+						//get pregdate for fup
+						$pregmonth = $row_settings['fup'];
 						?>
-						<input type="radio" name="preg" class="required" value="1" <?php if($preg == 1) echo "checked";?>>ตั้งครรภ์
+						<input type="radio" name="preg" class="required" value="1" <?php if(($preg == 1) OR ($pregmonth != 0))  echo "checked";?>>ตั้งครรภ์
 						<input type="radio" name="preg" class="required" value="0" <?php if(empty($preg) or ($preg == 0)) echo "checked";?>>ไม่ตั้งครรภ์
 						<?php 
 						}
