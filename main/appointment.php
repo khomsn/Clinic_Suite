@@ -45,22 +45,222 @@ if($_POST['set']=="SET")
   $finject = $finject ."# นัดฉีดยา ทุก 12 ชม #";
   if($_POST['fupinj3time']==1)//นัด ฉีดยา ต่อเนื่อง
   $finject = $finject ."# นัดฉีดยา ทุก 8 ชม #";
- if($_POST['fup']==90)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 3 เดือน #";
- if($_POST['fup']==60)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 2 เดือน #";
+ if($_POST['fup']==90)
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P90D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตาม วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
+ if($_POST['fup']==60)//นัด 2 เดือน 60 วัน
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P60D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตาม วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==30)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 1 เดือน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P30D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 30 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==21)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 21 วัน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P21D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 3 สัปดาห์ วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==14)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 14 วัน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P14D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 2 สัปดาห์ วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==7)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 7 วัน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P7D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 7 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==5)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 5 วัน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P5D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 5 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==3)//นัด ฉีดยา ต่อเนื่อง
-  $finject = $finject ."# นัดติดตามอีก 3 วัน #";
+   {
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P3D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก 3 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+  }
  if($_POST['fup']==1)//นัด ฉีดยา ต่อเนื่อง
   $finject = $finject ."# นัดติดตาม วันพรุ่งนี้ #";
  if($_POST['lab']==1)//นัด ฉีดยา ต่อเนื่อง
