@@ -19,6 +19,9 @@ if($_POST['doRegister'] == 'Register')
 $prefix = mysqli_real_escape_string($link, $_POST['prefix']);
 $fname = mysqli_real_escape_string($link, $_POST['fname']);
 $lname = mysqli_real_escape_string($link, $_POST['lname']);
+$Eprefix = mysqli_real_escape_string($link, $_POST['Eprefix']);
+$Efname = mysqli_real_escape_string($link, $_POST['Efname']);
+$Elname = mysqli_real_escape_string($link, $_POST['Elname']);
 $day = $_POST['day'];
 $month = $_POST['month'];
 $byear = $_POST['year'];
@@ -61,9 +64,9 @@ if(!empty($_POST['address3']))
 
 // assign insertion pattern
 $sql_insert = "INSERT into `staff`
-  			(`ctz_id`,`prefix`,`F_Name`,`L_Name`, `gender`, `birthday`, `posit`, `license`, `add_hno`, `add_mu`, `add_t`, `add_a`, `add_j`, `add_zip`, `h_tel`, `mobile`, `email`, `user_id`, `status` )
+  			(`ctz_id`,`prefix`,`F_Name`,`L_Name`,`Eprefix`,`EF_Name`,`EL_Name`, `gender`, `birthday`, `posit`, `license`, `add_hno`, `add_mu`, `add_t`, `add_a`, `add_j`, `add_zip`, `h_tel`, `mobile`, `email`, `user_id`, `status` )
 		    VALUES
-		    ('$_POST[ctz_id]','$prefix','$fname','$lname','$gender','$birthday','$_POST[Posit]','$_POST[license]','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
+		    ('$_POST[ctz_id]','$prefix','$fname','$lname','$Eprefix','$Efname','$Elname','$gender','$birthday','$_POST[Posit]','$_POST[license]','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
 			'$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_POST[email]','$user_id','$_POST[status]')
 			";
 
@@ -218,7 +221,9 @@ else
 								<tbody>
 								<tr>
 								<td style="text-align: left;">*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 >ชื่อ:*<input  align="center" tabindex="2" name="fname" size="20" class="required" type="text" >
-									&nbsp; นามสกุล:*  <input tabindex="3" name="lname" size="20" class="required" type="text" >
+									&nbsp; นามสกุล:*  <input tabindex="3" name="lname" size="20" class="required" type="text" ><br>
+									*<input  align="center" name="Eprefix" size="5" type="text" id="epref" tabindex=1 >FName:*<input  align="center" tabindex="2" name="Efname" size="20" class="required" type="text" >
+									&nbsp; LName:*  <input tabindex="3" name="Elname" size="20" class="required" type="text" >
 									&nbsp;เพศ*<input type="radio" tabindex="4" name="Gender" class="required" value="ชาย">ชาย 
 												 <input type="radio" tabindex="4" name="Gender" class="required" value="หญิง">หญิง
 									<br>

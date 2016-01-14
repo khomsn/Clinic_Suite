@@ -15,6 +15,9 @@ if($_POST['doRegister'] == 'แก้ไข')
 	$prefix = mysqli_real_escape_string($link, $_POST['prefix']);
 	$F_Name = mysqli_real_escape_string($link, $_POST['F_Name']);
 	$L_Name = mysqli_real_escape_string($link, $_POST['L_Name']);
+	$Eprefix = mysqli_real_escape_string($link, $_POST['Eprefix']);
+	$EF_Name = mysqli_real_escape_string($link, $_POST['EF_Name']);
+	$EL_Name = mysqli_real_escape_string($link, $_POST['EL_Name']);
 	$gender = mysqli_real_escape_string($link, $_POST['Gender']);
 
 	$log2 = $_POST['logged'] + 1;
@@ -32,6 +35,9 @@ if($_POST['doRegister'] == 'แก้ไข')
 					`prefix` = '$prefix',
 					`F_Name` = '$F_Name',
 					`L_Name` = '$L_Name',
+					`Eprefix` = '$Eprefix',
+					`Efname` = '$EF_Name',
+					`Elname` = '$EL_Name',
 					`license` = '$_POST[license]',
 					`email` = '$_POST[email]',
 					`add_hno` = '$_POST[add_hno]',
@@ -184,6 +190,9 @@ else
 									$prefix = $row['prefix'];
 									$F_Name = $row['F_Name'];
 									$L_Name = $row['L_Name'];
+									$Eprefix = $row['Eprefix'];
+									$EF_Name = $row['Efname'];
+									$EL_Name = $row['Elname'];
 									$gender = $row['gender'];
 									$birthday =$row['birthday'];
 									$license = $row['license'];
@@ -217,6 +226,10 @@ else
 										echo $gender;
 										echo "'>";
 									?>
+									<br>*<input  align="center" name="Eprefix" size="5" type="text" id="Epref" tabindex=1 value=<?php echo $Eprefix;?>>Fname:*<input  align="center" tabindex="1" name="EF_Name" size="20" 
+								class="required" type="text"  style="email: 35px;" value="<?php echo $EF_Name; ?>">
+									&nbsp; Lname:*  <input tabindex="2" name="EL_Name" style="email: 35px;" size="25" class="required" type="text"
+									value="<?php echo $EL_Name; ?>">
 									<br><br>
 									เลขประจำตัวประชาชน: 
 									<?php 

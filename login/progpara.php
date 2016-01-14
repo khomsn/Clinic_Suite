@@ -4,9 +4,11 @@ page_protect();
 
 $sql = " CREATE TABLE IF NOT EXISTS `parameter` ( `ID` tinyint(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `Ename` text COLLATE utf8_unicode_ci NOT NULL,
   `cliniclcid` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `logo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `address` text COLLATE utf8_unicode_ci NOT NULL,
+  `Eaddress` text COLLATE utf8_unicode_ci NOT NULL,
   `tel` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `mobile` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -35,9 +37,9 @@ foreach($_POST as $key => $value) {
 }
     // assign insertion pattern
     $sql_insert = "INSERT into `parameter`
-			    (`name`,`cliniclcid`,`address`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`)
+			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`)
 			VALUES
-			    ('$data[name]','$data[cliniclcid]','$data[address]','$data[tel]','$data[mobile]','$data[email]','$data[logo]','$data[normprice]','$data[fup]','$data[tmp]',
+			    ('$data[name]','$data[ename]','$data[cliniclcid]','$data[address]','$data[eaddress]','$data[tel]','$data[mobile]','$data[email]','$data[logo]','$data[normprice]','$data[fup]','$data[tmp]',
 			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]')";
 
     // Now insert Patient to "patient_id" table
@@ -96,9 +98,11 @@ else
 		while ($row_settings = mysqli_fetch_array($rs_settings)) 
 			{
 			 $name = $row_settings['name'];
+			 $ename = $row_settings['Ename'];
 			 $cliniclcid = $row_settings['cliniclcid'];
 			 $name_lc = $row_settings['name_lc'];
 			 $address = $row_settings['address'];
+			 $eaddress = $row_settings['Eaddress'];
 			 $tel = $row_settings['tel'];
 			 $mobile = $row_settings['mobile'];
 			 $email = $row_settings['email'];
@@ -131,6 +135,12 @@ else
 							echo $name; ?>" size="50">
 							</td></tr>
 							<tr><td style="text-align: right;" >
+							ชื่อสถานพยาบาล*Eng</td>
+							<td>
+							<input name="ename" type="text" id="ename"  class="required" value="<?php 
+							echo $ename; ?>" size="50">
+							</td></tr>
+							<tr><td style="text-align: right;" >
 							ใบอนุญาตเลขที่.*</td>
 							<td>
 							<input name="cliniclcid" type="text" id="cliniclcid"  class="required" value="<?php 
@@ -146,6 +156,10 @@ else
 							ที่อยู่*
 							</td><td>
 							<textarea name="address" cols="40" rows="2" class="required" id="address"><?php echo $address; ?></textarea> </td></tr>
+							<tr><td style="text-align: right;" >
+							ที่อยู่*Eng
+							</td><td>
+							<textarea name="eaddress" cols="40" rows="2" class="required" id="eaddress"><?php echo $eaddress; ?></textarea> </td></tr>
 							<tr><td style="text-align: right;" >โทรศัพท์*</td><td ><input name="tel" type="text" id="tel"  class="required" value="<?php echo $tel; ?>" size="30">
 							</td>
 							</tr>

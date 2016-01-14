@@ -27,7 +27,7 @@ else
 <?php
 }
 ?>
-<table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
+<table width="100%" border="1" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
   <tr><td width="160" valign="top"><div class="pos_l_fix">
 		<?php 
@@ -86,7 +86,7 @@ else
 				 echo "ธันวาคม";
 				 break;
 			}?> พ.ศ. <?php echo $bsy; //date("Y")+543;?></h3>
-				<table style="text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+				<table style="width:80%; text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
 					<tbody>
 						<tr>
 							<td style="width: 50%; vertical-align: top; background-color: rgb(255, 255, 204);">

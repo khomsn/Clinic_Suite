@@ -84,14 +84,13 @@ else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medc
 
 </head>
 <body>
-<a href="Medical_Certificate_eng.php">English</a>
 <?php if($yess){?>
 <div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <?php }?>
 <div class="style3" id="print_content">
 <p class="western"><br>
 </p>
-<form method="post" action="Medical_Certificate.php" name="regForm" id="regForm">
+<form method="post" action="Medical_Certificate_eng.php" name="regForm" id="regForm">
 
 <div class="page"><div class="subpage">
 <?php 
@@ -101,100 +100,100 @@ while($par = mysqli_fetch_array($para))
 ?>
 <div id="logo" style="height:42px;width:42px;float:left;"><img src="<?php echo $par['logo'];?>" alt="logo" width="42" height="42"></div>
 <div id="logo" style="height:42px;width:42px;float:right;"></div>
-<p class="western" style="text-align:center;">ใบรับรองแพทย์</p>
+<p class="western" style="text-align:center;">Medical Certificate</p>
 <p class="western" style="text-align:center; margin-bottom: 0in; line-height: 150%">
 <?php 
- echo $par['name']." ใบอนุญาตเลขที่ ".$par['cliniclcid']."<br>".$par['address']." โทร.".$par['tel'];
+ echo $par['Ename'].", License number ".$par['cliniclcid']."<br>".$par['Eaddress']." Tel.".$par['tel'];
 }
     $date = new DateTime($today);
     $sd = $date->format("d");
     $sm = $date->format("m");
     $sy = $date->format("Y");
-    $bsy = $sy +543;
 ?>
 </p>
-<p class="western" style="text-align:center;">วันที่ <?php echo $sd." ";
+<p class="western" style="text-align:center;">Date <?php echo $sd." ";
 switch ($sm)
 {
   case 1:
-  echo "มกราคม";
+  echo "January";
   break;
   case 2:
-  echo "กุมภาพันธ์";
+  echo "February";
   break;
   case 3:
-  echo "มีนาคม";
+  echo "March";
   break;
   case 4:
-  echo "เมษายน";
+  echo "April";
   break;
   case 5:
-  echo "พฤษภาคม";
+  echo "May";
   break;
   case 6:
-  echo "มิถุนายน";
+  echo "June";
   break;
   case 7:
-  echo "กรกฎาคม";
+  echo "July";
   break;
   case 8:
-  echo "สิงหาคม";
+  echo "August";
   break;
   case 9:
-  echo "กันยายน";
+  echo "September";
   break;
   case 10:
-  echo "ตุลาคม";
+  echo "October";
   break;
   case 11:
-  echo "พฤศจิกายน";
+  echo "November";
   break;
   case 12:
-  echo "ธันวาคม";
-  break;
-}?> พ.ศ. <?php echo $bsy;?></p>
-<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้า <u><?php echo $_SESSION['sfname'];?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> ได้ทำการตรวจรักษา<br>
-<u> <?php echo $prefix." ".$fname." ".$lname;?> </u> เมื่อวันที่ <u> <?php echo $sd." ";
-switch ($sm)
-{
-  case 1:
-  echo "มกราคม";
-  break;
-  case 2:
-  echo "กุมภาพันธ์";
-  break;
-  case 3:
-  echo "มีนาคม";
-  break;
-  case 4:
-  echo "เมษายน";
-  break;
-  case 5:
-  echo "พฤษภาคม";
-  break;
-  case 6:
-  echo "มิถุนายน";
-  break;
-  case 7:
-  echo "กรกฎาคม";
-  break;
-  case 8:
-  echo "สิงหาคม";
-  break;
-  case 9:
-  echo "กันยายน";
-  break;
-  case 10:
-  echo "ตุลาคม";
-  break;
-  case 11:
-  echo "พฤศจิกายน";
-  break;
-  case 12:
-  echo "ธันวาคม";
+  echo "December";
   break;
 }
-echo " ".$bsy;
+echo " ".$sy;?></p>
+<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I, <u><?php echo $_SESSION['Esfname'];?></u> held Thai Medical License number <u><?php echo $_SESSION['sflc'];?></u>.  I had examined and treated <br>
+<u> <?php echo $prefix." ".$fname." ".$lname;?> </u> on date <u> <?php echo $sd." ";
+switch ($sm)
+{
+  case 1:
+  echo "January";
+  break;
+  case 2:
+  echo "February";
+  break;
+  case 3:
+  echo "March";
+  break;
+  case 4:
+  echo "April";
+  break;
+  case 5:
+  echo "May";
+  break;
+  case 6:
+  echo "June";
+  break;
+  case 7:
+  echo "July";
+  break;
+  case 8:
+  echo "August";
+  break;
+  case 9:
+  echo "September";
+  break;
+  case 10:
+  echo "October";
+  break;
+  case 11:
+  echo "November";
+  break;
+  case 12:
+  echo "December";
+  break;
+}
+echo " ".$sy;
 //pt info
  $ptinfo = mysqli_fetch_array(mysqli_query($linkopd, "SELECT MAX(id) FROM $pttable"));
  $maxr = $ptinfo[0];
@@ -204,27 +203,27 @@ echo " ".$bsy;
     $dofhis = $rows['dofhis'];
     $ddx = $rows['ddx'];
  }
-?> </u> มีรายละเอียดดังนี้</p>
-<p class="ctl"  style="margin-bottom: 0in; line-height: 150%"><u>รายละเอียดอาการเจ็บป่วย</u> <?php echo $dofhis;?></p>
-<p class="western10"><u>ผลการวินิจฉัยโรค</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
+?> </u> by this information.</p>
+<p class="ctl"  style="margin-bottom: 0in; line-height: 150%"><u>Illness Information:</u> <?php echo $dofhis;?></p>
+<p class="western10"><u>Impression/Diagnosis:</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
 if(empty($diag)) echo $ddx;
 else echo $diag;?>"><?php }
 else echo $_SESSION['diag'];?> </p>
-<p class="western10"><u>การรักษา</u>
+<p class="western10"><u>Treatment and Advice:</u>
 <?php 
 if(!$yess)
 {
 ?>
-<input type="text" name="trm" id="text2" value="ยารับประทานและยาฉีด พร้อมคำแนะนำ">
+<input type="text" name="trm" id="text2" value="Oral Medication and Injection Medication">
 <?php 
 } 
 else echo $_SESSION['trmtext'];
 ?>
 </p>
-<p class="western10"><u>สรุปความเห็นแพทย์</u></p>
+<p class="western10"><u>Summarize doctors opinion/Information:</u></p>
 <ol>
 	<li><p class="western10">
-	ได้มารับการตรวจรักษาจริง<?php if(!$yess) {echo "เมื่อ "; echo "<input type='text' name='morelist1' class='intext'  value='".$_SESSION['moretext1']."'>";} else { if(!empty($_SESSION['moretext1']))echo "เมื่อ "; echo $_SESSION['moretext1'];} ?>
+	He/She is truely came for medical treatment <?php if(!$yess) {echo "on "; echo "<input type='text' name='morelist1' class='intext'  value='".$_SESSION['moretext1']."'>";} else { if(!empty($_SESSION['moretext1']))echo "on "; echo $_SESSION['moretext1'];} ?>.
 	<?php 
 	if(!$yess)
 	{
@@ -232,11 +231,11 @@ else echo $_SESSION['trmtext'];
 	?>
 	<input type=submit name=rest value="Y"> <input type=submit name=rest value="N">
 	<?php 
-	echo "สมควรหยุดพักเพื่อรักษาเป็นเวลา ";
+	echo "He/She should be rested for ";
 	if($_SESSION['rest'])
 	  {
 	  echo "<input type='number' class='inno' min='1' max='7' name='day' value='1'>";
-	  echo " วัน";
+	  echo " days";
 	  }
 	echo "<li><p class='western10'>..<input type='text' name='morelist' class='intext'  value='";
 	echo $_SESSION['moretext'];
@@ -247,12 +246,12 @@ else echo $_SESSION['trmtext'];
 	  if($_SESSION['rest'])
 	  {
 	    echo "<li><p class='western10'>";
-	    echo "สมควรหยุดพักเพื่อรักษาเป็นเวลา ";
+	    echo "He/She should be rested for ";
 	    echo $_SESSION['day'];
-	    echo " วัน ";
+	    echo " days ";
 	    if($_SESSION['day']>1)
 	    {
-	    echo "ตั้งแต่ <u>วันนี้ ถึงวันที่ ";
+	    echo "from <u>today to ";
 	    $day = $_SESSION['day']-1;
 	    $date = date_create($today);
 	    date_add($date, date_interval_create_from_date_string($day .'days'));
@@ -266,89 +265,89 @@ else echo $_SESSION['trmtext'];
 	    echo $sd." ";
 	      switch ($sm)
 	      {
-		case 1:
-		echo "มกราคม";
-		break;
-		case 2:
-		echo "กุมภาพันธ์";
-		break;
-		case 3:
-		echo "มีนาคม";
-		break;
-		case 4:
-		echo "เมษายน";
-		break;
-		case 5:
-		echo "พฤษภาคม";
-		break;
-		case 6:
-		echo "มิถุนายน";
-		break;
-		case 7:
-		echo "กรกฎาคม";
-		break;
-		case 8:
-		echo "สิงหาคม";
-		break;
-		case 9:
-		echo "กันยายน";
-		break;
-		case 10:
-		echo "ตุลาคม";
-		break;
-		case 11:
-		echo "พฤศจิกายน";
-		break;
-		case 12:
-		echo "ธันวาคม";
-		break;
-	      }
-	      echo " ".$bsy;	    
+                case 1:
+                echo "January";
+                break;
+                case 2:
+                echo "February";
+                break;
+                case 3:
+                echo "March";
+                break;
+                case 4:
+                echo "April";
+                break;
+                case 5:
+                echo "May";
+                break;
+                case 6:
+                echo "June";
+                break;
+                case 7:
+                echo "July";
+                break;
+                case 8:
+                echo "August";
+                break;
+                case 9:
+                echo "September";
+                break;
+                case 10:
+                echo "October";
+                break;
+                case 11:
+                echo "November";
+                break;
+                case 12:
+                echo "December";
+                break;
+                }
+                echo " ".$sy;
 	    echo "</u></p>";
 	    }
 	    else
 	    {
-	    echo "ในวันที่ ".$sd." ";
+	    echo "on date ".$sd." ";
 	      switch ($sm)
 	      {
-		case 1:
-		echo "มกราคม";
-		break;
-		case 2:
-		echo "กุมภาพันธ์";
-		break;
-		case 3:
-		echo "มีนาคม";
-		break;
-		case 4:
-		echo "เมษายน";
-		break;
-		case 5:
-		echo "พฤษภาคม";
-		break;
-		case 6:
-		echo "มิถุนายน";
-		break;
-		case 7:
-		echo "กรกฎาคม";
-		break;
-		case 8:
-		echo "สิงหาคม";
-		break;
-		case 9:
-		echo "กันยายน";
-		break;
-		case 10:
-		echo "ตุลาคม";
-		break;
-		case 11:
-		echo "พฤศจิกายน";
-		break;
-		case 12:
-		echo "ธันวาคม";
-		break;
-	      }
-	      echo " ".$bsy;
+                case 1:
+                echo "January";
+                break;
+                case 2:
+                echo "February";
+                break;
+                case 3:
+                echo "March";
+                break;
+                case 4:
+                echo "April";
+                break;
+                case 5:
+                echo "May";
+                break;
+                case 6:
+                echo "June";
+                break;
+                case 7:
+                echo "July";
+                break;
+                case 8:
+                echo "August";
+                break;
+                case 9:
+                echo "September";
+                break;
+                case 10:
+                echo "October";
+                break;
+                case 11:
+                echo "November";
+                break;
+                case 12:
+                echo "December";
+                break;
+                }
+                echo " ".$sy;
 	    }
 	  }
 	  if(!empty($_SESSION['moretext'])) echo "<li><p class='western10'>".$_SESSION['moretext']."</p>";
@@ -366,8 +365,8 @@ if($yess)
 	?>
 </ol>
 <div class="pos_r">
-<p class="western">ลงชื่อ..................................................แพทย์ผู้ตรวจรักษา</p>
-<p class="western"><?php echo $_SESSION['sfname'];?></p>
+<p class="western">Sign..................................................Medical Doctor</p>
+<p class="western"><?php echo $_SESSION['Esfname']." M.D.";?></p>
 </div>
 </div></div>
 </div>

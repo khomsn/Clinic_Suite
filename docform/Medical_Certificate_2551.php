@@ -17,9 +17,14 @@ while ($ptinfo = mysqli_fetch_array($ptin))
   $address4 = $ptinfo['address4'];
   $address5 = $ptinfo['address5'];
   $zip = $ptinfo['zipcode'];
+  for ($x=1;$x<=5;$x++)
+  {
+    if (!empty($ptinfo['chro_ill_'.$x]))        $chronic = $chronic . $ptinfo['chro_ill_'.$x].' ';
+  }  
 }
 $pttable = "pt_".$id;
 $today = date("Y-m-d");
+if(!empty($chronic)) $_POST['cil']="มี";
 if($_POST['cil']=="ไม่มี")
 {
 $_SESSION['cil'] = 0;
@@ -154,7 +159,12 @@ if($_SESSION['cil'])
 echo "<img src='../image/checkbox.jpg' width=15 height=15> ไม่มี <img src='../image/ccb.jpg' width=15 height=15> มี(ระบุ)...";
 if(!$yess){
       echo "<input type='text' name='ciltext' class='text1' value='";
-      echo $_SESSION['ciltext'];
+      if (!empty($chronic) AND ($y != 1))
+      {
+        echo $chronic;
+        $y=1;
+      }
+      else echo $_SESSION['ciltext'];
       echo "'>";
       }
 else echo $_SESSION['ciltext'];

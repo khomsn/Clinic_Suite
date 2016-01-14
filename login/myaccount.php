@@ -9,10 +9,11 @@ if(empty($_SESSION['scheight']))
 $sf_settings = mysqli_query($link, "select * from staff where ID = $_SESSION[staff_id]");
 while ($sf = mysqli_fetch_array($sf_settings, MYSQLI_BOTH))
 {
-if($sf['gender']=="ชาย" and $sf['posit']=="แพทย์") $prefix = "นายแพทย์ ";
-if($sf['gender']=="หญิง" and $sf['posit']=="แพทย์") $prefix = "แพทย์หญิง ";
+if($sf['gender']=="ชาย" and $sf['posit']=="แพทย์"){$prefix = "นายแพทย์ ";$eprefix = $sf['Eprefix'];}
+if($sf['gender']=="หญิง" and $sf['posit']=="แพทย์"){$prefix = "แพทย์หญิง ";$eprefix = $sf['Eprefix'];}
 
 $_SESSION['sfname'] = $prefix.$sf['F_Name']." ".$sf['L_Name'];
+$_SESSION['Esfname']= $eprefix." ".$sf['Efname']." ".$sf['Elname'];
 $_SESSION['sflc'] = $sf['license'];
 }
 
