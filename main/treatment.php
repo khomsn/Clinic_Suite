@@ -60,7 +60,20 @@ for($i=1;$i<=4;$i++)
 	}
 }
 if($_POST['register'] == 'บันทึก') 
-{ 
+{
+        for($i=1;$i<=4;$i++)
+        {
+		$trvp = "trv".$i;
+		$tr1o1vp ="tr".$i."o1v";
+		$tr1o2vp ="tr".$i."o2v";
+		$tr1o3vp ="tr".$i."o3v";
+		$tr1o4vp ="tr".$i."o4v";
+                $trv = "trv".$i;
+		mysqli_query($link, "UPDATE $tmp SET
+			`$trvp` = '$_POST[$trv]'
+			") or die(mysqli_error($link));
+        }
+
 if (ltrim($_POST['inform']) === '') $_POST['inform'] = '';
 
 mysqli_query($linkopd, "UPDATE $pttable SET
@@ -141,134 +154,47 @@ else
 							<table style="background-color: rgb(255, 204, 153); width: 100%; text-align: center;
 									margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">									
 								<tr>
-									<th width = 10 >No</th><th >ชื่อ</th><th width = 35 >จำนวน</th><th width = 15px >Option1</th><th width = 5px>Vol</th>
+									<th width = 10 >No</th><th>ชื่อ</th><th width = 35 >จำนวน</th><th width = 15px >Option1</th><th width = 5px>Vol</th>
 									<th width = 15px >Option2</th><th width = 5px>Vol</th><th width = 15px >Option3</th><th width = 5px>Vol</th>
 									<th width = 15px >Option4</th><th width = 5px>Vol</th><th width = 10>ลบ</th>
 								</tr>
-								<tr><td>1</td><td>
 								<?php 
 								$ptin = mysqli_query($link, "select * from $tmp ");
 								while ($row = mysqli_fetch_array($ptin))
 								{
-									echo $row['tr1']; $_SESSION['tr']=$row['tr1'];
+                                                                    for($s=1;$s<=4;$s++)
+                                                                    {
+								        echo "<tr><td>".$s."</td><td>";
+									echo $row['tr'.$s]; $_SESSION['tr']=$row['tr'.$s];
 									echo "</td>";
 									echo "<td>";
-									echo $row['trv1'];
+									echo "<input type=number class=typenumber  min=0 step=1 name='trv".$s."' value='".$row['trv'.$s]."'>";
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o1'];
+									echo $row['tr'.$s.'1o1'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o1v'];
+									echo $row['tr'.$s.'o1v'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o2'];
+									echo $row['tr'.$s.'o2'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o2v'];
+									echo $row['tr'.$s.'o2v'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o3'];
+									echo $row['tr'.$s.'o3'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o3v'];
+									echo $row['tr'.$s.'o3v'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o4'];
+									echo $row['tr'.$s.'o4'];
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr1o4v'];
-									echo "</td><td><input type ='submit' name='1' value='ลบ'></td></tr>";
-									echo "<tr><td>2</td><td>";
-									echo $row['tr2'];$_SESSION['tr']=$_SESSION['tr'].$row['tr2'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['trv2'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o1'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o1v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o2'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o2v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o3'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o3v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o4'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr2o4v'];
-									echo "</td><td><input type ='submit' name='2' value='ลบ'></td></tr>";
-									echo "<tr><td>3</td><td>";
-									echo $row['tr3'];$_SESSION['tr']=$_SESSION['tr'].$row['tr3'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['trv3'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o1'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o1v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o2'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o2v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o3'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o3v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o4'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr3o4v'];
-									echo "</td><td><input type ='submit' name='3' value='ลบ'></td></tr>";
-									echo "<tr><td>4</td><td>";
-									echo $row['tr4'];$_SESSION['tr']=$_SESSION['tr'].$row['tr4'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['trv4'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o1'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o1v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o2'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o2v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o3'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o3v'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o4'];
-									echo "</td>";
-									echo "<td>";
-									echo $row['tr4o4v'];
-									echo "</td><td><input type ='submit' name='4' value='ลบ'></td></tr>";
+									echo $row['tr'.$s.'o4v'];
+									echo "</td><td><input type ='submit' name='".$s."' value='ลบ'></td></tr>";
+                                                                    }
 									for($n=1;$n<=4;$n++)
 									{
 									    if(!empty($row['tr'.$n]))
