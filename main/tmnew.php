@@ -273,7 +273,7 @@ else
 </div>
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td>
-		<h3 class="titlehdr">Treatment ของ <?php echo $fname." ".$lname;?>
+		<h3 class="titlehdr">Treatment ของ <?php echo $fname." ".$lname;?> ไม่เกิน 4 รายการ
 		
 		<h3><div style="text-align: center;"><?php if($dl1!='' or $dl2!='' or $dl3 != '' or $dl4 !='' or $dl5 !='')
 		{ 
@@ -302,7 +302,7 @@ else
                                                 }
 						while ($row = mysqli_fetch_array($filter))
 						{
-							echo "<tr><td><input type=checkbox name="; echo $row[id]; for($i=1;$i<=4;$i++) {if($row[id]==$trid[$i]){ echo " checked ";}} echo " value=1 ></td><td>";
+							echo "<tr><td><input type=checkbox name="; echo $row[id]; echo " value=1 ></td><td>";
                                                         echo $row['dname'];
                                                         echo "</td>";
                                                         echo "<td>";
