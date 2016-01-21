@@ -162,41 +162,21 @@ if(!empty($dl[5]))
         else $fdo = $fdo." AND ".$fdo5;
     }
 
-$j=1;//for groupn
-$k=1;//for subgroup
-
 for($i=1;$i<=5;$i++)
 {
 if(!empty($dl[$i]))
 {
-    $drug = mysqli_query($link, "select * from drug_id where dgname='$dl[$i]'");
+    $drug = mysqli_query($linkcm, "select * from druggeneric where name='$dl[$i]'");
 
     while ($drugrs = mysqli_fetch_array($drug))
     {
-    $dgg[$i] = $drugrs['groupn'];
+    $dgg[$i] = $drugrs['dgroup'];
     if (ltrim($dgg[$i]) === '') unset($dgg[$i]);
-//    $j= $j+1;
-    $dgsg[$i] = $drugrs['subgroup'];
+    $dgsg[$i] = $drugrs['dsgroup'];
     if (ltrim($dgsg[$i]) === '') unset($dgsg[$i]);
     }
 }
 }
-/*
-for($i=1;$i<=5;$i++)
-{
-if(!empty($dl[$i]))
-{
-    $drug = mysqli_query($link, "select * from drug_id where dgname='$dl[$i]'");
-
-    while ($drugrs = mysqli_fetch_array($drug))
-    {
-    $dgsg[$k] = $drugrs['subgroup'];
-    if (ltrim($dgsg[$k]) === '') unset($dgsg[$k]);
-    $k= $k+1;
-    }
-}
-}
-*/
 if(!empty($dgg[1])) {$fgo1 = 'groupn != "'.$dgg[1].'"'; $fgo = $fgo1;}
 
 if(!empty($dgg[2])) 

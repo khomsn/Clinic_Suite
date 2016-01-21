@@ -180,26 +180,27 @@ $cat = '(cat = "A" or cat = "B" or cat = "N")';
 }
 else $cat=1;
 //
+
 $j=1;$k=1;$l=1;
 
 for($i=1;$i<=5;$i++)
 {
   if(!empty($dl[$i]))
   {
-      $drug = mysqli_query($link, "select * from drug_id where dgname='$dl[$i]'");
+      $drug = mysqli_query($linkcm, "select * from druggeneric where name='$dl[$i]'");
 
       while ($drugrs = mysqli_fetch_array($drug))
       {
-      $dgn[$l] = $drugrs['dgname'];
+      $dgn[$l] = $drugrs['name'];
       $l = $l+1;
-	if(!empty($drugrs['groupn'])) 
+	if(!empty($drugrs['dgroup'])) 
 	{
-	  $dgg[$j] = $drugrs['groupn'];
+	  $dgg[$j] = $drugrs['dgroup'];
 	  $j = $j+1;
 	}
-	if(!empty($drugrs['subgroup'])) 
+	if(!empty($drugrs['dsgroup'])) 
 	{
-	  $dgsg[$k] = $drugrs['subgroup'];
+	  $dgsg[$k] = $drugrs['dsgroup'];
 	  $k = $k+1;
 	}
       }
@@ -210,14 +211,14 @@ for($i=1;$i<=5;$i++)
 {
   if(!empty($dl[$i]))
   {
-      $drug = mysqli_query($link, "select * from drug_id where groupn='$dl[$i]' ");
+      $drug = mysqli_query($linkcm, "select * from druggeneric where dgroup='$dl[$i]' ");
 
       while ($drugrs = mysqli_fetch_array($drug))
       {
-      $dgg[$j] = $drugrs['groupn'];
-	if(!empty($drugrs['subgroup'])) 
+      $dgg[$j] = $drugrs['dgroup'];
+	if(!empty($drugrs['dsgroup'])) 
 	{
-	  $dgsg[$k] = $drugrs['subgroup'];
+	  $dgsg[$k] = $drugrs['dsgroup'];
 	  $k = $k+1;
 	}
 	$j = $j+1;
@@ -229,11 +230,11 @@ for($i=1;$i<=5;$i++)
 {
   if(!empty($dl[$i]))
   {
-      $drug = mysqli_query($link, "select * from drug_id where subgroup='$dl[$i]'");
+      $drug = mysqli_query($linkcm, "select * from druggeneric where dsgroup='$dl[$i]'");
 
       while ($drugrs = mysqli_fetch_array($drug))
       {
-      $dgsg[$k] = $drugrs['subgroup'];
+      $dgsg[$k] = $drugrs['dsgroup'];
       $k = $k+1;
       }
   }
