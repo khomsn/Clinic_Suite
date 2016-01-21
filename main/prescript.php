@@ -314,6 +314,7 @@ else
 						  <tr>
 							  <th width = 10 >No</th><th width = 250px >ชื่อ+ขนาด</th><th>ชื่อสามัญ</th><th>วิธีใช้</th><th width =50px>จำนวน</th><th>ราคา</th><th>DDI</th><th>DDIL</th><th width = 10>ลบ</th>
 						  </tr>
+						  <input name="register" value="บันทึก" type="submit" style="visibility: hidden;">
 						  <?php 
 						  $ptin = mysqli_query($link, "select * from $tmp ");
 						  while ($row = mysqli_fetch_array($ptin))

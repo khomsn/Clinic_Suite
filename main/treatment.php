@@ -171,7 +171,7 @@ else
 									echo "<input type=number class=typenumber  min=0 step=1 name='trv".$s."' value='".$row['trv'.$s]."'>";
 									echo "</td>";
 									echo "<td>";
-									echo $row['tr'.$s.'1o1'];
+									echo $row['tr'.$s.'o1'];
 									echo "</td>";
 									echo "<td>";
 									echo $row['tr'.$s.'o1v'];

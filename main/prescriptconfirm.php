@@ -235,6 +235,7 @@ else
 		<?php }?><br>
 		  <table style="background-color: rgb(255, 204, 153); width: 80%; text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="0" cellspacing="0">
 		    <tr><th width = 10 >No</th><th width = 250px >ชื่อ+ขนาด</th><th>ชื่อสามัญ</th><th>วิธีใช้</th><th width =50px>จำนวน</th><th width = 10>ลบ</th></tr>
+		    <input name="register" value="บันทึก-ยืนยัน" type="submit" style="visibility: hidden;">
 			<?php 
 			  $ptin = mysqli_query($link, "select * from $tmp ");
 			  while ($row = mysqli_fetch_array($ptin))

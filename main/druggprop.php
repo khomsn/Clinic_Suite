@@ -109,10 +109,12 @@ if($_POST['SetValue'] == "Set Value")
    }
    
 }
-if($_POST['register'] == 'แก้ไข') 
+if($_POST['register'] == "แก้ไข") 
 {
-  for($j=($minrow+1);$j<=$_SESSION['page']*$pagelimit;$j++)
+  for($i=1;$i<=$pagelimit;$i++)
+// for($j=($minrow+1);$j<=$_SESSION['page']*$pagelimit;$j++)
   {
+    $j = $_POST[$i];
     $dgr= $_POST['drg'.$j];
     $dsgr = $_POST['drsg'.$j];
     $dcat = $_POST['cat'.$j];
@@ -123,10 +125,8 @@ if($_POST['register'] == 'แก้ไข')
 			      `dsgroup` = '$dsgr',
 			      `dcat` = '$dcat',
 			      `ciwith` = '$dciwith'
-			      WHERE id='$j' LIMIT 1
-			      ") or die(mysqli_error($linkcm));
-      
-  }
+			      WHERE id='$j' LIMIT 1 ;") or die(mysqli_error($linkcm));
+   }
 $minrow = $_SESSION['page']*$pagelimit;
 $_SESSION['page'] = $_SESSION['page']+1;
 if ($minrow > $id)
@@ -188,16 +188,19 @@ else
 <?php	
 echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto;'>";
 echo "<tr><th>ID</th><th>Name</th><th>Group</th><th>SubGroup</th><th>Cat</th><th>Interation</th><th>CI-With</th></tr>";
+$rowno=1;
 $filter = mysqli_query($linkcm, "select * from druggeneric  ORDER BY `name` ASC LIMIT $minrow, $pagelimit");
 while($row = mysqli_fetch_array($filter))
   {
 		// Print out the contents of each row into a table
 		echo "<tr><th>";
 		echo $row['id'];
+		echo "<input type='hidden' name='".$rowno."' value='".$row['id']."'>";
+		$rowno = $rowno+1;
 		echo "</th><th>"; 
 		echo $row['name'];
 		echo "</th><th>";
-		echo "<select name=drg".$row['id'].">";
+		echo "<select name='drg".$row['id']."'>";
 		echo "<option value='";
 		echo $row['dgroup'];
 		echo "' selected>";
@@ -214,7 +217,7 @@ while($row = mysqli_fetch_array($filter))
 		}
 		echo "</select>";
 		echo "</th><th >"; 
-		echo "<select name=drsg".$row['id'].">";
+		echo "<select name='drsg".$row['id']."'>";
 		echo "<option value='".$row['dsgroup']."' 'selected'>".$row['dsgroup']."</option>";
 		echo "<option value=''></option>";
 		for($i=1;$i<=$drsgnr;$i++)
@@ -227,7 +230,7 @@ while($row = mysqli_fetch_array($filter))
 		}
 		echo "</select>";
 		echo "</th><th>"; 
-		echo "<select name=cat".$row['id'].">";
+		echo "<select name='cat".$row['id']."'>";
 		echo "<option value='".$row['dcat']."' 'selected'>".$row['dcat']."</option><option value=A>A</option><option value=B>B</option><option value=C>C</option><option value=D>D</option><option value=X>X</option><option value=N>N</option></select>";
 		echo "</th><th>";
 		//Interation
@@ -243,7 +246,7 @@ while($row = mysqli_fetch_array($filter))
 		}
 		//Interation end
 		echo "</th><th>"; 
-		echo "<select name=ciwith".$row['id'].">";
+		echo "<select name='ciwith".$row['id']."'>";
 		echo "<option value='";
 		echo $row['ciwith'];
 		echo "' selected>";
