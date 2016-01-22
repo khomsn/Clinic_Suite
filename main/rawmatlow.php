@@ -53,7 +53,7 @@ else
 						<?php	
 							$dtype = mysqli_query($link, "SELECT * FROM rawmat WHERE volume <= lowlimit ORDER BY `rmtype` ASC ,`rawcode` ASC ,`rawname` ASC");
 								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
-								echo "<tr><th>No</th><th>Code</th><th>ชื่อ</th><th>ขนาด</th><th>จำนวน</th><th>ร้าน</th><th>จำนวนที่สั่ง</th><th>Unit</th><th>Type</th></tr>";
+								echo "<tr><th>No</th><th>Code</th><th>ชื่อ</th><th>ขนาด</th><th>จำนวน</th><th>ร้าน</th><th>จำนวนที่สั่ง</th><th>Unit</th><th>Type</th><th>BP-S</th></tr>";
 								$i=1;
 								while($row = mysqli_fetch_array($dtype))
 								 {
@@ -78,6 +78,19 @@ else
 										echo $row['sunit'];
 								echo "</th><th>"; 
 								echo $row['rmtype'];
+								echo "</th><th>"; 
+										$supplierold = ''; //initialize
+        $getprice = mysqli_query($link, "select * from $rawmattable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC ,`price` DESC");
+										while($row2 = mysqli_fetch_array($getprice))
+										{
+                                                                                    $suppliernew = $row2['supplier'];
+                                                                                    $pos = strpos($supplierold, $suppliernew);
+                                                                                    if($pos === false)
+                                                                                    {
+                                                                                    echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
+                                                                                    }
+                                                                                    $supplierold = $supplierold." : ".$row2['supplier'];                                                                                    
+										}
 								echo "</th></tr>";
 										$i = $i+1;
 								} 

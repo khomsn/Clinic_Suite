@@ -17,6 +17,10 @@ if($_POST['set'] == 'ReSet')
 {
       mysqli_query($link, "TRUNCATE TABLE drugcombset") or die(mysqli_error($link));
 }
+if($_POST['ลบ'])
+{
+      mysqli_query($link, "DELETE FROM `drugcombset` WHERE `id` = '$_POST[ลบ]'") or die(mysqli_error($link));
+}
 if($_POST['set'] == 'Set') 
 { 
   $j = $_SESSION['rowmax']-1;
@@ -99,10 +103,10 @@ else
 		<td>
 <!--menu-->
 <form method="post" action="drugcombset.php" name="regForm" id="regForm">
-<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์   รายการสั่งยา รวม ที่จะทำการตัด ยอด Stock อัตโนมัติ เมื่อการสั่งถึงกำหนด<input type=submit name=set value=Set>  <input type=submit name=set value=ReSet></h3>
+<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์   รายการสั่งยา รวม ที่จะทำการตัด ยอด Stock อัตโนมัติ เมื่อการสั่งถึงกำหนด <button type=submit name=set value=Set>Set</button>  <button type=submit name=set value=ReSet>Reset</button></h3>
 
 <table style="text-align: center;" border="1" cellpadding="2" cellspacing="2">
-<tbody><tr><th>DrugIDin</th><th>DrugInVol</th><th>DrugIDOut</th><th>DrugOutVol</th><th>DrugOutSP</th></tr>
+<tbody><tr><th>DrugIDin</th><th>DrugInVol</th><th>DrugIDOut</th><th>DrugOutVol</th><th>DrugOutSP</th><th>ลบ</th></tr>
 <?php 
 $drug = mysqli_query($link, "select * from drugcombset");
 $i=1;
@@ -122,6 +126,9 @@ while($dcs = mysqli_fetch_array($drug))
 // echo $dsc['outvol'];
  echo "</th><th>";
  echo "<input type=text class=typenumber name='outsetpoint".$dcs['id']."' value='".$dcs['outsetpoint']."'>";
+// echo $dsc['outsetpoint'];
+ echo "</th><th>";
+ echo "<button name='ลบ' type='submit' value='".$dcs['id']."'>ลบ</button>";
 // echo $dsc['outsetpoint'];
  echo "</th></tr>";
 $i=$dcs['id']+1;

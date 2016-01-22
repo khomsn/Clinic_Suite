@@ -2,12 +2,29 @@
 include '../login/dbc.php';
 page_protect();
 
+if($_POST['register'] == 'ดูข้อมูล') 
+{ 
+
+// pass drug-id to other page
+$_SESSION['drugid'] = $_POST['drugid'];
+// go on to other step
+header("Location: updatedrugid.php");  
+
+} 
+
+$filter = mysqli_query($link, "select * from drug_id ");		
+	while ($row = mysqli_fetch_array($filter))
+	{
+		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
+	}	
+$filter = mysqli_query($link, "select * from drug_id  WHERE seti != 1 ORDER BY `dgname` ASC");
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>รายการยาและผลิตภัณฑ์</title>
+<title>รายงาน ราคาซื้อ ยาและผลิตภัณฑ์ </title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
 	<link rel="stylesheet" href="../public/css/styles.css">
 </head>
@@ -34,7 +51,7 @@ else
 			*******************************************************************/
 			if (isset($_SESSION['user_id']))
 			{
-				include 'drugmenu.php';
+				include 'reportmenu.php';
 			} 
 		/*******************************END**************************/
 		?></div>
@@ -42,8 +59,8 @@ else
 		<td width="10" valign="top"><p>&nbsp;</p></td>
 		<td>
 <!--menu-->
-			<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์ และ วัตถุดิบ ที่ถึงจุดสั่งซื้อ</h3>
-			<form method="post" action="druglist.php" name="regForm" id="regForm">
+			<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์</h3>
+			<form method="post" action="druglistbuyprice.php" name="regForm" id="regForm">
 				<table style="text-align: center;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr>
@@ -51,32 +68,31 @@ else
 						<td style="vertical-align: middle; ">
 						<div style="text-align: center;">
 						<?php	
-							$dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE volume <= min_limit ORDER BY `dgname` ASC");
 								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
-								echo "<tr> <th>No</th><th>ชื่อ</th> <th>ชื่อสามัญ</th><th>ขนาด</th><th>จำนวน</th><th>ร้าน</th><th>จำนวนที่สั่ง</th><th>Unit</th><th>BP-S</th></tr>";
-								$i=1;
-								while($row = mysqli_fetch_array($dtype))
+								echo "<tr><th>เลือก</th>";
+								if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
+								{
+								echo "<th>id</th>";
+								}
+								echo "<th>ชื่อ</th><th>ชื่อสามัญ</th><th>ขนาด</th><th>ราคาซื้อ</th></tr>";
+								while($row = mysqli_fetch_array($filter))
 								 {
 										// Print out the contents of each row into a table
 										echo "<tr><th>";
-										echo $i;
+										if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
+										{
+										echo "<input type='radio' name='drugid' value='".$row['id']."' />";
+										echo "</th><th>";
+										echo $row['id'];
+										}
 										echo "</th><th>"; 
 										echo $row['dname'];
 										echo "</th><th>"; 
 										echo $row['dgname'];
-										echo "</th><th>"; 
+										echo "</th><th >"; 
 										echo $row['size'];
-										echo "</th><th>"; 
-										echo $row['volume'];
-										echo "</th><th>";
-								  $drugtable = "drug_".$row['id'];
-								  $spname = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM $drugtable ORDER BY id DESC LIMIT 1;"));
-										echo $spname['supplier'];
-										echo "</th><th>";
-										echo $spname['volume'];
-										echo "</th><th>";
-										echo $row['unit'];
 										echo "</th><th style='text-align: right;' >"; 
+										$drugtable = "drug_".$row['id'];
 										$supplierold = ''; //initialize
         $getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC ,`price` DESC");
 										while($row2 = mysqli_fetch_array($getprice))
@@ -90,23 +106,27 @@ else
                                                                                     $supplierold = $supplierold." : ".$row2['supplier'];                                                                                    
 										}
 										echo "</th></tr>";
-										$i = $i+1;
 								} 
 								echo "</table>";
 						?>
 							<br>
 							</div>
 						</td>
-						<td style="width: 11px;"></td>
+						<td>
+					</td>
+					</tr>
+					<tr>
+					<td>&nbsp;</td>
+					<td>
+						<div style="text-align: center;"><?php if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0){?><input name="register" value="ดูข้อมูล" type="submit"><?php }?></div>
+					</td>
 					</tr>
 				</tbody>
 				</table>
-				<br>
 			</form>
 <!--menu end-->
 		</td>
-		<td width="160"></td>
-	</tr>
+<td width=130px><?php include 'reportrmenu.php';?></td></tr>
 </table>
 <!--end menu-->
 </body></html>
