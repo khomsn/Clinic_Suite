@@ -27,6 +27,8 @@ Requirement:
     ->Create database ให้ชื่อ "clinic" Collation เป็น "utf8_unicode_ci"
 6.2 Database สำหรับข้อมูล OPD Card จะอยู่ใน database ชื่อ clinic_opd
     ->Create database ให้ชื่อ "clinic_opd" Collation เป็น "utf8_unicode_ci"
+6.3 Database สำหรับข้อมูล Common  จะอยู่ใน database ชื่อ clinic_common
+    ->Create database ให้ชื่อ "clinic_common" Collation เป็น "utf8_unicode_ci"
 
 7. copy clinic directory ไปที่ /var/www/
 8. เปลี่ยนชื่อ clinic directory เป็น html
