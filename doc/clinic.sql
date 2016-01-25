@@ -559,6 +559,9 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `F_Name` text COLLATE utf8_unicode_ci NOT NULL,
   `L_Name` text COLLATE utf8_unicode_ci NOT NULL,
+  `Eprefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Efname` text COLLATE utf8_unicode_ci NOT NULL,
+  `Elname` text COLLATE utf8_unicode_ci NOT NULL,
   `gender` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `ctz_id` bigint(13) NOT NULL,
   `birthday` date NOT NULL,
@@ -609,15 +612,18 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 --
 
 CREATE TABLE IF NOT EXISTS `trpstep` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(11) NOT NULL,
   `firstone` tinyint(4) NOT NULL,
   `init_pr` int(11) NOT NULL,
   `secstep` tinyint(4) NOT NULL,
   `sec_pr` int(11) NOT NULL,
   `tristep` tinyint(4) NOT NULL,
-  `tri_pr` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal';
+  `tri_pr` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `drugid` (`drugid`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

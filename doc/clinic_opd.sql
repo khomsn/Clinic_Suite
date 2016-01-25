@@ -25,7 +25,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `patient_id`
 --
-
 CREATE TABLE IF NOT EXISTS `patient_id` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `patient_id` (
   `fup` tinyint(1) NOT NULL,
   `clinic` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='patient information' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='patient information' AUTO_INCREMENT=1 ;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -2,7 +2,8 @@
 include 'dbc.php';
 page_protect();
 
-$sql = " CREATE TABLE IF NOT EXISTS `parameter` ( `ID` tinyint(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+$sql = " CREATE TABLE IF NOT EXISTS `parameter` (
+  `ID` tinyint(4) NOT NULL DEFAULT '1',
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `Ename` text COLLATE utf8_unicode_ci NOT NULL,
   `cliniclcid` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -22,7 +23,9 @@ $sql = " CREATE TABLE IF NOT EXISTS `parameter` ( `ID` tinyint(4) NOT NULL AUTO_
   `prtopdcard` tinyint(1) NOT NULL,
   `df` tinyint(4) NOT NULL,
   `dfp` smallint(6) NOT NULL,
-  `opdidoffset` smallint(6) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
+  `opdidoffset` smallint(6) NOT NULL,
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
 
 mysqli_query($link, $sql);
 
