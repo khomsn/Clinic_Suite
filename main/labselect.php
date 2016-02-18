@@ -103,7 +103,7 @@ elseif ($_POST['todo'] == 'OK' )
 	  $sql_insert = "CREATE TABLE IF NOT EXISTS `$labtable` (
 					  `Labid` SMALLINT NOT NULL ,
 					  `Labname` VARCHAR( 120 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-					  `Labresult` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+					  `Labresult` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 					  `price` SMALLINT NOT NULL ,
 					  `prog` TINYINT NOT NULL ,
 					  `saved` TINYINT NOT NULL ,
