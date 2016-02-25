@@ -82,26 +82,18 @@ if(!empty($_POST['address3']) and !empty($_POST['address4']))
 		}
 }
 // Check for aviable ID 
+//initialize
+if(empty($_SESSION['maxconid'])) $_SESSION['maxconid']=0;
+
 $checkid = mysqli_query($linkopd, "select id from patient_id ") or die(mysqli_error($linkopd));
 while ($cid = mysqli_fetch_array($checkid))
 {
-    if(empty($_SESSION['maxconid']))
-    {   
-        $_SESSION['maxconid'] = 1;
-        $cidmin = $cid['id'];
-        if (($cidmin - $_SESSION['maxconid'])>1)      goto Got_ID;  
-    }
-     if(!empty($_SESSION['maxconid']))
-    {   
         $cidmin = $cid['id'];
         if (($cidmin - $_SESSION['maxconid'])==1)
            {
 		 $_SESSION['maxconid'] = $cidmin;
-		 goto Next1;
 	   }
-        if (($cidmin - $_SESSION['maxconid'])>1)      goto Got_ID;  
-    }
-   Next1:
+        elseif (($cidmin - $_SESSION['maxconid'])>1)      goto Got_ID;  
 }
 //Got ID
  Got_ID:
@@ -157,13 +149,8 @@ mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($l
 
     }
 
-// Then get Patient ID to process to other step.
-$result = mysqli_query($linkopd, "SELECT * FROM patient_id
- WHERE fname='$fname' AND lname='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]'");
-
-$row = mysqli_fetch_array($result);
 // Pass Patient ID as a session parameter.
-$_SESSION['Patient_id']= $row['id'];
+$_SESSION['Patient_id']= $idtoinsert;
 
 /**********************************/
 
