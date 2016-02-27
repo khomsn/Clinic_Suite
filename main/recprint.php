@@ -187,7 +187,75 @@ function Clickheretoprint()
 		<tr><th>No</th><th>รายการทั้งหมด</th><th>ราคา</th><th>จำนวน</th><th>รวม</th></tr>
 		<?php 
 		//treatment part
-		
+  //Treatment price
+  $j = 1;
+  for($i =1;$i<=4;$i++)
+  {
+	$ptin = mysqli_query($link, "select * from $tmp ");
+	while ($row = mysqli_fetch_array($ptin))
+	{
+		$idtr = "idtr".$i;
+		$tr ="tr".$i;
+		$trv = "trv".$i;
+		//echo "<tr><td>".$i."</td><td>";
+		if($row[$idtr] !=0)
+		{
+			echo "<tr><td>".$j."</td><td  style='text-align:left;'>";
+			echo $row[$tr];
+			echo "</td>";
+			echo "<td style='text-align:right;'>";
+			$did = $row[$idtr];
+			//check id if match jump
+			for($s=1;$s<=$t;$s++)
+			{
+			  if($did ==  $tr_drugid[$s]) goto jpoint1;
+			}
+			$ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
+			if($ptin2 !=0)
+			{
+			while ($row2 = mysqli_fetch_array($ptin2))
+			{
+			//check for candp
+				$candp = $row2['candp'];
+				if($candp == 2)
+				{
+				 $checkuprdp = $checkuprdp + floor($coursepd*$row2['sellprice']*$row[$trv]/100);
+				}
+			//
+				echo $row2['sellprice'];
+				$buypr = $row2['buyprice']*$row[$trv];
+				$dcount = floor($row2['sellprice'] * $row[$trv] * $row2['disct'] * $perdc);
+				if ($dcount>$buypr)
+				{
+				  $dcount=$buypr;
+				}
+				$price1 = $row2['sellprice'] * $row[$trv] - $dcount;
+				$discount =$discount + $dcount;
+			}
+			}
+			jpoint1:
+			echo "</td>";
+			echo "<td>";
+			echo $row[$trv];
+			echo "</td>";
+			echo "<td style='text-align:right;'>";
+if($did ==  $tr_drugid[$s])
+{
+    if($row[$trv]>=$first1[$s]) 
+    $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
+    if($row[$trv]>=$sec2[$s]) 
+    $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+    if($row[$trv]>=$tri3[$s]) 
+    $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+}			
+			echo $price1;
+			echo "</td></tr>";
+			$allprice = $allprice+$price1;
+			$j = $j+1;
+		}
+	}
+  }
+/*		
 		$j = 1;
 		for($i =1;$i<=4;$i++)
 		{
@@ -225,7 +293,7 @@ function Clickheretoprint()
 				$j = $j+1;
 			}
 		}
-		}
+		}*/
 		//Lab part
 		//lab price and pricepolicy
 		$ptin = mysqli_query($link, "select * from $tmp ");
