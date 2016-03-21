@@ -27,7 +27,7 @@ else
 <?php
 }
 ?>
-<table width="100%" border="1" cellspacing="0" cellpadding="5" class="main">
+<table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
   <tr><td width="160" valign="top"><div class="pos_l_fix">
 		<?php 

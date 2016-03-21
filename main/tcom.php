@@ -2,6 +2,12 @@
 include '../login/dbc.php';
 page_protect();
 include '../libs/progdate.php';
+
+if($ddate<$_SESSION['acstrdate'])
+{
+    $ddate=$_SESSION['acstrdate'] ;
+}
+
 ?>
 
 <!DOCTYPE html>
