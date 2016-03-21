@@ -99,7 +99,7 @@ else
 									$cat = $row_settings['cat'];
 									$candp = $row_settings['candp'];
 									$storder = $row_settings['staffcanorder']; 
-							?><select name=unit><option value="<?php echo $row_settings['unit'];?>" selected><?php echo $row_settings['unit'];?></option><option value="เม็ด">เม็ด</option><option value="ขวด">ขวด</option><option value="หลอด">หลอด</option><option value="กล่อง">กล่อง</option><option value="ซอง">ซอง</option><option value="Set">Set</option><option value="Vial">Vial</option><option value="Ampule">Ampule</option></select><br>
+							?><select name=unit><option value="<?php echo $row_settings['unit'];?>" selected><?php echo $row_settings['unit'];?></option><option value="เม็ด">เม็ด</option><option value="แผง">แผง</option><option value="ขวด">ขวด</option><option value="หลอด">หลอด</option><option value="กล่อง">กล่อง</option><option value="ซอง">ซอง</option><option value="Set">Set</option><option value="Vial">Vial</option><option value="Ampule">Ampule</option></select><br>
 							<input type="radio" name="cat" class="required" value="A"<?php if($cat =='A') echo "checked";?>>Cat A
 							<input type="radio" name="cat" class="required" value="B"<?php if($cat =='B') echo "checked";?>>Cat B
 							<input type="radio" name="cat" class="required" value="C"<?php if($cat =='C') echo "checked";?>>Cat C

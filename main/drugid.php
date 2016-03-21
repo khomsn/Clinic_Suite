@@ -202,7 +202,7 @@ else
 						<td style="width: 18px;"></td>
 						<td style="width: 646px; vertical-align: middle; background-color: rgb(152, 161, 76);">
 							<div style="text-align: center;">ชื่อ* <input tabindex="1" name="dname" class="required" > 
-							ชื่อสามัญ <input tabindex="2" name="dgname" id="dgname" class="required" > ขนาด* <input tabindex="3" class="required" name="size" size=10> Unit <select name=unit><option value="เม็ด">เม็ด</option><option value="ขวด">ขวด</option><option value="หลอด">หลอด</option><option value="กล่อง">กล่อง</option><option value="ซอง">ซอง</option><option value="Set">Set</option><option value="Vial">Vial</option><option value="Ampule">Ampule</option></select><br>
+							ชื่อสามัญ <input tabindex="2" name="dgname" id="dgname" class="required" > ขนาด* <input tabindex="3" class="required" name="size" size=10> Unit <select name=unit><option value="เม็ด">เม็ด</option><option value="แผง">แผง</option><option value="ขวด">ขวด</option><option value="หลอด">หลอด</option><option value="กล่อง">กล่อง</option><option value="ซอง">ซอง</option><option value="Set">Set</option><option value="Vial">Vial</option><option value="Ampule">Ampule</option></select><br>
 							<input type="radio" name="cat" class="required" value="A">Cat A
 							<input type="radio" name="cat" class="required" value="B">Cat B
 							<input type="radio" name="cat" class="required" value="C">Cat C
