@@ -5,26 +5,25 @@ page_protect();
 if($_POST['register'] == 'ดูข้อมูล') 
 { 
 
-// pass drug-id to other page
-$_SESSION['drugid'] = $_POST['drugid'];
+// pass rawmat-id to other page
+$_SESSION['rawmatid'] = $_POST['rawmatid'];
 // go on to other step
-header("Location: updatedrugid.php");  
+header("Location: rawmatupdate.php");  
 
 } 
 
-$filter = mysqli_query($link, "select * from drug_id ");		
+$filter = mysqli_query($link, "select * from rawmat ");		
 	while ($row = mysqli_fetch_array($filter))
 	{
 		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
 	}	
-$filter = mysqli_query($link, "select * from drug_id  WHERE seti != 1 ORDER BY `dgname` ASC");
-
+$filter = mysqli_query($link, "select * from rawmat  ORDER BY `rmtype` ASC ,`rawcode` ASC ,`rawname` ASC");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>รายงาน ราคาซื้อ ยาและผลิตภัณฑ์ </title>
+<title>ห้องคลังวัตถุดิบ</title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
 	<link rel="stylesheet" href="../public/css/styles.css">
 </head>
@@ -59,8 +58,8 @@ else
 		<td width="10" valign="top"><p>&nbsp;</p></td>
 		<td>
 <!--menu-->
-			<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์</h3>
-			<form method="post" action="druglistbuyprice.php" name="regForm" id="regForm">
+			<h3 class="titlehdr">รายการ RawMat</h3>
+			<form method="post" action="rawmatlist.php" name="regForm" id="regForm">
 				<table style="text-align: center;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr>
@@ -69,32 +68,32 @@ else
 						<div style="text-align: center;">
 						<?php	
 								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
-								echo "<tr><th>เลือก</th>";
-								if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
-								{
-								echo "<th>id</th>";
-								}
-								echo "<th>ชื่อ</th><th>ชื่อสามัญ</th><th>ขนาด</th><th>ราคาซื้อ</th></tr>";
+								echo "<tr> <th>เลือก</th><th>Code</th> <th>ชื่อ</th><th>ขนาด</th><th>unit</th><th>Volume</th><th>Type</th><th>ราคาซื้อ</th></tr>";
 								while($row = mysqli_fetch_array($filter))
 								 {
 										// Print out the contents of each row into a table
 										echo "<tr><th>";
 										if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
 										{
-										echo "<input type='radio' name='drugid' value='".$row['id']."' />";
-										echo "</th><th>";
+										echo "<input type='radio' name='rawmatid' value='".$row['id']."' />";
 										echo $row['id'];
 										}
 										echo "</th><th>"; 
-										echo $row['dname'];
+										echo $row['rawcode'];
 										echo "</th><th>"; 
-										echo $row['dgname'];
+										echo $row['rawname'];
 										echo "</th><th >"; 
 										echo $row['size'];
+										echo "</th><th>"; 
+										echo $row['sunit'];
+										echo "</th><th>"; 
+										echo $row['volume'];
+								echo "</th><th>"; 
+								echo $row['rmtype'];
 										echo "</th><th style='text-align: right;' >"; 
-										$drugtable = "drug_".$row['id'];
+										$rawmattable = "rawmat_".$row['id'];
 										$supplierold = ''; //initialize
-        $getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC");
+        $getprice = mysqli_query($link, "select * from $rawmattable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC");
 										while($row2 = mysqli_fetch_array($getprice))
 										{
                                                                                     $suppliernew = $row2['supplier'];
@@ -105,7 +104,8 @@ else
                                                                                     }
                                                                                     $supplierold = $supplierold." : ".$row2['supplier'];                                                                                    
 										}
-										echo "</th></tr>";
+								
+								echo "</th></tr>";
 								} 
 								echo "</table>";
 						?>
@@ -123,10 +123,12 @@ else
 					</tr>
 				</tbody>
 				</table>
+				<br>
 			</form>
 <!--menu end-->
 		</td>
-<td width=130px><?php include 'reportrmenu.php';?></td></tr>
+		<td width=130px><?php include 'reportrmenu.php';?>
+	</tr>
 </table>
 <!--end menu-->
 </body></html>
