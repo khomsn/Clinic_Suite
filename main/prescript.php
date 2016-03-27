@@ -11,13 +11,7 @@ $today = date("Y-m-d");
 $pin = mysqli_query($linkopd, "select MAX(id) from $pttable");
 $rid = mysqli_fetch_array($pin);
 $_SESSION['mrid'] = $rid[0]; //Set to search for previous record for drug  and Treatment
-/**
-$pin = mysqli_query($linkopd, "select * from $pttable ");
-while ($row_settings = mysqli_fetch_array($pin))
-	{
-		if($rid < $row_settings['id']) $rid = $row_settings['id'];
-	}	
-**/
+
 for($i=1;$i<=10;$i++)
 {
     $idrx[$i]="idrx".$i;
@@ -84,18 +78,8 @@ for($i=1;$i<$t10;$i++)
   }
 }
 
-//New
-for($i=1;$i<=10;$i++)
-{
-  unset($_SESSION['drug'.$i]);
-  unset($_SESSION['DG']);
-  unset($_SESSION['uses'.$i]);
-  unset($_SESSION['vol'.$i]);
-}
-unset($_SESSION['ORDER']);
-$_SESSION['ORDER']=0;// set to 0 for sure
 $ordertable = "doctemplate_".$_SESSION['sflc'];
-//$ordertable = "doctemplate_38302";
+
 include '../libs/price.php';
 
 for($i=1;$i<=10;$i++)
@@ -417,7 +401,6 @@ if(empty($_SESSION['prolab']))
 }
 unset($_SESSION['prolab']);
 unset($_SESSION['tr']);
-unset($_SESSION['ORDER']);
 ?>
 </body></html>
 <?php 

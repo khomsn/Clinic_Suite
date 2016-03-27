@@ -54,33 +54,10 @@ for($i=0;$i<=$ccd;$i++)
     }
   }
 }
-//$_SESSION['ddil']
-for($i=1;$i<$ddindex;$i++)
-{
- if($_SESSION['ddiltemp']>$_SESSION['ddil'])
- {
-  if(abs($dil[$i])>$_SESSION['ddiltemp'])
-  {
-    $cho = mysqli_query($linkcm, "select name from druggeneric where id = '$did[$i]' ");
-    $didname = mysqli_fetch_array($cho);
-    if(empty($fddi)) $fddi = 'dgname != "'.$didname[0].'"';
-    else $fddi = $fddi.' AND dgname != "'.$didname[0].'"';
-  }
- }
- else
- {
-  if(abs($dil[$i])>$_SESSION['ddil'])
-  {
-    $cho = mysqli_query($linkcm, "select name from druggeneric where id = '$did[$i]' ");
-    $didname = mysqli_fetch_array($cho);
-    if(empty($fddi)) $fddi = 'dgname != "'.$didname[0].'"';
-    else $fddi = $fddi.' AND dgname != "'.$didname[0].'"';
-  }
- }
-}
-if(empty($fddi)) $fddi = 1;
+//set filter for ddi
 
-//add
+include '../libs/settempfddi.php';
+
 $chorow=1;
 for($i=1;$i<=5;$i++)
 {
@@ -381,12 +358,7 @@ if($_SESSION['ORDER']==0)
 $_SESSION['ORDER']=1;
 //
 }
-/*
-for($i=1;$i<=10;$i++)
-{
-  unset($_SESSION['drug'.$i]);
-}
-*/
+
 $filter = mysqli_query($link, "select * from drug_id");		
 	while ($row = mysqli_fetch_array($filter))
 	{
@@ -407,7 +379,10 @@ $i = $_SESSION['DG'];
 if($_POST['add'] == 'เพิ่ม') 
 { 
   //check ddiltemp
-  $_SESSION['ddiltemp'] = $_POST['ddiltemp'];
+  $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
+  // reset $fddi in case of change $_SESSION['ddiltemp_'.$id]
+  //include '../libs/settempfddi.php';
+  
   if ($_SESSION['DG']<1) 
   {
   $_SESSION['DG']=1;
@@ -427,6 +402,7 @@ if($_POST['add'] == 'เพิ่ม')
 	  $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
 	  while ($row2 = mysqli_fetch_array($ptin))
 		  {
+                          $_SESSION['dgname'.$j]= $row2['dgname'];
 			  $rxuses[$j] =  $row2['uses'];
 			  //check and compair uses order
 			  if(empty($_SESSION['uses'.$j]))
@@ -452,13 +428,14 @@ for($n=1;$n<=10;$n++)
   if($_POST['del'.$n]=='ลบ')
   {
     //check ddiltemp
-    $_SESSION['ddiltemp'] = $_POST['ddiltemp'];
+    $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
   
     //update drug_id at volreserve return volume.
     //update reserve volume at drug_id
     $rvolnew = $_SESSION['svolr'.$n] - $_SESSION['vol'.$n] ;
     unset($_SESSION['vol'.$n]);
     unset($_SESSION['oldvol'.$n]);
+    unset($_SESSION['dgname'.$n]);
     unset($_SESSION['svol'.$n]);
     unset($_SESSION['svolr'.$n]);
     mysqli_query($link, "UPDATE drug_id SET
@@ -484,6 +461,7 @@ for($n=1;$n<=10;$n++)
 		$ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
 		while ($row2 = mysqli_fetch_array($ptin))
 			{
+                                $_SESSION['dgname'.$j]= $row2['dgname'];
 				$rxuses[$j] =  $row2['uses'];
 				$_SESSION['svol'.$j] =  $row2['volume'];
 				$_SESSION['svolr'.$j] = $row2['volreserve'];
@@ -492,6 +470,8 @@ for($n=1;$n<=10;$n++)
       //
 
      unset($_SESSION['drug'.$i]);
+     unset($_SESSION['uses'.$i]);
+     
      $_SESSION['DG'] = $_SESSION['DG']-1;
      $i = $_SESSION['DG'];
     // header("Location: drugorder.php"); 
@@ -500,6 +480,7 @@ for($n=1;$n<=10;$n++)
   { 
     $i=1; 
     $_SESSION['DG']=1;
+    
   }
   
 }
@@ -599,7 +580,23 @@ if($_POST['todo']=='Close' or $_POST['todo']=='OK')
 		//  unset($_SESSION['oldvol'.$i]);
 	  }
 	}
-unset($_SESSION['ddiltemp']);
+//unset($_SESSION['ddiltemp_'.$id]);
+}
+
+if($_POST['todo']=='Close')
+{
+    for($i=1;$i<=10;$i++)
+    {
+    unset($_SESSION['drug'.$i]);
+    unset($_SESSION['DG']);
+    unset($_SESSION['uses'.$i]);
+    unset($_SESSION['vol'.$i]);
+    }
+
+    unset($_SESSION['DG']);
+    unset($_SESSION['ORDER']);
+    $_SESSION['ORDER']=0;// set to 0 for sure
+
 }
 
 ?>
@@ -626,11 +623,17 @@ include '../libs/reloadopener.php';
 <form name="ddx" method="post" action="drugorder.php">
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr>
-    <td><?php echo "BW = ".$_SESSION['weight']." kg ";  echo "DDIL default = ".$_SESSION['ddil']; ?> [กำหนด DDIL เฉพาะรายนี้:
-    <input name='ddiltemp' type='radio' value='0' <?php if($_SESSION['ddiltemp']==0) echo 'checked';?>>0 
-    <input name='ddiltemp' type='radio' value='1' <?php if($_SESSION['ddiltemp']==1) echo 'checked';?>>|1| 
-    <input name='ddiltemp' type='radio' value='2' <?php if($_SESSION['ddiltemp']==2) echo 'checked';?>>|2| 
-    <input name='ddiltemp' type='radio' value='3' <?php if($_SESSION['ddiltemp']==3) echo 'checked';?>>|3|] 
+    <td><?php echo "BW = ".$_SESSION['weight']." kg ";  echo "DDIL default = ".$_SESSION['ddil'];?> [กำหนด DDIL เฉพาะรายนี้:
+    <?php 
+    if(empty($_SESSION['ddiltemp_'.$id]) AND ($_SESSION['ddiltemp_'.$id]!=='0'))
+    {
+        $_SESSION['ddiltemp_'.$id]=$_SESSION['ddil'];
+    }
+    ?>
+    <input name='ddiltemp' type='radio' value='0' <?php if($_SESSION['ddiltemp_'.$id]==0) echo 'checked';?>>0 
+    <input name='ddiltemp' type='radio' value='1' <?php if($_SESSION['ddiltemp_'.$id]==1) echo 'checked';?>>|1| 
+    <input name='ddiltemp' type='radio' value='2' <?php if($_SESSION['ddiltemp_'.$id]==2) echo 'checked';?>>|2| 
+    <input name='ddiltemp' type='radio' value='3' <?php if($_SESSION['ddiltemp_'.$id]==3) echo 'checked';?>>|3|] 
      <table border='1' style='text-align: center; margin-left: auto; margin-right: auto;' >
       <tr><th>Order</th><th width="44%">DRUG LIST</th><th width="40%">วิธีการใช้ยา</th><th>Vol</th><th>เพิ่ม</th><th>ลบ</th></tr>
 	    <?php 
@@ -657,7 +660,6 @@ include '../libs/reloadopener.php';
 	    echo "<td><input type=submit name='del".$j."' value='ลบ'></td>";
 	    echo "</tr>";
 	    }
-	    //echo $_SESSION['ddx'];
 	    ?>
       </table>
     </td>
