@@ -270,9 +270,39 @@ if($_POST['set']=="SET")
  if($_POST['lab']==3)//นัด ฉีดยา ต่อเนื่อง
   $finject = $finject ."# นัด ตรวจ Lab ไม่ต้องงดอาหาร #";
  //
+ if(!empty($_POST['nfolday']))
+ {
+  $nd = $_POST['nfolday'];
+  $datetime = new DateTime();
+  //echo $datetime->format('Y-m-d');
+  $datetime->add(new DateInterval('P'.$nd.'D'));
+  $hinjd = $datetime->format('d');
+  $hinjm = $datetime->format('m');
+  $hinjy = $datetime->format('Y');
+  //echo $hinjd .$hinjm.$hinjy;
+  $sye = $hinjy+543;
+   switch ($hinjm)
+    {
+    case 1: $m =  "มกราคม"; break;
+    case 2: $m =  "กุมภาพันธ์";break;
+    case 3: $m =  "มีนาคม";break;
+    case 4: $m =  "เมษายน";break;
+    case 5:$m =  "พฤษภาคม";break;
+    case 6:$m =  "มิถุนายน";break;
+    case 7:$m =  "กรกฎาคม";break;
+    case 8:$m =  "สิงหาคม";break;
+    case 9:$m =  "กันยายน";break;
+    case 10:$m =  "ตุลาคม";break;
+    case 11:$m =  "พฤศจิกายน";break;
+    case 12:$m =  "ธันวาคม";break;
+    } 
+  $finject = $finject ."# นัดติดตามอีก ".$nd." วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+ } 
+  
  $fdate = $_POST['fupdate'];
  //echo $fdate->format('Y-m-d');
  $datetime = new DateTime();
+ $diff=date_diff($date,$datetime);
  $datetime = $datetime->format('m/d/Y');
     $sd = substr($fdate, 3, -5);
     $sm = substr($fdate, 0, 2);
@@ -297,7 +327,7 @@ if($_POST['set']=="SET")
     case 11:$m =  "พฤศจิกายน";break;
     case 12:$m =  "ธันวาคม";break;
     } 
-      $finject = $finject ."# นัดติดตาม วันที่ ".$sd." ".$m." ".$sye." #";
+      $finject = $finject ."# นัดติดตามอีก ".$diff." วัน ในวันที่ ".$sd." ".$m." ".$sye." #";
   }
   //<input type=checkbox name=fupin1 value=1>นัด ฉีดยาคุมกำเนิด
   if($_POST['fupin1'] == 3)
@@ -458,7 +488,7 @@ echo $datetime->format('Y-m-d');
 <input type=radio name=fup value=3>นัด 3 วัน
 <input type=radio name=fup value=1>นัด 1 วัน
 
-<h4>นัดวันที่ : <input name=fupdate type="text" id="datepicker" value="<?php $duedate=date_create($duedate);$duedate=date_format($duedate,"m/d/Y");echo $duedate;?>">
+<h4>นัด <input type="number" min=0 name="nfolday">วัน ***---***  นัดวันที่ : <input name=fupdate type="text" id="datepicker" value="<?php $duedate=date_create($duedate);$duedate=date_format($duedate,"m/d/Y");echo $duedate;?>">
 <hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
 <input type=checkbox name=lab value=1>นัด ตรวจ Lab งดอาหาร 12 ชม
 <input type=checkbox name=lab value=2>นัด ตรวจ Lab งดอาหาร 6 ชม
