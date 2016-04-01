@@ -29,6 +29,7 @@ USE clinic_common;
 -- (activate this statement if necessary)
 -- GRANT SELECT, INSERT, DELETE, UPDATE, ALTER ON `clinic_common`.* TO
 --    'pma'@localhost;
+--
 
 -- --------------------------------------------------------
 -- phpMyAdmin SQL Dump

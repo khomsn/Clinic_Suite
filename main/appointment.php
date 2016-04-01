@@ -302,7 +302,6 @@ if($_POST['set']=="SET")
  $fdate = $_POST['fupdate'];
  //echo $fdate->format('Y-m-d');
  $datetime = new DateTime();
- $diff=date_diff($date,$datetime);
  $datetime = $datetime->format('m/d/Y');
     $sd = substr($fdate, 3, -5);
     $sm = substr($fdate, 0, 2);
@@ -327,7 +326,12 @@ if($_POST['set']=="SET")
     case 11:$m =  "พฤศจิกายน";break;
     case 12:$m =  "ธันวาคม";break;
     } 
-      $finject = $finject ."# นัดติดตามอีก ".$diff." วัน ในวันที่ ".$sd." ".$m." ".$sye." #";
+    $date1=date_create($date);
+    $date2=date_create($datetime);
+    $diff=date_diff($date2,$date1);
+    $diff1 = $diff->format("%a");
+    
+     $finject = $finject ."# นัดติดตามอีก ".$diff1." วัน ในวันที่ ".$sd." ".$m." ".$sye." #";
   }
   //<input type=checkbox name=fupin1 value=1>นัด ฉีดยาคุมกำเนิด
   if($_POST['fupin1'] == 3)

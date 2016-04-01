@@ -1,39 +1,35 @@
-##---------------
-Version 25590327
+khomsn-klinic-suite (59.4-01) unstable; urgency=low
+  
+    * Version 25590401: Update Appointment and rewrite config file. Prepare for DEB packaging.
+    
+khomsn-klinic-suite (59.3-27) unstable; urgency=low
+  
+    * Version 25590327: Update and Correct DDI when order drug.
 
-Update and Correct DDI when order drug.
+khomsn-klinic-suite (59.1-22)  unstable; urgency=low
+    
+    * Version 25590122: Update to show buy price.
 
-##---------------
-Version 25590122
+khomsn-klinic-suite (59.1-21)  unstable; urgency=low
+  
+    *Version 25590121: Correct Drugorder form and druggenproperties.
 
-Update to show buy price.
+khomsn-klinic-suite (59.1-14)  unstable; urgency=low
+  
+    * Version 25590114: Add Medical Certification in English form.
+    
+khomsn-klinic-suite (58.11-01)  unstable; urgency=low
 
-##---------------
-Version 25590121
+    * Version 25581101: Add Random rotating background and other things.
 
-Correct Drugorder form and druggenproperties.
+khomsn-klinic-suite (58.10-17)  unstable; urgency=low
 
-##---------------
-Version 25590114
+    * Version 25581017: Update DDIL. Now you can Adjust DDIL per order (Called Ddiltemp) without changing the Default setting. IF DDIL > Ddiltemp, DDIL will be used.
 
-Add Medical Certification in English form.
+khomsn-klinic-suite (58.10-15)  unstable; urgency=low
+    
+    * Version 25581015 :Add Drug to Drug Interaction to control use of drug in concurrent and drug to prescript to patient for more safe of drug use.
+    
+khomsn-klinic-suite (58.10-11)  unstable; urgency=low
 
----------------
-Version 25581101
-
-Add Random rotating background and other things.
-
-#---------------
-Version 25581017 
-
-Update DDIL. Now you can Adjust DDIL per order (Called Ddiltemp) without changing the Default setting. IF DDIL > Ddiltemp, DDIL will be used.
-
-#---------------
-Version 25581015 
-
-Add Drug to Drug Interaction to control use of drug in concurrent and drug to prescript to patient for more safe of drug use.
-
-#---------------
-Version 25581011
-
-Initial Release. 
+    * Version 25581011: Initial Release. 
