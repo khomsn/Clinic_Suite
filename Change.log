@@ -1,3 +1,7 @@
+khomsn-klinic-suite (59.4-02) unstable; urgency=low
+  
+    * Version 25590402: Update Stock in panel to input up to 30 items at once.
+    
 khomsn-klinic-suite (59.4-01) unstable; urgency=low
   
     * Version 25590401: Update Appointment and rewrite config file. Prepare for DEB packaging.

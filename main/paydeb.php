@@ -14,7 +14,7 @@ while ($row = mysqli_fetch_array($result1))
   $olddeb = $row['price'];
 }
 
-if ($_POST['pay'] == "ชำระหนี้")
+if (($_POST['pay'] == "ชำระหนี้") OR ($_POST['pay'] == "ตัดยอดหนี้สูญ"))
 {
     $pay = $_POST['payprice'];
     if (ltrim($pay) !== '')
@@ -39,21 +39,25 @@ if ($_POST['pay'] == "ชำระหนี้")
 	{
 		if($pay <= $olddeb)
 		{
+		if ($_POST['pay'] == "ตัดยอดหนี้สูญ")
+		{
+                    $acin = 5998;
+                    $detail = "ตัดยอดหนี้สูญ";
+		}
+		else
+		{
+                    $acin = 1001;
+                    $detail = "รับชำระหนี้เงินสด";
+		}
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
-											VALUES (now(), '1001', '$ctmacno', 'รับชำระหนี้', '$pay', 'd', 's','$_SESSION[user_id]' );";
+											VALUES (now(), '$acin', '$ctmacno', '$detail', '$pay', 'd', 's','$_SESSION[user_id]' );";
 			// Now insert Patient to "patient_id" table
 			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 		}
 	}
     }
+header("Location: paydeb.php");  
 }
-
-while ($row = mysqli_fetch_array($result1))
-{
-  $ctmacno = $row['ctmacno'];
-  $olddeb = $row['price'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +78,12 @@ while ($row = mysqli_fetch_array($result1))
   ชำระ <input type=number name=payprice min=0 step=1> บาท
   <hr style="width: 80%; height: 2px;"><br>
   <input type=submit name=pay value="ชำระหนี้">
+  <?php
+        if ($_SESSION['user_accode']%13 == 0)
+        {
+        echo "<input type='submit' name='pay' value='ตัดยอดหนี้สูญ'>";
+        }
+  ?>
  </div>
  </form>
 </body>
