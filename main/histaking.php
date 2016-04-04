@@ -14,7 +14,7 @@ while ($row_settings = mysqli_fetch_array($pin))
 		if($rid < $row_settings['id']) $rid = $row_settings['id'];
 	}
 	
-if($_POST['rec'] == "บันทึกประวัติตรวจร่างกาย") 
+if($_POST['rec'] == "DDx") 
 {
 $_SESSION['history'.$pid]= $_POST['dhist'];
 $_SESSION['phex'.$pid]=$_POST['phex'];
@@ -324,7 +324,7 @@ else
 								</div>
 								<hr style="width: 80%; height: 2px;">
 								<div style="text-align: left;">
-								<big>ประวัติ</big><br>
+								<big>ประวัติ:</big><br>
 								<textarea autofocus  cols="100%" rows="3" type="text" name="dhist"><?php
 								if($preg == 1) echo substr($hist, 0,-72 );
 								if($preg == 0) echo $hist;
@@ -338,11 +338,9 @@ Ext:";
 								else 	echo $phex;
 								?></textarea>
 								<div style="display:none;"><input name="register" value="บันทึก" type="submit"></div>
-								<input type=submit name=rec value="บันทึกประวัติตรวจร่างกาย">
-								</div><div style="text-align: center;">
-								<hr style="width: 80%; height: 2px;"><br>
-								<a HREF="ddx.php" onClick="return popup(this,'DDx','600','400','yes')" >
-								<label>Diag:</label></a> 
+								<div style="text-align: center;">
+								<hr style="width: 80%; height: 2px;">
+								<input type=submit name=rec value="DDx" onmouseUp="return popup('ddx.php','DDx','600','400','yes')">
 								<input name="diag" type="text" id="diag" size="70%" value="<?php 
 								echo $ddx;
 								unset($_SESSION['ddx']);
@@ -378,7 +376,3 @@ function ReDDx() {
 </table>
 <!--end menu-->
 </body></html>
-<?php //unset again for sure
-//unset($_SESSION['history'.$pid]);
-//unset($_SESSION['phex'.$pid]);
-?>

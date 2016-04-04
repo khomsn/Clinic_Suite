@@ -33,9 +33,47 @@ $pdir = PT_AVATAR_PATH;
 				<div class="ptavatar">
 				<img src="<?php $avatar = $pdir. "pt_". $id . ".jpg"; echo $avatar; ?>" width="120" height="120" />
 				</div>
-				<br>
-				<br>
-				<br>
+				<div class="">
+				<?php
+				$pinfo = mysqli_query($linkopd, "select * from patient_id where id='$id'");
+				while($rowinfo = mysqli_fetch_array($pinfo))
+				{
+                                    echo $rowinfo['prefix'].$rowinfo['fname']."  ".$rowinfo['lname']."<br>";
+                                    echo "เพศ ".$rowinfo['gender'];
+                                    $date1=date_create(date("Y-m-d"));
+                                    $date2=date_create($rowinfo['birthday']);
+                                    $diff=date_diff($date2,$date1);
+                                    echo "&nbsp; &nbsp;อายุ&nbsp; ";
+                                    echo $diff->format("%Y ปี %m เดือน %d วัน")."<br>";
+                                    echo "สูง ".$rowinfo['height']."cm &nbsp; &nbsp;หนัก ";
+				}
+				$pttable = "pt_".$id;
+				$pin = mysqli_query($linkopd, "select MAX(id) from $pttable ");
+                                $maxid = mysqli_fetch_array($pin);
+                                $rid = $maxid[0];
+                                $ptin = mysqli_query($linkopd, "select * from $pttable where  id = '$rid' ");
+                                while ($row_settings = mysqli_fetch_array($ptin))
+                                {
+                                        echo $row_settings['weight']."kg<br>";
+                                        echo "BT=".$row_settings['temp']."&deg;C BP=";
+                                        echo $bps = $row_settings['bpsys']."/".$bpd = $row_settings['bpdia']."mmHg<br>";
+                                        echo "HR=".$row_settings['hr']." bpm ";
+                                        echo "RR=".$row_settings['rr']." tpm";
+                                        if(empty($_SESSION['history'.$pid]))
+                                        $hist = $row_settings['dofhis'];
+                                        else
+                                        $hist = $_SESSION['history'.$pid];
+                                        if(empty($_SESSION['phex'.$pid]))
+                                        $phex = $row_settings['phex'];
+                                        else
+                                        $phex = $_SESSION['phex'.$pid];
+                                        $rr = $row_settings['rr']; 
+                                        $temp = $row_settings['temp']; 
+                                        $ddx = $row_settings['ddx'];
+                                }
+				
+				?>
+				</div>
 				<br>
 				<br>
 
