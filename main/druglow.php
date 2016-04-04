@@ -9,7 +9,8 @@ page_protect();
 <head>
 <title>รายการยาและผลิตภัณฑ์</title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color.css">
 </head>
 <?php 
 if(!empty($_SESSION['user_background']))
@@ -52,7 +53,7 @@ else
 						<div style="text-align: center;">
 						<?php	
 							$dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE volume <= min_limit ORDER BY `dgname` ASC");
-								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
+								echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
 								echo "<tr> <th>No</th><th>ชื่อ</th> <th>ชื่อสามัญ</th><th>ขนาด</th><th>จำนวน</th><th>ร้าน</th><th>จำนวนที่สั่ง</th><th>Unit</th><th>BP-S</th></tr>";
 								$i=1;
 								while($row = mysqli_fetch_array($dtype))

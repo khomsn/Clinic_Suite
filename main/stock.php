@@ -33,9 +33,11 @@ if ($_POST['todo'] == 'กรอง' )
 <title>รายการยาและผลิตภัณฑ์</title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
 <!--add menu -->
-	<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
-	<script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
-	<link rel="stylesheet" href="../public/css/styles.css">
+<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
+<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color.css">
+	
 <?php include '../libs/popup.php';?>
 </head>
 <?php 
@@ -78,7 +80,7 @@ else
 						<div style="text-align: center;">	
 												<!--List Patient wait for doctor-->
 						<?php
-						echo "<table border='1' style='text-align: center; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76)' >";
+						echo "<table class='TFtable' border='1' style='text-align: center; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76)' >";
 						echo "<tr> <th>ชื่อ</th> <th>ชื่อสามัญ</th> <th>ขนาด</th></tr>";
 						// keeps getting the next row until there are no more to get
 						while($row = mysqli_fetch_array($filter))

@@ -64,12 +64,13 @@ if($_POST['SetValue'] == "Set Value")
      $dcatin = $dgn['dcat'];
      $dinteract = $dgn['dinteract'];
      $dciwith = $dgn['ciwith'];
-     
+     $dindic = $dgn['indication'];
       mysqli_query($link, "UPDATE drug_id SET
 			      `groupn` = '$dgroupin',
 			      `subgroup` = '$dsgroupin',
 			      `cat` = '$dcatin',
-			      `dinteract` = '$dinteract'
+			      `dinteract` = '$dinteract',
+			      `indication` = '$dindic'
 			      WHERE `dgname`='$dgnamein'
 			      ") or die(mysqli_error($link));
       if(!empty($dciwith))
@@ -119,12 +120,14 @@ if($_POST['register'] == "แก้ไข")
     $dsgr = $_POST['drsg'.$j];
     $dcat = $_POST['cat'.$j];
     $dciwith = $_POST['ciwith'.$j];
+    $dindic = $_POST['indic'.$j];
     
       mysqli_query($linkcm, "UPDATE druggeneric SET
 			      `dgroup` = '$dgr',
 			      `dsgroup` = '$dsgr',
 			      `dcat` = '$dcat',
-			      `ciwith` = '$dciwith'
+			      `ciwith` = '$dciwith',
+			      `indication` = '$dindic'
 			      WHERE id='$j' LIMIT 1 ;") or die(mysqli_error($linkcm));
    }
 $minrow = $_SESSION['page']*$pagelimit;
@@ -187,7 +190,7 @@ else
 						<div style="text-align: center;">
 <?php	
 echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto;'>";
-echo "<tr><th>ID</th><th>Name</th><th>Group</th><th>SubGroup</th><th>Cat</th><th>Interation</th><th>CI-With</th></tr>";
+echo "<tr><th>ID</th><th>Name</th><th>Group</th><th>SubGroup</th><th>Cat</th><th>Interation</th><th>CI-With</th><th>Indication</th></tr>";
 $rowno=1;
 $filter = mysqli_query($linkcm, "select * from druggeneric  ORDER BY `name` ASC LIMIT $minrow, $pagelimit");
 while($row = mysqli_fetch_array($filter))
@@ -262,7 +265,10 @@ while($row = mysqli_fetch_array($filter))
 		  echo "</option>";
 		}
 		echo "</select>";
-//		echo $row['ciwith'];
+		echo "</th><th>";
+		echo "<input type=text name=indic".$row['id']." value='";
+		echo $row['indication'];
+		echo "'>";
 		echo "</th></tr>";
 }
 echo "</table>";

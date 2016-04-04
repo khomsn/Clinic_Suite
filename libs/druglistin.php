@@ -10,7 +10,7 @@ include '../login/dbc.php';
 	{
 		while($row=mysqli_fetch_array($result))
 		{
-			echo $row['id']."-".$row['dgname']."-".$row['dname']."\n";
+			echo $row['id']."-".$row['dname']."-".$row['dgname']."-".$row['size']."\n";
 		}
 	}
 ?>

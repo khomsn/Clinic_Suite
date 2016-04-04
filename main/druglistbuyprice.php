@@ -26,7 +26,8 @@ $filter = mysqli_query($link, "select * from drug_id  WHERE seti != 1 ORDER BY `
 <head>
 <title>รายงาน ราคาซื้อ ยาและผลิตภัณฑ์ </title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color.css">
 </head>
 <?php 
 if(!empty($_SESSION['user_background']))
@@ -68,7 +69,7 @@ else
 						<td style="vertical-align: middle; ">
 						<div style="text-align: center;">
 						<?php	
-								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
+								echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
 								echo "<tr><th>เลือก</th>";
 								if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
 								{

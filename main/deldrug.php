@@ -7,21 +7,21 @@ $filter = mysqli_query($link, "select * from drug_id ");
 	{
 		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
 	}	
-$filter = mysqli_query($link, "select * from drug_id WHERE track = '0' ORDER BY `dgname` ASC ");
+$filter = mysqli_query($link, "select * from drug_id WHERE track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC ");
 
 if ($_POST['todo'] == 'กรอง' ) 
 {
 	if($_POST['type'] != '' AND $_POST['group'] !='' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  `groupn` ='$_POST[group]' AND  track = '0' ORDER BY `dgname` ASC");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC");	
 	}	
 	if($_POST['type'] != '' AND $_POST['group'] =='' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  track = '0' ORDER BY `dgname` ASC ");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC ");	
 	}	
 	if($_POST['group'] !=''  AND  $_POST['type'] == '' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE  `groupn` ='$_POST[group]' AND  track = '0' ORDER BY `dgname` ASC");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC");	
 	}	
 
 }
@@ -100,7 +100,8 @@ if($_POST['register'] == 'ลบข้อมูล')
 <head>
 <title>ลบรายการยาและผลิตภัณฑ์</title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color.css">
 </head>
 <?php 
 if(!empty($_SESSION['user_background']))
@@ -141,7 +142,7 @@ else
 						<td style="vertical-align: middle; ">
 						<div style="text-align: center;">
 						<?php	
-								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
+								echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
 								echo "<tr> <th>เลือก</th><th>ชื่อ</th> <th>ชื่อสามัญ</th><th>ขนาด</th><th> คงคลัง</th></tr>";
 								while($row = mysqli_fetch_array($filter))
 								 {

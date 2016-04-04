@@ -11,6 +11,7 @@ if($_POST['register'] == 'แก้ไข')
 
 mysqli_query($link, "UPDATE drug_id SET
 			`uses` = '$_POST[uses]',
+			`indication` = '$_POST[Indication]',
 			`sellprice` = '$_POST[sellprice]',
 			`min_limit` = '$_POST[min_limit]',
 			`typen` = '$_POST[type]',
@@ -116,7 +117,6 @@ else
 							<input type="radio" name="storder" class="required" value="0" <?php if($storder =='0') echo "checked";?>>No
 							<input type="radio" name="storder" class="required" value="1" <?php if($storder =='1') echo "checked";?>>Yes							</div>
 							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
-							<br>
 							<div style="text-align: center;">
 							วิธีใช้:
 							<textarea cols="80" rows="3" name="uses"	value="<?php
@@ -125,7 +125,16 @@ else
 							"><?php
 							echo $row_settings['uses'];
 							?></textarea>
-							<br>
+							</div>
+							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
+							<div style="text-align: center;">
+							Indication:
+							<textarea cols="80" rows="3" name="Indication"	value="<?php
+							echo $row_settings['indication'];
+							?>
+							"><?php
+							echo $row_settings['indication'];
+							?></textarea>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">

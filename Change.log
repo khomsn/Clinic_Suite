@@ -1,3 +1,7 @@
+khomsn-klinic-suite (59.4-04) unstable; urgency=low
+  
+    * Version 25590404: Update Drug prop for indication and update drug search by indication.
+    
 khomsn-klinic-suite (59.4-02) unstable; urgency=low
   
     * Version 25590402: Update Stock in panel to input up to 30 items at once.

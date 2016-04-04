@@ -64,9 +64,9 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
 
 // assign insertion pattern
 $sql_insert = "INSERT into `drug_id`
-  			(`dname`,`dgname`,`uses`, `size`, `sellprice`, `min_limit`, `typen`, `groupn`, `seti`, `ac_no`, `track`, `disct`,`prod`,`RawMat`,`cat`,`unit`,`candp`)
+  			(`dname`,`dgname`,`uses`, `indication`, `size`, `sellprice`, `min_limit`, `typen`, `groupn`, `seti`, `ac_no`, `track`, `disct`,`prod`,`RawMat`,`cat`,`unit`,`candp`)
 		    VALUES
-			('$_POST[dname]','$_POST[dgname]','$_POST[uses]','$_POST[size]','$_POST[sellprice]','$_POST[min_limit]','$_POST[type]','$_POST[group]','$_POST[set]',
+			('$_POST[dname]','$_POST[dgname]','$_POST[uses]','$_POST[Indication]','$_POST[size]','$_POST[sellprice]','$_POST[min_limit]','$_POST[type]','$_POST[group]','$_POST[set]',
 			'$ac','$_POST[track]','$_POST[disct]','$_POST[prod]','$_POST[RawMat]','$_POST[cat]','$_POST[unit]','$_POST[candp]')";
 
 // Now insert into "drug_id" table
@@ -78,7 +78,7 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
     list($imprs) = mysqli_fetch_row($imp);
     if(empty($imprs))
     {
-    $sql_insert = "INSERT into `druggeneric` (name) value ('$_POST[dgname]')";
+    $sql_insert = "INSERT into `druggeneric` (name,indication,dcat) value ('$_POST[dgname]','$_POST[indication]','$_POST[cat]')";
     mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
 
     }
@@ -217,6 +217,10 @@ else
 							</div>
 							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;"><br>
 							<div style="text-align: center;">วิธีใช้* <textarea tabindex="4" cols="80" rows="3" class="required" name="uses"></textarea>
+							<br>
+							</div>
+							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;"><br>
+							<div style="text-align: center;">Indication<textarea cols="80" rows="1" name="Indication"></textarea>
 							<br>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
