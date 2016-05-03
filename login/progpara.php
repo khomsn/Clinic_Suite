@@ -24,6 +24,7 @@ $sql = " CREATE TABLE IF NOT EXISTS `parameter` (
   `df` tinyint(4) NOT NULL,
   `dfp` smallint(6) NOT NULL,
   `opdidoffset` smallint(6) NOT NULL,
+  `maskingdrugid`  BOOLEAN NOT NULL,
   KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; ";
 
@@ -40,10 +41,10 @@ foreach($_POST as $key => $value) {
 }
     // assign insertion pattern
     $sql_insert = "INSERT into `parameter`
-			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`)
+			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`,`maskingdrugid`)
 			VALUES
 			    ('$data[name]','$data[ename]','$data[cliniclcid]','$data[address]','$data[eaddress]','$data[tel]','$data[mobile]','$data[email]','$data[logo]','$data[normprice]','$data[fup]','$data[tmp]',
-			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]')";
+			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]','$data[maskingdrugid]')";
 
     // Now insert Patient to "patient_id" table
     mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -120,6 +121,7 @@ else
 			 $df = $row_settings['df'];
 			 $dfp = $row_settings['dfp'];
 			 $offset = $row_settings['opdidoffset'];
+			 $maskingdrugid = $row_settings['maskingdrugid'];
 			}
 	?>
 
@@ -209,6 +211,8 @@ else
 							<input type="radio" name="DF" value="0" <?php if($df==0) echo "checked";?>>No, <input type="number" min=0 name="dfp" size="4" value="<?php echo $dfp;?>">บาท
 							</td></tr>
 							<tr><td style="text-align: right;" >OFFSET for OPD Card ID*</td><td ><input name="offset" type="number" min=0 id="offset"  class="required" value="<?php echo $offset; ?>" size="6">
+							</td></tr>
+							<tr><td style="text-align: right;" >Masking Drug ID OPD</td><td ><input name="maskingdrugid" type="number" min=0 max=1 id="maskingdrugid"  class="required" value="<?php echo $maskingdrugid; ?>" size="6">
 							</td>
 							</tr>
 							</table>

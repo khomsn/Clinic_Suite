@@ -9,7 +9,8 @@ $sql = "CREATE TABLE IF NOT EXISTS `maskid` (
 `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `drugid` int(11) NOT NULL,
  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
- `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+ `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+ `mask`  BOOLEAN NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
 
 mysqli_query($link, $sql);
@@ -53,6 +54,11 @@ for($j=1;$j<=$i;$j++)
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM maskid WHERE id = '$j' ") or die(mysqli_error($link));
   }
+}
+if($_POST['Set_Mask']=='set')
+{
+    $sql_insert = "UPDATE `maskid` SET `mask` = '$_POST[mask]'; ";
+    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 }
 ?>
 
@@ -136,12 +142,18 @@ if(!empty($err))  {
 		    echo $row_settings['dgname'];
 		    echo "</th><th>+";
 		    echo "</th></tr>";
-		    
+		    $mask=$row_settings['mask'];
     
     }
     echo "</table>";
+    echo "Masking ID <input type='radio' name='mask' value='1'";
+    if ($mask=='1') echo "checked";
+    echo ">ON<input type='radio' name='mask' value='0'";
+    if ($mask=='0') echo "checked";
+    echo ">OFF";
     //////////////////////////
-    ?>						
+    ?>
+    <input type=submit name=Set_Mask value='set'>
 </form>
 <!-- Process Data finished-->
 </td></tr></table>
