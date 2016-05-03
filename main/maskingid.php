@@ -7,8 +7,9 @@ $msg = array();
 
 $sql = "CREATE TABLE IF NOT EXISTS `maskid` (
 `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `scode` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `textconv` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+ `drugid` int(11) NOT NULL,
+ `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+ `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
 
 mysqli_query($link, $sql);
