@@ -28,6 +28,16 @@ elseif ($_POST['todo'] == '>>' )
 	$_SESSION['rid'] = $_SESSION['rid'] + 1;
 	$rid = $_SESSION['rid'];
 }
+
+//masking id
+$di=1;
+$maskin = mysqli_query($link, "select * from maskid");
+while ($row = mysqli_fetch_array($maskin))
+{
+    $didin[$di]=$row['drugid'];
+    $di=$di+1;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -244,13 +254,19 @@ switch ($m)
 	    echo "<u>ยาและผลิตภัณฑ์:</u> <br>";
 	    for ($i=1;$i<=10;$i++)
 	    {
-		    if($row['rx'.$i] !="")
-		    {
-			    echo $i.'. ';
-			    if($row['rxby'.$i]!=0) echo $row['rx'.$i].'('.$row['rxg'.$i].'<sup>'.$row['rxby'.$i].'</sup>'.') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
-			    else echo $row['rx'.$i].'('.$row['rxg'.$i].') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
-			    echo "<br>";
-		    }
+                for($j=1;$j<$di;$j++)
+                {
+                    if($row['idrx'.$i] != "$didin[$j]")
+                    {
+                        if($row['rx'.$i] !="")
+                        {
+                                echo $i.'. ';
+                                if($row['rxby'.$i]!=0) echo $row['rx'.$i].'('.$row['rxg'.$i].'<sup>'.$row['rxby'.$i].'</sup>'.') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
+                                else echo $row['rx'.$i].'('.$row['rxg'.$i].') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
+                                echo "<br>";
+                        }
+                    }
+                }
 	    }
 	    //progression note
 	    if (ltrim($progs) !== '')
