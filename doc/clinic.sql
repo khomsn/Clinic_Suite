@@ -673,7 +673,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `tel` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `fax` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `website` text COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL DEFAULT '0000-00-00',
+  `date` date NOT NULL DEFAULT '2014-05-06',
   `users_ip` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `approved` int(1) NOT NULL DEFAULT '0',
   `activation_code` int(10) NOT NULL DEFAULT '0',
@@ -681,7 +681,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `accode` smallint(6) NOT NULL DEFAULT '1',
   `user_level` tinyint(4) NOT NULL,
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ckey` tinyint(4) NOT NULL,
+  `ckey` varchar(7) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `staff_id` smallint(6) NOT NULL,
   `user_has_avatar` tinyint(1) NOT NULL,
   `user_background` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -697,8 +697,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `md5_id`, `full_name`, `user_name`, `user_email`, `pwd`, `address`, `country`, `tel`, `fax`, `website`, `date`, `users_ip`, `approved`, `activation_code`, `banned`, `accode`, `user_level`, `ctime`, `ckey`, `staff_id`, `user_has_avatar`, `user_background`, `catcenable`) VALUES
-(50, 'c0c7c76d30bd3dcaefc96f40275bdc0a', 'Administrator', 'admin', 'admin@localhost', 'a3dc56cc996c89050461c26c3a292af2a257d6ebaec02f722', '', '', '', '', '', '2014-05-06', '', 1, 0, 0, 1, 5, '0000-00-00 00:00:00', 0, 2, 0, '', 0),
-(49, '', 'demo', 'demo', 'demo@localhost', '46296bc20ddcae364a22ffc072f97c78a59136578be1944ae', 'd', '', 'd', '', '', '2015-10-11', '', 1, 0, 0, 30030, 5, '0000-00-00 00:00:00', 20, 0, 1, '', 0);
+(49, '', 'demo', 'demo', 'demo@localhost', '46296bc20ddcae364a22ffc072f97c78a59136578be1944ae', 'd', '', 'd', '', '', '2015-10-11', '', 1, 0, 0, 30030, 5, '2014-05-06 00:00:00', 20, 0, 1, '', 0),
+(50, 'c0c7c76d30bd3dcaefc96f40275bdc0a', 'Administrator', 'admin', 'admin@localhost', 'a3dc56cc996c89050461c26c3a292af2a257d6ebaec02f722', '', '', '', '', '', '2014-05-06', '', 1, 0, 0, 1, 5, '2014-05-06 00:00:00', 0, 2, 0, '', 0);
 
 -- --------------------------------------------------------
 

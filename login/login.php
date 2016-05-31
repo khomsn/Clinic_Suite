@@ -76,9 +76,9 @@ $num = mysqli_num_rows($result);
 		$_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT']);
 		
 		//update the timestamp and key for cookie
-		$stamp = time();
+		//$stamp = time();
 		$ckey = GenKey();
-		mysqli_query($link, "update users set `ctime`='$stamp', `ckey` = '$ckey' where id='$id'") or die(mysqli_error($link));
+		mysqli_query($link, "update users set `ckey` = '$ckey' where id='$id'") or die(mysqli_error($link));
 		
 		//set a cookie 
 		
