@@ -1,0 +1,35 @@
+
+Template: khomsn-klinic-suite/setup-username
+Type: string
+Default: klinic
+Description: Username for MySql database access for Khomsn Klinic Suite:
+ The Username for Khomsn Klinic Suite which will be used to access MySql server, after installation.
+ .
+ Access to this system requires identification with a username and a
+ password.
+ .
+ If you leave this field empty, the default username ('klinic') will be used.
+
+Template: khomsn-klinic-suite/setup-password
+Type: string
+Default:
+Description: Password for  MySql database access for Khomsn Klinic Suite:
+ The Password for Khomsn Klinic Suite which will be used to access MySql server, after installation.
+ .
+ Access to this system requires identification with a username and a
+ password.
+ .
+ If you leave this field empty, access to MySql Server by Khomsn Klinic Suite will be
+ disabled.
+
+Template: khomsn-klinic-suite/admin-password
+Type: string
+Default:
+Description: Password for  MySql admin for localhost MySql Sever:
+ The Password for "root" of local MySql-Server use to access MySql server, during installation.
+ .
+ Access to this system requires identification with a username and a
+ password.
+ .
+ If you leave this field empty, access to MySql Server by Khomsn Klinic Suite installation will be
+ disabled.

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+rm /var/www/html/config/dbuspwd.php
+rm /var/www/html/config/emailserver.php
+rm /var/www/html/config/recaptchakey.php
+
+exit 0

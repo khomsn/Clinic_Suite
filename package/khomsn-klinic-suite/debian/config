@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+#if [ -f /usr/share/dbconfig-common/dpkg/config.mysql ]; then
+#        . /usr/share/dbconfig-common/dpkg/config.mysql
+#        if ! dbc_go khomsn-klinic-suite $@ ; then
+#            echo 'Automatic configuration using dbconfig-common failed!'
+#        fi
+#fi
+
+db_version 2.0
+
+db_input high khomsn-klinic-suite/setup-username || true
+db_input high khomsn-klinic-suite/setup-password || true
+db_input high khomsn-klinic-suite/admin-password || true
+
+db_go || true
+

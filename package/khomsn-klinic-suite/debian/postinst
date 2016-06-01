@@ -1,0 +1,135 @@
+#!/bin/sh
+# postinst script for clinic
+
+set -e
+
+ln -sf /etc/khomsn/klinic/dbuspwd.php /var/www/html/config/dbuspwd.php
+ln -sf /etc/khomsn/klinic/emailserver.php /var/www/html/config/emailserver.php
+ln -sf /etc/khomsn/klinic/recaptchakey.php /var/www/html/config/recaptchakey.php
+
+. /usr/share/debconf/confmodule
+
+#. /usr/share/dbconfig-common/dpkg/postinst.mysql
+
+#dbc_generate_include_owner="root:www-data"
+#dbc_generate_include_perms="0640"
+#dbc_generate_include=php:/etc/khomsn-klinic-suite/config-db.php
+
+#if ! dbc_go khomsn-klinic-suite $@ ; then
+#	echo 'Automatic configuration using dbconfig-common failed!'
+#fi
+
+if [ "$1" = "configure" ]; then
+
+	db_version 2.0
+
+	# The following only on a new install
+	if [ "$2" = "" ]; then
+
+		# Generate an htpasswd file for the web based setup
+#		if [ ! -f /etc/khomsn-klinic-suite/htpasswd.setup ]; then
+		
+			db_get khomsn-klinic-suite/setup-username
+			setup_username=${RET:-admin}
+			
+			db_get khomsn-klinic-suite/setup-password
+				setup_password=${RET}
+			db_get khomsn-klinic-suite/admin-password
+				admin_password=${RET}
+			echo "<?php
+
+define (\"DB_USER\", \"$setup_username\"); // set database user //change me here!
+define (\"DB_PASS\", \"$setup_password\"); // set database password //change me here!
+" > /etc/khomsn/klinic/dbuspwd.php
+			
+                        BTICK='`'
+ #                       EXPECTED_ARGS=3
+ #                       E_BADARGS=65
+                        MYSQL=`which mysql`
+                        
+		if [ -f /var/www/html/doc/clinic.sql ]; then
+                        
+                        $MYSQL -uroot -p"$admin_password" < /var/www/html/doc/clinic.sql
+                fi
+                
+		if [ -f /var/www/html/doc/clinic_common.sql ]; then
+                        
+                        $MYSQL -uroot -p"$admin_password" < /var/www/html/doc/clinic_common.sql
+                fi
+                
+		if [ -f /var/www/html/doc/clinic_opd.sql ]; then
+                        
+                        $MYSQL -uroot -p"$admin_password" < /var/www/html/doc/clinic_opd.sql
+                fi
+                        
+                        Q1="GRANT ALL ON ${BTICK}clinic${BTICK}.* TO '$setup_username'@'localhost' IDENTIFIED BY '$setup_password';"
+                        Q2="GRANT ALL ON ${BTICK}clinic_common${BTICK}.* TO '$setup_username'@'localhost' IDENTIFIED BY '$setup_password';"
+                        Q3="GRANT ALL ON ${BTICK}clinic_opd${BTICK}.* TO '$setup_username'@'localhost' IDENTIFIED BY '$setup_password';"
+                        Q4="FLUSH PRIVILEGES;"
+                        SQL="${Q1}${Q2}${Q3}${Q4}"
+ 
+                        $MYSQL -uroot -p"$admin_password" -e "$SQL"
+			
+			
+			db_reset khomsn-klinic-suite/setup-username || true
+			db_reset khomsn-klinic-suite/setup-password || true
+			db_reset khomsn-klinic-suite/admin-password || true
+
+#		fi
+
+	fi
+
+fi
+
+rm -rf /var/cache/debconf/*
+
+# make directory for picture
+
+if [ -d "/var/www/html/image" ]; then
+  # Control will enter here if $DIRECTORY exists.
+    chown www-data:www-data /var/www/html/image
+    chmod 0755 /var/www/html/image
+    chown www-data:www-data /var/www/html/image/*
+    chmod 0755 /var/www/html/image/*
+    
+fi
+
+if [ ! -d "/var/www/html/image" ]; then
+    mkdir /var/www/html/image
+    chown www-data:www-data /var/www/html/image
+    chmod 0755 /var/www/html/image
+  # Control will enter here if $DIRECTORY doesn't exist.
+fi
+
+if [ -d "/var/www/html/image/wallpaper" ]; then
+  # Control will enter here if $DIRECTORY exists.
+    chown www-data:www-data /var/www/html/image/wallpaper
+    chmod 0755 /var/www/html/image/wallpaper
+    chown www-data:www-data /var/www/html/image/wallpaper/*
+    chmod 0755 /var/www/html/image/wallpaper/*
+    
+fi
+
+if [ ! -d "/var/www/html/image/wallpaper" ]; then
+    mkdir /var/www/html/image/wallpaper
+    chown www-data:www-data /var/www/html/image/wallpaper
+    chmod 0755 /var/www/html/image/wallpaper
+  # Control will enter here if $DIRECTORY doesn't exist.
+fi
+
+if [ -d "/var/www/html/public/avatars" ]; then
+  # Control will enter here if $DIRECTORY exists.
+    chown www-data:www-data /var/www/html/public/avatars
+    chmod 0755 /var/www/html/public/avatars
+    chown www-data:www-data /var/www/html/public/avatars/*
+    chmod 0755 /var/www/html/public/avatars/*
+fi
+
+if [ ! -d "/var/www/html/public/avatars" ]; then
+    mkdir /var/www/html/public/avatars
+    chown www-data:www-data /var/www/html/public/avatars
+    chmod 0755 /var/www/html/public/avatars
+  # Control will enter here if $DIRECTORY doesn't exist.
+fi
+
+exit 0
