@@ -10,9 +10,13 @@ $dgname = $_POST['dgname'];
 $size = $_POST['size'];
 $adn = $dname.'-'.$size;
 
-//assign account no. 100000-179999 สินค้า		180000-189999 วัตถุดิบ
+if(empty($_POST['set'])) $_POST['set']=0;
+if(empty($_POST['track'])) $_POST['track']=0;
+if(empty($_POST['disct'])) $_POST['disct']=0;
+if(empty($_POST['prod'])) $_POST['prod']=0;
+if(empty($_POST['RawMat'])) $_POST['RawMat']=0;
 
-$ac = mysqli_query($link, "SELECT * FROM acnumber WHERE (ac_no>=100000 AND ac_no<180000) ORDER BY ac_no ASC");
+//assign account no. 100000-179999 สินค้า		180000-189999 วัตถุดิบ
 
 $mmm=100000;
 $maxm=180000;
@@ -20,6 +24,7 @@ $maxm=180000;
 //assign account no. 180000-189999 วัตถุดิบ
 if ($_POST['RawMat'] == '1' ){ $mmm=180000; $maxm =190000;}
 
+$ac = mysqli_query($link, "SELECT * FROM acnumber WHERE (ac_no>=$mmm AND ac_no<$maxm) ORDER BY ac_no ASC");
 
 while($row = mysqli_fetch_array($ac))
 { 
@@ -98,7 +103,7 @@ $sql_insert ="
 			 `inv_num` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
 			 `volume` INT NOT NULL ,
 			 `price` DECIMAL (7,2) NOT NULL ,
-			 `customer` INT NOT NULL 
+			 `customer` INT NOT NULL DEFAULT '0'
 			) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci; ";
 
 // Now create drug information table
@@ -107,11 +112,11 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
 if($_POST['track'] ==1)
 {
 $id1 = "drug_".$row['id'];
-$sql_add = "ALTER TABLE `$id1` ADD `mkname` VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 ADD `mkplace` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 ADD `mklot` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 ADD `mkanl` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 ADD `mkunit` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ";
+$sql_add = "ALTER TABLE `$id1` ADD `mkname` VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+			 ADD `mkplace` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+			 ADD `mklot` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+			 ADD `mkanl` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+			 ADD `mkunit` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ";
  mysqli_query($link, $sql_add) or die("Insertion Failed:" . mysqli_error($link));
 	
 $id = "tr_drug_".$row['id'];
@@ -225,8 +230,8 @@ else
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">
-							ราคาขาย* <input maxlength="5" size="5" tabindex="6" class="required"  name="sellprice"> บาท
-							&nbsp; &nbsp; &nbsp;จำนวนคงคลังขั้นต่ำ*<input maxlength="4" class="required" size="4" tabindex="7" name="min_limit"><br>
+							ราคาขาย* <input type=number class="typenumber" step=0.01 tabindex="6" name="sellprice"> บาท
+							&nbsp; &nbsp; &nbsp;จำนวนคงคลังขั้นต่ำ*<input  type=number class="typenumber" tabindex="7" name="min_limit"><br>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">

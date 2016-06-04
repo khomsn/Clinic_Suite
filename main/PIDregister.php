@@ -124,7 +124,8 @@ for($i=1;$i<=10;$i++)
 }
 
 $concurdrug = mysqli_real_escape_string($link, $concurdrug);
-
+if(empty($_POST['address2'])) $_POST['address2']=0;
+if(empty($_POST['zipcode'])) $_POST['zipcode']=0;
 // assign insertion pattern
 $sql_insert = "INSERT into `patient_id`
   			(`id`,`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`

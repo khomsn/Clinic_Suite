@@ -1,13 +1,18 @@
 <?php 
 include '../login/dbc.php';
 page_protect();
-$sql = "CREATE TABLE IF NOT EXISTS `staff` (
-`ID` smallint(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+$sql = "
+
+CREATE TABLE IF NOT EXISTS `staff` (
+  `ID` smallint(6) NOT NULL,
   `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `F_Name` text COLLATE utf8_unicode_ci NOT NULL,
   `L_Name` text COLLATE utf8_unicode_ci NOT NULL,
+  `Eprefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `EF_Name` text COLLATE utf8_unicode_ci NOT NULL,
+  `EL_Name` text COLLATE utf8_unicode_ci NOT NULL,
   `gender` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `ctz_id` bigint(13) NOT NULL UNIQUE KEY,
+  `ctz_id` bigint(13) NOT NULL,
   `birthday` date NOT NULL,
   `add_hno` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `add_mu` tinyint(4) NOT NULL,
@@ -19,13 +24,22 @@ $sql = "CREATE TABLE IF NOT EXISTS `staff` (
   `h_tel` varchar(18) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `posit` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `license` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
+  `license` varchar(13) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_id` smallint(6) NOT NULL,
   `regtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `clog` tinyint(4) NOT NULL,
-  `ch_by` smallint(6) NOT NULL,
-  `status` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+  `clog` tinyint(4) NOT NULL DEFAULT '0',
+  `ch_by` smallint(6) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `staff`
+  ADD UNIQUE KEY `ctz_id` (`ctz_id`,`license`,`user_id`),
+  ADD KEY `ID` (`ID`);
+
+ALTER TABLE `staff`
+  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT;
+  
+";
 
 mysqli_query($link, $sql);
 ?>

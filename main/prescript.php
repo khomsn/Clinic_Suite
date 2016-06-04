@@ -90,12 +90,12 @@ for($i=1;$i<=10;$i++)
 		$vl = "rx".$i."v";
 		$rxby = "rxby".$i;
 		mysqli_query($link, "UPDATE $tmp SET
-			`idrx$i` = '',
+			`idrx$i` = '0',
 			`rx$i` = '',
 			`rxg$i` = '',
 			`$us` = '',
-			`$vl` = '',
-			`$rxby` = ''
+			`$vl` = '0',
+			`$rxby` = '0'
 			") or die(mysqli_error($link));
 		//
 		//update reserve volume at drug_id
@@ -131,7 +131,7 @@ if($_POST['register'] == 'บันทึก')
 		if($_SESSION['sflc'])
 		{
 		$sql="SELECT * FROM $ordertable WHERE scode = '$usp'";
-		$result = mysqli_query($link,$sql) or die(mysqli_error());
+		$result = mysqli_query($link,$sql) or die(mysqli_error($link));
 		
 		if($result)
 		{
@@ -185,7 +185,7 @@ if($_POST['register'] == 'บันทึก')
 		  $lname = $_SESSION['ln'];
 		  $checkid = $row['ID'];
 	  }
-	    if($id == 27)
+	    if($id == 27)// Please change ID Here//
 	    {
 	      $sql_insert = "INSERT INTO `pt_to_drug` (`id`, `prefix`, `fname`, `lname`) VALUES ('$id', '$prefix', '$fname', '$lname')";
 	      // Now insert Patient to "pt_to_drug" table

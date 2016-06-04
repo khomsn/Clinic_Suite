@@ -49,6 +49,10 @@ if($_POST['preg'] ==1 )
  $dhist = $dhist.' และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน';
  $pregmonth = $_POST['pregmon'];
 }
+else
+{
+ $pregmonth = 0;
+}
 mysqli_query($linkopd, "UPDATE $pttable SET
 			`dofhis` = '$dhist',
 			`phex` = '$_POST[phex]',
@@ -179,6 +183,10 @@ else
 								    <?php if($preg == 0) echo "checked";?>>ไม่ตั้งครรภ์
 								<?php 
 								}
+								else
+								{
+                                    echo "<input type='hidden' name='preg' value='0'>";
+								}
 								
 								for($i=1;$i<=5;$i++)
 								{
@@ -250,7 +258,7 @@ else
 							{
 								$Wo = $row_settings['weight'];
 								$dxold = $row_settings['ddx'];
-								echo "<input type=hidden name=olddx id='oldDx' value='".$dxold."'>";
+								echo "<input type=hidden name=olddx id='oldDx' value=\"".$dxold."\">";
 							}
 							$ptin = mysqli_query($linkopd, "select * from $pttable where  id = '$rid' ");
 							while ($row_settings = mysqli_fetch_array($ptin))

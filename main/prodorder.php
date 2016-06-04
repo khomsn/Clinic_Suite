@@ -162,6 +162,8 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close')
 		$usp = $rxuses[$i];
 		$vlp = $rxv[$i];
 		$svlp = $rxsv[$i];
+		if(empty($vlp)) $vlp=0;
+		if(empty($svlp)) $svlp=0;
 		mysqli_query($link, "UPDATE $tmp SET
 			`idrx$i` = '$idp',
 			`rx$i` = '$rxp',

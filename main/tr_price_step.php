@@ -1,8 +1,10 @@
 <?php 
 include '../login/dbc.php';
 page_protect();
-$sql ="CREATE TABLE IF NOT EXISTS `trpstep` (
-`id` int(11) NOT NULL,
+$sql ="
+
+CREATE TABLE IF NOT EXISTS `trpstep` (
+  `id` int(11) NOT NULL,
   `drugid` int(11) NOT NULL,
   `firstone` tinyint(4) NOT NULL,
   `init_pr` int(11) NOT NULL,
@@ -10,7 +12,18 @@ $sql ="CREATE TABLE IF NOT EXISTS `trpstep` (
   `sec_pr` int(11) NOT NULL,
   `tristep` tinyint(4) NOT NULL,
   `tri_pr` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal' AUTO_INCREMENT=1 ;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal';
+
+ALTER TABLE `trpstep`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `drugid` (`drugid`),
+  ADD KEY `id` (`id`);
+
+ALTER TABLE `trpstep`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+";
 mysqli_query($link, $sql);
 
 

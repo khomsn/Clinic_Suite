@@ -5,23 +5,29 @@ unset($_SESSION['LLSName']);
 unset($_SESSION['SLSName']);
 unset($_SESSION['SetNum']);
 
-$sql= "CREATE TABLE IF NOT EXISTS `lab` (
+$sql= "
+
+CREATE TABLE IF NOT EXISTS `lab` (
   `id` smallint(6) NOT NULL,
-  `L_Name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `S_Name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `L_Set` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `L_specimen` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `Lrunit` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `normal_r` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `r_min` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `r_max` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `Linfo` text COLLATE utf8_unicode_ci NOT NULL,
-  `price` smallint(6) NOT NULL,
-  `volume` int(11) NOT NULL,
-  `ltr` tinyint(1) NOT NULL,
-  UNIQUE KEY `id` (`id`)
+  `L_Name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `S_Name` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `L_Set` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `L_specimen` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Lrunit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `normal_r` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `r_min` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `r_max` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Linfo` text COLLATE utf8_unicode_ci,
+  `price` smallint(6) NOT NULL DEFAULT '0',
+  `volume` int(11) NOT NULL DEFAULT '0',
+  `ltr` char(1) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `lab`
+  ADD UNIQUE KEY `id` (`id`);
+  
 ";
+
 mysqli_query($link, $sql);
 ?>
 <!DOCTYPE html>

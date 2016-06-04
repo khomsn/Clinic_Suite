@@ -2,7 +2,7 @@
 include '../login/dbc.php';
 page_protect();
 
-if($_POST['register'] == 'ตกลง') 
+if(($_POST['register'] == 'ตกลง')  AND (ltrim($_POST['name']!== '')))
 { 
 
 $email = mysqli_real_escape_string($link,$_POST['email']);
@@ -38,15 +38,18 @@ $row = mysqli_fetch_array($result);
 
 $id = "sp_".$row['id'];
 $sql_insert ="
-	      CREATE TABLE `$id` (
-	      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-	      `date` DATE NOT NULL ,
-	      `inid` VARCHAR(10) COLLATE utf8_unicode_ci NOT NULL ,
-	      `inv_num` VARCHAR( 20 ) NOT NULL ,
-	      `price` DECIMAL (9,2) NOT NULL ,
-	      `payment` TINYINT( 1 ) NOT NULL ,
-	      `duedate` DATE NOT NULL 
-	      ) ENGINE = MYISAM ;";
+
+CREATE TABLE `$id` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `date` date NOT NULL,
+  `inid` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `inv_num` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `price` decimal(9,2) NOT NULL,
+  `payment` tinyint(1) NOT NULL,
+  `duedate` date DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+";
 
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));

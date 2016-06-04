@@ -7,7 +7,7 @@ $filter = mysqli_query($link, "select * from rawmat ");
 	{
 		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
 	}	
-$filter = mysqli_query($link, "select * from rawmat  ORDER BY `rmtype` ASC ,`rawcode` ASC ,`rawname` ASC");
+$filter = mysqli_query($link, "select * from rawmat  WHERE `volume`<=0 ORDER BY `rmtype` ASC ,`rawcode` ASC ,`rawname` ASC");
 
 if($_POST['register'] == 'ลบข้อมูล') 
 { 

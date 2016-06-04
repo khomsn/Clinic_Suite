@@ -5,13 +5,23 @@ page_protect();
 $err = array();
 $msg = array();
 
-$sql = "CREATE TABLE IF NOT EXISTS `maskid` (
-`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `drugid` int(11) NOT NULL,
- `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
- `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
- `mask`  BOOLEAN NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+$sql = "
+
+CREATE TABLE IF NOT EXISTS `maskid` (
+  `id` int(11) NOT NULL,
+  `drugid` int(11) NOT NULL,
+  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `mask` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `maskid`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `maskid`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+";
 
 mysqli_query($link, $sql);
 

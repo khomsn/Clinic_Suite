@@ -5,7 +5,7 @@
 <?php 
 if ($_SESSION['user_accode']%13==0)
 echo "<a href=../main/staff.php>Staff</a><br><br>";
-if ($_SESSION['user_accode']%11==0)
+if (($_SESSION['user_accode']%11==0) AND (!empty($_SESSION['sflc'])))
 {
 echo "<a href=../main/ordertemplate.php>Order Template</a><br><br>";
 echo "<a href=../main/catcenable.php>DCC & DDI</a><br><br>";

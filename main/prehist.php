@@ -14,7 +14,7 @@ if($_POST['register'] == 'บันทึก')
 
 //$date = date("Y-m-d");
 //check for "csf" if blank don't insert
-if (strlen(trim($_POST[csf])) > 0)
+if (ltrim($_POST['csf'])!=="")
 {
 $medcert = 0;
 
@@ -22,6 +22,7 @@ if($_POST['medc'])
 {
   $medcert = $_POST['medcert'];
 }
+
 //check staff
 $pstaff=mysqli_fetch_array(mysqli_query($link, "select staff from patient_id where id='$id'"));
 $staff = $pstaff[0];//พนักงาน
@@ -43,6 +44,13 @@ if (ltrim($row_settings['csf'])==="")
     mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 
     // assign insertion pattern
+    if(empty($_POST['weight'])) $_POST['weight']=0;
+    if(empty($_POST['temp'])) $_POST['temp']=0;
+    if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
+    if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
+    if(empty($_POST['hr'])) $_POST['hr']=0;
+    if(empty($_POST['rr'])) $_POST['rr']=0;
+  
     $sql_insert = "INSERT into `pt_$id`
 			    (`date`,`weight`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
 			VALUES
@@ -87,9 +95,9 @@ if($_POST['register']=='ส่งเข้าห้องตรวจ')
 
 	  $sql_insert = "INSERT INTO `pt_to_doc` (`ID`, `prefix`, `F_Name`, `L_Name`) VALUES ('$id', '$_SESSION[prefix]', '$_SESSION[fname]', '$_SESSION[lname]')";
 	  // Now insert Patient to "patient_id" table
-	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	  mysqli_query($link, $sql_insert);
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$id' ") or die(mysqli_error($link));
+	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$id' ");
 
 
 
@@ -136,7 +144,6 @@ else
       $preg=$rid1['preg'];
       $hrec=$rid1['csf'];
       $medcert=$rid1['medcert'];
-      $hrec=$rid1['csf'];
       $pricepolicy=$rid1['pricepolicy'];
     }
     if(!empty($hrec))
@@ -178,9 +185,13 @@ else
 						//get pregdate for fup
 						$pregmonth = $row_settings['fup'];
 						?>
-						<input type="radio" name="preg" class="required" value="1" <?php if(($preg == 1) OR ($pregmonth != 0))  echo "checked";?>>ตั้งครรภ์
-						<input type="radio" name="preg" class="required" value="0" <?php if(empty($preg) or ($preg == 0)) echo "checked";?>>ไม่ตั้งครรภ์
+						<input type="radio" name="preg" class="required" value="1" <?php if(($preg == 1) OR ($pregmonth > 0)){echo "checked"; $preg=1;} ?>>ตั้งครรภ์<?php if($pregmonth!=0) echo "<sup>".$pregmonth."</sup>";?>
+						<input type="radio" name="preg" class="required" value="0" <?php if((empty($preg)) OR ($preg == 0) OR ($pregmonth==0) ) echo "checked";?>>ไม่ตั้งครรภ์
 						<?php 
+						}
+						else
+						{
+                            echo "<input type='hidden' name='preg' value='0'>";
 						}
 					}				
 							?>
@@ -209,7 +220,7 @@ else
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align:center;"> <input type="checkbox" name="medc" value="1" <?php if($medcert != 0) echo "checked";?>> ใบรับรองแพทย์ + ใบเสร็จรับเงิน <input type=radio name=medcert value=1  <?php if($medcert == 1) echo "checked";?>>ตรวจโรคสมัครงาน <input type=radio name=medcert value=2 <?php if($medcert != 1 ) echo "checked";?>>ยืนยันตรวจจริง
 							<hr style="width: 80%; height: 2px;"><br>
-							<input type="radio" name="policy" value="2" <?php if($pricepolicy == 2 ) echo "checked";?>>ตรวจโรค
+							<input type="radio" name="policy" value="2" <?php if($pricepolicy == 2 or $pricepolicy == "" or $pricepolicy == 0) echo "checked";?>>ตรวจโรค
 							<input type="radio" name="policy" value="3" <?php if($pricepolicy == 3 ) echo "checked";?>>ทำหัตการ
 							<input type="radio" name="policy" value="4" <?php if($pricepolicy == 4 ) echo "checked";?>>มาตามนัด</div>
 						</td>

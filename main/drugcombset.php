@@ -2,15 +2,26 @@
 include '../login/dbc.php';
 page_protect();
 
-$sql="CREATE TABLE IF NOT EXISTS `drugcombset` (
-`id` tinyint(4) NOT NULL,
+$sql="
+
+CREATE TABLE IF NOT EXISTS `drugcombset` (
+  `id` tinyint(4) NOT NULL,
   `drugidin` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
   `invol` tinyint(4) NOT NULL,
   `drugidout` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `outvol` decimal(3,1) NOT NULL,
-  `outsetpoint` decimal(3,1) NOT NULL,
-  `outcount` tinyint(4) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+  `outsetpoint` decimal(4,1) NOT NULL,
+  `outcount` decimal(4,1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `drugcombset`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
+
+ALTER TABLE `drugcombset`
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
+  
+";
 mysqli_query($link, $sql);
 
 if($_POST['set'] == 'ReSet')

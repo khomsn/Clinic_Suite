@@ -3,8 +3,10 @@ include '../login/dbc.php';
 page_protect();
 
 if($_POST['add'] == 'เพิ่ม') 
-{ 
-if($_POST['type']!=0)
+{
+
+
+if(($_POST['type']!=0) AND (ltrim($_POST['tname']!== '')))
 {
 	$dtype = mysqli_query($link, "SELECT * FROM acnumber");
 	/* 

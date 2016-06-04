@@ -17,7 +17,8 @@ $page_limit = 10;
 
 $host  = $_SERVER['HTTP_HOST'];
 $host_upper = strtoupper($host);
-$login_path = @ereg_replace('admin','',dirname($_SERVER['PHP_SELF']));
+//$login_path = @ereg_replace('admin','',dirname($_SERVER['PHP_SELF']));echo "3";preg_replace_callback
+$login_path = @preg_replace_callback('admin','',dirname($_SERVER['PHP_SELF']));
 $path   = rtrim($login_path, '/\\');
 
 // filter GET values
@@ -76,6 +77,7 @@ if(!empty($u)) {
  exit();
 }
 
+
 if($_POST['doSave'] == 'Save')
 {
 
@@ -126,7 +128,6 @@ $rs_total_pending = mysqli_query($link, "select count(*) as tot from users where
 list($total_pending) = mysqli_fetch_row($rs_total_pending);
 list($all) = mysqli_fetch_row($rs_all);
 list($active) = mysqli_fetch_row($rs_active);
-
 
 ?>
 <html>

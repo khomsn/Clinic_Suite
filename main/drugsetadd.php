@@ -137,7 +137,7 @@ else
 											echo "<input type='hidden' name=cat"; echo $row[id]; echo " value='"; echo  $row['cat']; echo "'>";
 											echo "</td>";
 											echo "<td>";
-											echo "<input type='text' size= 10 maxlength = 5 name=vol"; echo $row[id]; echo " value=1"; echo ">";
+											echo "<input type='number' class='typenumber' min='1' name=vol"; echo $row[id]; echo " value=1"; echo ">";
 											echo "</td></tr>";
 								}	
 							?>

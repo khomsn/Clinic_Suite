@@ -19,7 +19,7 @@ $pin = mysqli_query($link, "select MAX(id) from $doctemplate");
 $rid = mysqli_fetch_array($pin);
 $i = $rid[0];
 
-if($_POST['addmore']=='+')
+if(($_POST['addmore']=='+' ) AND (ltrim($_POST['shortcut']!== '')) AND (ltrim($_POST['fulltext']!== '')))
 {
   
 // check for duplicated record

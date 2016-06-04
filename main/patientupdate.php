@@ -90,7 +90,9 @@ for($i=1;$i<=10;$i++)
 }
 
 $concurdrug = mysqli_real_escape_string($link, $concurdrug);
-
+if(empty($_POST['address2'])) $_POST['address2']=0;
+if(empty($_POST['zipcode'])) $_POST['zipcode']=0;
+if(empty($_POST['monk'])) $_POST['monk']=0;
 // assign insertion pattern WHERE `patient_id`.`id` =1 LIMIT 1 ;
 $sql_insert = "UPDATE `patient_id` SET 
 				`ctz_id` = '$ctzidin',
@@ -390,7 +392,7 @@ else
 									<option value="11">พย</option>
 									<option value="12">ธค</option>
 									</select>
-									พ.ศ. <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="2457" max="2657" step="1" value=<?php echo $yr;?> >
+									พ.ศ. <input tabindex="8" name="year" type="number" required min="2457" max="2657" step="1" class="typenumber" value=<?php echo $yr;?> >
 									<?php 			
 									}
 									else

@@ -1,7 +1,7 @@
 <?php
 //check if Pt is in Pay station
 	$id = $_SESSION['patcash'];
-	$result1 = mysqli_query($link, "SELECT id FROM  pt_to_drug WHERE ptid = '$id'");
+	$result1 = mysqli_query($link, "SELECT id FROM  pt_to_drug WHERE id = '$id'");
 	if(mysqli_num_rows($result1) == 0) 
 	{
 	  unset($_SESSION['patcash']);
@@ -322,6 +322,7 @@
 	}
 	$diags = $_SESSION['diag'];
 	$diags = mysqli_real_escape_string($link, $diags);
+	if(empty($tty)) $tty=0;
 	$sql_insert = " INSERT INTO `sell_account` ( `day` , `month` ,`year` ,`ctmid` , `ctmacno` , `cash` , `own` , `total`, `ddx`, `tty`, `vsdate`)
 									VALUES ('$sd', '$sm', '$sy', '$ctmid', '$ctmacno', '$cashtoday', '$own', '$buytoday', '$diags', '$tty', '$visitdt');";
 	// Now insert Patient to "patient_id" table

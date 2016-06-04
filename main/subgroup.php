@@ -2,7 +2,7 @@
 include '../login/dbc.php';
 page_protect();
 
-if($_POST['add'] == 'เพิ่ม') 
+if(($_POST['add'] == 'เพิ่ม')  AND (ltrim($_POST['tname']!== '')))
 { 
 
 	// assign insertion pattern

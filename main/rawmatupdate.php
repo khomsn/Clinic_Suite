@@ -85,7 +85,7 @@ while ($row_settings = mysqli_fetch_array($stock_in))
 ?> Unit <select name=unit><option <?php if($row_settings['sunit']=='ml') echo "selected";?> value="ml">ml</option><option <?php if($row_settings['sunit']=='gram') echo "selected";?> value="gram">gram</option><option <?php if($row_settings['sunit']=='กระปุก') echo "selected";?> value="กระปุก">กระปุก</option><option <?php if($row_settings['sunit']=='กล่อง') echo "selected";?> value="กล่อง">กล่อง</option><option <?php if($row_settings['sunit']=='ซอง') echo "selected";?> value="ซอง">ซอง</option><option <?php if($row_settings['sunit']=='Set') echo "selected";?> value="Set">Set</option><option <?php if($row_settings['sunit']=='ขวด') echo "selected";?> value="ขวด">ขวด</option><option <?php if($row_settings['sunit']=='ลัง') echo "selected";?> value="ลัง">ลัง</option></select>
       <hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
       จำนวนคงคลังขั้นต่ำ
-      <input maxlength="4" size="4" name="lowlimit" value="<?php
+      <input class="typenumber" type=number maxlength="4" size="4" name="lowlimit" value="<?php
    echo $row_settings['lowlimit'];
    ?>"><br>
 </div><hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">

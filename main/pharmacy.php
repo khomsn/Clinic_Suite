@@ -2,20 +2,22 @@
 include '../login/dbc.php';
 page_protect();
 
-$sql="CREATE TABLE IF NOT EXISTS `drug_id` (
-`id` smallint(6) NOT NULL,
+$sql="
+
+CREATE TABLE IF NOT EXISTS `drug_id` (
+  `id` smallint(6) NOT NULL,
   `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `dgname` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `uses` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `indication` text COLLATE utf8_unicode_ci,
   `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `volume` smallint(6) NOT NULL,
-  `volreserve` smallint(6) NOT NULL,
-  `sellprice` float(8,2) NOT NULL,
-  `buyprice` float(7,2) NOT NULL,
-  `min_limit` smallint(4) NOT NULL,
-  `typen` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `groupn` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `subgroup` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `volume` smallint(6) NOT NULL DEFAULT '0',
+  `volreserve` smallint(6) NOT NULL DEFAULT '0',
+  `sellprice` float(8,2) NOT NULL DEFAULT '0.00',
+  `min_limit` smallint(4) NOT NULL DEFAULT '0',
+  `typen` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `groupn` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `subgroup` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `seti` tinyint(1) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
   `track` tinyint(1) NOT NULL DEFAULT '0',
@@ -23,10 +25,20 @@ $sql="CREATE TABLE IF NOT EXISTS `drug_id` (
   `prod` tinyint(1) NOT NULL DEFAULT '0',
   `RawMat` tinyint(1) NOT NULL DEFAULT '0',
   `cat` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `unit` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `candp` tinyint(1) NOT NULL,
-  `staffcanorder` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+  `dinteract` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `unit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `candp` tinyint(1) NOT NULL DEFAULT '0',
+  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `drug_id`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `drug_id`
+  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
+  
+";
+
 mysqli_query($link, $sql);
 ?>
 <!DOCTYPE html>

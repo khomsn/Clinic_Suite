@@ -21,6 +21,14 @@ if($_POST['doRegister'] == 'แก้ไข')
 	$gender = mysqli_real_escape_string($link, $_POST['Gender']);
 
 	$log2 = $_POST['logged'] + 1;
+	
+    $day = $_POST['day'];
+    $month = $_POST['month'];
+    $byear = $_POST['year'];
+    $year = $byear - 543;
+   // format birthday for mysql
+    $birthday = $year.'-'.$month.'-'.$day;
+
 
 	// Then get user ID to process to other step.
 	$result = mysqli_query($link, "SELECT * FROM users WHERE user_name='$_POST[user_name]'");
@@ -36,8 +44,10 @@ if($_POST['doRegister'] == 'แก้ไข')
 					`F_Name` = '$F_Name',
 					`L_Name` = '$L_Name',
 					`Eprefix` = '$Eprefix',
-					`Efname` = '$EF_Name',
-					`Elname` = '$EL_Name',
+					`EF_Name` = '$EF_Name',
+					`EL_Name` = '$EL_Name',
+					`gender` = '$gender',
+					`birthday` = '$birthday',
 					`license` = '$_POST[license]',
 					`email` = '$_POST[email]',
 					`add_hno` = '$_POST[add_hno]',
@@ -191,8 +201,8 @@ else
 									$F_Name = $row['F_Name'];
 									$L_Name = $row['L_Name'];
 									$Eprefix = $row['Eprefix'];
-									$EF_Name = $row['Efname'];
-									$EL_Name = $row['Elname'];
+									$EF_Name = $row['EF_Name'];
+									$EL_Name = $row['EL_Name'];
 									$gender = $row['gender'];
 									$birthday =$row['birthday'];
 									$license = $row['license'];
@@ -221,19 +231,84 @@ else
 								class="required" type="text"  style="email: 35px;" value="<?php echo $F_Name; ?>">
 									&nbsp; นามสกุล:*  <input tabindex="2" name="L_Name" style="email: 35px;" size="25" class="required" type="text"
 									value="<?php echo $L_Name; ?>">
-									&nbsp;เพศ: <?php echo $gender; 
-										echo "<input name='Gender' type='hidden' value='";
-										echo $gender;
-										echo "'>";
-									?>
 									<br>*<input  align="center" name="Eprefix" size="5" type="text" id="Epref" tabindex=1 value=<?php echo $Eprefix;?>>Fname:*<input  align="center" tabindex="1" name="EF_Name" size="20" 
 								class="required" type="text"  style="email: 35px;" value="<?php echo $EF_Name; ?>">
 									&nbsp; Lname:*  <input tabindex="2" name="EL_Name" style="email: 35px;" size="25" class="required" type="text"
 									value="<?php echo $EL_Name; ?>">
 									<br><br>
-									เลขประจำตัวประชาชน: 
-									<?php 
-									if($ctzid < 1000000000000)
+									<?php
+									if($_SESSION['user_accode']%13==0 AND $_SESSION['user_level'] == 5)
+									{
+									   echo "&nbsp;เพศ: ";
+									   echo "<input type=radio name=Gender value='ชาย'";
+									   if ($gender=='ชาย') echo "checked";
+									   echo ">ชาย<input type=radio  name=Gender value='หญิง'"; if ($gender=='หญิง') echo "checked"; echo ">หญิง";
+									echo "<br><br>เลขประจำตัวประชาชน: "; 
+										echo "<input name='ctz_id' tabindex='4' type='text' size='18' maxlength='13' value='";
+										echo $ctzid;
+										echo "'>";
+										?>
+									วันเกิด: วันที่&nbsp;
+									<select name="day">
+									<option value="<?php echo $day;?>" selected><?php echo $day;?></option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+									</select>
+									&nbsp;เดือน &nbsp;
+									<select name="month">
+									<option value="<?php echo $mon;?>" selected><?php if($mon==1) echo "มค"; if($mon==2) echo "กพ"; if($mon==3) echo "มีค"; if($mon==4) echo "เมย"; if($mon==5) echo "พค"; if($mon==6) echo "มิย"; if($mon==7) echo "กค"; if($mon==8) echo "สค"; if($mon==9) echo "กย"; if($mon==10) echo "ตค"; if($mon==11) echo "พย"; if($mon==12) echo "ธค"; ?></option>
+									<option value="1">มค</option>
+									<option value="2">กพ</option>
+									<option value="3">มีค</option>
+									<option value="4">เมย</option>
+									<option value="5">พค</option>
+									<option value="6">มิย</option>
+									<option value="7">กค</option>
+									<option value="8">สค</option>
+									<option value="9">กย</option>
+									<option value="10">ตค</option>
+									<option value="11">พย</option>
+									<option value="12">ธค</option>
+									</select>
+									พ.ศ. <input tabindex="8" name="year" type="number" required min="2457" max="2657" step="1" class="typenumber" value=<?php echo $yr;?> >
+									<?php 			
+									}
+									else
+									{
+									   echo "&nbsp;เพศ: ".$gender; 
+										echo "<input name='Gender' type='hidden' value='";
+										echo $gender;
+										echo "'>";
+									echo "<br><br>เลขประจำตัวประชาชน: "; 									if($ctzid < 1000000000000)
 									{
 										echo "<input name='ctz_id' tabindex='4' type='text' size='18' maxlength='13' value='";
 										echo $ctzid;
@@ -248,7 +323,14 @@ else
 									}	
 									echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 									?>
-									วันเกิด: วันที่&nbsp;<?php echo $day.'-'.$mon.'-'.$yr; ?>
+									วันเกิด: วันที่&nbsp;<?php 
+									echo $day.'-'.$mon.'-'.$yr;
+									echo "<input type=hidden name=day value=".$day.">";
+									echo "<input type=hidden name=month value=".$mon.">";
+									echo "<input type=hidden name=year value=".$yr.">";
+									
+									}
+									?>
 									<br>
 									<hr style="width: 100%; email: 2px;">email:
 									<input tabindex="8" name="email" size="20" maxlength="20" type="text" value="<?php echo $email; ?>">

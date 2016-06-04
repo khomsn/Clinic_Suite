@@ -42,18 +42,18 @@ for($i=1;$i<=4;$i++)
 		$trby ="trby".$i;
  
 		mysqli_query($link, "UPDATE $tmp SET
-			`$idtrp` = '',
+			`$idtrp` = '0',
 			`$trp` = '',
-			`$trvp` = '',
+			`$trvp` = '0',
 			`$tr1o1p` = '',
-			`$tr1o1vp` = '',
+			`$tr1o1vp` = '0',
 			`$tr1o2p` = '',
-			`$tr1o2vp` = '',
+			`$tr1o2vp` = '0',
 			`$tr1o3p` = '',
-			`$tr1o3vp` = '',
+			`$tr1o3vp` = '0',
 			`$tr1o4p` = '',
-			`$tr1o4vp` = '',
-			`$trby` = ''
+			`$tr1o4vp` = '0',
+			`$trby` = '0'
 			") or die(mysqli_error($link));
 		// go on to other step
 		header("Location: treatment.php"); 	

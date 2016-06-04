@@ -35,10 +35,10 @@ if($_POST['add'] == 'เพิ่ม')
 	  $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]'");
 	  while ($row2 = mysqli_fetch_array($ptin))
 		  {
-                          $_SESSION['dgname'.$j]= $row2['dgname'];
-			  $_SESSION['size'.$j] =  $row2['size'];
-                          $_SESSION['dname'.$j]= $row2['dname'];
-                          $_SESSION['unit'.$j] = $row2['unit'];
+            $_SESSION['dgname'.$j]= $row2['dgname'];
+            $_SESSION['size'.$j] =  $row2['size'];
+            $_SESSION['dname'.$j]= $row2['dname'];
+            $_SESSION['unit'.$j] = $row2['unit'];
 			  
 		  }
       //
@@ -135,7 +135,6 @@ if($_POST['doSave'] == 'Save')
                 while ($row_settings = mysqli_fetch_array($stock_in))
                 {
                         $volume = $row_settings['volume']; //get volume to update
-                        $pinold = $row_settings['buyprice']; //get buyprice to update
                         $dacno = $row_settings['ac_no']; //get account no into stock 
                         $prod = $row_settings['prod'];
                 }
@@ -152,20 +151,18 @@ if($_POST['doSave'] == 'Save')
 
                 // Update drug_id at volume and buyprice.
                 $upvol = $volume + $buyvolume;
-                // buyprice max for stock
-                if ($pinold<=($_POST['price']/$buyvolume)) $bprice = $_POST['price']/$buyvolume;
-                else $bprice = $pinold;
 
-                mysqli_query($link, "UPDATE drug_id SET `volume` = '$upvol', `buyprice` = '$bprice' WHERE `id` = '$id'");	
+                mysqli_query($link, "UPDATE drug_id SET `volume` = '$upvol' WHERE `id` = '$id'");	
 
                 //for own product 
                 if($prod == '1')
                 {
                     if($buyprice==0) goto Next1;
-                                                $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
-                                                                    VALUES  (now(),'$dacno','180000','สินค้าจากวัตถุดิบ','$buyprice','c','p','$_SESSION[user_id]')";
-                                                // Now insert Drug order information to "drug_#id" table
-                                                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                    
+                    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
+                                        VALUES  (now(),'$dacno','180000','สินค้าจากวัตถุดิบ','$buyprice','c','p','$_SESSION[user_id]')";
+                    // Now insert Drug order information to "drug_#id" table
+                    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
                 }
                 //for product not register in supplier and account
 
@@ -215,11 +212,14 @@ if($_POST['doSave'] == 'Save')
                                         {$sup_ac = $rowac['ac_no'];}
                                 }
                                 // assign insertion pattern
+                                if($buyprice>0)
+                                {
                                 $detail ="ซื้อ ".$_POST['supplier'].' '.$_POST['inv_num'];
                                 $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`bors`,`recordby`)
                                                     VALUES  (now(),'$dacno','$sup_ac','$detail','$_POST[inv_num]','$buyprice','c','b','$_SESSION[user_id]')";
                                 // Now insert Drug order information to "drug_#id" table
                                 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                                }
                           }      
 
                 }

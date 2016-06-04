@@ -79,15 +79,18 @@ $row = mysqli_fetch_array($result);
 //$_SESSION['rawmat']= $row['id'];
 $id = "rawmat_".$row['id'];
 $sql_insert ="
-			CREATE TABLE `$id` (
-			`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-			 `date` DATE NOT NULL ,
-			 `supplier` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 `inv_num` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 `volume` INT NOT NULL ,
-			 `price` DECIMAL (7,2) NOT NULL ,
-			 `customer` INT NOT NULL 
-			) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci; ";
+
+CREATE TABLE `$id` (
+`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`date` DATE NOT NULL ,
+`supplier` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+`inv_num` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+`volume` INT NOT NULL ,
+`price` DECIMAL (7,2) NOT NULL ,
+`customer` INT NOT NULL DEFAULT '0'
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci; 
+
+";
 
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -157,7 +160,7 @@ else
 							</div>
 							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;"><br>
 							<div style="text-align: center;">
-							จำนวนคงคลังขั้นต่ำ*<input maxlength="4" class="required" size="4" tabindex="6" name="min_limit"><br>
+							จำนวนคงคลังขั้นต่ำ*<input class="typenumber" type="number" tabindex="6" name="min_limit" value=0><br>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 						</td>

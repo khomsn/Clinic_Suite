@@ -138,10 +138,10 @@ else
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">
-							ราคาขาย: <input maxlength="7" size="5" name="sellprice" value="<?php	echo $row_settings['sellprice']; ?>"> บาท
+							ราคาขาย: <input type=number class="typenumber" step=0.01  name="sellprice" value="<?php	echo $row_settings['sellprice']; ?>"> บาท
 							&nbsp; &nbsp; &nbsp;
 							จำนวนคงคลังขั้นต่ำ
-							<input maxlength="4" size="4" name="min_limit" value="<?php
+							<input type=number class="typenumber" name="min_limit" value="<?php
 									echo $row_settings['min_limit'];
 							?>"><br>
 							</div>

@@ -1,3 +1,11 @@
+khomsn-klinic-suite (59.6-04) stable; urgency=low
+  
+    * Version 25590604: Update Medical Certification.
+    
+khomsn-klinic-suite (59.6-03) stable; urgency=low
+  
+    * Version 25590603: Update code and mysql script for mysql server 5.7 and Kubuntu 16.04 LTS.
+    
 khomsn-klinic-suite (59.6-01) unstable; urgency=low
   
     * Version 25590601: Include build script for .deb file.

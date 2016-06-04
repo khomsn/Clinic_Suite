@@ -222,8 +222,8 @@ else
 								<tr>
 								<td style="text-align: left;">*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 >ชื่อ:*<input  align="center" tabindex="2" name="fname" size="20" class="required" type="text" >
 									&nbsp; นามสกุล:*  <input tabindex="3" name="lname" size="20" class="required" type="text" ><br>
-									*<input  align="center" name="Eprefix" size="5" type="text" id="epref" tabindex=1 >FName:*<input  align="center" tabindex="2" name="Efname" size="20" class="required" type="text" >
-									&nbsp; LName:*  <input tabindex="3" name="Elname" size="20" class="required" type="text" >
+									*<input  align="center" name="Eprefix" size="5" type="text" id="epref">FName:*<input  align="center" name="Efname" size="20" class="required" type="text" >
+									&nbsp; LName:*  <input name="Elname" size="20" class="required" type="text" >
 									&nbsp;เพศ*<input type="radio" tabindex="4" name="Gender" class="required" value="ชาย">ชาย 
 												 <input type="radio" tabindex="4" name="Gender" class="required" value="หญิง">หญิง
 									<br>
@@ -279,7 +279,7 @@ else
 									<option value="11">พย</option>
 									<option value="12">ธค</option>
 									</select>
-									พ.ศ. <input tabindex="8" name="year" size="5" maxlength="4" type="number" min=2447 step=1><br>
+									พ.ศ. <input tabindex="8" name="year" type="number" min=2447 step=1 class="typenumber"><br>
 									<hr style="width: 100%; height: 2px;">ตำแหน่งงาน:
 									<input type="radio" tabindex="9" name="Posit" class="required" value="แพทย์">แพทย์
 									<input type="radio" tabindex="9" name="Posit" class="required" value="พยาบาล">พยาบาล

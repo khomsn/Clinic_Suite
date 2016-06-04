@@ -545,6 +545,8 @@ if($_POST['todo']=='Close' or $_POST['todo']=='OK')
 		$usp = $rxuses[$i];
 		$vlp = $rxv[$i];
 		$svlp = $_SESSION['svol'.$i];
+		if(empty($vlp)) $vlp=0; //mysql not null
+		if(empty($svlp)) $svlp=0; //mysql not null
 		mysqli_query($link, "UPDATE $tmp SET
 			`idrx$i` = '$idp',
 			`rx$i` = '$rxp',

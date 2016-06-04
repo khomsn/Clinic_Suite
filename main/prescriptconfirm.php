@@ -24,12 +24,12 @@ for($i=1;$i<=10;$i++)
 		$vl = "rx".$i."v";
 		$rxby = "rxby".$i;
 		mysqli_query($link, "UPDATE $tmp SET
-			`idrx$i` = '',
+			`idrx$i` = '0',
 			`rx$i` = '',
 			`rxg$i` = '',
 			`$us` = '',
-			`$vl` = '',
-			`$rxby` = ''
+			`$vl` = '0',
+			`$rxby` = '0'
 			") or die(mysqli_error($link));
 		//
 		//update reserve volume at drug_id

@@ -1,18 +1,30 @@
 <?php 
 include '../login/dbc.php';
 page_protect();
-$sql = "CREATE TABLE IF NOT EXISTS `rawmat` (
-`id` tinyint(4) NOT NULL,
+$sql = "
+
+CREATE TABLE IF NOT EXISTS `rawmat` (
+  `id` tinyint(4) NOT NULL,
   `rawcode` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `rawname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `sunit` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `lowlimit` smallint(6) NOT NULL,
-  `volume` smallint(6) NOT NULL,
+  `lowlimit` smallint(6) NOT NULL DEFAULT '0',
+  `volume` smallint(6) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
-  `rmfpd` tinyint(1) NOT NULL,
+  `rmfpd` tinyint(1) NOT NULL DEFAULT '0',
   `rmtype` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'other'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `rawmat`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
+  
+ALTER TABLE `rawmat`
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
+
+";
+
 mysqli_query($link, $sql);
 
 ?>

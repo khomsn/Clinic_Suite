@@ -74,30 +74,6 @@ else
 {
 $fdout = 1;
 }
-/*
-if(!empty($dl1)) {$fgo1 = 'groupn != "'.$dl1.'"'; $fgo = $fgo1;}
-if(!empty($dl2)) {$fgo2 = 'groupn != "'.$dl2.'"'; $fgo = $fgo." AND ".$fgo2;}
-if(!empty($dl3)) {$fgo3 = 'groupn != "'.$dl3.'"'; $fgo = $fgo." AND ".$fgo3;}
-if(!empty($dl4)) {$fgo4 = 'groupn != "'.$dl4.'"'; $fgo = $fgo." AND ".$fgo4;}
-if(!empty($dl5)) {$fgo5 = 'groupn != "'.$dl5.'"'; $fgo = $fgo." AND ".$fgo5;}
-
-if (!empty($fdo) and !empty($fgo))
-{
-$fdout = "(".$fdo.") AND (".$fgo.")";
-}
-elseif(!empty($fdo) and empty($fgo))
-{
-$fdout = $fdo;
-}
-elseif(empty($fdo) and !empty($fgo))
-{
-$fdout = $fgo;
-}
-else
-{
-$fdout = 1;
-}
-*/
 
 
 $filter = mysqli_query($link, "select * from drug_id ");		
@@ -184,6 +160,11 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close' )
 		$tr1o3vp ="tr".$i."o3v";
  		$tr1o4p = "tr".$i."o4";
 		$tr1o4vp ="tr".$i."o4v";
+		//check for empty volume then change to 0.
+		if(empty($Vol1[$i])) $Vol1[$i]=0;
+		if(empty($Vol2[$i])) $Vol2[$i]=0;
+		if(empty($Vol3[$i])) $Vol3[$i]=0;
+		if(empty($Vol4[$i])) $Vol4[$i]=0;
  
 		mysqli_query($link, "UPDATE $tmp SET
 			`$idtrp` = '$idtr[$i]',

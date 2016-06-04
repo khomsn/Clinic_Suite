@@ -1,11 +1,21 @@
 <?php 
 include '../login/dbc.php';
 page_protect();
-$sql = "CREATE TABLE IF NOT EXISTS `reccompany` (
-`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+$sql = "
+CREATE TABLE IF NOT EXISTS `reccompany` (
+  `id` int(11) NOT NULL,
   `comname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `comdt` varchar(300) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `reccompany`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
+
+ALTER TABLE `reccompany`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+";
 
 mysqli_query($link, $sql);
 
@@ -16,7 +26,7 @@ $pin = mysqli_query($link, "select MAX(id) from reccompany");
 $rid = mysqli_fetch_array($pin);
 $i = $rid[0];
 
-if($_POST['addmore']=='+')
+if(($_POST['addmore']=='+')  AND (ltrim($_POST['shortcut']!== '')) AND (ltrim($_POST['fulltext']!== '')) )
 {
   
 // check for duplicated record

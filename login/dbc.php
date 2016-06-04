@@ -209,7 +209,7 @@ session_start();
 
 if(isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
 mysqli_query($link, "update `users` 
-			set `ckey`= '', `ctime`= '' 
+			set `ckey`= '' 
 			where `id`='$_SESSION[user_id]' OR  `id` = '$_COOKIE[user_id]'") or die(mysqli_error($link));
 }			
 

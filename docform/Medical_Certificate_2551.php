@@ -136,17 +136,23 @@ echo $prefix." ".$fname." ".$lname;
 echo $address1." หมู่ที่ ".$address2." ต. ".$address3." อ. ".$address4." จ. ".$address5." ".$zip;
 ?>...<br>
 <?php 
-if(preg_match('/^[0-9][0-9]*$/', $ctz_id)) 
-{ 
-  if($ctz_id>1000000000000)    echo "หมายเลขบัตรประชาชน........";
-  else
-  {
-  echo " โปรดตรวจสอบ เลขประจำตัวใหม่ XXXXXXXXXXXXXXXXXXXX"; 
-  break;
-  }
+
+if (empty($ctz_id)) $ctz_id=0;
+
+if(preg_match('/^[0-9][0-9]*$/', $ctz_id, $matches))
+{
+    if($ctz_id > 1000000000000) 
+        echo "หมายเลขบัตรประชาชน........";
+    else
+    {
+        echo " โปรดตรวจสอบ เลขประจำตัวใหม่ XXXXXXXXXXXXX ";
+        exit();
+    }
 }
 else echo "หมายเลข PASSPORT.....";
+
 echo $ctz_id;
+
 ?>........ข้าพเจ้าขอใบรับรองสุขภาพโดยมีประวัติสุขภาพดังนี้<br>
 ๑.โรคประจำตัว <?php if(!$yess){?><input type=submit name=cil value="ไม่มี"> <input type=submit name=cil value="มี">
 <?php

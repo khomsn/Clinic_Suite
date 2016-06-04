@@ -149,9 +149,9 @@ else
 									{
 										// assign insertion pattern
 										$sql_insert = "INSERT into `daily_account`
-														(`date`,`ac_no_i`,`ac_no_o`, `detail`, `price`, `type`, `bors`)
+														(`date`,`ac_no_i`,`ac_no_o`, `detail`, `price`, `type`, `bors`, `recordby`)
 														VALUES
-														('$sdate','1001','4000','$dtail','$cash','d','s')";
+														('$sdate','1001','4000','$dtail','$cash','d','s','0')";
 										// Now insert Patient to "patient_id" table
 										if($cash == 0) goto noupdate;
 										mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
