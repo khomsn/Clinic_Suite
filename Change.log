@@ -1,3 +1,7 @@
+khomsn-klinic-suite (59.6-17) stable; urgency=low
+  
+    * Version 25590617: Update Mysql connection to utf8mb4.
+    
 khomsn-klinic-suite (59.6-04) stable; urgency=low
   
     * Version 25590604: Update Medical Certification.
