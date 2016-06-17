@@ -4,9 +4,9 @@ page_protect();
 $sql = "
 CREATE TABLE IF NOT EXISTS `reccompany` (
   `id` int(11) NOT NULL,
-  `comname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `comdt` varchar(300) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `comname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `reccompany`
   ADD PRIMARY KEY (`id`),

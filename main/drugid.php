@@ -99,12 +99,12 @@ $sql_insert ="
 			CREATE TABLE `$id` (
 			`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 			 `date` DATE NOT NULL ,
-			 `supplier` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-			 `inv_num` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+			 `supplier` VARCHAR( 30 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL ,
+			 `inv_num` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL ,
 			 `volume` INT NOT NULL ,
 			 `price` DECIMAL (7,2) NOT NULL ,
 			 `customer` INT NOT NULL DEFAULT '0'
-			) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci; ";
+			) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
 
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -112,21 +112,21 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
 if($_POST['track'] ==1)
 {
 $id1 = "drug_".$row['id'];
-$sql_add = "ALTER TABLE `$id1` ADD `mkname` VARCHAR( 60 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-			 ADD `mkplace` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-			 ADD `mklot` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-			 ADD `mkanl` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-			 ADD `mkunit` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ";
+$sql_add = "ALTER TABLE `$id1` ADD `mkname` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+			 ADD `mkplace` VARCHAR( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+			 ADD `mklot` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+			 ADD `mkanl` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+			 ADD `mkunit` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ";
  mysqli_query($link, $sql_add) or die("Insertion Failed:" . mysqli_error($link));
 	
 $id = "tr_drug_".$row['id'];
 $sql_insert ="
 			CREATE TABLE `$id` (
 			 `date` DATE NOT NULL ,
-			 `ctz_id` BIGINT NOT NULL ,
+			 `ctz_id` VARCHAR( 13 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL ,
 			 `pt_id` INT NOT NULL ,
 			 `volume` INT NOT NULL 
-			) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci; ";
+			) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 			
@@ -139,8 +139,8 @@ $sql_insert ="
 			CREATE TABLE `$id` (
 			 `drugid` SMALLINT NOT NULL ,
 			 `volume` SMALLINT NOT NULL ,
-			 `uses` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL 
-			) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci; ";
+			 `uses` VARCHAR( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL 
+			) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 			

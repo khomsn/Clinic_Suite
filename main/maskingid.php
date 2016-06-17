@@ -10,10 +10,10 @@ $sql = "
 CREATE TABLE IF NOT EXISTS `maskid` (
   `id` int(11) NOT NULL,
   `drugid` int(11) NOT NULL,
-  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dgname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mask` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `maskid`
   ADD PRIMARY KEY (`id`);

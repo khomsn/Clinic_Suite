@@ -167,7 +167,7 @@ header("Location: staffupdate.php");
 
 <html>
 
-<head><meta content="text/html; charset=utf8" http-equiv="content-type">
+<head><meta content="text/html; charset=utf8mb4" http-equiv="content-type">
 	<title>ลงทะเบียน พนักงาน</title>
 	<script language="JavaScript" type="text/javascript" src="../public/js/jquery-1.3.2.min.js"></script>
 	<script language="JavaScript" type="text/javascript" src="../public/js/validate-1.5.5/jquery.validate.js"></script>

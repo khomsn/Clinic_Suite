@@ -6,13 +6,13 @@ $sql="
 
 CREATE TABLE IF NOT EXISTS `drugcombset` (
   `id` tinyint(4) NOT NULL,
-  `drugidin` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `drugidin` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invol` tinyint(4) NOT NULL,
-  `drugidout` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `drugidout` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `outvol` decimal(3,1) NOT NULL,
   `outsetpoint` decimal(4,1) NOT NULL,
   `outcount` decimal(4,1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `drugcombset`
   ADD PRIMARY KEY (`id`),

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `trpstep` (
   `sec_pr` int(11) NOT NULL,
   `tristep` tinyint(4) NOT NULL,
   `tri_pr` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='treatment price step cal';
 
 ALTER TABLE `trpstep`
   ADD PRIMARY KEY (`id`),

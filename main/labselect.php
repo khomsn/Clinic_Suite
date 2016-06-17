@@ -102,13 +102,13 @@ elseif ($_POST['todo'] == 'OK' )
 	  
 	  $sql_insert = "CREATE TABLE IF NOT EXISTS `$labtable` (
 					  `Labid` SMALLINT NOT NULL ,
-					  `Labname` VARCHAR( 120 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-					  `Labresult` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+					  `Labname` VARCHAR( 120 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+					  `Labresult` VARCHAR( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 					  `price` SMALLINT NOT NULL DEFAULT '0',
 					  `prog` TINYINT NOT NULL DEFAULT '0',
 					  `saved` TINYINT NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`Labid`)
-					  ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+					  ) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 					  ";
 	  // Now insert Patient to "patient_id" table
 	  mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));

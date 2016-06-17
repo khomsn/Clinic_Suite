@@ -5,28 +5,28 @@ page_protect();
 $sql = "
 CREATE TABLE IF NOT EXISTS `parameter` (
   `ID` tinyint(4) NOT NULL DEFAULT '1',
-  `name` text COLLATE utf8_unicode_ci,
-  `Ename` text COLLATE utf8_unicode_ci,
-  `cliniclcid` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `logo` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8_unicode_ci,
-  `Eaddress` text COLLATE utf8_unicode_ci,
-  `tel` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `mobile` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci,
+  `Ename` text COLLATE utf8mb4_unicode_ci,
+  `cliniclcid` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `Eaddress` text COLLATE utf8mb4_unicode_ci,
+  `tel` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `normprice` smallint(6) NOT NULL DEFAULT '0',
   `fup` smallint(6) NOT NULL DEFAULT '0',
   `tmp` smallint(6) NOT NULL DEFAULT '0',
   `maxcp` smallint(6) NOT NULL DEFAULT '0',
   `Staffp` smallint(4) NOT NULL DEFAULT '0',
-  `name_lc` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lcid` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name_lc` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lcid` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prtopdcard` tinyint(1) NOT NULL DEFAULT '0',
   `df` tinyint(4) NOT NULL DEFAULT '0',
   `dfp` smallint(6) NOT NULL DEFAULT '0',
   `opdidoffset` smallint(6) NOT NULL DEFAULT '0',
   `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `parameter`
   ADD KEY `ID` (`ID`);

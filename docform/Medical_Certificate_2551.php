@@ -1,7 +1,7 @@
 <?php 
+
 include '../login/dbc.php';
 page_protect();
-
 $id = $_SESSION['patdesk'];
 $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 while ($ptinfo = mysqli_fetch_array($ptin))
@@ -68,6 +68,7 @@ if($_POST['finish']=="OK")
 {
  $yess = 1;
 }
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -76,6 +77,7 @@ if($_POST['finish']=="OK")
 <title>ใบรับรองแพทย์</title>
 <script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
 <?php
+
     $agent = $_SERVER['HTTP_USER_AGENT'];
     
 if(strlen(strstr($agent,"Firefox")) > 0 ){      
@@ -85,6 +87,7 @@ if($browser=='firefox'){
     echo "<link rel='stylesheet' href='../public/css/medcert2551firefox.css'>";
 }
 else echo "<link rel='stylesheet' href='../public/css/medcert2551.css'>";
+
 ?>
 <script language="javascript">
 function Clickheretoprint()
@@ -97,10 +100,12 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
+
 if($browser=='firefox'){
     echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcert2551firefox_prt.css>');";
 }
 else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcert2551_prt.css>');";
+
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -128,14 +133,16 @@ else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medc
 <p class="western"><i><b>ส่วนที่ ๑ ของผู้ขอรับใบรับรองสุขภาพ</b></i></p>
 <p class="western"  style="margin-bottom: 0in; line-height: 150%">ข้าพเจ้า ......
 <?php 
+
  $ptname =$prefix." ".$fname." ".$lname;
 echo $prefix." ".$fname." ".$lname;
+
 ?>......<br>
 สถานที่อยู่ (ที่สามารถติดต่อได้)...
 <?php 
 echo $address1." หมู่ที่ ".$address2." ต. ".$address3." อ. ".$address4." จ. ".$address5." ".$zip;
 ?>...<br>
-<?php 
+<?php
 
 if (empty($ctz_id)) $ctz_id=0;
 
@@ -445,6 +452,7 @@ unset($_SESSION['acsx']);
 unset($_SESSION['admit']);
 unset($_SESSION['phyex']);
 }
+
 ?>
 </form>
 </body>

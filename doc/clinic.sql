@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4mb4 */;
 
 -- --------------------------------------------------------
 
@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 -- Database : `clinic`
 --
 CREATE DATABASE IF NOT EXISTS `clinic`
-  DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE clinic;
 
 -- --------------------------------------------------------
@@ -39,8 +39,8 @@ USE clinic;
 
 CREATE TABLE IF NOT EXISTS `acnumber` (
   `ac_no` int(11) NOT NULL,
-  `name` varchar(300) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `acnumber`
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `allrsupm` (
   `drugid` int(10) NOT NULL,
   `mandy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `price` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -72,9 +72,9 @@ CREATE TABLE IF NOT EXISTS `allrsupm` (
 CREATE TABLE IF NOT EXISTS `appointment` (
   `idno` smallint(6) NOT NULL,
   `fudate` date NOT NULL,
-  `furs` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `furs` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fuby` smallint(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='follow up table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='follow up table';
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `appointment` (
 CREATE TABLE IF NOT EXISTS `commission` (
   `sellofmon` int(11) NOT NULL,
   `perofcom` decimal(3,1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,14 +98,14 @@ CREATE TABLE IF NOT EXISTS `daily_account` (
   `date` date NOT NULL,
   `ac_no_i` int(11) NOT NULL,
   `ac_no_o` int(11) NOT NULL,
-  `detail` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `inv_num` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `detail` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `inv_num` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` float(9,2) NOT NULL,
-  `type` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `bors` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bors` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `recordby` smallint(6) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `debtors` (
   `ctmid` int(11) NOT NULL,
   `ctmacno` int(11) NOT NULL,
   `price` decimal(7,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -127,11 +127,11 @@ CREATE TABLE IF NOT EXISTS `debtors` (
 
 CREATE TABLE IF NOT EXISTS `deleted_drug` (
   `id` int(11) NOT NULL,
-  `dname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `size` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dgname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bystid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `deleted_drug` (
 CREATE TABLE IF NOT EXISTS `discount` (
   `ctmid` mediumint(9) NOT NULL,
   `percent` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -152,13 +152,13 @@ CREATE TABLE IF NOT EXISTS `discount` (
 
 CREATE TABLE IF NOT EXISTS `drugcombset` (
   `id` tinyint(4) NOT NULL,
-  `drugidin` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `drugidin` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invol` tinyint(4) NOT NULL,
-  `drugidout` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `drugidout` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `outvol` decimal(3,1) NOT NULL,
   `outsetpoint` decimal(4,1) NOT NULL,
   `outcount` decimal(4,1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `drugtouse` (
   `drugid` smallint(6) NOT NULL,
   `volume` smallint(6) NOT NULL,
   `user` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -182,8 +182,8 @@ CREATE TABLE IF NOT EXISTS `drugtouse` (
 
 CREATE TABLE IF NOT EXISTS `drug_group` (
   `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='group of product';
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='group of product';
 
 --
 -- Dumping data for table `drug_group`
@@ -218,30 +218,30 @@ INSERT INTO `drug_group` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `drug_id` (
   `id` smallint(6) NOT NULL,
-  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `uses` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `indication` text COLLATE utf8_unicode_ci,
-  `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dgname` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uses` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `indication` text COLLATE utf8mb4_unicode_ci,
+  `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `volume` smallint(6) NOT NULL DEFAULT '0',
   `volreserve` smallint(6) NOT NULL DEFAULT '0',
   `sellprice` float(8,2) NOT NULL DEFAULT '0.00',
   `min_limit` smallint(4) NOT NULL DEFAULT '0',
-  `typen` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `groupn` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `subgroup` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `typen` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `groupn` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subgroup` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seti` tinyint(1) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
   `track` tinyint(1) NOT NULL DEFAULT '0',
   `disct` tinyint(1) NOT NULL DEFAULT '0',
   `prod` tinyint(1) NOT NULL DEFAULT '0',
   `RawMat` tinyint(1) NOT NULL DEFAULT '0',
-  `cat` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `dinteract` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `unit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cat` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
+  `dinteract` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `candp` tinyint(1) NOT NULL DEFAULT '0',
   `staffcanorder` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -251,8 +251,8 @@ CREATE TABLE IF NOT EXISTS `drug_id` (
 
 CREATE TABLE IF NOT EXISTS `drug_subgroup` (
   `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='group of product';
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='group of product';
 
 --
 -- Dumping data for table `drug_subgroup`
@@ -272,8 +272,8 @@ INSERT INTO `drug_subgroup` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `drug_type` (
   `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='type of product';
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='type of product';
 
 --
 -- Dumping data for table `drug_type`
@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `dupm` (
   `drugid` int(11) NOT NULL,
   `mon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `vol` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -316,19 +316,19 @@ CREATE TABLE IF NOT EXISTS `dupm` (
 
 CREATE TABLE IF NOT EXISTS `lab` (
   `id` smallint(6) NOT NULL,
-  `L_Name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `S_Name` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `L_Set` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `L_specimen` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Lrunit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `normal_r` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `r_min` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `r_max` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Linfo` text COLLATE utf8_unicode_ci,
+  `L_Name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `S_Name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `L_Set` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `L_specimen` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Lrunit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `normal_r` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `r_min` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `r_max` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Linfo` text COLLATE utf8mb4_unicode_ci,
   `price` smallint(6) NOT NULL DEFAULT '0',
   `volume` int(11) NOT NULL DEFAULT '0',
-  `ltr` tinyint(1) NOT NULL  DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `ltr` char(1) COLLATE utf8mb4_unicode_ci  NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -341,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `labstat` (
   `labid` int(11) NOT NULL,
   `MandY` date NOT NULL,
   `vol` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -352,9 +352,9 @@ CREATE TABLE IF NOT EXISTS `labstat` (
 CREATE TABLE IF NOT EXISTS `labwait` (
   `ptid` mediumint(9) NOT NULL,
   `rid` smallint(6) NOT NULL,
-  `tablename` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `tablename` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dtr` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -366,12 +366,12 @@ CREATE TABLE IF NOT EXISTS `log` (
   `ID` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL,
-  `table_name` text COLLATE utf8_unicode_ci NOT NULL,
-  `column_h` text COLLATE utf8_unicode_ci NOT NULL,
+  `table_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `column_h` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `row_no` int(11) NOT NULL,
-  `old_value` text COLLATE utf8_unicode_ci NOT NULL,
-  `new_value` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `old_value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `new_value` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -382,10 +382,10 @@ CREATE TABLE IF NOT EXISTS `log` (
 CREATE TABLE IF NOT EXISTS `maskid` (
   `id` int(11) NOT NULL,
   `drugid` int(11) NOT NULL,
-  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dgname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mask` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -395,28 +395,28 @@ CREATE TABLE IF NOT EXISTS `maskid` (
 
 CREATE TABLE IF NOT EXISTS `parameter` (
   `ID` tinyint(4) NOT NULL DEFAULT '1',
-  `name` text COLLATE utf8_unicode_ci,
-  `Ename` text COLLATE utf8_unicode_ci,
-  `cliniclcid` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `logo` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8_unicode_ci,
-  `Eaddress` text COLLATE utf8_unicode_ci,
-  `tel` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `mobile` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci,
+  `Ename` text COLLATE utf8mb4_unicode_ci,
+  `cliniclcid` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `Eaddress` text COLLATE utf8mb4_unicode_ci,
+  `tel` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `normprice` smallint(6) NOT NULL DEFAULT '0',
   `fup` smallint(6) NOT NULL DEFAULT '0',
   `tmp` smallint(6) NOT NULL DEFAULT '0',
   `maxcp` smallint(6) NOT NULL DEFAULT '0',
   `Staffp` smallint(4) NOT NULL DEFAULT '0',
-  `name_lc` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lcid` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name_lc` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lcid` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prtopdcard` tinyint(1) NOT NULL DEFAULT '0',
   `df` tinyint(4) NOT NULL DEFAULT '0',
   `dfp` smallint(6) NOT NULL DEFAULT '0',
   `opdidoffset` smallint(6) NOT NULL DEFAULT '0',
   `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -427,10 +427,10 @@ CREATE TABLE IF NOT EXISTS `parameter` (
 CREATE TABLE IF NOT EXISTS `pt_to_doc` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ID` smallint(6) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `F_Name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `L_Name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `F_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -441,10 +441,10 @@ CREATE TABLE IF NOT EXISTS `pt_to_doc` (
 CREATE TABLE IF NOT EXISTS `pt_to_drug` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id` int(11) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -455,10 +455,10 @@ CREATE TABLE IF NOT EXISTS `pt_to_drug` (
 CREATE TABLE IF NOT EXISTS `pt_to_lab` (
   `rtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ptid` int(11) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -469,10 +469,10 @@ CREATE TABLE IF NOT EXISTS `pt_to_lab` (
 CREATE TABLE IF NOT EXISTS `pt_to_obs` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id` int(11) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -483,10 +483,10 @@ CREATE TABLE IF NOT EXISTS `pt_to_obs` (
 CREATE TABLE IF NOT EXISTS `pt_to_scr` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ID` smallint(6) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `F_Name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `L_Name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `F_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -497,10 +497,10 @@ CREATE TABLE IF NOT EXISTS `pt_to_scr` (
 CREATE TABLE IF NOT EXISTS `pt_to_treatment` (
   `rtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ptid` int(11) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -510,16 +510,16 @@ CREATE TABLE IF NOT EXISTS `pt_to_treatment` (
 
 CREATE TABLE IF NOT EXISTS `rawmat` (
   `id` tinyint(4) NOT NULL,
-  `rawcode` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `rawname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `sunit` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sunit` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `lowlimit` smallint(6) NOT NULL DEFAULT '0',
   `volume` smallint(6) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
   `rmfpd` tinyint(1) NOT NULL DEFAULT '0',
-  `rmtype` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'other'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -533,7 +533,7 @@ CREATE TABLE IF NOT EXISTS `rawmattouse` (
   `rawmatid` smallint(6) NOT NULL,
   `volume` smallint(6) NOT NULL,
   `user` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -543,9 +543,9 @@ CREATE TABLE IF NOT EXISTS `rawmattouse` (
 
 CREATE TABLE IF NOT EXISTS `reccompany` (
   `id` int(11) NOT NULL,
-  `comname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `comdt` varchar(300) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `comname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -563,10 +563,10 @@ CREATE TABLE IF NOT EXISTS `sell_account` (
   `cash` decimal(7,2) NOT NULL,
   `own` decimal(7,2) NOT NULL,
   `total` decimal(7,2) NOT NULL,
-  `ddx` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `ddx` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tty` float NOT NULL,
   `vsdate` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -576,32 +576,32 @@ CREATE TABLE IF NOT EXISTS `sell_account` (
 
 CREATE TABLE IF NOT EXISTS `staff` (
   `ID` smallint(6) NOT NULL,
-  `prefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `F_Name` text COLLATE utf8_unicode_ci NOT NULL,
-  `L_Name` text COLLATE utf8_unicode_ci NOT NULL,
-  `Eprefix` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `EF_Name` text COLLATE utf8_unicode_ci NOT NULL,
-  `EL_Name` text COLLATE utf8_unicode_ci NOT NULL,
-  `gender` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `ctz_id` bigint(13) NOT NULL,
+  `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `F_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `L_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Eprefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `EF_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `EL_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ctz_id` varchar(13) COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthday` date NOT NULL,
-  `add_hno` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `add_hno` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `add_mu` tinyint(4) NOT NULL,
-  `add_t` text COLLATE utf8_unicode_ci NOT NULL,
-  `add_a` text COLLATE utf8_unicode_ci NOT NULL,
-  `add_j` text COLLATE utf8_unicode_ci NOT NULL,
+  `add_t` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `add_a` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `add_j` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `add_zip` mediumint(5) NOT NULL,
-  `mobile` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `h_tel` varchar(18) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `posit` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `license` varchar(13) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `h_tel` varchar(18) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `posit` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `license` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` smallint(6) NOT NULL,
   `regtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `clog` tinyint(4) NOT NULL DEFAULT '0',
   `ch_by` smallint(6) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -611,15 +611,15 @@ CREATE TABLE IF NOT EXISTS `staff` (
 
 CREATE TABLE IF NOT EXISTS `supplier` (
   `id` tinyint(4) NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `address` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `tel` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `agent` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `mobile` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tel` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agent` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ac_no` int(11) NOT NULL,
-  `paydetail` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `paydetail` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -636,7 +636,7 @@ CREATE TABLE IF NOT EXISTS `trpstep` (
   `sec_pr` int(11) NOT NULL,
   `tristep` tinyint(4) NOT NULL,
   `tri_pr` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatment price step cal';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='treatment price step cal';
 
 -- --------------------------------------------------------
 
@@ -646,31 +646,31 @@ CREATE TABLE IF NOT EXISTS `trpstep` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL,
-  `md5_id` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `full_name` tinytext COLLATE utf8_unicode_ci,
-  `user_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `user_email` varchar(220) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `pwd` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `address` text COLLATE utf8_unicode_ci,
-  `country` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tel` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `fax` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `website` text COLLATE utf8_unicode_ci,
+  `md5_id` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `full_name` tinytext COLLATE utf8mb4_unicode_ci,
+  `user_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `user_email` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `pwd` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `country` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tel` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fax` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` text COLLATE utf8mb4_unicode_ci,
   `date` date NOT NULL DEFAULT '2014-05-06',
-  `users_ip` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `users_ip` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `approved` int(1) NOT NULL DEFAULT '0',
   `activation_code` int(10) NOT NULL DEFAULT '0',
   `banned` int(1) NOT NULL DEFAULT '0',
   `accode` smallint(6) NOT NULL DEFAULT '1',
   `user_level` tinyint(4) NOT NULL,
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ckey` varchar(7) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ckey` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `staff_id` smallint(6) NOT NULL DEFAULT '0',
   `user_has_avatar` tinyint(1) NOT NULL DEFAULT '0',
-  `user_background` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_background` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `catcenable` tinyint(1) NOT NULL DEFAULT '0',
   `ddil` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`

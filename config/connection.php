@@ -19,9 +19,9 @@ if (mysqli_connect_errno($linkopd)) {
     echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 // set MySql code page
-mysqli_set_charset($link, "utf8");
-mysqli_set_charset($linkcm, "utf8");
-mysqli_set_charset($linkopd, "utf8");
+mysqli_set_charset($link, "utf8mb4");
+mysqli_set_charset($linkcm, "utf8mb4");
+mysqli_set_charset($linkopd, "utf8mb4");
 
 // set Timezone for DateTime function
 date_default_timezone_set('Asia/Bangkok');

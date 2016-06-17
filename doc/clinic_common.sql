@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4mb4 */;
 
 -- --------------------------------------------------------
 
@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 -- Database : `clinic_common`
 --
 CREATE DATABASE IF NOT EXISTS `clinic_common`
-  DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE clinic_common;
 
 -- --------------------------------------------------------
@@ -39,8 +39,8 @@ USE clinic_common;
 
 CREATE TABLE IF NOT EXISTS `diag` (
   `id` int(20) NOT NULL,
-  `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `diag`
@@ -1348,9 +1348,9 @@ INSERT INTO `diag` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `drandillci` (
   `id` int(11) NOT NULL,
-  `chronname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `drandillci`
@@ -1382,15 +1382,15 @@ INSERT INTO `drandillci` (`id`, `chronname`, `drugname`) VALUES
 
 CREATE TABLE IF NOT EXISTS `druggeneric` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `indication` text COLLATE utf8_unicode_ci,
-  `dgroup` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dsgroup` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dcat` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dinteract` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dintactw` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ciwith` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `indication` text COLLATE utf8mb4_unicode_ci,
+  `dgroup` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dsgroup` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dcat` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dinteract` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dintactw` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ciwith` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `druggeneric`
@@ -1975,8 +1975,8 @@ INSERT INTO `druggeneric` (`id`, `name`, `indication`, `dgroup`, `dsgroup`, `dca
 --
 
 CREATE TABLE IF NOT EXISTS `prefix` (
-  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `prefix`
@@ -2037,7 +2037,7 @@ CREATE TABLE IF NOT EXISTS `zip` (
   `aname` varchar(50) NOT NULL,
   `tname` varchar(50) NOT NULL,
   `zipcode` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `zip`

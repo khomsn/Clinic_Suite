@@ -42,12 +42,12 @@ $sql_insert ="
 CREATE TABLE `$id` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `date` date NOT NULL,
-  `inid` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `inv_num` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `inid` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `inv_num` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(9,2) NOT NULL,
   `payment` tinyint(1) NOT NULL,
   `duedate` date DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ";
 

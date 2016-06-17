@@ -48,6 +48,8 @@ $err[] = "ERROR - Lab Name with Lab Specimen already exists. Please check.";
 //exit();
 }
 /***************************************************************************/
+if(empty($_POST['labtime'])) $_POST['labtime']=0;
+
 if(empty($err))
 {
     // Set up lab data in lab table

@@ -9,9 +9,9 @@ $doctemplate = "doctemplate_".$_SESSION['sflc'];
 
 $sql = "CREATE TABLE IF NOT EXISTS `$doctemplate` (
 `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `scode` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `textconv` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+  `scode` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `textconv` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;";
 
 mysqli_query($link, $sql);
 

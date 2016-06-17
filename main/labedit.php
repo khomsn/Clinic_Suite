@@ -87,6 +87,8 @@ if(empty($err))
 	  $olabidp = mysqli_fetch_array($mslabidp);
 	  $olabid = $olabidp[0];
 	}
+	if(empty($_POST['ltr'])) $_POST['ltr']=0;
+	
 //update lab @ labid
 	mysqli_query($link, "UPDATE lab SET
 				`L_Name` = '$_POST[L_Name]',

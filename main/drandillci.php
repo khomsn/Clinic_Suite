@@ -5,9 +5,9 @@ page_protect();
 $sql = "
 CREATE TABLE IF NOT EXISTS `drandillci` (
   `id` int(11) NOT NULL,
-  `chronname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `drandillci` (`id`, `chronname`, `drugname`) VALUES
 (1, 'G6PD Deficiency', 'Furosemide'),

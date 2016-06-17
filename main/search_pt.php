@@ -48,7 +48,7 @@ elseif($_POST['found'] == 'ชำระหนี้')
 <!DOCTYPE html>
 <html><head>
 <title>ค้นหารายชื่อผู้ป่วย</title>
-<meta content="text/html; charset=utf8" http-equiv="content-type">
+<meta content="text/html; charset=utf8mb4" http-equiv="content-type">
 <script language="JavaScript" type="text/javascript" src="../public/js/jquery-1.3.2.min.js"></script>
 <link rel="stylesheet" href="../public/css/styles.css">
 <?php 
