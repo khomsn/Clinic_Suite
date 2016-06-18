@@ -1,3 +1,7 @@
+khomsn-klinic-suite (59.6-18) stable; urgency=low
+  
+    * Version 25590618: add name display in accounting.
+    
 khomsn-klinic-suite (59.6-17) stable; urgency=low
   
     * Version 25590617: Update Mysql connection to utf8mb4.

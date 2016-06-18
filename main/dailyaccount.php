@@ -122,7 +122,15 @@ else
 											echo "<tr><th width = 12%>";
 											echo $i;
 											echo "</th><th style='text-align: left;' >"; 
-											echo $acnamein['name'].' : '.$row['detail']." By:".$row['recordby'];
+											echo $acnamein['name'].' : '.$row['detail'];
+											echo " By:".$row['recordby'];
+											if($row['recordby']!=0)
+											{
+											$rcb = $row['recordby'];
+											$rb = mysqli_query($link, "SELECT F_Name FROM staff WHERE  user_id = '$rcb'");
+											$rbn = mysqli_fetch_array($rb);
+											echo ":".$rbn[0];
+											}
 											echo "</th><th style='text-align: left;' >"; 
 											echo $acnameout['name'].' : '.$row['detail'];
 											echo "</th><th style='text-align: right;' width=15%>"; 

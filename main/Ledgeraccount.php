@@ -161,9 +161,15 @@ else
 			    echo "</td><td style='text-align: left;'>";
 			    echo $row['detail'];
 			    echo "</td><td width=15%  style='text-align: right;'>";
-			    echo $row['ac_no_o'];
+			    $acn = $row['ac_no_o'];
+			    $acl = mysqli_query($link, "SELECT name FROM acnumber WHERE  ac_no = '$acn'");
+			    $aclget = mysqli_fetch_array($acl);
+			    echo $aclget[0];
 			    echo "</td><td width=15%  style='text-align: right;'>";
-			    echo $row['recordby'];
+			    echo $rcb = $row['recordby'];
+			    $rb = mysqli_query($link, "SELECT F_Name FROM staff WHERE  user_id = '$rcb'");
+			    $rbn = mysqli_fetch_array($rb);
+			    echo "-".$rbn[0];
 			    echo "</td><td width=15%  style='text-align: right;'>";
 			    if(!empty($row['price']))
 			    {
