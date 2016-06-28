@@ -218,6 +218,7 @@ for($i=1;$i<=$maxid;$i++)
 {
     $table = "rawmat_".$i;
     $sql_insert = "ALTER TABLE `$table` CHANGE `customer` `customer` INT(11) NOT NULL DEFAULT '0';";
+    $sql_insert = "ALTER TABLE `$table` CHANGE `supplier` `supplier` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;";
     mysqli_query($link, $sql_insert);
 }
 

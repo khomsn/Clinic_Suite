@@ -91,7 +91,12 @@ else
 								{
 								echo "<th>id</th>";
 								}
-								echo "<th>ชื่อ</th><th>ชื่อสามัญ</th><th>ขนาด</th><th style='background-color:#A9E2F3'>จำนวน</th><th>RSVol</th><th>ราคา</th></tr>";
+								echo "<th>ชื่อ</th><th>ชื่อสามัญ</th><th>ขนาด</th><th style='background-color:#A9E2F3'>จำนวน</th><th>RSVol</th><th>ราคา</th>";
+								if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
+								{
+								echo "<th>SP/BP</th>";
+								}
+								echo "</tr>";
 								while($row = mysqli_fetch_array($filter))
 								 {
 										// Print out the contents of each row into a table
@@ -114,7 +119,22 @@ else
 										echo $row['volreserve'];
 										echo "</th><th style='text-align: right;' >"; 
 										echo $row['sellprice'];
-										echo "</th></tr>";
+										echo "</th>";
+										if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
+										{
+										echo "<th style='text-align: right;' >";
+										$drugtable = "drug_".$row['id'];
+										$buyprice = 0;
+										$getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' AND customer!='0' ORDER BY `id` DESC ");
+										while($row2 = mysqli_fetch_array($getprice))
+										{
+                                         $buyprice = $row2['price']/$row2['volume'];
+                                         break;
+										}
+										echo round($row['sellprice']/$buyprice,2);
+										echo "</th>";
+										}
+										echo "</tr>";
 								} 
 								echo "</table>";
 						?>

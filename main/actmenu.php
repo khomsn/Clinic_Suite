@@ -179,7 +179,7 @@ if ($_SESSION['user_accode']%13 == 0)
 			}
 		}
 echo "<br>";
-
+echo "<a href='../main/netprofit.php'>กำไรขาดทุนคงเหลือ</a><br><br>";
 echo "<a href='../main/ac_balance.php'>งบดุล</a><br><br>";
 }
 if ($_SESSION['user_accode']%13 == 0)
