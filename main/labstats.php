@@ -14,7 +14,14 @@ if($_POST['reset'])
 	// Now update pttable
 	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
       
-} 
+}
+if($_POST['Reset']=="Reset")
+{
+	$sql_update = "UPDATE `lab` SET 
+				`volume` = '0';"; 
+	// Now update pttable
+	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+}
 
 ?>
 <!DOCTYPE html>
@@ -120,7 +127,7 @@ $m = $sm;// date("m");
 ?>
 </h3>
 		 <table border="1" width =100% style="color:blue">
-		 <th>No</th><th>Name</th><th>Int</th><th>Spec</th><th>TVol</th><th>M-Vol</th><th>Cu-Vol</th><th>Reset</th>
+		 <th>No</th><th>Name</th><th>Int</th><th>Spec</th><th>TVol</th><th>M-Vol</th><th>Cu-Vol</th><th><input type=submit name=Reset value=Reset></th>
 		 <?php
 		 $ptin = mysqli_query($link, "select * from lab ORDER BY id ASC ");
 		 while ($rows=mysqli_fetch_array($ptin))

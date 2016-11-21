@@ -125,7 +125,7 @@ else
 										echo "<th style='text-align: right;' >";
 										$drugtable = "drug_".$row['id'];
 										$buyprice = 0;
-										$getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' AND customer!='0' ORDER BY `id` DESC ");
+										$getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ");
 										while($row2 = mysqli_fetch_array($getprice))
 										{
                                          $buyprice = $row2['price']/$row2['volume'];

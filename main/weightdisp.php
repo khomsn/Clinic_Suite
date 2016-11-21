@@ -85,7 +85,7 @@ $pin = mysqli_query($linkopd, "select * from $pttable ");
 		echo $row_settings['weight']; 
 		echo "</td>";
 		echo "<td>";
-		echo $row_settings['weight'] - $weightold ; 
+		echo number_format(($row_settings['weight'] - $weightold),1) ; 
 		echo "</td>";
 		echo "</tr>";
 		$weightold = $row_settings['weight'];

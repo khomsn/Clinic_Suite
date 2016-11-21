@@ -4,7 +4,13 @@ page_protect();
 
 include '../libs/progdate.php';
 include '../libs/trpricecheck.php';
-
+$cpd = mysqli_query($link, "select name from stcpdrug");
+$t=1;
+while($stc=mysqli_fetch_array($cpd))
+{
+    $stcp[$t]=$stc['name'];
+    $t = $t+1;
+}
 $coursepd=0;
 $checkuprdp=0;
 
@@ -231,7 +237,24 @@ if($did ==  $tr_drugid[$s])
 			//
 				echo $row2['sellprice'];
 				//ต้นทุนยา
-				$TT_Ya = $row2['buyprice'] * $row[$rxv];
+				//get buy price per unit
+				$dtb = "drug_".$did;
+				$dbp = mysqli_query($link, "select * from $dtb");
+				while($dtb=mysqli_fetch_array($dbp))
+				{
+                    if($dtb['volume']!=$dtb['customer'])
+                    {
+                        $buyprice = $dtb['price']/$dtb['volume'];
+                        goto next1;
+                    }
+				}
+				next1:
+				$TT_Ya = $buyprice * $row[$rxv];
+                if($row2['typen']=="$stcp[1]" OR $row2['stcp']==1)
+                {
+                   $stdcount = $stdcount+ceil($TT_Ya);
+                }
+				
 				$dcount = floor($row2['sellprice'] * $row[$rxv] * $row2['disct'] * $perdc);
 				if($dcount>$TT_Ya)
 				{
@@ -317,6 +340,11 @@ if($pricepolicy ==1)//staff
   { 
     $discount = $allprice1;
     $allprice = 0; //ราคาปกติต่ำสุด
+    if($stdcount!=0)
+    {
+        $discount = $allprice1 - $stdcount;
+        $allprice = $stdcount; //ราคาปกติต่ำสุด
+    }
   }
   else
   {

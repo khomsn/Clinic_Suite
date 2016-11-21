@@ -105,7 +105,7 @@ else
 			?>
 			
 				<div style="text-align: center;">
-					<table width="100%" border="1" cellspacing="0" cellpadding="5" class="main">
+					<table width="100%" border="1" cellspacing="0" cellpadding="5" class="forms">
 					<tr><td width="100%" valign="top">
 							เลขทะเบียน:<input maxlength="5" size="7" name="ptid">
 							ชื่อ:<input maxlength="15" size="15" tabindex="1" name="fname" id="fname" autofocus>&nbsp;

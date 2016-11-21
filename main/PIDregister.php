@@ -289,8 +289,8 @@ else
 					<tr><td width="160" valign="top"></td>
 						<td width="732" valign="top">
 							<h3 class="titlehdr">ระบบลงทะเบียนผู้ป่วย</h3>
-							<p>ในการลงทะเบียนผู้ป่วย [ ชื่อ นามสกุล ] <span class="required">*</span> จำเป็นต้องมี. ที่อยู่ สามารถใส่ถึงแค่ ตำบล/อำเภอ ได้ ข้อมูลอื่นๆ ระบบจะใส่ให้</p>
-							<p>เลขประจำตัวประชาชน ถ้าเป็นชาวต่างชาติที่ไม่มีเลขที่บัตร ให้ใช้ เลข Passport แทน โดยใส่ รหัสประเทศ ตามด้วย เลขที่ Passport เช่น "TH-E123456"</p>
+							<p style="background-color: yellow;">ในการลงทะเบียนผู้ป่วย [ ชื่อ นามสกุล ] <span class="required">*</span> จำเป็นต้องมี. ที่อยู่ สามารถใส่ถึงแค่ ตำบล/อำเภอ ได้ ข้อมูลอื่นๆ ระบบจะใส่ให้</p>
+							<p style="background-color: yellow;">เลขประจำตัวประชาชน ถ้าเป็นชาวต่างชาติที่ไม่มีเลขที่บัตร ให้ใช้ เลข Passport แทน โดยใส่ รหัสประเทศ ตามด้วย เลขที่ Passport เช่น "TH-E123456"</p>
 							
 							<form action="PIDregister.php" method="post" name="regForm" id="regForm" enctype="multipart/form-data">
 							
@@ -298,7 +298,7 @@ else
 								auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
 								<tbody>
 								<tr>
-								<td style="text-align: left;">*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 autofocus>ชื่อ:*<input  align="center" tabindex="2" name="fname" size="20" class="required" type="text" >
+								<td style="text-align: left;">ยศ*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 autofocus>ชื่อ:*<input  align="center" tabindex="2" name="fname" size="20" class="required" type="text" >
 									&nbsp; นามสกุล:*  <input tabindex="3" name="lname" size="20" class="required" type="text" >
 									&nbsp;เพศ*<input type="radio" tabindex="4" name="Gender" class="required" value="ชาย">ชาย 
 												 <input type="radio" tabindex="4" name="Gender" class="required" value="หญิง">หญิง

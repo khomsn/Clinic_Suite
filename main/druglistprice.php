@@ -5,27 +5,29 @@ page_protect();
 if($_POST['register'] == 'ดูข้อมูล') 
 { 
 
-// pass rawmat-id to other page
-$_SESSION['rawmatid'] = $_POST['rawmatid'];
+// pass drug-id to other page
+$_SESSION['drugid'] = $_POST['drugid'];
 // go on to other step
-header("Location: rawmatupdate.php");  
+header("Location: updatedrugid.php");  
 
 } 
 
-$filter = mysqli_query($link, "select * from rawmat ");		
+$filter = mysqli_query($link, "select * from drug_id ");		
 	while ($row = mysqli_fetch_array($filter))
 	{
 		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
 	}	
-$filter = mysqli_query($link, "select * from rawmat  ORDER BY `rmtype` ASC ,`rawcode` ASC ,`rawname` ASC");
+$filter = mysqli_query($link, "select * from drug_id  WHERE seti != 1 ORDER BY `dgname` ASC");
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>ห้องคลังวัตถุดิบ</title>
+<title>รายงาน ราคาซื้อ ยาและผลิตภัณฑ์ </title>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="../public/css/table_alt_color.css">
 </head>
 <?php 
 if(!empty($_SESSION['user_background']))
@@ -58,8 +60,8 @@ else
 		<td width="10" valign="top"><p>&nbsp;</p></td>
 		<td>
 <!--menu-->
-			<h3 class="titlehdr">รายการ RawMat</h3>
-			<form method="post" action="rawmatlist.php" name="regForm" id="regForm">
+			<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์</h3>
+			<form method="post" action="druglistprice.php" name="regForm" id="regForm">
 				<table style="text-align: center;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr>
@@ -67,54 +69,39 @@ else
 						<td style="vertical-align: middle; ">
 						<div style="text-align: center;">
 						<?php	
-								echo "<table border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
-								echo "<tr> <th>เลือก</th><th>Code</th> <th>ชื่อ</th><th>ขนาด</th><th>unit</th><th>Volume</th><th>Type</th><th>ราคาซื้อ</th></tr>";
+								echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
+								echo "<tr><th>เลือก</th>";
+								if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
+								{
+								echo "<th>id</th>";
+								}
+								echo "<th>ชื่อ</th><th>ชื่อสามัญ</th><th>ขนาด</th><th>ต้นทุนยาคงเหลือ</th></tr>";
 								while($row = mysqli_fetch_array($filter))
 								 {
 										// Print out the contents of each row into a table
 										echo "<tr><th>";
 										if($_SESSION['user_accode']%7==0 or $_SESSION['user_accode']%13==0)
 										{
-										echo "<input type='radio' name='rawmatid' value='".$row['id']."' />";
+										echo "<input type='radio' name='drugid' value='".$row['id']."' />";
+										echo "</th><th>";
 										echo $row['id'];
 										}
 										echo "</th><th>"; 
-										echo $row['rawcode'];
+										echo $row['dname'];
 										echo "</th><th>"; 
-										echo $row['rawname'];
+										echo $row['dgname'];
 										echo "</th><th >"; 
 										echo $row['size'];
-										echo "</th><th>"; 
-										echo $row['sunit'];
-										echo "</th><th>"; 
-										echo $row['volume'];
-								echo "</th><th>"; 
-								echo $row['rmtype'];
 										echo "</th><th style='text-align: right;' >"; 
-										$rawmattable = "rawmat_".$row['id'];
-										
-										$getsup = mysqli_query($link, "select distinct supplier from $rawmattable where supplier!='$_SESSION[clinic]' AND price!='0'");
-										$sp=0;
-										while($gs = mysqli_fetch_array($getsup))
+										$drugtable = "drug_".$row['id'];
+										$priceleft=0;
+                                        $getprice = mysqli_query($link, "select * from $drugtable ");
+										while($row2 = mysqli_fetch_array($getprice))
 										{
-                                            $sup[$sp]=$gs['supplier'];
-                                            $sp=$sp+1;
+										$priceleft = $priceleft+$row2['price']/$row2['volume']*($row2['volume']-$row2['customer']);
 										}
-										
-										for($n=0;$n<$sp;$n++)
-										{
-										$supplier=$sup[$n];
-										
-										$gr = mysqli_fetch_array(mysqli_query($link, "select MAX(id) from $rawmattable WHERE supplier='$supplier' AND price!='0'"));
-										$rowid = $gr[0];
-										
-										$gp = mysqli_query($link, "select * from $rawmattable WHERE id = $rowid");
-										while($row2 = mysqli_fetch_array($gp))
-										{
-										 echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
-										}
-										}
-								echo "</th></tr>";
+										echo number_format(($priceleft),2);
+										echo "</th></tr>";
 								} 
 								echo "</table>";
 						?>
@@ -132,12 +119,10 @@ else
 					</tr>
 				</tbody>
 				</table>
-				<br>
 			</form>
 <!--menu end-->
 		</td>
-		<td width=130px><?php include 'reportrmenu.php';?>
-	</tr>
+<td width=130px><?php include 'reportrmenu.php';?></td></tr>
 </table>
 <!--end menu-->
 </body></html>

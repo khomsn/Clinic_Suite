@@ -82,9 +82,9 @@ if($_POST['register'] == 'ลบข้อมูล')
 	
 	//loging del item
 	$sql_insert = "INSERT into `deleted_drug` 
-			(`id`,`dname`,`dgname`, `size`, `bystid` ) 
+			(`id`,`dname`,`dgname`, `size`, `ac_no`,`bystid` ) 
 			VALUES 
-			('$id','$dname','$dgname','$size','$_SESSION[staff_id]')";
+			('$id','$dname','$dgname','$size','$dacno','$_SESSION[staff_id]')";
 	// Now insert 
 	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 	// go on to other step

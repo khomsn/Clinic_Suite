@@ -50,6 +50,10 @@
 		$did = mysqli_query($link, "select * from drug_id where id='$idp' ");
 		while($row2 = mysqli_fetch_array($did))
 		{
+           if(empty($row2['id'])) 
+           {
+            goto Next_item;
+           }
 		      $svol = $row2['volume'];
 		      $resvol = $row2['volreserve'];
 		      $cat  = $row2['cat'];		      
@@ -58,7 +62,6 @@
 		{
 		  $vlp = $svol-$resvol;
 		}
-		
 		if($preg==1 and ($cat =='A' or $cat=='B' or $cat=='N'))
 		{
 		mysqli_query($link, "UPDATE $tmp SET
@@ -81,6 +84,6 @@
 			`$svl` = '$svol'
 			") or die(mysqli_error($link));
 		}
-		
+		Next_item:
 	}
 ?>

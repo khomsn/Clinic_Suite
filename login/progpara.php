@@ -180,20 +180,19 @@ else
 							<tr><td style="text-align: right;" >Logo*</td><td ><input name="logo" type="text" id="logo"  class="required" value="<?php echo $logo; ?>" size="50">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >ราคาปกติ*</td><td ><input name="normprice" type="number" min=0 id="normprice"  class="required" value="<?php echo $normprice; ?>" size="5">
+							<tr><td style="text-align: right;" >ราคาปกติ*</td><td ><input name="normprice" type="number" min=0 id="normprice"  class="required" value="<?php echo $normprice; if(empty($normprice)) echo 0;?>" size="5">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >ราคาติดตามอาการ*</td><td ><input name="fup" type="number" min=0 id="fup"  class="required" value="<?php echo $fup; ?>" size="5">
+							<tr><td style="text-align: right;" >ราคาติดตามอาการ*</td><td ><input name="fup" type="number" min=0 id="fup"  class="required" value="<?php echo $fup; if(empty($fup)) echo 0;?>" size="5">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >ราคา Treatment*</td><td ><input name="tmp" type="number" min=0 id="tmp"  class="required" value="<?php echo $tmp; ?>" size="5">
+							<tr><td style="text-align: right;" >ราคา Treatment*</td><td ><input name="tmp" type="number" min=0 id="tmp"  class="required" value="<?php echo $tmp; if(empty($tmp)) echo 0;?>" size="5">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >ราคา Staff สูงสุด*</td><td ><input name="Staffp" type="number" min=0 id="Staffp"  class="required" value="<?php echo $Staffp; ?>" size="5">
+							<tr><td style="text-align: right;" >ราคา Staff สูงสุด*</td><td ><input name="Staffp" type="number" min=0 id="Staffp"  class="required" value="<?php echo $Staffp; if(empty($Staffp)) echo 0;?>" size="5">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >ส่วนลดราคายาสูงสุด*</td><td ><input name="maxcp" type="number" min=0 id="maxcp"  class="required" value="<?php echo $maxcp; 
-							//}
+							<tr><td style="text-align: right;" >ส่วนลดราคายาสูงสุด*</td><td ><input name="maxcp" type="number" min=0 id="maxcp"  class="required" value="<?php echo $maxcp; if (empty($maxcp)) echo 0; 
 							?>" size="5">
 							</td>
 							</tr>
@@ -211,11 +210,13 @@ else
 							<tr><td>Doctor Fee:</td>
 							<td style="text-aling: center;">Auto DF 
 							<input type="radio" name="DF" value="1" <?php if($df==1) echo "checked";?>>Yes
-							<input type="radio" name="DF" value="0" <?php if($df==0) echo "checked";?>>No, <input type="number" min=0 name="dfp" size="4" value="<?php echo $dfp;?>">บาท
+							<input type="radio" name="DF" value="0" <?php if($df==0) echo "checked";?>>No, <input type="number" min=0 name="dfp" size="4" value="<?php echo $dfp; if(empty($dfp)) echo 0;?>">บาท
 							</td></tr>
-							<tr><td style="text-align: right;" >OFFSET for OPD Card ID*</td><td ><input name="offset" type="number" min=0 id="offset"  class="required" value="<?php echo $offset; ?>" size="6">
+							<tr><td style="text-align: right;" >OFFSET for OPD Card ID*</td><td ><input name="offset" type="number" min=0 id="offset"  class="required" value="<?php echo $offset; if(empty($offset)) echo 0;?>" size="6">
 							</td></tr>
-							<tr><td style="text-align: right;" >Masking Drug ID OPD</td><td ><input name="maskingdrugid" type="number" min=0 max=1 id="maskingdrugid"  class="required" value="<?php echo $maskingdrugid; ?>" size="6">
+							<tr><td style="text-align: right;" >Masking Drug ID OPD</td><td >
+							<input type="radio" name="maskingdrugid" value="1" <?php if($maskingdrugid==1) echo "checked";?>>Yes 
+							<input type="radio" name="maskingdrugid" value="0" <?php if($maskingdrugid==0) echo "checked";?>>No
 							</td>
 							</tr>
 							</table>

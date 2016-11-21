@@ -130,6 +130,8 @@ CREATE TABLE IF NOT EXISTS `deleted_drug` (
   `dname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dgname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `size` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ac_no` INT NOT NULL,
+  `dtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bystid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

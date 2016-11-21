@@ -36,6 +36,7 @@ if($_POST['doRegister'] == 'แก้ไข')
 	$row = mysqli_fetch_array($result);
 	// Pass Patient ID as a session parameter.
 	$user_id= $row['id'];
+	if(empty($user_id)) $user_id=0;
 
 	// assign insertion pattern WHERE `staff`.`id` =1 LIMIT 1 ;
 	$sql_update = "UPDATE `staff` SET 

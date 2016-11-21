@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS `drug_id` (
   `dinteract` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `candp` tinyint(1) NOT NULL DEFAULT '0',
-  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0'
+  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0',
+  `stcp` TINYINT NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `drug_id`

@@ -172,7 +172,11 @@ if (checkAdmin())
 
 <?php 
 }
-if($_SESSION['user_accode']%13==0) echo "<p> <a href=progpara.php>Programme Parameter</a></p>";
+if($_SESSION['user_accode']%13==0)
+{
+echo "<p> <a href=progpara.php>Programme Parameter</a></p>";
+echo "<p> <a href=stcpdrug.php>Staff Co-Pay Drug</a></p>";
+}
 
 ?>
 </div>
@@ -520,6 +524,7 @@ echo "<div class=\"msg\">User created with password $pwd....done.</div>";
               </p>
               <p>User Level 
                 <select name="user_level" id="user_level">
+                  <option value="0">Guest</option>
                   <option value="2">User</option>
                   <option value="5">Admin</option>
                 </select>

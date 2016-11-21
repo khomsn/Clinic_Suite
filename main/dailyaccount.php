@@ -29,7 +29,7 @@ else
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
-  <tr><td width="160" valign="top"><div class="pos_l_fix">
+  <tr><td width="15%" valign="top"><div class="pos_l_fix">
 		<?php 
 			/*********************** MYACCOUNT MENU ****************************
 			This code shows my account menu only to logged in users. 
@@ -43,7 +43,6 @@ else
 		/*******************************END**************************/
 		?></div>
 		</td>
-		<td width="10" valign="top"><p>&nbsp;</p></td>
 		<td>
 <!--menu-->
 			<h3 class="titlehdr">บัญชีรายวันทั่วไป ณ วันที่ <?php echo $sd; ?> <?php $m = $sm;
@@ -111,8 +110,24 @@ else
 											//look up ac_no name
 											$acnamein = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM acnumber WHERE ac_no = '$row[ac_no_i]' "));
 											if ($row['ac_no_i'] >= 5000 and $row['ac_no_i'] < 6000) $acnamein['name'] = "จ่าย";
+											//check from deleted drug
+											if($row['ac_no_i'] == 5999)
+											{
+                                                //get recorded time to search for record in deleted list
+                                                $rctime = $row['ctime'];
+                                                $acn = $row['ac_no_o'];
+                                                $gn = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM deleted_drug WHERE ac_no = '$acn' AND dtime > '$rctime' ORDER BY `dtime` ASC "));
+                                                $acnameout['name']=$gn['dname'].'-'.$gn['size'];
+                                                if ($gn['ac_no']!='') goto Next1;
+                                                $gn = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM deleted_rm WHERE ac_no = '$acn' AND dtime > '$rctime' ORDER BY `dtime` ASC "));
+                                                $acnameout['name']=$gn['rawname'].'-'.$gn['size'];
+                                                if ($gn['ac_no']!='') goto Next1;
+											}
+											
 											$acnameout = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM acnumber WHERE ac_no = '$row[ac_no_o]' "));
+											Next1:
 											if ($row['ac_no_o'] >= 4000 and $row['ac_no_o'] < 5000) $acnameout['name'] = "รับ";
+											//this is for patient id 
 											if ($row['ac_no_o'] >= 1000000 and $row['ac_no_o'] < 2000000)
 												{
 													$na1 = $row['ac_no_o']-1000000 ;
@@ -153,7 +168,7 @@ else
 				<br>
 <!--menu end-->
 		</td>
-		<td width="160" valign="top">
+		<td width="15%" valign="top">
 			<div class="pos_r_fix_mypage1">
 				<h6 class="titlehdr2" align="center">ประเภทบัญชี</h6>
 				<?php 

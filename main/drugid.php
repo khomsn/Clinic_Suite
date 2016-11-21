@@ -15,6 +15,8 @@ if(empty($_POST['track'])) $_POST['track']=0;
 if(empty($_POST['disct'])) $_POST['disct']=0;
 if(empty($_POST['prod'])) $_POST['prod']=0;
 if(empty($_POST['RawMat'])) $_POST['RawMat']=0;
+//set to 0 if not checked
+if($_POST['stcp']!=1) $_POST['stcp']=0;
 
 //assign account no. 100000-179999 สินค้า		180000-189999 วัตถุดิบ
 
@@ -69,10 +71,10 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
 
 // assign insertion pattern
 $sql_insert = "INSERT into `drug_id`
-  			(`dname`,`dgname`,`uses`, `indication`, `size`, `sellprice`, `min_limit`, `typen`, `groupn`, `seti`, `ac_no`, `track`, `disct`,`prod`,`RawMat`,`cat`,`unit`,`candp`)
+  			(`dname`,`dgname`,`uses`, `indication`, `size`, `sellprice`, `min_limit`, `typen`, `groupn`, `seti`, `ac_no`, `track`, `disct`,`prod`,`RawMat`,`cat`,`unit`,`candp`,`stcp`)
 		    VALUES
 			('$_POST[dname]','$_POST[dgname]','$_POST[uses]','$_POST[Indication]','$_POST[size]','$_POST[sellprice]','$_POST[min_limit]','$_POST[type]','$_POST[group]','$_POST[set]',
-			'$ac','$_POST[track]','$_POST[disct]','$_POST[prod]','$_POST[RawMat]','$_POST[cat]','$_POST[unit]','$_POST[candp]')";
+			'$ac','$_POST[track]','$_POST[disct]','$_POST[prod]','$_POST[RawMat]','$_POST[cat]','$_POST[unit]','$_POST[candp]','$_POST[stcp]')";
 
 // Now insert into "drug_id" table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -231,7 +233,7 @@ else
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">
 							ราคาขาย* <input type=number class="typenumber" step=0.01 tabindex="6" name="sellprice"> บาท
-							&nbsp; &nbsp; &nbsp;จำนวนคงคลังขั้นต่ำ*<input  type=number class="typenumber" tabindex="7" name="min_limit"><br>
+							&nbsp; &nbsp; &nbsp;จำนวนคงคลังขั้นต่ำ*<input  type=number class="typenumber" tabindex="7" name="min_limit">พนักงานร่วมจ่ายต้นทุน:<input type="checkbox" name="stcp" value="1"><br>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">

@@ -46,7 +46,7 @@ $concurdrug = mysqli_real_escape_string($linkopd, $concurdrug);
 mysqli_query($link, "UPDATE $tmp SET `preg` = '$_POST[preg]',`pricepolicy` = '$policy'") or die(mysqli_error($link));
 if($_POST['preg'] ==1 )
 {
- $dhist = $dhist.' และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน';
+ $dhist = $dhist.' # และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน #';
  $pregmonth = $_POST['pregmon'];
 }
 else
@@ -334,7 +334,14 @@ else
 								<div style="text-align: left;">
 								<big>ประวัติ:</big><br>
 								<textarea autofocus  cols="100%" rows="3" type="text" name="dhist"><?php
-								if($preg == 1) echo substr($hist, 0,-72 );
+								if($preg == 1)
+								{
+                                    if (strstr($hist, '#'))
+                                    {
+                                        $hist = substr($hist, 0, strpos($hist, "#"));
+                                    }
+								echo $hist;
+								}
 								if($preg == 0) echo $hist;
 								?></textarea><br>
 								<a HREF="physicalexam.php" onClick="return popup(this,'name','400','600','yes')" >ตรวจร่างกาย</a></big> <span STYLE="Padding-left: 5px; border: 5px groove #ffffff"><big><a HREF="uploadpicture.php" onClick="return popup(this,'name','400','600','yes')" >Picture</a></big></span> <br>

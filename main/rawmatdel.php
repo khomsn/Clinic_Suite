@@ -2,6 +2,23 @@
 include '../login/dbc.php';
 page_protect();
 
+mysqli_query($link,
+"
+CREATE TABLE `deleted_rm` (
+  `id` int(11) NOT NULL,
+  `rawcode` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `rawname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `ac_no` int(11) NOT NULL,
+  `dtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bystid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `deleted_rm`
+  ADD UNIQUE KEY `id` (`id`);
+
+");
+
 $filter = mysqli_query($link, "select * from rawmat ");		
 	while ($row = mysqli_fetch_array($filter))
 	{
@@ -54,6 +71,14 @@ if($_POST['register'] == 'ลบข้อมูล')
 	$sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
 	// Now remove drug information table
 	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	//loging del item
+	$sql_insert = "INSERT into `deleted_rm` 
+			(`id`,`rawcode`,`rawname`, `size`, `ac_no`,`bystid` ) 
+			VALUES 
+			('$id','$rawcode','$rawname','$size','$dacno','$_SESSION[staff_id]')";
+	// Now insert 
+	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	// go on to other step
 	
 	header("Location: rawmatdel.php");  
 	} 

@@ -8,6 +8,8 @@ $stock_in = mysqli_query($link, "select * from drug_id where id='$id' ");
 
 if($_POST['register'] == 'แก้ไข') 
 { 
+//set to 0 if not checked
+if($_POST['stcp']!=1) $_POST['stcp']=0;
 
 mysqli_query($link, "UPDATE drug_id SET
 			`uses` = '$_POST[uses]',
@@ -20,7 +22,8 @@ mysqli_query($link, "UPDATE drug_id SET
 			`unit` = '$_POST[unit]',
 			`cat` = '$_POST[cat]',
 			`candp` = '$_POST[candp]',
-			`staffcanorder` = '$_POST[storder]'
+			`staffcanorder` = '$_POST[storder]',
+			`stcp` = '$_POST[stcp]'
 			 WHERE id='$id'
 			") or die(mysqli_error($link));
 // go on to other step
@@ -115,7 +118,7 @@ else
 <hr>
 							พนักงาน สั่งได้:<br>
 							<input type="radio" name="storder" class="required" value="0" <?php if($storder =='0') echo "checked";?>>No
-							<input type="radio" name="storder" class="required" value="1" <?php if($storder =='1') echo "checked";?>>Yes							</div>
+							<input type="radio" name="storder" class="required" value="1" <?php if($storder =='1') echo "checked";?>>Yes</div>
 							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
 							<div style="text-align: center;">
 							วิธีใช้:
@@ -143,7 +146,7 @@ else
 							จำนวนคงคลังขั้นต่ำ
 							<input type=number class="typenumber" name="min_limit" value="<?php
 									echo $row_settings['min_limit'];
-							?>"><br>
+							?>">พนักงานร่วมจ่ายต้นทุน:<input type="checkbox" name="stcp" value=<?php if($row_settings['stcp']==1) echo "1 checked"; else echo "0"; ?>><br>
 							</div>
 							<hr style="width: 80%; height: 2px;"><br>
 							<div style="text-align: center;">

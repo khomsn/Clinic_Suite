@@ -179,7 +179,7 @@ else
 //เงินสดอื่นๆ
 	$i = 1;
 	
-	$dtype = mysqli_query($link, "SELECT * FROM daily_account WHERE date = '$dadate' AND ac_no_i = '1001' AND bors='' ");
+	$dtype = mysqli_query($link, "SELECT * FROM daily_account WHERE date = '$dadate' AND ac_no_i = '1001' AND  ac_no_o<'1000000' AND ac_no_o!='4000'");
 	while($row = mysqli_fetch_array($dtype))
 	{
 	// Print out the contents of each row into a table

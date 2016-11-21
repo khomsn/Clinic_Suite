@@ -94,17 +94,26 @@ else
 										echo $row['size'];
 										echo "</th><th style='text-align: right;' >"; 
 										$drugtable = "drug_".$row['id'];
-										$supplierold = ''; //initialize
-        $getprice = mysqli_query($link, "select * from $drugtable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC");
-										while($row2 = mysqli_fetch_array($getprice))
+										$getsup = mysqli_query($link, "select distinct supplier from $drugtable where supplier!='$_SESSION[clinic]' AND price!='0'");
+										$sp=0;
+										while($gs = mysqli_fetch_array($getsup))
 										{
-                                                                                    $suppliernew = $row2['supplier'];
-                                                                                    $pos = strpos($supplierold, $suppliernew);
-                                                                                    if($pos === false)
-                                                                                    {
-                                                                                    echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
-                                                                                    }
-                                                                                    $supplierold = $supplierold." : ".$row2['supplier'];                                                                                    
+                                            $sup[$sp]=$gs['supplier'];
+                                            $sp=$sp+1;
+										}
+										
+										for($n=0;$n<$sp;$n++)
+										{
+										$supplier=$sup[$n];
+										
+										$gr = mysqli_fetch_array(mysqli_query($link, "select MAX(id) from $drugtable WHERE supplier='$supplier' AND price!='0'"));
+										$rowid = $gr[0];
+										
+										$gp = mysqli_query($link, "select * from $drugtable WHERE id = $rowid");
+										while($row2 = mysqli_fetch_array($gp))
+										{
+										 echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
+										}
 										}
 										echo "</th></tr>";
 								} 
