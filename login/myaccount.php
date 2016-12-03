@@ -13,7 +13,7 @@ if($sf['gender']=="ชาย" and $sf['posit']=="แพทย์"){$prefix = "�
 if($sf['gender']=="หญิง" and $sf['posit']=="แพทย์"){$prefix = "แพทย์หญิง ";$eprefix = $sf['Eprefix'];}
 
 $_SESSION['sfname'] = $prefix.$sf['F_Name']." ".$sf['L_Name'];
-$_SESSION['Esfname']= $eprefix." ".$sf['Efname']." ".$sf['Elname'];
+$_SESSION['Esfname']= $eprefix." ".$sf['EF_Name']." ".$sf['EL_Name'];
 $_SESSION['sflc'] = $sf['license'];
 }
 
