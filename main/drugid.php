@@ -128,7 +128,7 @@ $sql_insert ="
 			 `ctz_id` VARCHAR( 13 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL ,
 			 `pt_id` INT NOT NULL ,
 			 `volume` INT NOT NULL 
-			) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
+			) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 			
@@ -142,7 +142,7 @@ $sql_insert ="
 			 `drugid` SMALLINT NOT NULL ,
 			 `volume` SMALLINT NOT NULL ,
 			 `uses` VARCHAR( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL 
-			) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
+			) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
 // Now create drug information table
 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 			

@@ -4,8 +4,8 @@ page_protect();
 
 mysqli_query($link,
 "
-CREATE TABLE `deleted_rm` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `deleted_rm` (
+  `id` int(11) NOT NULL UNIQUE KEY,
   `rawcode` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `rawname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `size` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -13,10 +13,6 @@ CREATE TABLE `deleted_rm` (
   `dtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bystid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-ALTER TABLE `deleted_rm`
-  ADD UNIQUE KEY `id` (`id`);
-
 ");
 
 $filter = mysqli_query($link, "select * from rawmat ");		

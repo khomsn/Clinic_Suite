@@ -39,7 +39,8 @@ USE clinic;
 
 CREATE TABLE IF NOT EXISTS `acnumber` (
   `ac_no` int(11) NOT NULL,
-  `name` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  UNIQUE KEY `ac_no` (`ac_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -57,10 +58,12 @@ INSERT INTO `acnumber` (`ac_no`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `allrsupm` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(10) NOT NULL,
   `mandy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `price` int(11) NOT NULL
+  `price` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -94,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `commission` (
 --
 
 CREATE TABLE IF NOT EXISTS `daily_account` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `ac_no_i` int(11) NOT NULL,
   `ac_no_o` int(11) NOT NULL,
@@ -104,7 +107,8 @@ CREATE TABLE IF NOT EXISTS `daily_account` (
   `type` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bors` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `recordby` smallint(6) NOT NULL DEFAULT '0'
+  `recordby` smallint(6) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -116,7 +120,8 @@ CREATE TABLE IF NOT EXISTS `daily_account` (
 CREATE TABLE IF NOT EXISTS `debtors` (
   `ctmid` int(11) NOT NULL,
   `ctmacno` int(11) NOT NULL,
-  `price` decimal(7,2) NOT NULL
+  `price` decimal(7,2) NOT NULL,
+  PRIMARY KEY (`ctmid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -132,7 +137,8 @@ CREATE TABLE IF NOT EXISTS `deleted_drug` (
   `size` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ac_no` INT NOT NULL,
   `dtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bystid` int(11) NOT NULL
+  `bystid` int(11) NOT NULL,
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -153,13 +159,15 @@ CREATE TABLE IF NOT EXISTS `discount` (
 --
 
 CREATE TABLE IF NOT EXISTS `drugcombset` (
-  `id` tinyint(4) NOT NULL,
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `drugidin` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invol` tinyint(4) NOT NULL,
   `drugidout` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `outvol` decimal(3,1) NOT NULL,
   `outsetpoint` decimal(4,1) NOT NULL,
-  `outcount` decimal(4,1) NOT NULL
+  `outcount` decimal(4,1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -169,11 +177,12 @@ CREATE TABLE IF NOT EXISTS `drugcombset` (
 --
 
 CREATE TABLE IF NOT EXISTS `drugtouse` (
-  `id` smallint(6) NOT NULL,
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `drugid` smallint(6) NOT NULL,
   `volume` smallint(6) NOT NULL,
-  `user` tinyint(4) NOT NULL
+  `user` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -183,8 +192,10 @@ CREATE TABLE IF NOT EXISTS `drugtouse` (
 --
 
 CREATE TABLE IF NOT EXISTS `drug_group` (
-  `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='group of product';
 
 --
@@ -219,7 +230,7 @@ INSERT INTO `drug_group` (`id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `drug_id` (
-  `id` smallint(6) NOT NULL,
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dgname` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `uses` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -242,7 +253,9 @@ CREATE TABLE IF NOT EXISTS `drug_id` (
   `dinteract` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `candp` tinyint(1) NOT NULL DEFAULT '0',
-  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0'
+  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0',
+  `stcp` TINYINT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -252,8 +265,10 @@ CREATE TABLE IF NOT EXISTS `drug_id` (
 --
 
 CREATE TABLE IF NOT EXISTS `drug_subgroup` (
-  `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='group of product';
 
 --
@@ -273,8 +288,10 @@ INSERT INTO `drug_subgroup` (`id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `drug_type` (
-  `id` tinyint(4) NOT NULL,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='type of product';
 
 --
@@ -304,10 +321,12 @@ INSERT INTO `drug_type` (`id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `dupm` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(11) NOT NULL,
   `mon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `vol` int(11) NOT NULL
+  `vol` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -329,7 +348,8 @@ CREATE TABLE IF NOT EXISTS `lab` (
   `Linfo` text COLLATE utf8mb4_unicode_ci,
   `price` smallint(6) NOT NULL DEFAULT '0',
   `volume` int(11) NOT NULL DEFAULT '0',
-  `ltr` char(1) COLLATE utf8mb4_unicode_ci  NULL DEFAULT '0'
+  `ltr` char(1) COLLATE utf8mb4_unicode_ci  NULL DEFAULT '0',
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -339,10 +359,12 @@ CREATE TABLE IF NOT EXISTS `lab` (
 --
 
 CREATE TABLE IF NOT EXISTS `labstat` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `labid` int(11) NOT NULL,
   `MandY` date NOT NULL,
-  `vol` int(11) NOT NULL
+  `vol` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -355,7 +377,8 @@ CREATE TABLE IF NOT EXISTS `labwait` (
   `ptid` mediumint(9) NOT NULL,
   `rid` smallint(6) NOT NULL,
   `tablename` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dtr` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `dtr` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `tablename` (`tablename`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -365,14 +388,16 @@ CREATE TABLE IF NOT EXISTS `labwait` (
 --
 
 CREATE TABLE IF NOT EXISTS `log` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL,
   `table_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `column_h` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `row_no` int(11) NOT NULL,
   `old_value` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `new_value` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `new_value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `index` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -382,11 +407,12 @@ CREATE TABLE IF NOT EXISTS `log` (
 --
 
 CREATE TABLE IF NOT EXISTS `maskid` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(11) NOT NULL,
   `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dgname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mask` tinyint(1) NOT NULL
+  `mask` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -417,7 +443,8 @@ CREATE TABLE IF NOT EXISTS `parameter` (
   `df` tinyint(4) NOT NULL DEFAULT '0',
   `dfp` smallint(6) NOT NULL DEFAULT '0',
   `opdidoffset` smallint(6) NOT NULL DEFAULT '0',
-  `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0'
+  `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0',
+  KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -431,7 +458,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_doc` (
   `ID` smallint(6) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `F_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -445,7 +473,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_drug` (
   `id` int(11) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -459,7 +488,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_lab` (
   `ptid` int(11) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  UNIQUE KEY `ptid` (`ptid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -473,7 +503,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_obs` (
   `id` int(11) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `lname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -487,7 +518,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_scr` (
   `ID` smallint(6) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `F_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `L_Name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -501,7 +533,8 @@ CREATE TABLE IF NOT EXISTS `pt_to_treatment` (
   `ptid` int(11) NOT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `lname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  UNIQUE KEY `ptid` (`ptid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -511,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `pt_to_treatment` (
 --
 
 CREATE TABLE IF NOT EXISTS `rawmat` (
-  `id` tinyint(4) NOT NULL,
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -520,7 +553,9 @@ CREATE TABLE IF NOT EXISTS `rawmat` (
   `volume` smallint(6) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
   `rmfpd` tinyint(1) NOT NULL DEFAULT '0',
-  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other'
+  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -530,11 +565,12 @@ CREATE TABLE IF NOT EXISTS `rawmat` (
 --
 
 CREATE TABLE IF NOT EXISTS `rawmattouse` (
-  `id` smallint(6) NOT NULL,
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `rawmatid` smallint(6) NOT NULL,
   `volume` smallint(6) NOT NULL,
-  `user` tinyint(4) NOT NULL
+  `user` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -544,9 +580,11 @@ CREATE TABLE IF NOT EXISTS `rawmattouse` (
 --
 
 CREATE TABLE IF NOT EXISTS `reccompany` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `comname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -556,7 +594,7 @@ CREATE TABLE IF NOT EXISTS `reccompany` (
 --
 
 CREATE TABLE IF NOT EXISTS `sell_account` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `day` tinyint(2) NOT NULL,
   `month` tinyint(2) NOT NULL,
   `year` smallint(4) NOT NULL,
@@ -567,7 +605,8 @@ CREATE TABLE IF NOT EXISTS `sell_account` (
   `total` decimal(7,2) NOT NULL,
   `ddx` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tty` float NOT NULL,
-  `vsdate` datetime NOT NULL
+  `vsdate` datetime NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -577,7 +616,7 @@ CREATE TABLE IF NOT EXISTS `sell_account` (
 --
 
 CREATE TABLE IF NOT EXISTS `staff` (
-  `ID` smallint(6) NOT NULL,
+  `ID` smallint(6) NOT NULL AUTO_INCREMENT,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `F_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `L_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -602,7 +641,9 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `regtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `clog` tinyint(4) NOT NULL DEFAULT '0',
   `ch_by` smallint(6) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  UNIQUE KEY `ctz_id` (`ctz_id`,`license`,`user_id`),
+  KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -612,7 +653,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
 --
 
 CREATE TABLE IF NOT EXISTS `supplier` (
-  `id` tinyint(4) NOT NULL,
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tel` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -620,7 +661,9 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   `agent` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mobile` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ac_no` int(11) NOT NULL,
-  `paydetail` text COLLATE utf8mb4_unicode_ci
+  `paydetail` text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -630,14 +673,17 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 --
 
 CREATE TABLE IF NOT EXISTS `trpstep` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(11) NOT NULL,
   `firstone` tinyint(4) NOT NULL,
   `init_pr` int(11) NOT NULL,
   `secstep` tinyint(4) NOT NULL,
   `sec_pr` int(11) NOT NULL,
   `tristep` tinyint(4) NOT NULL,
-  `tri_pr` int(11) NOT NULL
+  `tri_pr` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `drugid` (`drugid`),
+  KEY `id` (`id`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='treatment price step cal';
 
 -- --------------------------------------------------------
@@ -647,7 +693,7 @@ CREATE TABLE IF NOT EXISTS `trpstep` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `md5_id` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `full_name` tinytext COLLATE utf8mb4_unicode_ci,
   `user_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -671,7 +717,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_has_avatar` tinyint(1) NOT NULL DEFAULT '0',
   `user_background` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `catcenable` tinyint(1) NOT NULL DEFAULT '0',
-  `ddil` tinyint(1) NOT NULL DEFAULT '0'
+  `ddil` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_email` (`user_email`),
+  FULLTEXT KEY `idx_search` (`full_name`,`address`,`user_email`,`user_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -682,322 +731,6 @@ INSERT INTO `users` (`id`, `md5_id`, `full_name`, `user_name`, `user_email`, `pw
 (49, '', 'demo', 'demo', 'demo@localhost', '64a4f7c2d92ac20aea68659e66c8a01db00c7be7a91bdafa1', 'd', '', 'd', '', '', '2015-10-11', '', 1, 0, 0, 30030, 5, '2016-06-03 08:03:56', 'u2yowv3', 0, 1, '', 0, 0),
 (50, 'c0c7c76d30bd3dcaefc96f40275bdc0a', 'Administrator', 'admin', 'admin@localhost', 'a3dc56cc996c89050461c26c3a292af2a257d6ebaec02f722', '', '', '', '', '', '2014-05-06', '', 1, 0, 0, 1, 5, '2016-06-03 08:03:51', '', 2, 0, '', 0, 0);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `acnumber`
---
-ALTER TABLE `acnumber`
-  ADD UNIQUE KEY `ac_no` (`ac_no`);
-
---
--- Indexes for table `allrsupm`
---
-ALTER TABLE `allrsupm`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `daily_account`
---
-ALTER TABLE `daily_account`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `debtors`
---
-ALTER TABLE `debtors`
-  ADD PRIMARY KEY (`ctmid`);
-
---
--- Indexes for table `deleted_drug`
---
-ALTER TABLE `deleted_drug`
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `drugcombset`
---
-ALTER TABLE `drugcombset`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `drugtouse`
---
-ALTER TABLE `drugtouse`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `drug_group`
---
-ALTER TABLE `drug_group`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `drug_id`
---
-ALTER TABLE `drug_id`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `drug_subgroup`
---
-ALTER TABLE `drug_subgroup`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `drug_type`
---
-ALTER TABLE `drug_type`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `dupm`
---
-ALTER TABLE `dupm`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `lab`
---
-ALTER TABLE `lab`
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `labstat`
---
-ALTER TABLE `labstat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `labwait`
---
-ALTER TABLE `labwait`
-  ADD UNIQUE KEY `tablename` (`tablename`);
-
---
--- Indexes for table `log`
---
-ALTER TABLE `log`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `index` (`ID`);
-
---
--- Indexes for table `maskid`
---
-ALTER TABLE `maskid`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `parameter`
---
-ALTER TABLE `parameter`
-  ADD KEY `ID` (`ID`);
-
---
--- Indexes for table `pt_to_doc`
---
-ALTER TABLE `pt_to_doc`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `pt_to_drug`
---
-ALTER TABLE `pt_to_drug`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pt_to_lab`
---
-ALTER TABLE `pt_to_lab`
-  ADD UNIQUE KEY `ptid` (`ptid`);
-
---
--- Indexes for table `pt_to_obs`
---
-ALTER TABLE `pt_to_obs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pt_to_scr`
---
-ALTER TABLE `pt_to_scr`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `pt_to_treatment`
---
-ALTER TABLE `pt_to_treatment`
-  ADD UNIQUE KEY `ptid` (`ptid`);
-
---
--- Indexes for table `rawmat`
---
-ALTER TABLE `rawmat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `rawmattouse`
---
-ALTER TABLE `rawmattouse`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `reccompany`
---
-ALTER TABLE `reccompany`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `sell_account`
---
-ALTER TABLE `sell_account`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `staff`
---
-ALTER TABLE `staff`
-  ADD UNIQUE KEY `ctz_id` (`ctz_id`,`license`,`user_id`),
-  ADD KEY `ID` (`ID`);
-
---
--- Indexes for table `supplier`
---
-ALTER TABLE `supplier`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `trpstep`
---
-ALTER TABLE `trpstep`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `drugid` (`drugid`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_email` (`user_email`);
-ALTER TABLE `users` ADD FULLTEXT KEY `idx_search` (`full_name`,`address`,`user_email`,`user_name`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `allrsupm`
---
-ALTER TABLE `allrsupm`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `daily_account`
---
-ALTER TABLE `daily_account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `drugcombset`
---
-ALTER TABLE `drugcombset`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `drugtouse`
---
-ALTER TABLE `drugtouse`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `drug_group`
---
-ALTER TABLE `drug_group`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT for table `drug_id`
---
-ALTER TABLE `drug_id`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `drug_subgroup`
---
-ALTER TABLE `drug_subgroup`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `drug_type`
---
-ALTER TABLE `drug_type`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
---
--- AUTO_INCREMENT for table `dupm`
---
-ALTER TABLE `dupm`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `labstat`
---
-ALTER TABLE `labstat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `log`
---
-ALTER TABLE `log`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `maskid`
---
-ALTER TABLE `maskid`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `rawmat`
---
-ALTER TABLE `rawmat`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `rawmattouse`
---
-ALTER TABLE `rawmattouse`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `reccompany`
---
-ALTER TABLE `reccompany`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `sell_account`
---
-ALTER TABLE `sell_account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `staff`
---
-ALTER TABLE `staff`
-  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `supplier`
---
-ALTER TABLE `supplier`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `trpstep`
---
-ALTER TABLE `trpstep`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

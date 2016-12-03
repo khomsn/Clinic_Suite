@@ -37,8 +37,8 @@ USE clinic_opd;
 -- Table structure for table `patient_id`
 --
 
-CREATE TABLE IF NOT EXISTS `patient_id` (
-  `id` smallint(6) NOT NULL,
+CREATE TABLE `patient_id` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ctz_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -72,28 +72,7 @@ CREATE TABLE IF NOT EXISTS `patient_id` (
   `staff` tinyint(1) NOT NULL DEFAULT '0',
   `reccomp` smallint(6) NOT NULL DEFAULT '0',
   `fup` tinyint(1) NOT NULL DEFAULT '0',
-  `clinic` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `clinic` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='patient information';
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `patient_id`
---
-ALTER TABLE `patient_id`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `patient_id`
---
-ALTER TABLE `patient_id`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

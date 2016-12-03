@@ -37,7 +37,7 @@ for($j=1;$j<=$i;$j++)
 	}
 	
 }
-if($_POST['todo']=='Close' or $_POST['todo']=='Diag')
+if($_POST['todo']=='Diag')
 {
   for($j=1;$j<=$i;$j++)
   {
@@ -49,6 +49,9 @@ if($_POST['todo']=='Close' or $_POST['todo']=='Diag')
     }
   }
     unset($_SESSION['DX']);
+echo '<script>window.opener.location.reload()</script>';
+echo '<script>self.close()</script>';
+   
 }
 
 ?>
@@ -65,7 +68,6 @@ if($_POST['todo']=='Close' or $_POST['todo']=='Diag')
 	<link rel="stylesheet" href="../public/css/styles.css">
 <?php 
 include '../libs/autodiag.php';
-include '../libs/reloadopener.php';
 ?>
 </head>
 
@@ -100,7 +102,7 @@ include '../libs/reloadopener.php';
 				</table>
 		</td>
 	</tr>
-	<tr><th><input type="submit" name="todo" value="Diag" onClick="reloadParent;"/><input type="submit" name="todo" value="Close" onClick="reloadParentAndClose();"/></th></tr>
+	<tr><th><input type="submit" name="todo" value="Diag"/></th></tr>
 </table>
 <!--end menu-->
 </form></div>

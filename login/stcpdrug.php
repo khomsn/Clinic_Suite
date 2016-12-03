@@ -4,15 +4,10 @@ page_protect();
 
 $sql = "
 CREATE TABLE IF NOT EXISTS `stcpdrug` (
-  `id` int(11) NOT NULL,
-  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `stcpdrug`
-  ADD KEY `id` (`id`);
-  
-ALTER TABLE `stcpdrug`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ";
 mysqli_query($link, $sql);
 

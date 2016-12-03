@@ -241,28 +241,32 @@ echo "<p class=P3>".$row['address']."</p>";
 								echo $row['inform'];
 								$progs = $row['obsandpgnote'];
 								echo "</span></p><p class=P4>Treatment:</p> ";
+								echo "<ol>";
 								for ($i=1; $i<=4;$i++)
 								{
 								if($row['tr'.$i]!="")
 								{
 									echo "<p class=P1>";
-									echo $i; echo ". ";
+									echo "<li>";
 									echo $row['tr'.$i].' '.$row['trv'.$i].' '.$row['tr'.$i.'o1'].' '.$row['tr'.$i.'o1v'].$row['tr'.$i.'o2'].' '.$row['tr'.$i.'o2v'].$row['tr'.$i.'o3'].' '.$row['tr'.$i.'o3v'].$row['tr'.$i.'o4'].' '.$row['tr'.$i.'o4v'] ;
-									echo "</p>";
+									echo "</li></p>";
 									//echo "<br>";
 								}
 								}
+								echo "</ol>";
 								echo "<p class=P4>ยาและผลิตภัณฑ์:</p>";
+								echo "<ol>";
 								for ($i=1;$i<=10;$i++)
 								{
 									if($row['rx'.$i] !="")
 									{
 										echo "<p class=P1>";
-										echo $i.'. ';
+										echo "<li>";
 										echo $row['rx'.$i].'('.$row['rxg'.$i].') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
-										echo "</p>";
+										echo "<li></p>";
 									}
 								}
+								echo "</ol>";
 								$doctor = $row['doctor'];
 								$drlc = $row['dtlc'];
 								$disprx = $row['disprxby'];

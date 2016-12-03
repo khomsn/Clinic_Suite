@@ -376,12 +376,12 @@ else $i = $_SESSION['DG'];
 
 $i = $_SESSION['DG'];
 
+//check ddiltemp and change 
+$_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
+
+
 if($_POST['add'] == 'เพิ่ม') 
 { 
-  //check ddiltemp
-  $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
-  // reset $fddi in case of change $_SESSION['ddiltemp_'.$id]
-  //include '../libs/settempfddi.php';
   
   if ($_SESSION['DG']<1) 
   {
@@ -397,12 +397,13 @@ if($_POST['add'] == 'เพิ่ม')
       //
 	  $drug = $_SESSION['drug'.$j];
 	  $drugid[$j] = strstr($drug, '-', true); 
-	  //echo $drugid[$j];
+	  //echo $drugid[$j]; if no drug id no add line 
+	  if($drugid[$j]<=0) goto Goon;
 	  //
 	  $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
 	  while ($row2 = mysqli_fetch_array($ptin))
 		  {
-                          $_SESSION['dgname'.$j]= $row2['dgname'];
+              $_SESSION['dgname'.$j]= $row2['dgname'];
 			  $rxuses[$j] =  $row2['uses'];
 			  //check and compair uses order
 			  if(empty($_SESSION['uses'.$j]))
@@ -421,7 +422,9 @@ if($_POST['add'] == 'เพิ่ม')
   }
 //header("Location: drugorder.php");  
 }
-	
+
+Goon:
+
 for($n=1;$n<=10;$n++)
 {
   
@@ -485,24 +488,15 @@ for($n=1;$n<=10;$n++)
   
 }
 
-if($_POST['todo']=='Close' or $_POST['todo']=='OK')
+if($_POST['todo']=='Close')
 {
     
     for($a=1;$a<=10;$a++)
     {
       $_SESSION['drug'.$a]=$_POST['drug'.$a];
       $drug = $_SESSION['drug'.$a];
-    /*  
-      $domain = strstr($drug, '-');
-      echo $domain; // prints @example.com
-
-      $user = strstr($drug, '-', true); // As of PHP 5.3.0
-      echo $user; // prints name
-    */
       $drugid[$a] = strstr($drug, '-', true); 
-      //echo $drugid[$a];
     }
-    
 	for($a=1;$a<=10;$a++)
 	{
 	  $idrx[$a] = $drugid[$a];
@@ -536,6 +530,13 @@ if($_POST['todo']=='Close' or $_POST['todo']=='OK')
 	}
 	for($i=1;$i<=10;$i++)
 	{
+	// check to empty data if no idrx = 0
+        if($idrx[$i]==0)
+        {
+            $rx[$i] = '';
+            $rxuses[$i] = '';
+            $rxv[$i] = '';
+        }
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
 		$svl = "rx".$i."sv";
@@ -583,8 +584,25 @@ if($_POST['todo']=='Close' or $_POST['todo']=='OK')
 	  }
 	}
 //unset($_SESSION['ddiltemp_'.$id]);
-}
+//if($_POST['todo']=='Close')
+{
+    for($i=1;$i<=10;$i++)
+    {
+    unset($_SESSION['drug'.$i]);
+    unset($_SESSION['DG']);
+    unset($_SESSION['uses'.$i]);
+    unset($_SESSION['vol'.$i]);
+    }
 
+    unset($_SESSION['DG']);
+    unset($_SESSION['ORDER']);
+    $_SESSION['ORDER']=0;// set to 0 for sure
+echo '<script>window.opener.location.reload()</script>';
+echo '<script>self.close()</script>';
+}
+//
+}
+/*
 if($_POST['todo']=='Close')
 {
     for($i=1;$i<=10;$i++)
@@ -600,7 +618,7 @@ if($_POST['todo']=='Close')
     $_SESSION['ORDER']=0;// set to 0 for sure
 
 }
-
+*/
 ?>
 
 <!DOCTYPE html>
@@ -616,8 +634,17 @@ if($_POST['todo']=='Close')
 <?php 
 include '../libs/autodrug.php';
 include '../libs/autoorder.php';
-include '../libs/reloadopener.php';
+//include '../libs/reloadopener.php';
 ?>
+<script type='text/javascript'>
+
+ $(document).ready(function() { 
+   $('input[name=ddiltemp]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script>
 </head>
 
 <body>
@@ -666,7 +693,7 @@ include '../libs/reloadopener.php';
       </table>
     </td>
   </tr>
-  <tr><th><input type="submit" name="todo" value="OK" onClick="reloadParent;"/><input type="submit" name="todo" value="Close" onClick="reloadParentAndClose();"/></th></tr>
+  <tr><th><input type="submit" name="todo" value="Close" onClick="reloadParentAndClose();"/></th></tr>
 </table>
 <!--end menu-->
 </form></div>

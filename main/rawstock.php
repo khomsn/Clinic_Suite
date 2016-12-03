@@ -52,7 +52,7 @@ else
 		<td width="10" valign="top"><p>&nbsp;</p></td>
 		<td>
 <!--menu-->
-			<h3 class="titlehdr">นำเข้า Raw Material</h3>
+			<h3 class="titlehdr"><a onClick="return popup(this, 'notes','1000','850','yes')" HREF="rawstockinall.php">นำเข้า Raw Material</a></h3>
 				<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr>

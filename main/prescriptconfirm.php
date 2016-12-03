@@ -20,17 +20,6 @@ for($i=1;$i<=10;$i++)
 {
 	if($_POST[$i] == 'ลบ')
 	{
-		$us = "rx".$i."uses";
-		$vl = "rx".$i."v";
-		$rxby = "rxby".$i;
-		mysqli_query($link, "UPDATE $tmp SET
-			`idrx$i` = '0',
-			`rx$i` = '',
-			`rxg$i` = '',
-			`$us` = '',
-			`$vl` = '0',
-			`$rxby` = '0'
-			") or die(mysqli_error($link));
 		//
 		//update reserve volume at drug_id
 		$redid = $_POST['hidx'.$i];
@@ -48,9 +37,55 @@ for($i=1;$i<=10;$i++)
 			`volreserve` = '$rvolnew' WHERE `id` ='$redid' LIMIT 1 ;
 			") or die(mysqli_error($link));
 		}
-		// go on to other step
-		header("Location: prescriptconfirm.php"); 	
+		$rar = $i;
 	}
+}
+if(!empty($rar))
+{
+    for($i=$rar;$i<=10;$i++)
+    {
+        $n=$i+1;
+        
+        $upd = mysqli_fetch_array(mysqli_query($link, "select * from $tmp"));
+        //set data value
+		if($i<10)
+		{
+		$idrx = $upd['idrx'.$n];
+		$rx= $upd['rx'.$n];
+		$rxg= $upd['rxg'.$n];
+		$usd = $upd['rx'.$n.'uses'];
+		$vld = $upd['rx'.$n.'v'];
+		$rxbyd = $upd['rxby'.$n];
+		//set header
+		$us = "rx".$i."uses";
+		$vl = "rx".$i."v";
+		$rxby = "rxby".$i;
+		mysqli_query($link, "UPDATE $tmp SET
+			`idrx$i` = '$idrx',
+			`rx$i` = '$rx',
+			`rxg$i` = '$rxg',
+			`$us` = '$usd',
+			`$vl` = '$vld',
+			`$rxby` = '$rxbyd'
+			") or die(mysqli_error($link));
+        }
+        if($i==10)
+        {
+		$us = "rx".$i."uses";
+		$vl = "rx".$i."v";
+		$rxby = "rxby".$i;
+		mysqli_query($link, "UPDATE $tmp SET
+			`idrx$i` = '0',
+			`rx$i` = '',
+			`rxg$i` = '',
+			`$us` = '',
+			`$vl` = '0',
+			`$rxby` = '0'
+			") or die(mysqli_error($link));       
+        }
+    }
+        // go on to other step
+		header("Location: prescriptconfirm.php");
 }
 
 if($_POST['register'] == 'บันทึก-ยืนยัน') 
@@ -156,7 +191,6 @@ if($_SESSION['medcert']=='2'){ header("Location: ../docform/Medical_Certificate.
 	<link rel="stylesheet" href="../public/js/jquery-ui-themes-1.11.4/themes/smoothness/jquery-ui.css">
 <?php 
 include '../libs/popup.php';
-include '../libs/reloadopener.php';
 ?>
 <link rel="stylesheet" href="../public/js/jquery-ui-themes-1.11.4/themes/smoothness/jquery-ui.css">
 </head>
@@ -328,6 +362,7 @@ if(empty($_SESSION['prolab']))
 }
 unset($_SESSION['prolab']);
 unset($_SESSION['tr']);
+$_SESSION['ORDER']=0;
 ?>
 </body></html>
 <?php 

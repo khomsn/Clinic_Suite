@@ -8,18 +8,13 @@ $msg = array();
 $sql = "
 
 CREATE TABLE IF NOT EXISTS `maskid` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `drugid` int(11) NOT NULL,
   `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dgname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mask` tinyint(1) NOT NULL
+  `mask` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `maskid`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `maskid`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
   
 ";
 
@@ -65,7 +60,7 @@ for($j=1;$j<=$i;$j++)
 	  mysqli_query($link, "DELETE FROM maskid WHERE id = '$j' ") or die(mysqli_error($link));
   }
 }
-if($_POST['Set_Mask']=='set')
+if(!is_null($_POST['mask']))
 {
     $sql_insert = "UPDATE `maskid` SET `mask` = '$_POST[mask]'; ";
     mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -78,12 +73,19 @@ if($_POST['Set_Mask']=='set')
 <head>
 <title>ผู้ป่วยรอตรวจ</title>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
+<script type='text/javascript'>
 
+ $(document).ready(function() { 
+   $('input[name=mask]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script>
 <link rel="stylesheet" href="../public/css/styles.css">
 </head>
-
 <body>
-
 <!--add menu -->
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
@@ -115,10 +117,24 @@ if(!empty($err))  {
 
 <!-- Process Data-->
 <form action="maskingid.php" method="post" name="ptd" id="ptd">
-    <h3 class="titlehdr">Maskin Drug Id in OPD Card</h3>
-    <p align="right">&nbsp; </p>
+    <h3 class="titlehdr">Maskin Drug Id in OPD Card
     
-    <!--List Patient wait for doctor-->
+    <?php
+    $result = mysqli_query($link, "SELECT * FROM maskid ORDER BY dgname ASC ");
+    while ($row_settings = mysqli_fetch_array($result))
+    {
+    $mask=$row_settings['mask'];
+    }
+    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    echo "Masking ID <input type='radio' name='mask' value='1'";
+    if ($mask=='1') echo "checked";
+    echo ">ON<input type='radio' name='mask' value='0'";
+    if ($mask=='0') echo "checked";
+    echo ">OFF";
+    //////////////////////////
+    ?>
+    
+    </h3>
 
     <?php
     $result = mysqli_query($link, "SELECT * FROM maskid ORDER BY dgname ASC ");
@@ -156,14 +172,7 @@ if(!empty($err))  {
     
     }
     echo "</table>";
-    echo "Masking ID <input type='radio' name='mask' value='1'";
-    if ($mask=='1') echo "checked";
-    echo ">ON<input type='radio' name='mask' value='0'";
-    if ($mask=='0') echo "checked";
-    echo ">OFF";
-    //////////////////////////
     ?>
-    <input type=submit name=Set_Mask value='set'>
 </form>
 <!-- Process Data finished-->
 </td></tr></table>

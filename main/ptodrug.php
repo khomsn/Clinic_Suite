@@ -5,6 +5,7 @@ page_protect();
 $pdir = AVATAR_PATH;
 //
 unset($_SESSION['price']);
+unset($_SESSION['patcash']);
 ?>
 
 <html>

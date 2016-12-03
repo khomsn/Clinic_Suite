@@ -38,8 +38,9 @@ USE clinic_common;
 --
 
 CREATE TABLE IF NOT EXISTS `diag` (
-  `id` int(20) NOT NULL,
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1347,9 +1348,11 @@ INSERT INTO `diag` (`id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `drandillci` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1381,7 +1384,7 @@ INSERT INTO `drandillci` (`id`, `chronname`, `drugname`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `druggeneric` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `indication` text COLLATE utf8mb4_unicode_ci,
   `dgroup` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1389,7 +1392,10 @@ CREATE TABLE IF NOT EXISTS `druggeneric` (
   `dcat` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dinteract` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dintactw` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ciwith` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `ciwith` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  UNIQUE KEY `name` (`name`),
+  KEY `id` (`id`)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1975,7 +1981,9 @@ INSERT INTO `druggeneric` (`id`, `name`, `indication`, `dgroup`, `dsgroup`, `dca
 --
 
 CREATE TABLE IF NOT EXISTS `prefix` (
-  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1992,14 +2000,12 @@ INSERT INTO `prefix` (`name`) VALUES
 ('จ่าสิบเอก'),
 ('จ่าเอก'),
 ('ด.ญ.'),
+('ด.ช.'),
 ('ด.ต.'),
 ('น.ส.'),
-('นรางสาว'),
 ('นาง'),
 ('นางสาว'),
-('นางาสว'),
 ('นาย'),
-('นาาย'),
 ('พ.จ.อ.'),
 ('พระ'),
 ('พระครู'),
@@ -2008,13 +2014,11 @@ INSERT INTO `prefix` (`name`) VALUES
 ('พันจ่าเอก'),
 ('ร.ต.'),
 ('ร.ต.ต.'),
-('ร.ต.ท'),
 ('ร.ต.ท.'),
 ('ร้อยตรี'),
 ('ว่าที่ ร.ต.'),
 ('ว่าที่ ร.ต.ต.'),
 ('ว่าที่ ร.ต.หญิง'),
-('ว่าที่ร.ต.'),
 ('ส.ท.'),
 ('ส.อ.'),
 ('ส.อ.หญิง'),
@@ -2031,12 +2035,13 @@ INSERT INTO `prefix` (`name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `zip` (
-  `id` int(6) NOT NULL,
+  `id` int(6) NOT NULL AUTO_INCREMENT,
   `zipid` int(6) NOT NULL,
   `jname` varchar(50) NOT NULL,
   `aname` varchar(50) NOT NULL,
   `tname` varchar(50) NOT NULL,
-  `zipcode` int(5) NOT NULL
+  `zipcode` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -9479,67 +9484,7 @@ INSERT INTO `zip` (`id`, `zipid`, `jname`, `aname`, `tname`, `zipcode`) VALUES
 (7425, 961302, 'นราธิวาส', 'เจาะไอร้อง', 'บูกิต', 96130),
 (7426, 961303, 'นราธิวาส', 'เจาะไอร้อง', 'มะรือโบออก', 96130);
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `diag`
---
-ALTER TABLE `diag`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `drandillci`
---
-ALTER TABLE `drandillci`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `druggeneric`
---
-ALTER TABLE `druggeneric`
-  ADD UNIQUE KEY `name` (`name`),
-  ADD KEY `id` (`id`);
-
---
--- Indexes for table `prefix`
---
-ALTER TABLE `prefix`
-  ADD PRIMARY KEY (`name`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `zip`
---
-ALTER TABLE `zip`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `diag`
---
-ALTER TABLE `diag`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1515;
---
--- AUTO_INCREMENT for table `drandillci`
---
-ALTER TABLE `drandillci`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT for table `druggeneric`
---
-ALTER TABLE `druggeneric`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=571;
---
--- AUTO_INCREMENT for table `zip`
---
-ALTER TABLE `zip`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7427;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

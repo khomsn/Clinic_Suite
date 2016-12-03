@@ -214,9 +214,9 @@ if($_POST['doSave'] == 'Save')
                                 // assign insertion pattern
                                 if($buyprice>0)
                                 {
-                                $detail ="ซื้อ ".$_POST['supplier'].' '.$_POST['inv_num'];
+                                $detail ="ซื้อ ".$_SESSION['supplier'].' '.$_SESSION['invoice'];
                                 $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`bors`,`recordby`)
-                                                    VALUES  (now(),'$dacno','$sup_ac','$detail','$_POST[inv_num]','$buyprice','c','b','$_SESSION[user_id]')";
+                                                    VALUES  (now(),'$dacno','$sup_ac','$detail','$_SESSION[invoice]','$buyprice','c','b','$_SESSION[user_id]')";
                                 // Now insert Drug order information to "drug_#id" table
                                 mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
                                 }

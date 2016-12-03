@@ -2,9 +2,8 @@
 include '../login/dbc.php';
 page_protect();
 $sql = "
-
 CREATE TABLE IF NOT EXISTS `staff` (
-  `ID` smallint(6) NOT NULL,
+  `ID` smallint(6) NOT NULL AUTO_INCREMENT,
   `prefix` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `F_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `L_Name` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -29,16 +28,10 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `regtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `clog` tinyint(4) NOT NULL DEFAULT '0',
   `ch_by` smallint(6) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  UNIQUE KEY `ctz_id` (`ctz_id`,`license`,`user_id`),
+  KEY `ID` (`ID`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `staff`
-  ADD UNIQUE KEY `ctz_id` (`ctz_id`,`license`,`user_id`),
-  ADD KEY `ID` (`ID`);
-
-ALTER TABLE `staff`
-  MODIFY `ID` smallint(6) NOT NULL AUTO_INCREMENT;
-  
 ";
 
 mysqli_query($link, $sql);

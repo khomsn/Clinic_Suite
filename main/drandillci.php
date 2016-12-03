@@ -4,35 +4,12 @@ page_protect();
 
 $sql = "
 CREATE TABLE IF NOT EXISTS `drandillci` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `drandillci` (`id`, `chronname`, `drugname`) VALUES
-(1, 'G6PD Deficiency', 'Furosemide'),
-(2, 'G6PD Deficiency', 'Sulfonamide_dsg'),
-(3, 'G6PD Deficiency', 'Aspirin'),
-(4, 'G6PD Deficiency', 'Chloramphenicol'),
-(5, 'G6PD Deficiency', 'Quinolones_drg'),
-(6, 'G6PD Deficiency', 'Dapsone'),
-(7, 'G6PD Deficiency', 'Dimercaprol'),
-(8, 'G6PD Deficiency', 'Doxorubicin'),
-(9, 'G6PD Deficiency', 'Methylene blue'),
-(10, 'G6PD Deficiency', 'Primaquine'),
-(11, 'G6PD Deficiency', 'Probenecid'),
-(12, 'G6PD Deficiency', 'Quinine'),
-(13, 'G6PD Deficiency', 'Vitamin K1'),
-(14, 'G6PD Deficiency', 'Celecoxib'),
-(15, 'G6PD Deficiency', 'Fluoroquinolones_drg'),
-(16, 'G6PD Deficiency', 'Sulfonamides_dsg');
-
-ALTER TABLE `drandillci`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-  
-ALTER TABLE `drandillci`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 ";
 

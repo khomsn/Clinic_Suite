@@ -108,7 +108,7 @@ elseif ($_POST['todo'] == 'OK' )
 					  `prog` TINYINT NOT NULL DEFAULT '0',
 					  `saved` TINYINT NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`Labid`)
-					  ) ENGINE = MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+					  ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 					  ";
 	  // Now insert Patient to "patient_id" table
 	  mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));

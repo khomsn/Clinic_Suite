@@ -5,21 +5,15 @@ page_protect();
 $sql="
 
 CREATE TABLE IF NOT EXISTS `drugcombset` (
-  `id` tinyint(4) NOT NULL,
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `drugidin` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invol` tinyint(4) NOT NULL,
   `drugidout` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `outvol` decimal(3,1) NOT NULL,
   `outsetpoint` decimal(4,1) NOT NULL,
-  `outcount` decimal(4,1) NOT NULL
+  `outcount` decimal(4,1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `drugcombset`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
-ALTER TABLE `drugcombset`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
   
 ";
 mysqli_query($link, $sql);

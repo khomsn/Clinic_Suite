@@ -4,8 +4,8 @@ page_protect();
 $sql ="
 
 CREATE TABLE IF NOT EXISTS `trpstep` (
-  `id` int(11) NOT NULL,
-  `drugid` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `drugid` int(11) NOT NULL UNIQUE KEY,
   `firstone` tinyint(4) NOT NULL,
   `init_pr` int(11) NOT NULL,
   `secstep` tinyint(4) NOT NULL,
@@ -14,15 +14,6 @@ CREATE TABLE IF NOT EXISTS `trpstep` (
   `tri_pr` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='treatment price step cal';
 
-ALTER TABLE `trpstep`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `drugid` (`drugid`),
-  ADD KEY `id` (`id`);
-
-ALTER TABLE `trpstep`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-
 ";
 mysqli_query($link, $sql);
 
@@ -30,6 +21,10 @@ mysqli_query($link, $sql);
 if($_POST['set'] == 'ReSet')
 {
       mysqli_query($link, "TRUNCATE TABLE trpstep") or die(mysqli_error($link));
+}
+if($_POST['ลบ'])
+{
+      mysqli_query($link, "DELETE FROM `trpstep` WHERE `id` = '$_POST[ลบ]'") or die(mysqli_error($link));
 }
 if($_POST['set'] == 'Set') 
 { 
@@ -155,6 +150,8 @@ while($dcs = mysqli_fetch_array($drug))
  echo "</th><th>";
  echo "<input type=number class=typenumber min=0 step=1 name='tripr".$dcs['id']."' value='".$dcs['tri_pr']."'>";
 // echo $dsc['secpr'];
+ echo "</th><th>";
+ echo "<button name='ลบ' type='submit' value='".$dcs['id']."'>ลบ</button>";
  echo "</th></tr>";
 $i=$dcs['id']+1;
 }

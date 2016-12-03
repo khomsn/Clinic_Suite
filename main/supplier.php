@@ -47,7 +47,7 @@ CREATE TABLE `$id` (
   `price` decimal(9,2) NOT NULL,
   `payment` tinyint(1) NOT NULL,
   `duedate` date DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ";
 

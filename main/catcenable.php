@@ -8,7 +8,7 @@ page_protect();
 $err = array();
 $msg = array();
 
-if($_POST['doSave'] == 'Save')  
+if(!is_null($_POST['catc']) OR !is_null($_POST['ddil']))
 {
 // Filter POST data for harmful code (sanitize)
 foreach($_POST as $key => $value) {
@@ -43,15 +43,20 @@ while ($row_settings = mysqli_fetch_array($rs_settings))
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
-  <script>
-  $(document).ready(function(){
-    $("#myform").validate();
-	 $("#pform").validate();
-  });
-  </script>
 <link rel="stylesheet" href="../public/css/styles.css">
-</head>
+<script type='text/javascript'>
 
+ $(document).ready(function() { 
+   $('input[name=catc]').change(function(){
+        $('form').submit();
+   });
+   $('input[name=ddil]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script>
+</head>
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr> 
@@ -112,15 +117,8 @@ if (isset($_SESSION['user_id']))
 	    </td>
 	</tr>
         </table>
-        <p align="center"> 
-          <input name="doSave" type="submit" id="doSave" value="Save">
-        </p>
-        <p>&nbsp; </p>
       </form>
-      <p>&nbsp; </p>
-      <p>&nbsp;</p>
-	   
-      <p align="right">&nbsp; </p></td>
+    </td>
     <td width="196" valign="top">&nbsp;</td>
   </tr>
   <tr> 

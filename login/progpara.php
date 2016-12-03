@@ -2,9 +2,9 @@
 include 'dbc.php';
 page_protect();
 
-$sql = "
+$sql_insert = "
 CREATE TABLE IF NOT EXISTS `parameter` (
-  `ID` tinyint(4) NOT NULL DEFAULT '1',
+  `ID` tinyint(4) NOT NULL DEFAULT '1' PRIMARY KEY,
   `name` text COLLATE utf8mb4_unicode_ci,
   `Ename` text COLLATE utf8mb4_unicode_ci,
   `cliniclcid` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -25,13 +25,11 @@ CREATE TABLE IF NOT EXISTS `parameter` (
   `df` tinyint(4) NOT NULL DEFAULT '0',
   `dfp` smallint(6) NOT NULL DEFAULT '0',
   `opdidoffset` smallint(6) NOT NULL DEFAULT '0',
-  `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0'
+  `maskingdrugid` tinyint(1) NOT NULL DEFAULT '0',
+  `extid` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `parameter`
-  ADD KEY `ID` (`ID`);
 ";
-mysqli_query($link, $sql);
+mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 
 if($_POST['save'] == 'บันทึก') 
 { 
@@ -44,10 +42,10 @@ foreach($_POST as $key => $value) {
 }
     // assign insertion pattern
     $sql_insert = "INSERT into `parameter`
-			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`,`maskingdrugid`)
+			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`,`maskingdrugid`,`extid`)
 			VALUES
 			    ('$data[name]','$data[ename]','$data[cliniclcid]','$data[address]','$data[eaddress]','$data[tel]','$data[mobile]','$data[email]','$data[logo]','$data[normprice]','$data[fup]','$data[tmp]',
-			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]','$data[maskingdrugid]')";
+			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]','$data[maskingdrugid]','$data[extid]')";
 
     // Now insert Patient to "patient_id" table
     mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -125,6 +123,7 @@ else
 			 $dfp = $row_settings['dfp'];
 			 $offset = $row_settings['opdidoffset'];
 			 $maskingdrugid = $row_settings['maskingdrugid'];
+			 $extid = $row_settings['extid'];
 			}
 	?>
 
@@ -219,6 +218,13 @@ else
 							<input type="radio" name="maskingdrugid" value="0" <?php if($maskingdrugid==0) echo "checked";?>>No
 							</td>
 							</tr>
+							<tr>
+							<td>เลขที่ระเบียนที่ใช้สำหรับขายส่งยา
+							</td>
+							<td>
+							<input name="extid" type="text" id="extid"  value="<?php 
+							echo $extid; ?>" size="15">
+							</td></tr>
 							</table>
 						</tr>
 						<tr>

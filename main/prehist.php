@@ -45,6 +45,7 @@ if (ltrim($row_settings['csf'])==="")
 
     // assign insertion pattern
     if(empty($_POST['weight'])) $_POST['weight']=0;
+    if(empty($_POST['height'])) $_POST['height']=0;
     if(empty($_POST['temp'])) $_POST['temp']=0;
     if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
     if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
@@ -52,9 +53,9 @@ if (ltrim($row_settings['csf'])==="")
     if(empty($_POST['rr'])) $_POST['rr']=0;
   
     $sql_insert = "INSERT into `pt_$id`
-			    (`date`,`weight`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
+			    (`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
 			VALUES
-			( NOW(),'$_POST[weight]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
+			( NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
 
     // Now insert Patient to "pt_#id" table
     mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
@@ -72,6 +73,7 @@ if (ltrim($row_settings['csf']) !=="")
    // assign insertion pattern
     $sql = "UPDATE $pttable SET
 			`weight` = '$_POST[weight]',
+			`height` = '$_POST[height]',
 			`temp` = '$_POST[temp]',
 			`bpsys` = '$_POST[bpsys]',
 			`bpdia` = '$_POST[bpdia]',
@@ -85,6 +87,9 @@ if (ltrim($row_settings['csf']) !=="")
     mysqli_query($linkopd, $sql) or die("Update Failed:" . mysqli_error($linkopd));
     }
 }
+//update height at patient_id.
+
+if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'") or die(mysqli_error($linkopd));
 // go on to other step
 
 $_SESSION['todoc']=1;
@@ -156,6 +161,7 @@ else
     while($rid = mysqli_fetch_array($pin))
     {
       $weight=$rid['weight'];
+      $height=$rid['height'];
       $temp=$rid['temp'];
       $bpsys=$rid['bpsys'];
       $bpdia=$rid['bpdia'];
@@ -177,10 +183,11 @@ else
 						$date1=date_create(date("Y-m-d"));
 						$date2=date_create($row_settings['birthday']);
 						$diff=date_diff($date2,$date1);
+						$_SESSION['age'] = $diff->format("%Y");
 						echo "&nbsp; &nbsp;อายุ&nbsp; ";
 						echo $diff->format("%Y ปี %m เดือน %d วัน");
 						echo "</h3>";
-						if($row_settings['gender']=='หญิง')
+						if($row_settings['gender']=='หญิง' AND ($_SESSION['age']>=10 or $_SESSION['age'] <=60))
 						{
 						//get pregdate for fup
 						$pregmonth = $row_settings['fup'];
@@ -205,9 +212,22 @@ else
 							<hr style="width: 80%; height: 2px;">
 							<div style="text-align: center;">
 							<h4>ตรวจร่างกายเบื้องต้น</h4>
-							
 							น้ำหนัก: <input maxlength="5" size="5" name="weight" value="<?php echo $weight;?>" > kg.  
 							&nbsp; &nbsp; &nbsp;
+							<?php
+							if($_SESSION['age']<=20 or $_SESSION['age']>=50)
+							{
+							?>
+							ส่วนสูง: <input maxlength="5" size="5" name="height" value="<?php echo $height;?>" > cm.  
+							&nbsp; &nbsp; &nbsp;
+							<?php
+							}
+							else
+							{
+							$hin = mysqli_fetch_array(mysqli_query($linkopd, "SELECT height FROM patient_id where id='$id' "));
+								echo "<input type=hidden name=height value=".$hin[0].">";
+							}
+							?>
 							Temp <input maxlength="4" size="5" name="temp" value="<?php echo $temp;?>" > C.
 							&nbsp; &nbsp; &nbsp;
 							หายใจ <input maxlength="4" size="5" name="rr" value ="16" value="<?php echo $rr;?>" > / นาฑี 

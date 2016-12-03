@@ -242,17 +242,20 @@ switch ($m)
 	    echo $row['ddx'];
 	    echo "<br> <u>คำแนะนำ:</u> ";
 	    echo $row['inform'];
-	    echo "<br><u>Treatment:</u><br> ";
+	    echo "<br><u>Treatment:</u>";
+	    echo "<ol>";
 	    for ($i=1; $i<=4;$i++)
 	    {
 	    if($row['tr'.$i]!="")
 	    {
-		    echo $i; echo ". ";
+		    echo "<li>";
 		    echo $row['tr'.$i].' '.$row['trv'.$i].' '.$row['tr'.$i.'o1'].' '.$row['tr'.$i.'o1v'].$row['tr'.$i.'o2'].' '.$row['tr'.$i.'o2v'].$row['tr'.$i.'o3'].' '.$row['tr'.$i.'o3v'].$row['tr'.$i.'o4'].' '.$row['tr'.$i.'o4v'] ;
-		    echo "<br>";
+		    echo "</li>";
 	    }
+	    echo "</ol>";
 	    }
-	    echo "<u>ยาและผลิตภัณฑ์:</u> <br>";
+	    echo "<u>ยาและผลิตภัณฑ์:</u>";
+	    echo "<ol>";
 	    for ($i=1;$i<=10;$i++)
 	    {
                 if($mask == 0)
@@ -263,10 +266,10 @@ switch ($m)
                     {
                         if($row['rx'.$i] !="")
                         {
-                                echo $i.'. ';
+                                echo "<li>";
                                 if($row['rxby'.$i]!=0) echo $row['rx'.$i].'('.$row['rxg'.$i].'<sup>'.$row['rxby'.$i].'</sup>'.') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
                                 else echo $row['rx'.$i].'('.$row['rxg'.$i].') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
-                                echo "<br>";
+                                echo "</li>";
                         }
                     }
                 }
@@ -279,15 +282,16 @@ switch ($m)
                     {
                         if($row['rx'.$i] !="")
                         {
-                                echo $i.'. ';
+                                echo "<li>";
                                 if($row['rxby'.$i]!=0) echo $row['rx'.$i].'('.$row['rxg'.$i].'<sup>'.$row['rxby'.$i].'</sup>'.') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
                                 else echo $row['rx'.$i].'('.$row['rxg'.$i].') จำนวน: '.$row['rx'.$i.'v'].' วิธีใช้: '.$row['rx'.$i.'uses'];
-                                echo "<br>";
+                                echo "</li>";
                         }
                     }
                 }
                 }
 	    }
+	    echo "</ol>";
 	    //progression note
 	    if (ltrim($progs) !== '')
 	    {

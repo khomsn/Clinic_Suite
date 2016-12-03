@@ -3,18 +3,11 @@ include '../login/dbc.php';
 page_protect();
 $sql = "
 CREATE TABLE IF NOT EXISTS `reccompany` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `comname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
+  `comdt` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `reccompany`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
-ALTER TABLE `reccompany`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 ";
 
 mysqli_query($link, $sql);

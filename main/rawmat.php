@@ -4,7 +4,7 @@ page_protect();
 $sql = "
 
 CREATE TABLE IF NOT EXISTS `rawmat` (
-  `id` tinyint(4) NOT NULL,
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -13,16 +13,10 @@ CREATE TABLE IF NOT EXISTS `rawmat` (
   `volume` smallint(6) NOT NULL DEFAULT '0',
   `ac_no` int(11) NOT NULL,
   `rmfpd` tinyint(1) NOT NULL DEFAULT '0',
-  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other'
+  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `rawmat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-  
-ALTER TABLE `rawmat`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT;
-
 ";
 
 mysqli_query($link, $sql);

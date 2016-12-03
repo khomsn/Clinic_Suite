@@ -20,11 +20,9 @@ CREATE TABLE IF NOT EXISTS `lab` (
   `Linfo` text COLLATE utf8mb4_unicode_ci,
   `price` smallint(6) NOT NULL DEFAULT '0',
   `volume` int(11) NOT NULL DEFAULT '0',
-  `ltr` char(1) COLLATE utf8mb4_unicode_ci  NULL DEFAULT '0'
+  `ltr` char(1) COLLATE utf8mb4_unicode_ci  NULL DEFAULT '0',
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `lab`
-  ADD UNIQUE KEY `id` (`id`);
   
 ";
 

@@ -5,7 +5,7 @@ page_protect();
 $sql="
 
 CREATE TABLE IF NOT EXISTS `drug_id` (
-  `id` smallint(6) NOT NULL,
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `dname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dgname` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `uses` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -29,15 +29,9 @@ CREATE TABLE IF NOT EXISTS `drug_id` (
   `unit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `candp` tinyint(1) NOT NULL DEFAULT '0',
   `staffcanorder` tinyint(1) NOT NULL DEFAULT '0',
-  `stcp` TINYINT NOT NULL DEFAULT '0'
+  `stcp` TINYINT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-ALTER TABLE `drug_id`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `drug_id`
-  MODIFY `id` smallint(6) NOT NULL AUTO_INCREMENT;
-  
 ";
 
 mysqli_query($link, $sql);

@@ -3,11 +3,10 @@
 include '../login/dbc.php';
 page_protect();
 $pdir = AVATAR_PATH;
+unset($_SESSION['patdesk']);
 ?>
 
 <html>
-
-<head>
 <head>
 <title>ผู้ป่วยรอตรวจ</title>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
