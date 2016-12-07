@@ -92,8 +92,9 @@ $num = mysqli_num_rows($result);
 		$_SESSION['user_avatar_file'] = $target_file_path;
 		$_SESSION['user_background'] = $bgimage;
 		//
+		$lastday = cal_days_in_month(CAL_GREGORIAN, date("d"), date("Y"));
 		$sd = date("d");
-		if($sd==28)  header("Location: ../main/drugusestat.php");
+		if($sd==$lastday)  header("Location: ../main/drugusestat.php");
 		else  header("Location: myaccount.php");
 		 }
 		}

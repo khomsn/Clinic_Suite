@@ -2,38 +2,139 @@
 include '../login/dbc.php';
 page_protect();
 date_default_timezone_set('Asia/Bangkok');
+$stday = mysqli_fetch_array(mysqli_query($link, "SELECT date from drug_$_SESSION[drugid] where id=1"));
+
+$fulluri = $_SERVER['REQUEST_URI'];
+$trimString = "/clinic/docform/";
+
+$actsite = trim($fulluri, $trimString);
+
+$param = mysqli_query($link, "SELECT * FROM parameter WHERE ID ='1'");
+		while($row = mysqli_fetch_array($param))
+		{
+		$clinic_name = $row['name'];
+		$cliniclcid = $row['cliniclcid'];
+		$name_lc = $row['name_lc'];
+		$cl_addr = $row['address'];
+		$cl_lcid = $row['lcid'];
+		}
+
+$dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE  id = '$_SESSION[drugid]' ");
+while($row = mysqli_fetch_array($dtype))
+{
+	$dname = $row['dname'];//
+	$dgname = $row['dgname'];//
+	$size = $row['size'];//
+}
+
+$drugid = $_SESSION['drugid']; 
+
+$line = 12; //number of table row per print out page
+$rotab=1; //initial table row
 
 if($_SESSION['sm'] =='')
 {
 $_SESSION['sm'] = date("m");
 $_SESSION['sy'] = date("Y");
 }
+
 include '../libs/progdate.php';
 
-$fulluri = $_SERVER['REQUEST_URI'];
-$trimString = "/clinic/docform/";
-$actsite = trim($fulluri, $trimString);
-$dtype_1 = mysqli_query($link, "SELECT * FROM drug_id WHERE  dname = '$_SESSION[drugname]' ");
-$i=1;
-while($row = mysqli_fetch_array($dtype_1))
+$thisdate = date_create();
+date_date_set($thisdate, $sy, $sm, $sd);
+$ddate = date_format($thisdate, 'Y-m-d');
+
+
+if($_SESSION['page'] =='')
 {
-	$drid[$i] = $row['id'];
-	$drname[$i] = $row['dname'];
-	$drgname[$i] = $row['dgname'];
-	$drsize[$i] = $row['size'];
-	$drmax = $i;
-	$i = $i+1;
-}	
-$presthismon[] = 0;
-$oldvo[] = 0;
-$nbvo[] = 0;
+	$_SESSION['page']=1;
+	$_SESSION['i']=1;//initial pt no 1.
+}
+////////
+if($_POST['nopage'] == 'Next')
+{	
+	$_SESSION['page'] = $_SESSION['page']+1;
+	
+	$ntimeprst=$_SESSION['ntimeprst'];
+	
+    if($_SESSION['page']>1)
+    {
+        $rotab=$_SESSION['i']+1;
+    }	
+	
+}
+
+//$prescript this month 
+$dtype2 = mysqli_query($link, "SELECT * FROM tr_drug_$drugid ORDER BY `date` ASC ");
+while($row2 = mysqli_fetch_array($dtype2))
+{
+    $trdate = new DateTime($row2['date']);
+    $trmon = $trdate->format("m");
+    $try = $trdate->format("Y");
+    
+    ////จ่าย ในเดือนนี้ 
+    if($try == $sy AND $trmon == $sm)
+    { 
+    //จ่าย ในเดือนนี้
+        $presth = $presth + $row2['volume'];
+        $pvdate = new DateTime('1'.'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
+        $pt_id[$norow] = $row2['pt_id'];
+    }
+}
+//$prescript previous month 
+$dtype2 = mysqli_query($link, "SELECT * FROM tr_drug_$drugid ORDER BY `date` ASC ");
+while($row2 = mysqli_fetch_array($dtype2))
+{
+    //รวมจ่าย ในเดือนก่อนๆ
+    $trdate = new DateTime($row2['date']);
+    if($trdate<$pvdate)
+    {
+        $pvprst = $pvprst + $row2['volume'];
+    }
+}
+
+ //get data
+$dtype = mysqli_query($link, "SELECT * FROM drug_$drugid ORDER BY `id` ASC ");
+$nofrow = 1;
+while($row = mysqli_fetch_array($dtype))
+{
+    $rdate = new DateTime($row['date']);
+    $sdp[$nofrow] = $rdate->format("d");//
+    $smp[$nofrow] = $rdate->format("m");//
+    $syp[$nofrow] = $rdate->format("Y");//
+    $bydate[$nofrow] = $rdate->format("d-m-Y");
+    //order previous month
+    if($rdate<$pvdate)
+    {
+        $pvsvolin = $pvsvolin + $row['volume'];
+    }
+    $supplier[$nofrow] = $row['supplier'];//
+    $mkname[$nofrow] = $row['mkname'];
+    $mkplace[$nofrow]= $row['mkplace'];
+    $mklot[$nofrow] = $row['mklot'];//
+    $mkanl[$nofrow] =$row['mkanl'];
+    $mkunit[$nofrow] = $row['mkunit'];//
+    $volume[$nofrow] = $row['volume'];//
+    //
+    $bmax = $nofrow; //
+    $nofrow =$nofrow +1;
+}
+// ยอดยกมา   
+$oldvo = $pvsvolin - $pvprst;
+// จบ ยอดยกมา
+$_SESSION['ntimeprst']=$ntimeprst;
+$_SESSION['mpage'] = ceil(($_SESSION['ntimeprst']+1)/$line); //max page per month (หน้าแรกมียอดยกมาด้วย)
+
+$n=1; //initial count item for prescription
+
 ?>
+
 <!DOCTYPE html>
 <html>
 <!--This file was converted to xhtml by OpenOffice.org - see http://xml.openoffice.org/odf2xhtml for more info.-->
 <head profile="http://dublincore.org/documents/dcmi-terms/">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title xml:lang="th_TH.UTF-8">- no title specified</title>
+<title xml:lang="th_TH.UTF-8">บจ.9</title>
 <meta name="DCTERMS.title" content="" xml:lang="th_TH.UTF-8"/>
 <meta name="DCTERMS.language" content="th_TH.UTF-8" scheme="DCTERMS.RFC4646"/>
 <meta name="DCTERMS.source" content="http://xml.openoffice.org/odf2xhtml"/>
@@ -70,32 +171,34 @@ function Clickheretoprint()
 <body dir="ltr">
 <form method="post" action="bj9.php" name="regForm" id="regForm">
 <?php
-$param = mysqli_query($link, "SELECT * FROM parameter WHERE ID ='1'");
-		while($row = mysqli_fetch_array($param))
-		{
-		$clinic_name = $row['name'];
-		$cliniclcid = $row['cliniclcid'];
-		$name_lc = $row['name_lc'];
-		$cl_addr = $row['address'];
-		$cl_lcid = $row['lcid'];
-		}
 if ($actsite == "bj9.php")
 {
-echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' name='todom' value = '@'>&nbsp;";
-	if ($sm < date("m"))
-	{
-		if ($sy <= date("Y"))
-		{
-		echo "<input type='submit' name='todom' value = '>>'>";
-		}
-	}
-	if ($sy <= date("Y"))
-	{
-		if ($sm > date("m"))
-		{
-		echo "<input type='submit' name='todom' value = '>>'>";
-		}
-	}
+                if($ddate>$stday[0])
+                {
+                   echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                   $startrec=0;
+                }
+                else
+                {
+                echo "<input type='button' value='*||*'>&nbsp;";
+                $startrec=1;
+                }
+                
+                echo "<input type='submit' name='todom' value = '@'>&nbsp;";
+    if ($sm < date("m"))
+    {
+        if ($sy <= date("Y"))
+        {
+        echo "<input type='submit' name='todom' value = '>>'>";
+        }
+    }
+    if ($sm >= date("m"))
+    {
+        if ($sy < date("Y"))
+        {
+        echo "<input type='submit' name='todom' value = '>>'>";
+        }
+    }
 }
 ?>
 </form>
@@ -109,7 +212,7 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 						<col width="200"/><col width="60"/><col width="60"/><col width="60"/><col width="140"/>
 				</colgroup>
 				<tr class="ro1">
-					<td colspan="7" style="text-align:center;width:0.7952in; " class="ce1">
+					<td colspan="7" style="text-align:center;width:0.7952in; " class="ce2">
 					<p>รายงานประจำเดือน ..<?php $m = $sm;
 			switch ($m)
 			{
@@ -205,75 +308,35 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 					<td style="text-align:left;width:0.5665in; " class="ce20"><p>คงเหลือ</p></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
-		<?php 
-		for($j=1;$j<=$drmax;$j++)
-		{
-			$dtype = mysqli_query($link, "SELECT * FROM drug_$drid[$j] ORDER BY `id` ASC ");
-			while($row = mysqli_fetch_array($dtype))
+				<?php
+				//ยอกยกมา
+				?>
+		<?php
+			if($oldvo != 0)//แสดงยอดยกมา
 			{
-				$rdate = new DateTime($row['date']);
-				$smp = $rdate->format("m");
-				$syp = $rdate->format("Y");
-				//ยอดยกมา	
-				if($row['volume'] > $row['customer'])
-					{
-						if ($syp < $sy)
-						{
-						$spold = $row['supplier'];
-						$mknold = $row['mkname'];
-						$mkpold = $row['mkplace'];
-						$mklold = $row['mklot'];
-						$mkanold =$row['mkanl'];
-						$mkunold = $row['mkunit'];
-						$oldvo[$j] = $row['volume'] - $row['customer'];
-						}
-						if($syp == $sy)
-						{
-							if ($smp < $sm)
-							{
-								$spold = $row['supplier'];
-								$mknold = $row['mkname'];
-								$mkpold = $row['mkplace'];
-								$mklold = $row['mklot'];
-								$mkanold =$row['mkanl'];
-								$mkunold = $row['mkunit'];	
-								$oldvo[$j] = $row['volume'] - $row['customer'];
-							}	
-						}	
-					}	
-				//ซื้อมา
-				if($syp == $sy AND $smp == $sm)
-					{
-							$nbvo[$j] = $nbvo[$j]+$row['volume'];	
-							$nbdate = $row['date'];
-							$nbsp = $row['supplier'];
-							$nbmkn = $row['mkname'];
-							$nbmkp = $row['mkplace'];
-							$nbmkl = $row['mklot'];
-							$nbmka =$row['mkanl'];
-							$nbmku = $row['mkunit'];	
-					}
-			}	
-			
-			$dtype2 = mysqli_query($link, "SELECT * FROM tr_drug_$drid[$j] ORDER BY `date` ASC ");
-			$iofp=0;
-			while($row2 = mysqli_fetch_array($dtype2))
-			{
-				$trdate = new DateTime($row2['date']);
-				$trmon = $trdate->format("m");
-				$try = $trdate->format("Y");
-				if($try == $sy AND $trmon == $sm)
-				{ 
-				//จ่าย ในเดือนนี้
-					$presthismon[$j] = $presthismon[$j] + $row2['volume'];
-					$iofp = $iofp +1; 
-					$ctmid[$iofp] = $row2['ctz_id'];					
-				}
-			}
-		if($oldvo[$j] != 0)
-			{
-			$oldvo[$j] = $presthismon[$j] + $oldvo[$j];
-		?>	<tr class='ro1'>
+               for($j=$bmax; $j>=1; $j=$j-1)
+                {
+                    $date1=date_create($bydate[$j]);
+                    
+                            $ckdate = new DateTime("1".'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
+                            $ckdate = $ckdate->format("d-m-Y");
+                            $date2 =date_create($ckdate);
+                            $diff=date_diff($date1,$date2);
+                            $ddate = $diff->format("%R%a");
+                            if($ddate>=0)                          
+                            {
+                             $mknameold = $mkname[$j];
+                             $mklotold = $mklot[$j];
+                             $mkanlold = $mkanl[$j];
+                             $supplierold = $supplier[$j];
+                             $mkplaceold = $mkplace[$j];
+                             $mkunitold = $mkunit[$j];
+                                goto jpoint;
+                            }
+                }
+                jpoint:
+			?>	
+                <tr class='ro1'>
 					<td style='text-align:left;width:0.7992in; ' class='ce7'><p>วันที่ 1&nbsp;<?php $m = $sm;
 									switch ($m)
 									{
@@ -314,46 +377,51 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 										 echo "ธค";
 										 break;
 									}?>.</p></td>
-					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php 
-					echo $drgname[$j].'&nbsp'.$drsize[$j];?></td>
-					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php echo $mknold;?> </td>
-					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php echo $mklold;?> </td>
-					<td style='text-align:left;width:0.6882in; ' class='ce161'><?php echo $mkanold;?> </td>
-					<td style='text-align:left;width:0.6882in; ' class='ce7'><p> <?php echo $spold; ?>.</p></td>
+					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php echo $dgname.'&nbsp'.$size;?></td>
+					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php echo $mknameold;?> </td>
+					<td style='text-align:left;width:1.3256in; ' class='ce161'><?php echo $mklotold;?> </td>
+					<td style='text-align:left;width:0.6882in; ' class='ce161'><?php echo $mkanlold;?> </td>
+					<td style='text-align:left;width:0.6882in; ' class='ce7'><p> <?php echo $supplierold; ?>.</p></td>
 					<td style='text-align:left;width:2.0236in; ' class='ce16'><p>ยอดคงเหลือจากเดือนที่แล้ว</p></td>
-					<td style='text-align:left;width:0.5665in; ' class='ce161'> <?php echo $oldvo[$j];?></td>
+					<td style='text-align:left;width:0.5665in; ' class='ce161'> <?php echo $oldvo;?></td>
 					<td style='text-align:left;width:0.5665in; ' class='ce16'> </td>
-					<td style='text-align:left;width:0.5665in; ' class='ce16'> </td>
+					<td style='text-align:left;width:0.5665in; ' class='ce16'> <?php echo $dleft=$oldvo;?></td>
 					<td style='text-align:left;width:0.9717in; ' class='ce7'><p>___________</p></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
 				<tr class="ro1">
-					<td style="text-align:left;width:0.7992in; " class="ce8"> พ.ศ.<?php $s = $bsy; if($s>=2000) $s = $s - 2500; echo $s;?></td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo '('.$drname[$j].')';?> </td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $mkpold;?> </td>
+					<td style="text-align:left;width:0.7992in; " class="ce8"> พ.ศ.<?php echo $bsy;?></td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo '('.$dname.')';?> </td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $mkplaceold;?> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce8"> </td>
-					<td style="text-align:left;width:2.0236in; " class="ce17"><p>(หน่วย..<?php echo $mkunold;?>..)</p></td>
+					<td style="text-align:left;width:2.0236in; " class="ce17"><p>(หน่วย..<?php echo $mkunitold;?>..)</p></td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.9717in; " class="ce8"></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
-			<?php 
-			}
-			//ซื้อมา
-			if($nbvo[$j] != 0)
-			{
-			?>
+				<?php
+            }//ยอดยกมา
+				//ซื้อมา
+				?>
+		<?php //แสดงรายการซื้อยาในแต่ละเดือน
+        for($j=1;$j<=$bmax;$j++)
+        {
+                for($i=1;$i<=31;$i++)
+                {
+                    $ckdate = new DateTime($i.'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
+                    $ckdate = $ckdate->format("d-m-Y");
+                    if($bydate[$j]==$ckdate)
+                    {
+            ?>	
 				<tr class="ro1">
 					<td style="text-align:left;width:0.7992in; " class="ce8"><p>วันที่ <?php 
-					$byda = new DateTime($nbdate);
-					$bday = $byda->format("d");
-					$bmo = $byda->format("m");
-					echo $bday.' ';
-					$m = $bmo;
+                        echo $sdp[$j];
+                        echo "&nbsp;";
+                                    $m = $sm;
 									switch ($m)
 									{
 										 case 1:
@@ -394,36 +462,37 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 										 break;
 									}
 					?>.</p></td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $drgname[$j].'&nbsp'.$drsize[$j]; ?></td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $nbmkn; ?></td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $nbmkl; ?> </td>
-					<td style="text-align:left;width:0.6882in; " class="ce171"><?php echo $nbmka; ?> </td>
-					<td style="text-align:left;width:0.6882in; " class="ce8"><p>อย.</p></td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $dgname.'&nbsp'.$size; ?></td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $mkname[$j]; ?></td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $mklot[$j]; ?> </td>
+					<td style="text-align:left;width:0.6882in; " class="ce171"><?php echo $mkanl[$j]; ?> </td>
+					<td style="text-align:left;width:0.6882in; " class="ce8"><?php echo $supplier[$j];?></td>
 					<td style="text-align:left;width:2.0236in; " class="ce17"><p>รับยาในเดือนนี้</p></td>
-					<td style="text-align:left;width:0.5665in; " class="ce171"><?php echo $nbvo[$j]; ?></td>
+					<td style="text-align:left;width:0.5665in; " class="ce171"><?php echo $volume[$j]; ?></td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
-					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
+					<td style="text-align:left;width:0.5665in; " class="ce17"> <?php echo $dleft=$dleft+$volume[$j];?></td>
 					<td style="text-align:left;width:0.9717in; " class="ce8"><p>___________</p></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
 				<tr class="ro3">
-					<td style="text-align:left;width:0.7992in; " class="ce8"> พ.ศ.<?php $s = $bsy; if($s>=2000) {$s = $s - 2500; echo $s;}?></td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo '('.$drname[$j].')';?> </td>
-					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $nbmkp; ?> </td>
+					<td style="text-align:left;width:0.7992in; " class="ce8"> พ.ศ.<?php echo $bsy;?></td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo '('.$dname.')';?> </td>
+					<td style="text-align:left;width:1.3256in; " class="ce171"><?php echo $mkplace[$j]; ?> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce171"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce171"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce8"> </td>
-					<td style="text-align:left;width:2.0236in; " class="ce17"><p>(หน่วย..<?php echo $nbmku;?> )</p></td>
+					<td style="text-align:left;width:2.0236in; " class="ce17"><p>(หน่วย..<?php echo $mkunit[$j];?> )</p></td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.5665in; " class="ce171"> </td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.9717in; " class="ce8"></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
-			<?php 
+			<?php
+                }
 			}
-			if($presthismon[$j]!= 0)
-			{
+        }
+			//จ่ายไปในเดือนนี้
 			?>
 				<tr class="ro1">
 					<td style="text-align:left;width:0.7992in; " class="ce8"><p>วันที่ 1 - <?php 
@@ -432,21 +501,22 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 									elseif($sm == 2 and $sy%4 == 0) $imax = 29;
 									elseif($sm == 2 and $sy%4 != 0) $imax = 28;
 									else $imax = 30;
-									echo $imax;?></p></td>
+									echo $imax;
+									?></p></td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce17"> </td>
 					<td style="text-align:left;width:0.6882in; " class="ce8"> </td>
-					<td style="text-align:left;width:2.0236in; " class="ce17"><p>จ่ายผู้ป่วย..<?php echo count(array_unique($ctmid)); ?>..ราย</p></td>
+					<td style="text-align:left;width:2.0236in; " class="ce17"><p>จ่ายผู้ป่วย..<?php echo count(array_unique($pt_id)); ?>..ราย</p></td>
 					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
-					<td style="text-align:left;width:0.5665in; " class="ce171"><?php echo $presthismon[$j]; ?></td>
-					<td style="text-align:left;width:0.5665in; " class="ce17"> </td>
+					<td style="text-align:left;width:0.5665in; " class="ce171"><?php echo $presth; ?></td>
+					<td style="text-align:left;width:0.5665in; " class="ce17"> <?php echo $dleft=$dleft-$presth;?></td>
 					<td style="text-align:left;width:0.9717in; " class="ce8"><p>___________</p></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
 				<tr class="ro1">
-					<td style="text-align:left;width:0.7992in; " class="ce8"><p>พ.ศ.<?php $s = $bsy; if($s>=2000) $s = $s - 2500; echo $s;?></p></td>
+					<td style="text-align:left;width:0.7992in; " class="ce8"><p>พ.ศ.<?php echo $bsy;?></p></td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
 					<td style="text-align:left;width:1.3256in; " class="ce17"> </td>
@@ -474,9 +544,7 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>					
 				</tr>
 			<?php 
-			}
-			if($oldvo[$j] != 0 OR $presthismon[$j]!= 0 OR $nbvo[$j] != 0)
-			{
+			//สรุป
 			?>
 				<tr class="ro3">
 					<td style="text-align:left;width:0.7992in; " class="ce10"> </td>
@@ -491,10 +559,6 @@ echo "<input type='submit' name='todom' value = '<<'>&nbsp;<input type='submit' 
 					<td style="text-align:left;width:0.5665in; " class="ce10"> </td>
 					<td style="text-align:left;width:0.9717in; " class="ce10"> </td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
-		<?php 
-			}
-		}
-		?>
 				</tr>
 			</table>
 	</td></tr>

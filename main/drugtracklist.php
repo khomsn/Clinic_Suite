@@ -6,7 +6,7 @@ if($_POST['register'] == 'รายงาน บจ 9')
 { 
 
 // pass drug-id to other page
-$_SESSION['drugname'] = $_POST['drugname'];
+$_SESSION['drugid'] = $_POST['drugid'];
 // go on to other step
 //header("Location: ../docform/bj9.php");  
  ?>
@@ -71,7 +71,7 @@ else
 										// Print out the contents of each row into a table
 										echo "<tr><th>";
 						?>							
-										<input type="radio" name="drugname" value="<?php	echo $row['dname']; ?>" />
+										<input type="radio" name="drugid" value="<?php	echo $row['id']; ?>" />
 						<?php
 										echo "</th><th width=150>"; 
 										echo $row['dname'];

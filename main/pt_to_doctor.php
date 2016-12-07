@@ -87,6 +87,7 @@ include 'clinicmenu.php';
 		    echo "</th></tr>"; 
 		    //get staff condition
 		    $staffyn = $row['staff'];
+		    $birthday = $row['birthday']
 		    
 	    // Insert Patient to the list to see doctor.
 		    $ID = $row['id']; $prefix= $row['prefix']; $F_Name = $row['fname']; $L_Name = $row['lname']; $ctzid = $row['ctz_id'];
@@ -251,6 +252,32 @@ include 'clinicmenu.php';
       }
     echo "</div>";	
       }
+      
+ ///
+/* 
+if (empty($ctzid)) $ctzid=0;
+
+if(preg_match('/^[0-9][0-9]*$/', $ctzid, $matches))
+{
+    if($ctzid < 1000000000000) 
+    {
+        echo "<div class=\"msg\"> โปรดตรวจสอบ เลขประจำตัวใหม่ XXXXXXXXXXXXX </div>";
+        echo "<input name='ctz_id' type='text' size='18' maxlength='13' value='";
+        echo $ctzid;
+        echo "'>";
+        
+    }
+}
+else echo "<div class=\"msg\">"."หมายเลข PASSPORT.....".$ctzid.".....</div>";
+
+$date1=date_create(date("Y-m-d"));
+$date2=date_create($birthday);
+$diff=date_diff($date2,$date1);
+echo $diff->format("%Y");
+*/
+ ///
+ 
+      
     ?> 
 </td>
   </tr>
