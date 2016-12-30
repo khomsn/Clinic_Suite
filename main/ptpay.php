@@ -153,7 +153,8 @@ for($i=1;$i<=4;$i++)
 						$perdc = $rowd['percent']/100;
 					}	
 					echo "</h3>";
-					echo "วินิจฉัย: "; echo $_SESSION['diag']; echo "     คำแนะนำ: "; echo $inform; 
+					echo "วินิจฉัย: "; echo $_SESSION['diag'];
+					echo "<div class=\"msg\"><br>คำแนะนำ: ".$inform."</div>"; 
 					
 							?>
 							</div>

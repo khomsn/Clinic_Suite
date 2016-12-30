@@ -97,14 +97,11 @@ $_SESSION['todoc']=1;
 }
 if($_POST['register']=='ส่งเข้าห้องตรวจ')
 {
-
 	  $sql_insert = "INSERT INTO `pt_to_doc` (`ID`, `prefix`, `F_Name`, `L_Name`) VALUES ('$id', '$_SESSION[prefix]', '$_SESSION[fname]', '$_SESSION[lname]')";
 	  // Now insert Patient to "patient_id" table
 	  mysqli_query($link, $sql_insert);
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$id' ");
-
-
 
 header("Location: pt1page.php"); 
 }
@@ -251,9 +248,31 @@ else
 						<div style="text-align: center;"><input name="register" value="บันทึก" type="submit"></div>
 <?php if($_SESSION['todoc']==1) 
 {
+
+// check for reenter or update
+	$PID = $_SESSION['patdesk'];
+	//check id at any point of service..
+	$result1 = mysqli_query($link, "SELECT id FROM pt_to_doc WHERE id = $PID");
+	if(mysqli_num_rows($result1) != 0)
+	{
+	  goto checkfound;
+	}
+	$result1 = mysqli_query($link, "SELECT id FROM pt_to_obs WHERE id = $PID");
+	if(mysqli_num_rows($result1) != 0)
+	{
+	  goto checkfound;
+	}
+	$result1 = mysqli_query($link, "SELECT id FROM pt_to_drug WHERE id = $PID");
+	if(mysqli_num_rows($result1) != 0) 
+	{
+	  goto checkfound;
+    }
+//
+
 ?>
 <div style="text-align: center;"><input name="register" value="ส่งเข้าห้องตรวจ" type="submit"></div>
-<?php 
+<?php
+checkfound:
 }
 ?>
 					</td>

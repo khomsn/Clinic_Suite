@@ -30,6 +30,11 @@ while($rows = mysqli_fetch_array($pin))
 */
 $filter = mysqli_query($link, "select * from lab WHERE `L_Set` !='SETNAME' ORDER BY `id` ASC  ");
 
+if($_POST['set'] =='1' )
+{
+	$filter = mysqli_query($link, "select * from lab WHERE  `L_Set` ='SETNAME' ORDER BY `id` ASC");	
+}
+
 if ($_POST['todo'] == 'กรอง' ) 
 {
 	if($_POST['LSet'] != '' AND $_POST['LSpec'] !='' )
@@ -44,10 +49,6 @@ if ($_POST['todo'] == 'กรอง' )
 	{
 		$filter = mysqli_query($link, "select * from lab WHERE  `L_specimen` ='$_POST[LSpec]'  AND `L_Set` !='SETNAME' ORDER BY `id` ASC");	
 	}
-	if($_POST['set'] =='1' )
-	{
-		$filter = mysqli_query($link, "select * from lab WHERE  `L_Set` ='SETNAME' ORDER BY `id` ASC");	
-	}
 	
 }
 
@@ -61,8 +62,14 @@ elseif ($_POST['todo'] == 'OK' )
     $lbd = $_POST[$inline];
     if(!empty($lbd))
       { 
-	if(empty($labx)){$labx = $_POST[$inline];}
-	else {$labx = $labx.",".$_POST[$inline];}
+        if(empty($labx))
+        {
+            $labx = $_POST[$inline];
+        }
+        else
+        {
+        $labx = $labx.",".$_POST[$inline];
+        }
       }
     }
     if(!empty($labx))
@@ -91,7 +98,7 @@ elseif ($_POST['todo'] == 'OK' )
 	  if(empty($checkid))
 	  {
 	  $sql_insert = "INSERT INTO `pt_to_lab` (`ptid`, `prefix`, `fname`, `lname`) VALUES ('$ptid','$prefix','$fname', '$lname')";
-	  // Now insert Patient to "pt_to_drug" table
+	  // Now insert Patient to "pt_to_lab" table
 	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 	  }
   
@@ -110,11 +117,11 @@ elseif ($_POST['todo'] == 'OK' )
 					  PRIMARY KEY (`Labid`)
 					  ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 					  ";
-	  // Now insert Patient to "patient_id" table
+	  // Now create table
 	  mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));
-	  $sqlt = "TRUNCATE `$labtable`";
-	  mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
-	  //insert in to labwait table
+	  
+  
+	  //insert ptid in to labwait table
 	  $result = mysqli_query($link, "SELECT * FROM labwait WHERE ptid ='$ptid' ");
 	  while($rowl = mysqli_fetch_array($result))
 	  {
@@ -122,63 +129,97 @@ elseif ($_POST['todo'] == 'OK' )
 	  }
 	  if(empty($checkid))
 	  {
-	  $sqllw = "INSERT into `labwait` (ptid,rid,tablename) value ('$ptid','$id','$labtable')";
-	  mysqli_query($link, $sqllw) or die("Insertion Failed:" . mysqli_error($link));
+        $sqllw = "INSERT into `labwait` (ptid,rid,tablename) value ('$ptid','$id','$labtable')";
+        mysqli_query($link, $sqllw) or die("Insertion Failed:" . mysqli_error($link));
 	  }
 
-	  
-////insert lab id to labtemp
+
+    //Remove unselect the selected first not apply to labset
+    // Empty Table to renew lab Requiest 
+ 	  $i = $_POST['nofrow'];
+	  for($j=1;$j<=$i;$j++)
+	  {
+        $inline = "lab".$j;
+        $lbd = $_POST[$inline];
+        
+        //check for lab set and labname
+        $cond = ($lbd%100 != 0);//check of lab SETNAME
+        if($cond)
+        {
+   
+        $sqlt = "TRUNCATE `$labtable`";
+        mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
+        }
+      }  
+      
+////insert lab id to $labtable
 	  $i = $_POST['nofrow'];
 	  for($j=1;$j<=$i;$j++)
 	  {
-	  $inline = "lab".$j;
-	  $lbd = $_POST[$inline];
-	  
-	  //check for lab set and labname
-	  $cond = ($lbd%100 == 0) AND $lbd<5000;//check of lab SETNAME
-	      if($cond)
-	      {
-		$maxid = $lbd+100;
-		$pin = mysqli_query($link, "select MAX(id) from lab WHERE `id`< $maxid");
-		$rid = mysqli_fetch_array($pin);
-		$maxid = $rid[0];
-		$stepj = $maxid-$lbd;
-		
-	//	$msg[] = "maxid is ".$maxid." stepj ".$stepj;
-		
-		for($n=1;$n<=$stepj;$n++)
-		{
-		  $lbd = $lbd+1;
-		  $labname = "";
-		  $filter = mysqli_query($link, "select * from lab WHERE `id`= $lbd"); 
-		  while ($row = mysqli_fetch_array($filter))
-		  {
-		    $labname = $row['S_Name']." [".$row['L_Name']."]";
-		    $lprice = $row['price'];
-		    $alllabprice = $alllabprice + $lprice;
-		  }
-		  if(!empty($labname))
-		  {
-		  $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
-		  // Now insert Patient to "pt_to_drug" table
-		  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-		  }
-		}
-	      }
-	      elseif(!empty($lbd))
-	      {
-		  $filter = mysqli_query($link, "select * from lab WHERE `id`= $lbd"); 
-		  while ($row = mysqli_fetch_array($filter))
-		  {
-		    $labname = $row['S_Name']." [".$row['L_Name']."]";
-		    $lprice = $row['price'];
-		    $alllabprice = $alllabprice + $lprice;
-		  }
-		  $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
-		  // Now insert Patient to "pt_to_drug" table
-		  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-	      }
-	  }
+        $inline = "lab".$j;
+        $lbd = $_POST[$inline];
+        
+        //check for lab set and labname
+        $cond = ($lbd%100 == 0) AND $lbd<5000;//check of lab SETNAME
+        if($cond)
+        {
+            $maxid = $lbd+100;
+            $pin = mysqli_query($link, "select MAX(id) from lab WHERE `id`< $maxid");
+            $rid = mysqli_fetch_array($pin);
+            $maxid = $rid[0];
+            $stepj = $maxid-$lbd;
+            
+        //	$msg[] = "maxid is ".$maxid." stepj ".$stepj;
+            
+            for($n=1;$n<=$stepj;$n++)
+            {
+            $lbd = $lbd+1;
+            $labname = "";
+            $filter = mysqli_query($link, "select * from lab WHERE `id`= $lbd"); 
+                while ($row = mysqli_fetch_array($filter))
+                {
+                    $labname = $row['S_Name']." [".$row['L_Name']."]";
+                    $lprice = $row['price'];
+                    $alllabprice = $alllabprice + $lprice;
+                }
+                if(!empty($labname))
+                {
+                    //check for lab duplicate
+                    $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or die(mysqli_error($link));
+                    list($total) = mysqli_fetch_row($rs_duplicate);
+
+                    if ($total == 0)
+                    {
+                        $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
+                        // Now insert Patient to "pt_to_drug" table
+                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                    }
+                }
+            }
+        }
+        // individual labid Requiest check
+        elseif(!empty($lbd))
+        {
+            $filter = mysqli_query($link, "select * from lab WHERE `id`= $lbd"); 
+            while ($row = mysqli_fetch_array($filter))
+            {
+                $labname = $row['S_Name']." [".$row['L_Name']."]";
+                $lprice = $row['price'];
+                $alllabprice = $alllabprice + $lprice;
+            }
+            
+            //check for lab duplicate
+            $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or die(mysqli_error($link));
+            list($total) = mysqli_fetch_row($rs_duplicate);
+
+            if ($total == 0)
+            {
+                $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
+                // Now insert Patient to "pt_to_drug" table
+                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            }
+        }
+	 }
 	$msg[] = "Lab Requiest complete!";
 	//ACCOUNT PART for lab price
 	//update lab @ labid
@@ -197,30 +238,28 @@ elseif ($_POST['todo'] == 'OK' )
 	  $sql_insert = "DELETE FROM `pt_to_lab` WHERE `ptid` = '$ptid'";
 	  // Now DELETE Patient to "pt_to_lab" table
 	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-	  }
 	  //rm from labwait
 	  $sql_insert = "DELETE FROM `labwait` WHERE `ptid` = '$ptid'";
 	  // Now DELETE Patient to "pt_to_lab" table
 	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	  }
 
 /////
 /* Remove labtemp table*/
 //	  $rowid = $_SESSION['ptrowid'];
 	  $labtable = "labtmp_".$ptid."_".$id;
 	  
-      $sql_insert = "DROP TABLE $labtable";
-      mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));
+      $sql_insert = "DROP TABLE IF EXISTS $labtable";
+      mysqli_query($link, $sql_insert) or die("Drop Table Failed:" . mysqli_error($link));
       
       	//ACCOUNT PART for lab price
-	//update lab @ labid
-	mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '0'") or die(mysqli_error($link));
+      //update lab @ labid
+      mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '0'") or die(mysqli_error($link));
 
     }
 
   header("Location: labselect.php");   
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -236,6 +275,15 @@ elseif ($_POST['todo'] == 'OK' )
 include '../libs/reloadopener.php';
 include '../libs/autolsl.php';
 ?>
+<script type='text/javascript'>
+
+ $(document).ready(function() { 
+   $('input[name=set]').change(function(){
+        $('form').submit();
+   });
+  });
+
+</script>
 </head>
 <?php 
 if(!empty($_SESSION['user_background']))
@@ -258,7 +306,7 @@ else
 		</td><td>
 				Lab Specimen:<input name=LSpec id=lsp>
 		</td><td> 
-			<input type='checkbox' name='set' value='1' >Lab Set
+			<input type='radio' name='set' value='1' >Lab Set
 		</td><td> 
 			<input type='submit' name='todo' value='กรอง' >
 		</td><td> 

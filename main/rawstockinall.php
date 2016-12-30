@@ -178,8 +178,10 @@ if($_POST['doSave'] == 'Save')
                         { $spid = $rowac['id'];}
 
                         // assign insertion pattern
+                        $rawid = "R".$id;
+                       // assign insertion pattern
                         $sql_insert = "INSERT into `sp_$spid`	(`date`,`inid`,`inv_num`, `price`, `payment`)
-                                                    VALUES  ('$bday','$id','$_POST[inv_num]','$buyprice','$_POST[pay]')";
+                                                    VALUES  ('$bday','$rawid','$_POST[inv_num]','$buyprice','$_POST[pay]')";
                         // Now insert Drug order information to "drug_#id" table
                         mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 
