@@ -164,7 +164,7 @@ else
                                     {
                                         $oldrid = $rid-1;
                                         $ptin2 = mysqli_query($linkopd, "select * from $pttable where  id = '$oldrid' ");
-                                        while($olddate = mysqli_fetch_array($ptin2))
+                                        while($olddate = mysqli_fetch_array(($ptin2))
                                         {
                                             $date2=date_create($olddate['date']);
                                             $diff = date_diff($date2,$date1);
@@ -173,7 +173,8 @@ else
                                             else $pregmonth = $dmp+$pregmonth;
                                         }
                                     }
- 								?>
+                                    
+								?>
 								    <input type="radio" name="preg" value="1" 
 								    <?php 
 								    if($preg == 1 OR $pregmonth !=0 )

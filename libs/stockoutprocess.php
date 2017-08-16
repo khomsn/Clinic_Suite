@@ -73,8 +73,23 @@ if($volume >= $voltoupdate)
     //new 
     //record drug use per month in dupm table for statistics
     $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE())");
-    $dupmo = mysqli_fetch_array($dupmin);
-    if(empty($dupmo))
+    while($dupmo = mysqli_fetch_array($dupmin))
+    {
+        $idstat = $dupmo['id'];
+        $newvol = $dupmo['vol'] + $voltoupdate;
+    }
+    if(!empty($idstat))
+    {
+     
+      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
+				      WHERE id = '$dupmo[id]'; 
+				      ";
+
+      // Now insert Patient to "patient_id" table
+      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    
+    }
+    else
     {
       $sql_insert = "INSERT into `dupm`
 		(`drugid`,`mon`,`vol`)
@@ -82,20 +97,6 @@ if($volume >= $voltoupdate)
 		('$id',now(),'$voltoupdate')";
 	// Now insert Patient to "patient_id" table
 	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-    
-    }
-    else
-    {
-    //get old vol to update
-      //$oldvol = $dupmo['vol'];
-      $newvol = $dupmo['vol'] + $voltoupdate;
-      
-      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
-				      WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE()) LIMIT 1 ; 
-				      ";
-
-      // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
     
     }
 }

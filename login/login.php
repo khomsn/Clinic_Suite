@@ -1,120 +1,124 @@
 <?php 
-/*************** PHP LOGIN SCRIPT V 2.3*********************
-(c) Balakrishnan 2009. All Rights Reserved
-
-Usage: This script can be used FREE of charge for any commercial or personal projects. Enjoy!
-
-Limitations:
-- This script cannot be sold.
-- This script should have copyright notice intact. Dont remove it please...
-- This script may not be provided for download except from its original site.
-
-For further usage, please contact me.
+/*************** PHP LOGIN SCRIPT *********************
+(c) Khomsn 2560. All Rights Reserved
 
 ***********************************************************/
 include 'dbc.php';
 
 $err = array();
 
-foreach($_GET as $key => $value) {
-	$get[$key] = filter($value); //get variables are filtered.
+//
+// Get client's IP address
+if (isset($_SERVER['HTTP_CLIENT_IP']) && array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
+    $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+    $ips = array_map('trim', $ips);
+    $ip = $ips[0];
+} else {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
+$ip = filter_var($ip, FILTER_VALIDATE_IP);
+$ip = ($ip === false) ? '0.0.0.0' : $ip;
+//Get client's IP address End
+
+foreach($_GET as $key => $value) 
+{
+    $get[$key] = filter($value); //get variables are filtered.
 }
 
 if ($_POST['doLogin']=='Login')
 {
 
-foreach($_POST as $key => $value) {
-	$data[$key] = filter($value); // post variables are filtered
+    foreach($_POST as $key => $value) 
+    {
+        $data[$key] = filter($value); // post variables are filtered
+    }
+
+
+    $user_email = $data['usr_email'];
+    $pass = $data['pwd'];
+    $user_email = mysqli_real_escape_string($link,$user_email); 
+    $pass = mysqli_real_escape_string($link,$pass);
+
+    if (strpos($user_email,'@') === false) 
+    {
+        $user_cond = "user_name='$user_email'";
+    } 
+    else 
+    {
+        $user_cond = "user_email='$user_email'";
+    }
+    $result = mysqli_query($link, "SELECT `id`,`pwd`,`full_name`,`approved`,`user_level`,`accode`,`staff_id`,`user_background`,`catcenable`,`ddil` FROM users WHERE $user_cond AND `banned` = '0' ") or die (mysqli_error($link)); 
+    $num = mysqli_num_rows($result);
+
+    // Match row found with more than 1 results  - the user is authenticated. 
+    if ( $num > 0 ) 
+    {
+        list($id,$pwd,$full_name,$approved,$user_level,$user_accode,$staff_id,$bgimage,$catc,$ddil) = mysqli_fetch_row($result);
+        
+        if(!$approved) 
+        {
+            $err[] = FEEDBACK_ACCOUNT_NOT_ACTIVATED_YET;
+        }
+        //check against salt
+        if ($pwd === PwdHash($pass,substr($pwd,0,9)))
+        {
+            if(empty($err))
+            {
+                // this sets session and logs user in
+                session_start();
+                session_regenerate_id (true); //prevent against session fixation attacks.
+
+                // this sets variables in the session 
+                $_SESSION['user_id']= $id;  
+                $_SESSION['user_name'] = $full_name;
+                $_SESSION['user_level'] = $user_level;
+                $_SESSION['user_accode'] = $user_accode;
+                $_SESSION['staff_id'] = $staff_id;
+                $_SESSION['catc'] = $catc;
+                $_SESSION['ddil'] = $ddil;
+                $_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT']);
+
+                //update the timestamp and key for cookie
+                $ckey = GenKey();
+                mysqli_query($link, "update users set `ckey` = '$ckey', `users_ip` = '$ip' where id='$id'") or die(mysqli_error($link));
+                //set a cookie 
+
+                if(isset($_POST['remember']))
+                {
+                    setcookie("user_id", $_SESSION['user_id'], time()+60*60*24*COOKIE_TIME_OUT, "/");
+                    setcookie("user_key", sha1($ckey), time()+60*60*24*COOKIE_TIME_OUT, "/");
+                    setcookie("user_name",$_SESSION['user_name'], time()+60*60*24*COOKIE_TIME_OUT, "/");
+                }
+                //set avatar file path   
+                $target_file_path = AVATAR_PATH . $_SESSION['user_id'] . ".jpg";
+                $_SESSION['user_avatar_file'] = $target_file_path;
+                $_SESSION['user_background'] = $bgimage;
+                
+                //update stock at the end of the month 
+                $lastday = cal_days_in_month(CAL_GREGORIAN, date("d"), date("Y"));
+                $sd = date("d");
+                if($sd==$lastday)  header("Location: ../main/drugusestat.php");
+                else  header("Location: myaccount.php");
+            }
+        }
+        else
+        {
+            $err[] = FEEDBACK_PASSWORD_WRONG;
+        }
+    }
+    else
+    {
+        $err[] = FEEDBACK_USER_DOES_NOT_EXIST;
+    }
 }
-
-
-$user_email = $data['usr_email'];
-$pass = $data['pwd'];
-$user_email = mysqli_real_escape_string($link,$user_email); 
-$pass = mysqli_real_escape_string($link,$pass);
-
-if (strpos($user_email,'@') === false) {
-    $user_cond = "user_name='$user_email'";
-} else {
-      $user_cond = "user_email='$user_email'";
-    
-}
-
-	
-$result = mysqli_query($link, "SELECT `id`,`pwd`,`full_name`,`approved`,`user_level`,`accode`,`staff_id`,`user_background`,`catcenable`,`ddil` FROM users WHERE $user_cond AND `banned` = '0' ") or die (mysqli_error($link)); 
-$num = mysqli_num_rows($result);
-
-  // Match row found with more than 1 results  - the user is authenticated. 
-    if ( $num > 0 ) { 
-	
-	list($id,$pwd,$full_name,$approved,$user_level,$user_accode,$staff_id,$bgimage,$catc,$ddil) = mysqli_fetch_row($result);
-	
-	if(!$approved) {
-	//$msg = urlencode("Account not activated. Please check your email for activation code");
-	$err[] = FEEDBACK_ACCOUNT_NOT_ACTIVATED_YET;
-	
-	//header("Location: login.php?msg=$msg");
-	 //exit();
-	 }
-	 
-		//check against salt
-	if ($pwd === PwdHash($pass,substr($pwd,0,9))) { 
-	if(empty($err)){			
-
-     // this sets session and logs user in  
-       session_start();
-	   session_regenerate_id (true); //prevent against session fixation attacks.
-
-	   // this sets variables in the session 
-		$_SESSION['user_id']= $id;  
-		$_SESSION['user_name'] = $full_name;
-		$_SESSION['user_level'] = $user_level;
-		$_SESSION['user_accode'] = $user_accode;
-		$_SESSION['staff_id'] = $staff_id;
-		$_SESSION['catc'] = $catc;
-		$_SESSION['ddil'] = $ddil;
-		$_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT']);
-		
-		//update the timestamp and key for cookie
-		//$stamp = time();
-		$ckey = GenKey();
-		mysqli_query($link, "update users set `ckey` = '$ckey' where id='$id'") or die(mysqli_error($link));
-		
-		//set a cookie 
-		
-	   if(isset($_POST['remember'])){
-				  setcookie("user_id", $_SESSION['user_id'], time()+60*60*24*COOKIE_TIME_OUT, "/");
-				  setcookie("user_key", sha1($ckey), time()+60*60*24*COOKIE_TIME_OUT, "/");
-				  setcookie("user_name",$_SESSION['user_name'], time()+60*60*24*COOKIE_TIME_OUT, "/");
-				   }
-		//set avatar file path   
-		$target_file_path = AVATAR_PATH . $_SESSION['user_id'] . ".jpg";
-		$_SESSION['user_avatar_file'] = $target_file_path;
-		$_SESSION['user_background'] = $bgimage;
-		//
-		$lastday = cal_days_in_month(CAL_GREGORIAN, date("d"), date("Y"));
-		$sd = date("d");
-		if($sd==$lastday)  header("Location: ../main/drugusestat.php");
-		else  header("Location: myaccount.php");
-		 }
-		}
-		else
-		{
-		//$msg = urlencode("Invalid Login. Please try again with correct user email and password. ");
-		$err[] = FEEDBACK_PASSWORD_WRONG;
-		//header("Location: login.php?msg=$msg");
-		}
-	} else {
-		$err[] = FEEDBACK_USER_DOES_NOT_EXIST;
-	  }		
-}
-					 
-					 
-
 ?>
+
 <html>
 <head>
-<title>Members Login</title>
+<title>Khomsn Clinic Suite::Members Login</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
@@ -184,11 +188,9 @@ $(document).ready(function(){
                 <p> 
                   <input name="doLogin" type="submit" id="doLogin3" value="Login">
                 </p>
-                <p><a href="register.php">Register Free</a><font color="#FF6600"> 
+                <p><a href="register.php">Register</a><font color="#FF6600"> 
                   |</font> <a href="forgot.php">Forgot Password</a> <font color="#FF6600"> 
                   </font></p>
-                <p><span style="font: normal 9px verdana">Powered by <a href="http://php-login-script.com">PHP 
-                  Login Script v2.3 modified by Khomsn</a></span></p>
               </div></td>
           </tr>
         </table>

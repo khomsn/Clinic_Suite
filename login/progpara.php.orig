@@ -34,14 +34,12 @@ mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link
 if($_POST['save'] == 'บันทึก') 
 { 
 
-    mysqli_query($link, "TRUNCATE TABLE parameter") or die(mysqli_error($link));
+mysqli_query($link, "TRUNCATE TABLE parameter") or die(mysqli_error($link));
 
-    // Filter POST data for harmful code (sanitize)
-    foreach($_POST as $key => $value)
-    {
-        $data[$key] = filter($value);
-    }
-
+// Filter POST data for harmful code (sanitize)
+foreach($_POST as $key => $value) {
+	$data[$key] = filter($value);
+}
     // assign insertion pattern
     $sql_insert = "INSERT into `parameter`
 			    (`name`,`Ename`,`cliniclcid`,`address`,`Eaddress`,`tel`,`mobile`,`email`,`logo`,`normprice`,`fup`,`tmp`,`Staffp`,`name_lc`,`lcid`,`maxcp`,`prtopdcard`,`df`,`dfp`,`opdidoffset`,`maskingdrugid`,`extid`)
@@ -52,8 +50,8 @@ if($_POST['save'] == 'บันทึก')
     // Now insert Patient to "patient_id" table
     mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 
-    // go on to other step
-    header("Location: progpara.php");  
+// go on to other step
+header("Location: progpara.php");  
 }
 ?>
 <html>
@@ -144,7 +142,7 @@ else
 							echo $name; ?>" size="50">
 							</td></tr>
 							<tr><td style="text-align: right;" >
-							ชื่อสถานพยาบาล*(English)</td>
+							ชื่อสถานพยาบาล*Eng</td>
 							<td>
 							<input name="ename" type="text" id="ename"  class="required" value="<?php 
 							echo $ename; ?>" size="50">
@@ -153,7 +151,7 @@ else
 							ใบอนุญาตเลขที่.*</td>
 							<td>
 							<input name="cliniclcid" type="text" id="cliniclcid"  class="required" value="<?php 
-							echo $cliniclcid; ?>" size="20">ใบอนุญาตเปิดสถานพยาบาล 
+							echo $cliniclcid; ?>" size="20">ใบอนุญาตเปิดคลินิก 
 							</td></tr>
 							<tr><td style="text-align: right;" >
 							ชื่อผู้รับอนุญาต*</td>
@@ -166,7 +164,7 @@ else
 							</td><td>
 							<textarea name="address" cols="40" rows="2" class="required" id="address"><?php echo $address; ?></textarea> </td></tr>
 							<tr><td style="text-align: right;" >
-							ที่อยู่*(English)
+							ที่อยู่*Eng
 							</td><td>
 							<textarea name="eaddress" cols="40" rows="2" class="required" id="eaddress"><?php echo $eaddress; ?></textarea> </td></tr>
 							<tr><td style="text-align: right;" >โทรศัพท์*</td><td ><input name="tel" type="text" id="tel"  class="required" value="<?php echo $tel; ?>" size="30">
@@ -178,7 +176,7 @@ else
 							<tr><td style="text-align: right;" >Email*</td><td ><input name="email" type="text" id="email"  class="required" value="<?php echo $email; ?>" size="50">
 							</td>
 							</tr>
-							<tr><td style="text-align: right;" >Path to Logo Image*</td><td ><input name="logo" type="text" id="logo"  class="required" value="<?php echo $logo; ?>" size="50">
+							<tr><td style="text-align: right;" >Logo*</td><td ><input name="logo" type="text" id="logo"  class="required" value="<?php echo $logo; ?>" size="50">
 							</td>
 							</tr>
 							<tr><td style="text-align: right;" >ราคาปกติ*</td><td ><input name="normprice" type="number" min=0 id="normprice"  class="required" value="<?php echo $normprice; if(empty($normprice)) echo 0;?>" size="5">
@@ -225,7 +223,7 @@ else
 							</td>
 							<td>
 							<input name="extid" type="text" id="extid"  value="<?php 
-							if (empty($extid)) $extid = 0; echo $extid; ?>" size="15">
+							echo $extid; ?>" size="15">
 							</td></tr>
 							</table>
 						</tr>

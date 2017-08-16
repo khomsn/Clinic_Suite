@@ -4,6 +4,10 @@ page_protect();
 
 $id = $_SESSION['patdesk'];
 $ptin = mysqli_query($linkopd, "SELECT * FROM patient_id where id='$id' ");
+// prepare and bind for drug_id update:
+$stmt = $link->prepare("UPDATE drug_id SET `volreserve` = ? WHERE `id` = ? ");
+$stmt->bind_param("ii", $volreserve, $id);
+
 while($row = mysqli_fetch_array($ptin)) 
 {
 	$dl[1] = $row['drug_alg_1'];
@@ -26,8 +30,8 @@ if(!empty($concurdrug))
     $charsl = preg_split('/,/', $concurdrug);
     for($i=0;$i<=$ccd;$i++)
     {
-	$cho = mysqli_query($linkcm, "select dinteract from druggeneric where name = '$charsl[$i]' ");
-	$int[$i] = mysqli_fetch_array($cho);
+        $cho = mysqli_query($linkcm, "select dinteract from druggeneric where name = '$charsl[$i]' ");
+        $int[$i] = mysqli_fetch_array($cho);
     }
 
 }
@@ -105,11 +109,11 @@ while ($row = mysqli_fetch_array($preg)) $preg=$row['preg'];
 
 if($preg==1)
 {
-$cat = '(cat = "A" or cat = "B" or cat = "N")';
-  if($_SESSION['catc'] ==1)
-  {
-    $cat = '(cat = "A" or cat = "B" or cat = "C" or cat = "N")';
-  }
+    $cat = '(cat = "A" or cat = "B" or cat = "N")';
+    if($_SESSION['catc'] ==1)
+    {
+        $cat = '(cat = "A" or cat = "B" or cat = "C" or cat = "N")';
+    }
 }
 else $cat=1;
 //
@@ -141,18 +145,18 @@ if(!empty($dl[5]))
 
 for($i=1;$i<=5;$i++)
 {
-if(!empty($dl[$i]))
-{
-    $drug = mysqli_query($linkcm, "select * from druggeneric where name='$dl[$i]'");
-
-    while ($drugrs = mysqli_fetch_array($drug))
+    if(!empty($dl[$i]))
     {
-    $dgg[$i] = $drugrs['dgroup'];
-    if (ltrim($dgg[$i]) === '') unset($dgg[$i]);
-    $dgsg[$i] = $drugrs['dsgroup'];
-    if (ltrim($dgsg[$i]) === '') unset($dgsg[$i]);
+        $drug = mysqli_query($linkcm, "select * from druggeneric where name='$dl[$i]'");
+
+        while ($drugrs = mysqli_fetch_array($drug))
+        {
+            $dgg[$i] = $drugrs['dgroup'];
+            if (ltrim($dgg[$i]) === '') unset($dgg[$i]);
+            $dgsg[$i] = $drugrs['dsgroup'];
+            if (ltrim($dgsg[$i]) === '') unset($dgsg[$i]);
+        }
     }
-}
 }
 if(!empty($dgg[1])) {$fgo1 = 'groupn != "'.$dgg[1].'"'; $fgo = $fgo1;}
 
@@ -209,35 +213,35 @@ if(!empty($dgsg[5]))
 
 if (!empty($fdo) and !empty($fgo) and !empty($fsg))
 {
-$fdout = "(".$fdo.") AND (".$fgo.") AND (".$fsg.")";
+    $fdout = "(".$fdo.") AND (".$fgo.") AND (".$fsg.")";
 }
 elseif(!empty($fdo) and !empty($fgo) and empty($fsg))
 {
-$fdout = "(".$fdo.") AND (".$fgo.")";
+    $fdout = "(".$fdo.") AND (".$fgo.")";
 }
 elseif(!empty($fdo) and empty($fgo) and !empty($fsg))
 {
-$fdout = "(".$fdo.") AND (".$fsg.")";
+    $fdout = "(".$fdo.") AND (".$fsg.")";
 }
 elseif(empty($fdo) and !empty($fgo) and !empty($fsg))
 {
-$fdout = "(".$fgo.") AND (".$fsg.")";
+    $fdout = "(".$fgo.") AND (".$fsg.")";
 }
 elseif(!empty($fdo) and empty($fgo) and empty($fsg))
 {
-$fdout = $fdo;
+    $fdout = $fdo;
 }
 elseif(empty($fdo) and empty($fgo) and !empty($fsg))
 {
-$fdout = $fsg;
+    $fdout = $fsg;
 }
 elseif(empty($fdo) and !empty($fgo) and empty($fsg))
 {
-$fdout = $fgo;
+    $fdout = $fgo;
 }
 else
 {
-$fdout = 1;
+    $fdout = 1;
 }
 
 //-------------------------------------------------------------------
@@ -249,123 +253,129 @@ $filter = mysqli_query($link, "select * from $tmp");
 
 if($_SESSION['ORDER']==0)
 {
-      while ($row = mysqli_fetch_array($filter))
-      {
-	$_SESSION['DG']=1;
-	for($t=1;$t<=10;$t++)
-	{
-	  $idrx[$t]= $row['idrx'.$t];
-	  $rx[$t]=$row['rx'.$t];
-	  $rxg[$t]=$row['rxg'.$t];
-	  $rxuses[$t]=$row['rx'.$t.'uses'];
-	  $rxv[$t]=$row['rx'.$t.'v'];
-	  //echo $idrx[$t];
-      /*    if($idrx[$t] >"0")
-	  {
-	    $_SESSION['DG']=$_SESSION['DG']+1;
-	  }*/
-	      $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$t]' AND $cat AND $fdout AND $foutlast  AND $fddi");
-	      while ($row2 = mysqli_fetch_array($ptin))
-		      {
-			      $rxtypen[$t] =  $row2['typen'];
-			      $rxsize[$t] = $row2['size'];
-			      $rxsv[$t] = $row2['volume'];
-			      $rxrserve[$t] = $row2['volreserve'];
-		      }
-	  //$row['id']."-".$row['dgname']."-".$row['dname']."-".$row['size']."-".$row['typen']
-	  if($idrx[$t]!=0 )
-	  {
-	  $_SESSION['drug'.$t]= $idrx[$t]."-".$rxg[$t]."-".$rx[$t]."-".$rxsize[$t]."-".$rxtypen[$t];
-	  $_SESSION['dgname'.$t] = $rxg[$t];
-	  $_SESSION['vol'.$t]=$rxv[$t];
-	  $_SESSION['uses'.$t]=$rxuses[$t];
-	  $_SESSION['svol'.$t]=$rxsv[$t];
-	  $_SESSION['svolr'.$t]=$rxrserve[$t];
-	  
-	  }
-	  elseif($idrx[$t]==0)
-	  {
-	    unset($_SESSION['drug'.$t]);
-	    unset($_SESSION['dgname'.$t]);
-	    unset($_SESSION['vol'.$t]);
-	    unset($_SESSION['uses'.$t]);
-	    unset($_SESSION['svol'.$t]);
-	    unset($_SESSION['svolr'.$t]);
-	  }
-	}
-      }
+    while ($row = mysqli_fetch_array($filter))
+    {
+        $_SESSION['DG']=1;
+        for($t=1;$t<=10;$t++)
+        {
+            $idrx[$t]= $row['idrx'.$t];
+            $rx[$t]=$row['rx'.$t];
+            $rxg[$t]=$row['rxg'.$t];
+            $rxuses[$t]=$row['rx'.$t.'uses'];
+            $rxv[$t]=$row['rx'.$t.'v'];
+            //echo $idrx[$t];
+            /*    if($idrx[$t] >"0")
+            {
+            $_SESSION['DG']=$_SESSION['DG']+1;
+            }*/
+            $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$t]' AND $cat AND $fdout AND $foutlast  AND $fddi");
+            while ($row2 = mysqli_fetch_array($ptin))
+                {
+                    $rxtypen[$t] =  $row2['typen'];
+                    $rxsize[$t] = $row2['size'];
+                    $rxsv[$t] = $row2['volume'];
+                    $rxrserve[$t] = $row2['volreserve'];
+                }
+            //$row['id']."-".$row['dgname']."-".$row['dname']."-".$row['size']."-".$row['typen']
+            if($idrx[$t]!=0 )
+            {
+                $_SESSION['drugid'.$t]= $idrx[$t];
+                $_SESSION['drug'.$t]= $idrx[$t]."-".$rxg[$t]."-".$rx[$t]."-".$rxsize[$t]."-".$rxtypen[$t];
+                $_SESSION['dgname'.$t] = $rxg[$t];
+                $_SESSION['vol'.$t]=$rxv[$t];
+                $_SESSION['inivol'.$t]=$rxv[$t];
+                $_SESSION['uses'.$t]=$rxuses[$t];
+                $_SESSION['svol'.$t]=$rxsv[$t];
+                $_SESSION['svolr'.$t]=$rxrserve[$t];
+            }
+            elseif($idrx[$t]==0)
+            {
+                unset($_SESSION['drugid'.$t]);
+                unset($_SESSION['drug'.$t]);
+                unset($_SESSION['dgname'.$t]);
+                unset($_SESSION['inivol'.$t]);
+                unset($_SESSION['vol'.$t]);
+                unset($_SESSION['uses'.$t]);
+                unset($_SESSION['svol'.$t]);
+                unset($_SESSION['svolr'.$t]);
+            }
+        }
+    }
 
-      for($t=1;$t<=10;$t++)
-      {
-	  if(!empty($_SESSION['drug'.$t]))
-	  {
-	    $_SESSION['DG']=$_SESSION['DG']+1;
-	  }
-      }
-      //reorder drug need $_SESSION['drug'.$t], $_SESSION['vol'.$t],unset($_SESSION['uses'.$t]);
-      // new stack for record value 
-      $j=1; $k=1;
-      for($i=1;$i<=$_SESSION['DG'];$i++)
-      {
-	for($j=$k;$j<=10;$j++)
-	{
-	  if(empty($_SESSION['drug'.$j]))
-	  {
-	    $k=$k+1;
-	  }
-	  else
-	  {
-	    //assign value to new stack
-	    $_SESSION['drugnew'.$i]=$_SESSION['drug'.$j];
-	    $_SESSION['dgnamenew'.$i]=$_SESSION['dgname'.$j];
-	    $_SESSION['volnew'.$i]=$_SESSION['vol'.$j];
-	    $_SESSION['usesnew'.$i]=$_SESSION['uses'.$j];
-	    $_SESSION['svolnew'.$i]=$_SESSION['svol'.$j];
-	    $_SESSION['svolrnew'.$i]=$_SESSION['svolr'.$j];
-	    $k=$k+1;
-//	    $j=$j+1;
-	    //now unset old $_SESSION['drug'.$t], $_SESSION['vol'.$t],unset($_SESSION['uses'.$t]);
-	    unset($_SESSION['drug'.$j]);
-	    unset($_SESSION['dgname'.$j]);
-	    unset($_SESSION['vol'.$j]);
-	    unset($_SESSION['uses'.$j]);
-	    unset($_SESSION['svol'.$j]);
-	    unset($_SESSION['svolr'.$j]);
-	    goto nexti;
-	  }
-	}
-	nexti:
-      }
-      // now put data back to $_SESSION['drug'.$t], $_SESSION['vol'.$t],$_SESSION['uses'.$t];
-      for($i=1;$i<=$_SESSION['DG'];$i++)
-      {
-	    $_SESSION['drug'.$i]=$_SESSION['drugnew'.$i];
-	    $_SESSION['dgname'.$i]=$_SESSION['dgnamenew'.$i];
-	    $_SESSION['vol'.$i]=$_SESSION['volnew'.$i];
-	    $_SESSION['uses'.$i]=$_SESSION['usesnew'.$i];
-	    $_SESSION['svol'.$i]=$_SESSION['svolnew'.$i];
-	    $_SESSION['svolr'.$i]=$_SESSION['svolrnew'.$i];
-	//clear data at new stack
-	    unset($_SESSION['drugnew'.$i]);
-	    unset($_SESSION['dgnamenew'.$i]);
-	    unset($_SESSION['volnew'.$i]);
-	    unset($_SESSION['usesnew'.$i]);
-	    unset($_SESSION['svolnew'.$i]);
-	    unset($_SESSION['svolrnew'.$i]);
-      }
+    for($t=1;$t<=10;$t++)
+    {
+        if(!empty($_SESSION['drug'.$t]))
+        {
+            $_SESSION['DG']=$_SESSION['DG']+1;
+        }
+    }
+    //reorder drug need $_SESSION['drug'.$t], $_SESSION['inivol'.$t],unset($_SESSION['uses'.$t]);
+    // new stack for record value 
+    $j=1; $k=1;
+    for($i=1;$i<=$_SESSION['DG'];$i++)
+    {
+        for($j=$k;$j<=10;$j++)
+        {
+            if(empty($_SESSION['drug'.$j]))
+            {
+                $k=$k+1;
+            }
+            else
+            {
+                //assign value to new stack
+                $_SESSION['drugnew'.$i]=$_SESSION['drug'.$j];
+                $_SESSION['dgnamenew'.$i]=$_SESSION['dgname'.$j];
+                $_SESSION['volnew'.$i]=$_SESSION['vol'.$j];
+                $_SESSION['inivolnew'.$i]=$_SESSION['inivol'.$j];
+                $_SESSION['usesnew'.$i]=$_SESSION['uses'.$j];
+                $_SESSION['svolnew'.$i]=$_SESSION['svol'.$j];
+                $_SESSION['svolrnew'.$i]=$_SESSION['svolr'.$j];
+                $k=$k+1;
+        //	    $j=$j+1;
+                //now unset old $_SESSION['drug'.$t], $_SESSION['inivol'.$t],unset($_SESSION['uses'.$t]);
+                unset($_SESSION['drug'.$j]);
+                unset($_SESSION['dgname'.$j]);
+                unset($_SESSION['vol'.$j]);
+                unset($_SESSION['inivol'.$j]);
+                unset($_SESSION['uses'.$j]);
+                unset($_SESSION['svol'.$j]);
+                unset($_SESSION['svolr'.$j]);
+                goto nexti;
+            }
+        }
+        nexti:
+    }
+    // now put data back to $_SESSION['drug'.$t], $_SESSION['inivol'.$t],$_SESSION['uses'.$t];
+    for($i=1;$i<=$_SESSION['DG'];$i++)
+    {
+        $_SESSION['drug'.$i]=$_SESSION['drugnew'.$i];
+        $_SESSION['dgname'.$i]=$_SESSION['dgnamenew'.$i];
+        $_SESSION['vol'.$i]=$_SESSION['volnew'.$i];
+        $_SESSION['inivol'.$i]=$_SESSION['inivolnew'.$i];
+        $_SESSION['uses'.$i]=$_SESSION['usesnew'.$i];
+        $_SESSION['svol'.$i]=$_SESSION['svolnew'.$i];
+        $_SESSION['svolr'.$i]=$_SESSION['svolrnew'.$i];
+        //clear data at new stack
+        unset($_SESSION['drugnew'.$i]);
+        unset($_SESSION['dgnamenew'.$i]);
+        unset($_SESSION['volnew'.$i]);
+        unset($_SESSION['inivolnew'.$i]);
+        unset($_SESSION['usesnew'.$i]);
+        unset($_SESSION['svolnew'.$i]);
+        unset($_SESSION['svolrnew'.$i]);
+    }
       
-////control count//set to 1
-$_SESSION['ORDER']=1;
-//
+    ////control count//set to 1
+    $_SESSION['ORDER']=1;
+    //
 }
 
-$filter = mysqli_query($link, "select * from drug_id");		
-	while ($row = mysqli_fetch_array($filter))
-	{
-		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
-	}	
+$filter = mysqli_query($link, "select * from drug_id");
+while ($row = mysqli_fetch_array($filter))
+{
+    if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
+}
 
-	
 if ($_SESSION['DG']<1)
 { 
   $i=1; 
@@ -373,8 +383,6 @@ if ($_SESSION['DG']<1)
 }
 
 else $i = $_SESSION['DG'];
-
-$i = $_SESSION['DG'];
 
 //check ddiltemp and change 
 $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
@@ -385,41 +393,42 @@ if($_POST['add'] == 'เพิ่ม')
   
   if ($_SESSION['DG']<1) 
   {
-  $_SESSION['DG']=1;
-  $i = $_SESSION['DG'];
+    $_SESSION['DG']=1;
+    $i = $_SESSION['DG'];
   }
+  
   for($j=1;$j<=$i;$j++)
-      {
-      $_SESSION['drug'.$j]=$_POST['drug'.$j];
-      $_SESSION['uses'.$j]=$_POST['uses'.$j];
-      $_SESSION['oldvol'.$j]= $_SESSION['vol'.$j];
-      $_SESSION['vol'.$j]=$_POST['vol'.$j];
-      //
-	  $drug = $_SESSION['drug'.$j];
-	  $drugid[$j] = strstr($drug, '-', true); 
-	  //echo $drugid[$j]; if no drug id no add line 
-	  if($drugid[$j]<=0) goto Goon;
-	  //
-	  $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
-	  while ($row2 = mysqli_fetch_array($ptin))
-		  {
-              $_SESSION['dgname'.$j]= $row2['dgname'];
-			  $rxuses[$j] =  $row2['uses'];
-			  //check and compair uses order
-			  if(empty($_SESSION['uses'.$j]))
-			  {
-			    $_SESSION['uses'.$j] = $rxuses[$j];
-			  }
-			  $_SESSION['svol'.$j] =  $row2['volume'];
-			  $_SESSION['svolr'.$j] = $row2['volreserve'];
-		  }
-      //
-      }
+    {
+        $_SESSION['drug'.$j]=$_POST['drug'.$j];
+        $_SESSION['uses'.$j]=$_POST['uses'.$j];
+//        $_SESSION['oldvol'.$j]= $_SESSION['inivol'.$j];
+        $_SESSION['vol'.$j]=$_POST['vol'.$j];
+        //
+        $drug = $_SESSION['drug'.$j];
+        $drugid[$j] = strstr($drug, '-', true); 
+        //echo $drugid[$j]; if no drug id no add line 
+        if($drugid[$j]<=0) goto Goon;
+        //
+        $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
+        while ($row2 = mysqli_fetch_array($ptin))
+            {
+                $_SESSION['dgname'.$j]= $row2['dgname'];
+                $rxuses[$j] =  $row2['uses'];
+                //check and compair uses order
+                if(empty($_SESSION['uses'.$j]))
+                {
+                    $_SESSION['uses'.$j] = $rxuses[$j];
+                }
+                $_SESSION['svol'.$j] =  $row2['volume'];
+                $_SESSION['svolr'.$j] = $row2['volreserve'];
+            }
+        //
+    }
   if($_SESSION['DG']<10)
-  {
-  $_SESSION['DG'] = $_SESSION['DG']+1;
-  $i = $_SESSION['DG'];
-  }
+    {
+        $_SESSION['DG'] = $_SESSION['DG']+1;
+        $i = $_SESSION['DG'];
+    }
 //header("Location: drugorder.php");  
 }
 
@@ -427,198 +436,160 @@ Goon:
 
 for($n=1;$n<=10;$n++)
 {
-  
   if($_POST['del'.$n]=='ลบ')
   {
+    $i = $_SESSION['DG'];
     //check ddiltemp
     $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
-  
+    
+ 
     //update drug_id at volreserve return volume.
     //update reserve volume at drug_id
-    $rvolnew = $_SESSION['svolr'.$n] - $_SESSION['vol'.$n] ;
+    
+    $volreserve = $_SESSION['svolr'.$n] - $_SESSION['vol'.$n] ;
+    if($volreserve<0) $volreserve=0;
+    
+    $id=$_SESSION['drugid'.$n];
+    
+    $stmt->execute();
+    ///update reserve volume at drug_id end
+    
     unset($_SESSION['vol'.$n]);
-    unset($_SESSION['oldvol'.$n]);
+    unset($_SESSION['inivol'.$n]);
     unset($_SESSION['dgname'.$n]);
     unset($_SESSION['svol'.$n]);
     unset($_SESSION['svolr'.$n]);
-    mysqli_query($link, "UPDATE drug_id SET
-	    `volreserve` = '$rvolnew' WHERE `id` ='$drugid[$n]' LIMIT 1 ;
-	    ") or die(mysqli_error($link));
-   //
+
+    //
  
-   for($m=$n;$m<$i;$m++)
+   for($m=$n;$m<=$i;$m++)
      {
       $n=$n+1;
       $_SESSION['drug'.$m]=$_SESSION['drug'.$n];
       $_SESSION['vol'.$m]=$_SESSION['vol'.$n];
+      $_SESSION['inivol'.$m]=$_SESSION['inivol'.$n];
       $_SESSION['uses'.$m]=$_SESSION['uses'.$n];
      }
-          //
-	for($j=1;$j<=$i;$j++)
-	    {
-	    //$_SESSION['drug'.$j]=$_POST['drug'.$j];
-	    //
-		$drug = $_SESSION['drug'.$j];
-		$drugid[$j] = strstr($drug, '-', true); 
-		//echo $drugid[$j];
-		$ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
-		while ($row2 = mysqli_fetch_array($ptin))
-			{
-                                $_SESSION['dgname'.$j]= $row2['dgname'];
-				$rxuses[$j] =  $row2['uses'];
-				$_SESSION['svol'.$j] =  $row2['volume'];
-				$_SESSION['svolr'.$j] = $row2['volreserve'];
-			}
-	    }
-      //
-
-     unset($_SESSION['drug'.$i]);
-     unset($_SESSION['uses'.$i]);
-     
-     $_SESSION['DG'] = $_SESSION['DG']-1;
-     $i = $_SESSION['DG'];
-    // header("Location: drugorder.php"); 
+    for($j=1;$j<=$i;$j++)
+    {
+        $drug = $_SESSION['drug'.$j];
+        $drugid[$j] = strstr($drug, '-', true); 
+        //echo $drugid[$j];
+        $ptin = mysqli_query($link, "select * from drug_id where id='$drugid[$j]' AND $cat AND $fdout AND $foutlast  AND $fddi");
+        while ($row2 = mysqli_fetch_array($ptin))
+        {
+            $_SESSION['drugid'.$j]= $row2['id'];
+            $_SESSION['dgname'.$j]= $row2['dgname'];
+            $rxuses[$j] =  $row2['uses'];
+            $_SESSION['svol'.$j] =  $row2['volume'];
+            $_SESSION['svolr'.$j] = $row2['volreserve'];
+        }
+    }
+    unset($_SESSION['drug'.$i]);
+    unset($_SESSION['drugid'.$i]);
+    unset($_SESSION['uses'.$i]);
+    $_SESSION['DG'] = $_SESSION['DG']-1;
+    $i = $_SESSION['DG'];
   }
   if ($_SESSION['DG']<1)
   { 
     $i=1; 
     $_SESSION['DG']=1;
-    
   }
   
 }
 
 if($_POST['todo']=='Close')
 {
-    
+   
     for($a=1;$a<=10;$a++)
     {
       $_SESSION['drug'.$a]=$_POST['drug'.$a];
       $drug = $_SESSION['drug'.$a];
       $drugid[$a] = strstr($drug, '-', true); 
     }
-	for($a=1;$a<=10;$a++)
-	{
-	  $idrx[$a] = $drugid[$a];
-	  
-	  $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$a]' AND $cat AND $fdout AND $foutlast  AND $fddi");
-	  while ($row2 = mysqli_fetch_array($ptin))
-		  {
-			  $rx[$a] =  $row2['dname'].'-'.$row2['size'];
-			  $rxgn[$a] = $row2['dgname'];
-			  $rxuses[$a] =  $row2['uses'];
-			  $rxv[$a] =  $_POST['vol'.$a];
-			  $_SESSION['svol'.$a] =  $row2['volume'];
-			  $_SESSION['uses'.$a]= $_POST['uses'.$a];
-			  //check uses if change from default
-			  if($_SESSION['uses'.$a]!=$rxuses[$a])
-			  {
-			    $rxuses[$a]=$_SESSION['uses'.$a];
-			  }
-			  $_SESSION['vol'.$a]= $_POST['vol'.$a];
-			  $_SESSION['svolr'.$a] = $row2['volreserve'];
-			  $candp = $row2['candp'];
-			  if($candp ==1){$_SESSION['course']=1;}
-			  if($candp ==2){$_SESSION['prolab']=1;}
-		  }
-	  //check for blocking drug and reset $idrx[$a] from $rxgn[$a]
-	  if(empty($rxgn[$a]))
-	  {
-	    $idrx[$a]=0;
-	  }
-	  //
-	}
-	for($i=1;$i<=10;$i++)
-	{
-	// check to empty data if no idrx = 0
-        if($idrx[$i]==0)
+    for($a=1;$a<=10;$a++)
+    {
+        $idrx[$a] = $drugid[$a];
+        
+        $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$a]' AND $cat AND $fdout AND $foutlast  AND $fddi");
+        while ($row2 = mysqli_fetch_array($ptin))
+            {
+                $rx[$a] =  $row2['dname'].'-'.$row2['size'];
+                $rxgn[$a] = $row2['dgname'];
+                $rxuses[$a] =  $row2['uses'];
+                $rxv[$a] =  $_POST['vol'.$a];
+                $_SESSION['svol'.$a] =  $row2['volume'];
+                $_SESSION['uses'.$a]= $_POST['uses'.$a];
+                //check uses if change from default
+                if($_SESSION['uses'.$a]!=$rxuses[$a])
+                {
+                    $rxuses[$a]=$_SESSION['uses'.$a];
+                }
+                $_SESSION['vol'.$a]= $_POST['vol'.$a];
+                $_SESSION['svolr'.$a] = $row2['volreserve'];
+                $candp = $row2['candp'];
+                if($candp ==1){$_SESSION['course']=1;}
+                if($candp ==2){$_SESSION['prolab']=1;}
+            }
+        //check for blocking drug and reset $idrx[$a] from $rxgn[$a]
+        if(empty($rxgn[$a]))
         {
-            $rx[$i] = '';
-            $rxuses[$i] = '';
-            $rxv[$i] = '';
+            $idrx[$a]=0;
         }
-		$us = "rx".$i."uses";
-		$vl = "rx".$i."v";
-		$svl = "rx".$i."sv";
-		$idp = $idrx[$i];
-		$rxp = $rx[$i];
-		$rgp = $rxgn[$i];
-		$usp = $rxuses[$i];
-		$vlp = $rxv[$i];
-		$svlp = $_SESSION['svol'.$i];
-		if(empty($vlp)) $vlp=0; //mysql not null
-		if(empty($svlp)) $svlp=0; //mysql not null
-		mysqli_query($link, "UPDATE $tmp SET
-			`idrx$i` = '$idp',
-			`rx$i` = '$rxp',
-			`rxg$i` = '$rgp',
-			`$us` = '$usp',
-			`$vl` = '$vlp',
-			`$svl` = '$svlp'
-			") or die(mysqli_error($link));
-/*	if($_SESSION['prolab'])
-	{
-                mysqli_query($link, "UPDATE $tmp SET `prolab` = '1'") or die(mysqli_error($link));
-                unset($_SESSION['prolab']);
-	}
-	if($_SESSION['course'])
-	{
-                mysqli_query($link, "UPDATE $tmp SET `course` = '1'") or die(mysqli_error($link));
-                unset($_SESSION['course']);
-	}
-			
-*/		//update reserve volume at drug_id $_SESSION['svolr'
-		$_SESSION['oldvol'.$i] = $_POST['oldvol'.$i];
-		$rvolnew = $vlp - $_SESSION['oldvol'.$i] + $_SESSION['svolr'.$i];
-		
-		$_SESSION['oldvol'.$i] = $vlp;//new old order volume
-		$_SESSION['svolr'.$i] = $rvolnew;//new old reserve volume
-		//check not reserve less than 0
-		if ($rvolnew <= 0) $rvolnew = 0;
-//	  if($_POST['todo']=='Close')
-	  {
-		  mysqli_query($link, "UPDATE drug_id SET
-			  `volreserve` = '$rvolnew' WHERE `id` ='$idp' LIMIT 1 ;
-			  ") or die(mysqli_error($link));
-		//  unset($_SESSION['oldvol'.$i]);
-	  }
-	}
-//unset($_SESSION['ddiltemp_'.$id]);
-//if($_POST['todo']=='Close')
-{
-    for($i=1;$i<=10;$i++)
-    {
-    unset($_SESSION['drug'.$i]);
-    unset($_SESSION['DG']);
-    unset($_SESSION['uses'.$i]);
-    unset($_SESSION['vol'.$i]);
+   // }
+   // for($a=1;$a<=10;$a++)
+   // {
+    // check to empty data if no idrx = 0
+        if($idrx[$a]==0)
+        {
+            $rx[$a] = '';
+            $rxuses[$a] = '';
+            $rxv[$a] = '';
+        }
+        $us = "rx".$a."uses";
+        $vl = "rx".$a."v";
+        $svl = "rx".$a."sv";
+        $idp = $idrx[$a];
+        $rxp = $rx[$a];
+        $rgp = $rxgn[$a];
+        $usp = $rxuses[$a];
+        $vlp = $rxv[$a];
+        $svlp = $_SESSION['svol'.$a];
+        if(empty($vlp)) $vlp=0; //mysql not null
+        if(empty($svlp)) $svlp=0; //mysql not null
+        mysqli_query($link, "UPDATE $tmp SET
+            `idrx$a` = '$idp',
+            `rx$a` = '$rxp',
+            `rxg$a` = '$rgp',
+            `$us` = '$usp',
+            `$vl` = '$vlp',
+            `$svl` = '$svlp'
+            ") or die(mysqli_error($link));
+            
+        //update reserve volume at drug_id $_SESSION['svolr'
+        $_SESSION['svolr'.$a] = $vlp - $_SESSION['inivol'.$a] + $_SESSION['svolr'.$a];
+        //check not reserve less than 0
+        if ($_SESSION['svolr'.$a] < 0) $_SESSION['svolr'.$a] = 0;
+        //now update execute
+        $volreserve=$_SESSION['svolr'.$a];
+        $id=$idrx[$a];
+        $stmt->execute();
+        
+        unset($_SESSION['drug'.$a]);
+        unset($_SESSION['uses'.$a]);
+        unset($_SESSION['vol'.$a]);
+        unset($_SESSION['inivol'.$a]);
+        unset($_SESSION['svolr'.$a]);
     }
-
     unset($_SESSION['DG']);
     unset($_SESSION['ORDER']);
     $_SESSION['ORDER']=0;// set to 0 for sure
-echo '<script>window.opener.location.reload()</script>';
-echo '<script>self.close()</script>';
+    $stmt->close();
+    
+    echo '<script>window.opener.location.reload()</script>';
+    echo '<script>self.close()</script>';
 }
-//
-}
-/*
-if($_POST['todo']=='Close')
-{
-    for($i=1;$i<=10;$i++)
-    {
-    unset($_SESSION['drug'.$i]);
-    unset($_SESSION['DG']);
-    unset($_SESSION['uses'.$i]);
-    unset($_SESSION['vol'.$i]);
-    }
-
-    unset($_SESSION['DG']);
-    unset($_SESSION['ORDER']);
-    $_SESSION['ORDER']=0;// set to 0 for sure
-
-}
-*/
 ?>
 
 <!DOCTYPE html>
@@ -683,10 +654,14 @@ include '../libs/autoorder.php';
 	    echo "</td>";
 	    echo "<td>";
 	    echo "<input type='hidden' name='oldvol".$j."' value='".$_SESSION['vol'.$j]."'>";
-	    echo "<input type='number' tabindex=".$j." class=typenumber name='vol".$j."' min=0 step=1 max='".($_SESSION['svol'.$j]-$_SESSION['svolr'.$j]+$_SESSION['vol'.$j])."' value=";
-	    if(empty($_SESSION['vol'.$j]) and ($j!=$i)) echo "1";
+	    echo "<input type='number' tabindex=".$j." class=typenumber name='vol".$j."' min=0 step=1 max='".$max=($_SESSION['svol'.$j]-$_SESSION['svolr'.$j]+$_SESSION['vol'.$j])."' value='";
+	    if(empty($_SESSION['vol'.$j]) and ($j!=$i))
+	    {
+            if($max>=1) echo "1";
+            else echo "0";
+        }
 	    if(!empty($_SESSION['vol'.$j])) echo $_SESSION['vol'.$j];
-	    echo ">";
+	    echo "'>";
 	    echo "</td>";
 	    echo "<td><input type=submit name='add' value='เพิ่ม'></td>";
 	    echo "<td><input type=submit name='del".$j."' value='ลบ'></td>";

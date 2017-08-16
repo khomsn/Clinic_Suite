@@ -81,7 +81,6 @@ if(!empty($_POST['address3']) and !empty($_POST['address4']))
 		  $_POST['zipcode'] = $row['zipcode'];
 		}
 }
-$addstr = mysqli_real_escape_string($linkopd, $_POST['addstr']);
 // Check for aviable ID 
 //initialize
 if(empty($_SESSION['maxconid'])) $_SESSION['maxconid']=0;
@@ -130,10 +129,10 @@ if(empty($_POST['zipcode'])) $_POST['zipcode']=0;
 // assign insertion pattern
 $sql_insert = "INSERT into `patient_id`
   			(`id`,`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`
-			, `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`,  `addstr`,`address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `user_id`, `clinic`  )
+			, `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`, `address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `user_id`, `clinic`  )
 		    VALUES
 		    ('$idtoinsert','$ctzid','$_POST[prefix]','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
-			'$_POST[chro_ill_1]','$_POST[chro_ill_2]','$_POST[chro_ill_3]','$_POST[chro_ill_4]','$_POST[chro_ill_5]','$concurdrug','$_POST[address1]','$_POST[address2]','$addstr','$_POST[address3]','$_POST[address4]','$_POST[address5]',
+			'$_POST[chro_ill_1]','$_POST[chro_ill_2]','$_POST[chro_ill_3]','$_POST[chro_ill_4]','$_POST[chro_ill_5]','$concurdrug','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
 			'$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_SESSION[user_id]','$_SESSION[clinic]')
 			";
 
@@ -378,15 +377,16 @@ else
 									<hr style="width: 100%; height: 2px;">
 									ที่อยู่:
 									<br>
-									บ้านเลขที่<input tabindex="11" name="address1" type="text" class="typenumber">หมู่ที่<input tabindex="12" name="address2" type="number" min="0" value="0" class="typenumber"><br>หมู่บ้าน/ถนน<input tabindex="13" name="addstr" type="text" class="addstr"><br>ตำบล/แขวง<input tabindex="14" name="address3" type="text" id="tname" >
+									บ้านเลขที่<input tabindex="11" name="address1" type="text" class="typenumber">หมู่ที่<input tabindex="12" name="address2" type="text" class="typenumber">
+									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ตำบล <input tabindex="13" name="address3" type="text" id="tname" >
 									<br>
-									อำเภอ/เขต<input tabindex="15" name="address4" type="text" id="aname">
-									&nbsp; &nbsp; &nbsp; &nbsp; จังหวัด<input tabindex="16" name="address5" type="text" id="jname">
-									&nbsp;รหัสไปรษณีย์<input tabindex="17" name="zipcode" size="6" maxlength="5" type="text" id="zip">
+									อำเภอ<input tabindex="14" name="address4" type="text" id="aname">
+									&nbsp; &nbsp; &nbsp; &nbsp; จังหวัด<input tabindex="15" name="address5" type="text" id="jname">
+									&nbsp;รหัสไปรษณีย์<input tabindex="16" name="zipcode" size="6" maxlength="5" type="text" id="zip">
 									<br>
 									<div style="text-align: center;">
-									โทรศัพท์มือถือ<input tabindex="18" name="mobile" size="16" maxlength="15" type="text">&nbsp;
-									โทรศัพท์บ้าน<input tabindex="19" name="hometel" size="26" maxlength="25" type="text">
+									โทรศัพท์มือถือ<input tabindex="17" name="mobile" size="16" maxlength="15" type="text">&nbsp;
+									โทรศัพท์บ้าน<input tabindex="18" name="hometel" size="26" maxlength="25" type="text">
 									<br>
 									<hr style="width: 100%; height: 2px;"></div>
 									<br>
@@ -437,7 +437,7 @@ else
 								</tr>
 								</tbody>
 								</table>
-							<p align="center"> <input  tabindex="20" name="doRegister" id="doRegister" value="Register" type="submit"></p>
+							<p align="center"> <input  tabindex="19" name="doRegister" id="doRegister" value="Register" type="submit"></p>
 							</form>
 						</td>
 						<td valign="top" width="196">&nbsp;</td>

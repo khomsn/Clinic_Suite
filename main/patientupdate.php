@@ -70,6 +70,8 @@ if(!empty($_POST['address3']) and !empty($_POST['address4']))
 		  $_POST['zipcode'] = $row['zipcode'];
 		}
 }
+
+$addstr = mysqli_real_escape_string($linkopd, $_POST['addstr']);
 // format birthday for mysql
 $birthday = $year.'-'.$month.'-'.$day;
 
@@ -116,7 +118,8 @@ $sql_insert = "UPDATE `patient_id` SET
 				`concurdrug` = '$concurdrug',
 				`address1` = '$_POST[address1]',
 				`address2` = '$_POST[address2]',
-				`address3` = '$_POST[address3]',
+				`addstr` = '$_POST[addstr]',
+                `address3` = '$_POST[address3]',
 				`address4` = '$_POST[address4]',
 				`address5` = '$_POST[address5]',
 				`zipcode` = '$_POST[zipcode]',
@@ -467,10 +470,10 @@ else
 									ที่อยู่:
 									<br>
 									บ้านเลขที่<input tabindex="11" name="address1" type="search" value="<?php echo $addre[1]; ?>" >หมู่ที่ 
-									<input tabindex="12" name="address2" type="text" value="<?php echo $addre[2]; ?>" >
-									ตำบล<input tabindex="13" name="address3" type="search" id="tname" value="<?php echo $addre[3]; ?>" >
+									<input tabindex="12" name="address2" type="text" value="<?php echo $addre[2]; ?>" ><br>หมู่บ้าน/ถนน<input  name="addstr" type="text" class="addstr" value="<?php echo $addstr; ?>" ><br>
+									ตำบล/แขวง<input tabindex="13" name="address3" type="search" id="tname" value="<?php echo $addre[3]; ?>" >
 									<br>
-									อำเภอ<input tabindex="14" name="address4" type="search" id="aname" value="<?php echo $addre[4]; ?>" >
+									อำเภอ/เขต<input tabindex="14" name="address4" type="search" id="aname" value="<?php echo $addre[4]; ?>" >
 									&nbsp; &nbsp; &nbsp; &nbsp; จังหวัด<input tabindex="15" id="jname" name="address5" type="search" 
 									value="<?php echo $addre[5]; ?>"  >
 									&nbsp;รหัสไปรษณีย์<input tabindex="16" name="zipcode" size="6" maxlength="5" type="search" id="zip" value="<?php 

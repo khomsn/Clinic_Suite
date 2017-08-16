@@ -126,7 +126,8 @@ else
 			  or (ac_no >=3000 AND ac_no <4000)
 			  or (ac_no >=50000 AND ac_no <=59999)
 			  or (ac_no >=10000 AND ac_no <=19999)
-			  or (ac_no >5000 AND ac_no <5999)";
+			  or (ac_no >5000 AND ac_no <5999)
+			  or (ac_no = 1000000)";
 		$dgroup = mysqli_query($link, "SELECT * FROM acnumber WHERE $condi
 		ORDER BY `name` ASC");
 	/* 
@@ -196,7 +197,8 @@ else
 		    $condi = "ac_no <= 2100
 			      or (ac_no >=3000 AND ac_no <3500)
 			      or (ac_no >=10000 AND ac_no <=19999)
-			      or (ac_no >4000 AND ac_no <4999)";
+			      or (ac_no >4000 AND ac_no <4999)
+			      or (ac_no = 1000000)";
 		    $dgroup = mysqli_query($link, "SELECT * FROM acnumber WHERE $condi
 		    ORDER BY `name` ASC");
 	    /* 

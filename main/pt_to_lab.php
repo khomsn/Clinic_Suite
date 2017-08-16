@@ -11,6 +11,7 @@ $pdir = AVATAR_PATH;
 <head>
 <title>ผู้ป่วยรอตรวจ</title>
 <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<meta http-equiv="refresh" content="10">
 <link rel="stylesheet" href="../public/css/styles.css">
 <link rel="stylesheet" href="../public/css/table_alt_color1.css">
 </head>

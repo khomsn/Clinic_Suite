@@ -114,10 +114,11 @@ if(empty($err))
 				") or die(mysqli_error($link));
 //update labidp @ labid
 
-	mysqli_query($link, "UPDATE labidp SET
+/*	mysqli_query($link, "UPDATE labidp SET
 				`labid` = '$idnew'
 				WHERE `id`='$olabid'
 				") or die(mysqli_error($link));
+*/
 	$_SESSION['labid'] = $idnew;
 	}
     $msg[] = $_POST['L_Name']." with ".$_POST['L_specimen']." Specimen updated successfully.";

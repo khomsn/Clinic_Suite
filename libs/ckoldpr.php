@@ -36,6 +36,12 @@
 			}
 		}
 	}
+
+// prepare and bind for drug_id update:
+$stmt = $link->prepare("UPDATE drug_id SET `volreserve` = ? WHERE `id` = ? ");
+$stmt->bind_param("ii", $volreserve, $idres);
+
+
 	for($i=$imin;$i<=$imax;$i++)
 	{
 		$us = "rx".$i."uses";
@@ -84,6 +90,17 @@
 			`$svl` = '$svol'
 			") or die(mysqli_error($link));
 		}
+		//now update reservolume
+        //update drug_id at volreserve return volume.
+        //update reserve volume at drug_id
+        
+        $volreserve = $resvol + $vlp;
+        $idres=$idp;
+        
+        $stmt->execute();
+        ///update reserve volume at drug_id end
+		
+		//
 		Next_item:
 	}
 ?>

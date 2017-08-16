@@ -23,6 +23,8 @@ while ($row_settings = mysqli_fetch_array($pin))
 		$rid = $row_settings['id'];
 	}	
 */
+// ไม่อนุญาตให้ ลบ การสั่งยาในขั้นตอนนี้อีก
+/*
 for($i=1;$i<=10;$i++)
 {
 	$delrx = "rx".$i;
@@ -75,6 +77,7 @@ for($i=1;$i<=4;$i++)
 		header("Location: ptpay.php"); 	
 	}
 }
+*/
 ?>
 
 <!DOCTYPE html>
@@ -85,6 +88,7 @@ for($i=1;$i<=4;$i++)
 	<script language="JavaScript" type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 	<script language="JavaScript" type="text/javascript" src="js/jquery.validate.js"></script>
 	<link rel="stylesheet" href="../public/css/styles.css">
+	<link rel="stylesheet" href="../public/css/table_alt_color.css">
 </head>
 
 <body >
@@ -161,11 +165,10 @@ for($i=1;$i<=4;$i++)
 					<?php 
 							echo "Treatment:<br> ";
 					?>		
-							<table style="background-color: rgb(255, 204, 153); width: 80%; text-align: center;
-									margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">									
+							<table class='TFtable' border="1"  style="text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);">									
 								<tr>
 									<th width = 10 >No</th><th >ชื่อ</th><th width = 75px>ราคา</th><th width = 35px>Vol</th>
-									<th width = 75px>รวม</th><th width = 15px>ลบ</th>
+									<th width = 75px>รวม</th><!-- <th width = 15px>ลบ</th> -->
 								</tr>
 								<?php 
 								$j = 1;
@@ -220,6 +223,7 @@ if($did ==  $tr_drugid[$s])
 }
 										
 										echo $price1;
+										/*
 										echo "</td><td>";
 										if($typen != "ยาฉีด")
 										{
@@ -227,6 +231,7 @@ if($did ==  $tr_drugid[$s])
 										echo $i;
 										echo "' >";
 										}
+										*/
 										echo "</td></tr>";
 										$j = $j+1;
 									}
@@ -236,10 +241,9 @@ if($did ==  $tr_drugid[$s])
 							?>	
 							</table>
 							ยาและผลิตภัณฑ์: <br>
-							<table style="background-color: rgb(255, 204, 153); width: 80%; text-align: center;
-									margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">									
+							<table class="TFtable" border="1"  style="text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);" >									
 								<tr>
-									<th width = 10 >No</th><th >ชื่อ+ขนาด</th><th>วิธีการใช้</th><th width = 35px>จำนวน</th><th width = 15px>ลบ</th>
+									<th width = 10 >No</th><th>ชื่อ+ขนาด</th><th width=50%>วิธีการใช้</th><th width = 35px>จำนวน</th><!--<th width = 15px>ลบ</th>-->
 								</tr>
 								<?php 
 								$j=1;
@@ -276,16 +280,17 @@ if($did ==  $tr_drugid[$s])
 									//	echo "</td>";
 									//	echo "<td>";
 										echo $row[$rxv];
-										echo "</td>";
-									//	echo "<td>";
-									//	echo $price1;
-										echo "<td>";
+										/*
+										echo "</td><td>";
+                                        echo $price1;
+										echo "</td><td>";
 										if($typen != "ยาฉีด")
 										{
 										echo "<input type ='submit' value='ลบ' name='rx";
 										echo $i;
 										echo "' >";
 										}
+										*/
 										echo "</td></tr>";
 										$j = $j+1;
 									}

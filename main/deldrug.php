@@ -7,21 +7,21 @@ $filter = mysqli_query($link, "select * from drug_id ");
 	{
 		if($maxdrid<$row['id']) $maxdrid = $row['id'] ;
 	}	
-$filter = mysqli_query($link, "select * from drug_id WHERE track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC ");
+$filter = mysqli_query($link, "select * from drug_id WHERE track = '0' AND volume='0' AND min_limit='-1' ORDER BY `dgname` ASC ");
 
 if ($_POST['todo'] == 'กรอง' ) 
 {
 	if($_POST['type'] != '' AND $_POST['group'] !='' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit='-1' ORDER BY `dgname` ASC");	
 	}	
 	if($_POST['type'] != '' AND $_POST['group'] =='' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC ");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE typen='$_POST[type]' AND  track = '0' AND volume='0' AND min_limit='-1' ORDER BY `dgname` ASC ");	
 	}	
 	if($_POST['group'] !=''  AND  $_POST['type'] == '' )
 	{
-		$filter = mysqli_query($link, "select * from drug_id WHERE  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit<'0' ORDER BY `dgname` ASC");	
+		$filter = mysqli_query($link, "select * from drug_id WHERE  `groupn` ='$_POST[group]' AND  track = '0' AND volume='0' AND min_limit='-1' ORDER BY `dgname` ASC");	
 	}	
 
 }

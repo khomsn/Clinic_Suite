@@ -184,6 +184,3 @@ div.pos_r_fix_mypage1 {
 .typenumber {
     width: 50px;
 }
-.addstr {
-    width: 80%;
-}

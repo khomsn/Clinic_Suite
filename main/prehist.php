@@ -91,9 +91,7 @@ if (ltrim($row_settings['csf']) !=="")
 
 if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'") or die(mysqli_error($linkopd));
 // go on to other step
-
-$_SESSION['todoc']=1;
-
+$ptdoc = 1;
 }
 if($_POST['register']=='ส่งเข้าห้องตรวจ')
 {
@@ -188,6 +186,22 @@ else
 						{
 						//get pregdate for fup
 						$pregmonth = $row_settings['fup'];
+						
+                            //check for pregnancy period
+                            if(!empty($pregmonth))
+                            {
+                                $oldrid = $rid[0]-1;
+                                $ptin2 = mysqli_query($linkopd, "select * from $pttable where  id = '$oldrid' ");
+                                while($olddate = mysqli_fetch_array($ptin2))
+                                {
+                                    $date2=date_create($olddate['date']);
+                                    $diff = date_diff($date2,$date1);
+                                    $dmp = $diff->format("%m");
+                                    if(($dmp+$pregmonth)>10) $pregmonth = 0;
+                                    else $pregmonth = $dmp+$pregmonth;
+                                }
+                            }
+						
 						?>
 						<input type="radio" name="preg" class="required" value="1" <?php if(($preg == 1) OR ($pregmonth > 0)){echo "checked"; $preg=1;} ?>>ตั้งครรภ์<?php if($pregmonth!=0) echo "<sup>".$pregmonth."</sup>";?>
 						<input type="radio" name="preg" class="required" value="0" <?php if((empty($preg)) OR ($preg == 0) OR ($pregmonth==0) ) echo "checked";?>>ไม่ตั้งครรภ์
@@ -246,32 +260,34 @@ else
 					<td>
 						<br>
 						<div style="text-align: center;"><input name="register" value="บันทึก" type="submit"></div>
-<?php if($_SESSION['todoc']==1) 
+<?php 
 {
-
 // check for reenter or update
 	$PID = $_SESSION['patdesk'];
 	//check id at any point of service..
-	$result1 = mysqli_query($link, "SELECT id FROM pt_to_doc WHERE id = $PID");
-	if(mysqli_num_rows($result1) != 0)
+	$result1 = mysqli_query($link, "SELECT ID FROM pt_to_doc WHERE ID = $PID");
+	$num = mysqli_num_rows($result1);
+	if($num != 0)
 	{
 	  goto checkfound;
 	}
 	$result1 = mysqli_query($link, "SELECT id FROM pt_to_obs WHERE id = $PID");
-	if(mysqli_num_rows($result1) != 0)
+	$num = mysqli_num_rows($result1);
+	if($num != 0)
 	{
 	  goto checkfound;
 	}
 	$result1 = mysqli_query($link, "SELECT id FROM pt_to_drug WHERE id = $PID");
-	if(mysqli_num_rows($result1) != 0) 
+	$num = mysqli_num_rows($result1);
+	if($num != 0) 
 	{
 	  goto checkfound;
     }
 //
-
-?>
-<div style="text-align: center;"><input name="register" value="ส่งเข้าห้องตรวจ" type="submit"></div>
-<?php
+    if($ptdoc == 1)
+    {
+    echo "<div style='text-align: center;'><input name='register' value='ส่งเข้าห้องตรวจ' type='submit'></div>";
+    }
 checkfound:
 }
 ?>
