@@ -4,11 +4,32 @@
 (c) Khomsn 2560. All Rights Reserved
 
 ***********************************************************/
+include '../config/dbc.php';
 
-
-include 'dbc.php';
+//$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$server_site = $_SERVER['HTTP_HOST'];
 
 $err = array();
+
+if($server_site =="localhost")
+{
+    $secretkey = $localhost_secretkey;
+    $sitekey = $localhost_sitekey;
+    
+//    echo "Yes Localhost";
+}
+if($server_site =="$internet_url")
+{
+    $secretkey = $internet_secretkey;
+    $sitekey = $internet_sitekey;
+//    echo "Yes Internet Name";
+}
+if($server_site =="$int_ip")
+{
+    $secretkey = $int_ip_secretkey;
+    $sitekey = $int_ip_sitekey;
+//    echo "Yes Ip Address";
+}
 
 if($_POST['doRegister'] == 'Register') 
 { 
@@ -25,193 +46,197 @@ if($_POST['doRegister'] == 'Register')
     This code checks and validates recaptcha
     ****************************************************************/
     require_once('recaptchalib.php');
-     
-      $resp = recaptcha_check_answer ($privatekey,
-                                      $_SERVER["REMOTE_ADDR"],
-                                      $_POST["recaptcha_challenge_field"],
-                                      $_POST["recaptcha_response_field"]);
 
-      if (!$resp->is_valid) {
-        die ("<h3>Image Verification failed!. Go back and try again.</h3>" .
-             "(reCAPTCHA said: " . $resp->error . ")");			
-      }
-
-    // Validate User Name
-    if (!isUserID($data['user_name'])) {
-    $err[] = "ERROR - Invalid user name. It can contain alphabet, number and underscore.";
-    //header("Location: register.php?msg=$err");
-    //exit();
-    }
-
-    // Validate Email
-    if(!isEmail($data['usr_email'])) {
-    $err[] = "ERROR - Invalid email address.";
-    //header("Location: register.php?msg=$err");
-    //exit();
-    }
-    // Check User Passwords
-    if (!checkPwd($data['pwd'],$data['pwd2'])) {
-    $err[] = "ERROR - Invalid Password or mismatch. Enter 5 chars or more";
-    //header("Location: register.php?msg=$err");
-    //exit();
-    }
-	  
-    $user_ip = $_SERVER['REMOTE_ADDR'];
-
-    // stores sha1 of password
-    $sha1pass = PwdHash($data['pwd']);
-
-    // Automatically collects the hostname or domain  like example.com) 
-    $host  = $_SERVER['HTTP_HOST'];
-    $host_upper = strtoupper($host);
-    $path   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-
-    // Generates activation code simple 4 digit number
-    $activ_code = rand(1000,9999);
-
-    $usr_email = $data['usr_email'];
-    $user_name = $data['user_name'];
-
-    /************ USER EMAIL CHECK ************************************
-    This code does a second check on the server side if the email already exists. It 
-    queries the database and if it has any existing email it throws user email already exists
-    *******************************************************************/
-
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_email='$usr_email' OR user_name='$user_name'") or die(mysqli_error($link));
-    list($total) = mysqli_fetch_row($rs_duplicate);
-
-    if ($total > 0)
-    {
-    $err[] = "ERROR - The username/email already exists. Please try again with different username and email.";
-    //header("Location: register.php?msg=$err");
-    //exit();
-    }
-/***************************************************************************/
-
-    if(empty($err)) {
-
-    $sql_insert = "INSERT into `users`
-			    (`full_name`,`user_email`,`pwd`,`address`,`tel`,`fax`,`website`,`date`,`users_ip`,`activation_code`,`country`,`user_name`
-			    )
-			VALUES
-			('$data[full_name]','$usr_email','$sha1pass','$data[address]','$data[tel]','$data[fax]','$data[web]'
-			    ,now(),'$user_ip','$activ_code','$data[country]','$user_name'
-			    )
-			    ";
-			    
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-    $user_id = mysqli_insert_id($link);  
-    $md5_id = md5($user_id);
-    mysqli_query($link, "update users set md5_id='$md5_id' where id='$user_id'");
-    //	echo "<h3>Thank You</h3> We received your submission.";
-
-	if($user_registration)  {
-	$a_link = "
-	*****ACTIVATION LINK*****<br>
-	<a href=http://$host$path/activate.php?user=$md5_id&activ_code=$activ_code>http://$host$path/activate.php?user=$md5_id&activ_code=$activ_code</a>"; 
-	} else {
-	$a_link = 
-	"Your account is *PENDING APPROVAL* and will be soon activated the administrator.
-	";
+	if ($captcha_success->success==false) {
+        
+		$err[] = "You are a bot! Go away!";
 	}
+	else if ($captcha_success->success==true) 
+	{
 
-      /*-----------------------------------------------------------------------*/
-      $subject = "User Registation Activation";
-      /*-----------------------------------------------------------------------*/
-      $message = 
-      "Hello <br>
-      Thank you for registering with us. Here are your login details...<br><br>
+        // Validate User Name
+        if (!isUserID($data['user_name'])) {
+        $err[] = "ERROR - Invalid user name. It can contain alphabet, number and underscore.";
+        //header("Location: register.php?msg=$err");
+        }
 
-      User ID: $user_name <br>
-      Email: $usr_email <br> 
-      Passwd: $data[pwd] <br><br>
+        // Validate Email
+        if(!isEmail($data['usr_email'])) {
+        $err[] = "ERROR - Invalid email address.";
+        //header("Location: register.php?msg=$err");
+        //exit();
+        }
+        // Check User Passwords
+        if (!checkPwd($data['pwd'],$data['pwd2'])) {
+        $err[] = "ERROR - Invalid Password or mismatch. Enter 5 chars or more";
+        //header("Location: register.php?msg=$err");
+        //exit();
+        }
+        if(!empty($err)) goto ErroJP;
+        
+        $user_ip = $_SERVER['REMOTE_ADDR'];
 
-      $a_link<br><br>
+        // stores sha1 of password
+        $sha1pass = PwdHash($data['pwd']);
 
-      Thank You<br><br>
+        // Automatically collects the hostname or domain  like example.com) 
+        $host  = $_SERVER['HTTP_HOST'];
+        $host_upper = strtoupper($host);
+        $path   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 
-      Administrator<br>
-      $host_upper<br><br>
-      ______________________________________________________<br>
-      THIS IS AN AUTOMATED RESPONSE. <br>
-      ***DO NOT RESPOND TO THIS EMAIL****
-      ";
-      /*-----------------------------------------------------------------------*/
-      $toemail = $usr_email;
-      /*-----------------------------------------------------------------------*/
-     
-	require '../libs/PHPMailer-master/PHPMailerAutoload.php';
+        // Generates activation code simple 4 digit number
+        $activ_code = rand(1000,9999);
 
-	//Create a new PHPMailer instance
-	$mail = new PHPMailer;
+        $usr_email = $data['usr_email'];
+        $user_name = $data['user_name'];
 
-	//Tell PHPMailer to use SMTP
-	$mail->isSMTP();
+        /************ USER EMAIL CHECK ************************************
+        This code does a second check on the server side if the email already exists. It 
+        queries the database and if it has any existing email it throws user email already exists
+        *******************************************************************/
 
-	//Enable SMTP debugging
-	// 0 = off (for production use)
-	// 1 = client messages
-	// 2 = client and server messages
-	$mail->SMTPDebug = 0;
+        $rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_email='$usr_email' OR user_name='$user_name'") or die(mysqli_error($link));
+        list($total) = mysqli_fetch_row($rs_duplicate);
 
-	//Ask for HTML-friendly debug output
-	$mail->Debugoutput = 'html';
+        if ($total > 0)
+        {
+        $err[] = "ERROR - The username/email already exists. Please try again with different username and email.";
+        //header("Location: register.php?msg=$err");
+        //exit();
+        goto ErroJP;
 
-	//Set the hostname of the mail server
-	$mail->Host = EMAIL_SMTP_HOST;
+        }
+    /***************************************************************************/
 
-	//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-	$mail->Port = EMAIL_SMTP_PORT;
+        if(empty($err)) {
 
-	//Set the encryption system to use - ssl (deprecated) or tls
-	$mail->SMTPSecure = EMAIL_SMTP_ENCRYPTION;
+        $sql_insert = "INSERT into `users`
+                    (`full_name`,`user_email`,`pwd`,`address`,`tel`,`fax`,`website`,`date`,`users_ip`,`activation_code`,`country`,`user_name`
+                    )
+                VALUES
+                ('$data[full_name]','$usr_email','$sha1pass','$data[address]','$data[tel]','$data[fax]','$data[web]'
+                    ,now(),'$user_ip','$activ_code','$data[country]','$user_name'
+                    )
+                    ";
+                    
+        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        $user_id = mysqli_insert_id($link);  
+        $md5_id = md5($user_id);
+        mysqli_query($link, "update users set md5_id='$md5_id' where id='$user_id'");
+        //	echo "<h3>Thank You</h3> We received your submission.";
 
-	//Whether to use SMTP authentication
-	$mail->SMTPAuth = EMAIL_SMTP_AUTH;
+        if($user_registration)  {
+        $a_link = "
+        *****ACTIVATION LINK*****<br>
+        <a href=http://$host$path/activate.php?user=$md5_id&activ_code=$activ_code>http://$host$path/activate.php?user=$md5_id&activ_code=$activ_code</a>"; 
+        } else {
+        $a_link = 
+        "Your account is *PENDING APPROVAL* and will be soon activated the administrator.
+        ";
+        }
 
-	//Username to use for SMTP authentication - use full email address for gmail
-	$mail->Username = EMAIL_SMTP_USERNAME;
+        /*-----------------------------------------------------------------------*/
+        $subject = "User Registation Activation";
+        /*-----------------------------------------------------------------------*/
+        $message = 
+        "Hello <br>
+        Thank you for registering with us. Here are your login details...<br><br>
 
-	//Password to use for SMTP authentication
-	$mail->Password = EMAIL_SMTP_PASSWORD;
+        User ID: $user_name <br>
+        Email: $usr_email <br> 
+        Passwd: $data[pwd] <br><br>
 
-	//Set who the message is to be sent from
-	$mail->setFrom(EMAIL_VERIFICATION_FROM_EMAIL, EMAIL_VERIFICATION_FROM_NAME);
+        $a_link<br><br>
 
-	//Set who the message is to be sent to
-	$mail->addAddress($toemail);
+        Thank You<br><br>
 
-	//Set the subject line
-	$mail->Subject = $subject;
+        Administrator<br>
+        $host_upper<br><br>
+        ______________________________________________________<br>
+        THIS IS AN AUTOMATED RESPONSE. <br>
+        ***DO NOT RESPOND TO THIS EMAIL****
+        ";
+        /*-----------------------------------------------------------------------*/
+        $toemail = $usr_email;
+        /*-----------------------------------------------------------------------*/
+        
+        require '../libs/PHPMailer-master/PHPMailerAutoload.php';
 
-	//Read an HTML message body from an external file, convert referenced images to embedded,
-	//convert HTML into a basic plain-text alternative body
-	//$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+        //Create a new PHPMailer instance
+        $mail = new PHPMailer;
 
-	$mail->MsgHTML($message);
+        //Tell PHPMailer to use SMTP
+        $mail->isSMTP();
 
-	//Replace the plain text body with one created manually
-	//$mail->AltBody = $message;
+        //Enable SMTP debugging
+        // 0 = off (for production use)
+        // 1 = client messages
+        // 2 = client and server messages
+        $mail->SMTPDebug = 0;
 
-	//Attach an image file
-	//$mail->addAttachment('images/phpmailer_mini.png');
+        //Ask for HTML-friendly debug output
+        $mail->Debugoutput = 'html';
 
-	//send the message, check for errors
-	if (!$mail->send()) {
-	    echo "Mailer Error: " . $mail->ErrorInfo;
-	} else {
-	    echo "Message sent!";
-	}
-       header("Location: thankyou.php");
+        //Set the hostname of the mail server
+        $mail->Host = EMAIL_SMTP_HOST;
+
+        //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+        $mail->Port = EMAIL_SMTP_PORT;
+
+        //Set the encryption system to use - ssl (deprecated) or tls
+        $mail->SMTPSecure = EMAIL_SMTP_ENCRYPTION;
+
+        //Whether to use SMTP authentication
+        $mail->SMTPAuth = EMAIL_SMTP_AUTH;
+
+        //Username to use for SMTP authentication - use full email address for gmail
+        $mail->Username = EMAIL_SMTP_USERNAME;
+
+        //Password to use for SMTP authentication
+        $mail->Password = EMAIL_SMTP_PASSWORD;
+
+        //Set who the message is to be sent from
+        $mail->setFrom(EMAIL_VERIFICATION_FROM_EMAIL, EMAIL_VERIFICATION_FROM_NAME);
+
+        //Set who the message is to be sent to
+        $mail->addAddress($toemail);
+
+        //Set the subject line
+        $mail->Subject = $subject;
+
+        //Read an HTML message body from an external file, convert referenced images to embedded,
+        //convert HTML into a basic plain-text alternative body
+        //$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+
+        $mail->MsgHTML($message);
+
+        //Replace the plain text body with one created manually
+        //$mail->AltBody = $message;
+
+        //Attach an image file
+        //$mail->addAttachment('images/phpmailer_mini.png');
+
+        //send the message, check for errors
+        if (!$mail->send()) {
+            echo "Mailer Error: " . $mail->ErrorInfo;
+        } else {
+            echo "Message sent!";
+        }
+        header("Location: thankyou.php");
+        }
     }
 }
+ErroJP:
+
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <title>KCS::Registration/Signup Form</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery-3.3.1.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery.validate.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
     $(document).ready(function()
     {
@@ -223,16 +248,14 @@ if($_POST['doRegister'] == 'Register')
         $("#regForm").validate();
     });
 </script>
-
-<link rel="stylesheet" href="../public/css/styles.css">
+<link rel="stylesheet" href="<?php echo JSCSS_PATH;?>css/styles.css">
 </head>
-
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
   <tr><td colspan="3">&nbsp;</td></tr>
   <tr><td width="160" valign="top">
         <p>&nbsp;</p>
-        <p>&nbsp; </p>
+        <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -250,17 +273,15 @@ if($_POST['doRegister'] == 'Register')
         Registration is quick and free! Please note that fields marked <span class="required">*</span> 
         are required.</p>
 	 <?php	
-	 if(!empty($err))  {
-	   echo "<div class=\"msg\">";
-	  foreach ($err as $e) {
-	    echo "* $e <br>";
-	    }
-	  echo "</div>";	
-	   }
+	 if(!empty($err))
+	 {
+        echo "<div class=\"msg\">";
+        foreach ($err as $e) {echo "* $e <br>";}
+        echo "</div>";
+     }
 	 ?> 
-	 
 	  <br>
-      <form action="register.php" method="post" name="regForm" id="regForm" >
+      <form action="register.php" method="post" name="regForm" id="regForm"  enctype="multipart/form-data">
         <table width="95%" border="0" cellpadding="3" cellspacing="3" class="forms">
           <tr> 
             <td colspan="2">Your Name<span class="required"><font color="#CC0000">*</font></span><br> 
@@ -504,27 +525,18 @@ if($_POST['doRegister'] == 'Register')
             <td colspan="2">&nbsp;</td>
           </tr>
           <tr> 
-            <td width="22%"><strong>Image Verification </strong></td>
+            <td width="22%"><strong>Verification</strong></td>
             <td width="78%"> 
-              <?php 
-			require_once('recaptchalib.php');
-			
-				echo recaptcha_get_html($publickey);
-			?>
+			<div class="captcha_wrapper"><div class="g-recaptcha" data-sitekey="<?php echo $sitekey;?>"></div></div>
             </td>
           </tr>
         </table>
-        <p align="center">
-          <input name="doRegister" type="submit" id="doRegister" value="Register">
-        </p>
+        <p align="center"><input name="doRegister" type="submit" id="doRegister" value="Register"></p>
       </form>
       </td>
     <td width="196" valign="top">&nbsp;</td>
   </tr>
-  <tr> 
-    <td colspan="3">&nbsp;</td>
-  </tr>
+  <tr><td colspan="3">&nbsp;</td></tr>
 </table>
-
 </body>
 </html>

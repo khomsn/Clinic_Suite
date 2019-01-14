@@ -10,7 +10,7 @@
 	}
 	//lab price finish
 	
-include '../libs/trpricecheck.php';
+include '../../libs/trpricecheck.php';
 
   //Treatment price
   $j = 1;

@@ -1,12 +1,19 @@
-	<link rel="stylesheet" type="text/css" href="../public/css/jquery.autocomplete.css" />
-	<script type="text/javascript" src="../public/js/jquery.autocomplete.js"></script>
-	<script>
-	$(document).ready(function(){
-	$("#lsn").autocomplete("../libs/lslist.php", {
-			selectFirst: true
-		});
-	$("#lsp").autocomplete("../libs/lsplist.php", {
-			selectFirst: true
-		});
-	});
-	</script>
+<script>
+$(document).ready(function(){
+	$("#lbn").autocomplete({
+        source:"../../libs/lbnlist.php",
+        minLength:1,
+        autoFocus:true
+    });
+	$("#lsn").autocomplete({
+        source:"../../libs/lslist.php",
+        minLength:1,
+        autoFocus:true
+    });
+	$("#lsp").autocomplete({
+        source:"../../libs/lsplist.php",
+        minLength:1,
+        autoFocus:true
+    });
+});
+</script>

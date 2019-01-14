@@ -9,6 +9,9 @@
 	{
 	  $outcount[$l] = $outcount[$l]+$_SESSION['rxvol'.$i]*$outvol[$l]/$invol[$l];
 	  $tvol[$l] = $outvol[$l]*$outcount[$l];
+	  // cut per order don't care for volume , just cut one unit outsetpoint
+	  if($outvol[$l]=='-1') $tvol[$l] = $outsetpoint[$l];
+	  
 	  if($tvol[$l]>=$outsetpoint[$l])
 	  {
 	    $ctv = floor($tvol[$l]/$outsetpoint[$l]);
@@ -97,10 +100,10 @@
 				      $alldp = $price*$acvol;
 				      
 				      // accounting system
-				    // assign insertion pattern
+				    // assign insertion pattern 59999999 ตัดยอด
 				    $detail ="เบิกใช้ จำนวน ".$acvol;
 				    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-						  VALUES  (now(),'5999','$dacno','$detail','$alldp','c','0')";
+						  VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
 				    // Now insert Drug order information to "drug_#id" table
 				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 				    
@@ -119,7 +122,7 @@
 				      // assign insertion pattern
 				      $detail ="เบิกใช้ จำนวน ".$acvol;
 				      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-						    VALUES  (now(),'5999','$dacno','$detail','$alldp','c','0')";
+						    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
 				      // Now insert Drug order information to "rawmat_#id" table
 				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 				      //
@@ -152,6 +155,9 @@
 	{
 	  $outcount[$l] = $outcount[$l]+$invol[$l]; //volume is always 1.
 	  $tvol[$l] = $outvol[$l]*$outcount[$l];
+	  // cut per order don't care for volume , just cut one unit outsetpoint
+	  if($outvol[$l]=='-1') $tvol[$l] = $outsetpoint[$l];
+	  
 	  if($tvol[$l]>=$outsetpoint[$l])
 	  {
 	    $ctv = floor($tvol[$l]/$outsetpoint[$l]);
@@ -243,7 +249,7 @@
 				    // assign insertion pattern
 				    $detail ="เบิกใช้ จำนวน ".$acvol;
 				    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-						  VALUES  (now(),'5999','$dacno','$detail','$alldp','c','0')";
+						  VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
 				    // Now insert Drug order information to "drug_#id" table
 				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 				    
@@ -262,7 +268,7 @@
 				      // assign insertion pattern
 				      $detail ="เบิกใช้ จำนวน ".$acvol;
 				      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-						    VALUES  (now(),'5999','$dacno','$detail','$alldp','c','0')";
+						    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
 				      // Now insert Drug order information to "rawmat_#id" table
 				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 				      //

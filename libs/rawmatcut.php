@@ -27,6 +27,6 @@ for($i=1;$i<=$j;$i++)
 	$_SESSION['idrx'.$i] =	$_SESSION['idtr'.$i];
 	$_SESSION['rxvol'.$i] =	$_SESSION['trvol'.$i];
   }
-  include '../libs/autorawmatcut.php';
+  include '../../libs/autorawmatcut.php';
 }
 ?>

@@ -1,15 +1,28 @@
 <?php
+//create database for store opd record limit for  1000 table for ease of maintainance
+if(($_SESSION['Patient_id']%1000)==1)
+{
+    $dbopd = "clinic_opd".($_SESSION['Patient_id']+999);
+    
+    $sql_create = "CREATE DATABASE IF NOT EXISTS `$dbopd`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+    mysqli_query($link, $sql_create) or die("Create Failed:" . mysqli_error($link));
+}
+
+$Patient_id = $_SESSION['Patient_id'];
+
+include 'opdxconnection.php';
+
 if(!empty($_SESSION['Patient_id']))
 {
 $tabletocreate = "pt_".$_SESSION['Patient_id'];
 $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				`id` SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 				`date` DATETIME NOT NULL ,
-				 `ccp` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `dofhis` VARCHAR( 1000 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `phex` VARCHAR( 1000 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `ddx` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `inform` VARCHAR( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `ccp` VARCHAR( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `dofhis`  TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `phex`  TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `ddx` VARCHAR( 1000 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `inform`  TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `idtr1` SMALLINT NOT NULL DEFAULT '0' ,
 				 `tr1` VARCHAR( 30 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `trv1` SMALLINT NOT NULL DEFAULT '0' ,
@@ -138,6 +151,6 @@ $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				 `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL
 				) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
 // Now insert Patient to "patient_id" table
-mysqli_query($linkopd, $sql_insert) or die("Create Failed:" . mysqli_error($linkopd));
+mysqli_query($linkopdx, $sql_insert) or die("Create Failed:" . mysqli_error($linkopdx));
 }
 ?>

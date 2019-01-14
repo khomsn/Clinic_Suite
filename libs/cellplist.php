@@ -1,19 +1,21 @@
 <?php
-include '../login/dbc.php';
-	$q=$_GET['q'];
-	$my_data = mysqli_real_escape_string($linkopd, $q);
-	$sql="SELECT mobile FROM patient_id WHERE mobile LIKE '%$my_data%' ORDER BY mobile";
+include '../config/dbc.php';
+
+//	$q=$_GET['q'];
+// get the search term
+    $q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
+	$my_data=mysqli_real_escape_string($link, $q);
+
+// write your query to search for data
+	$sql="SELECT DISTINCT mobile FROM patient_id WHERE mobile LIKE '$my_data%' ORDER BY mobile LIMIT 0,10";
 	$result = mysqli_query($linkopd,$sql) or die(mysqli_error());
 	
 	if($result)
 	{
 		while($row=mysqli_fetch_array($result))
 		{
-		    if($oldj != $row['mobile'])
-		    {
-			echo $row['mobile']."\n";
-			$oldj = $row['mobile'];
-		     }
+			$data[] = $row['mobile'];
 		}
+		echo json_encode($data);
 	}
 ?>

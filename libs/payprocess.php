@@ -5,7 +5,7 @@
 	if(mysqli_num_rows($result1) == 0) 
 	{
 	  unset($_SESSION['patcash']);
-	  header("Location: ptodrug.php ");
+	  header("Location: ../opd/pt_to_drug.php ");
 	}
 
 //get drug from temp to pt_table
@@ -45,7 +45,7 @@
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
 		$rxb = "rxby".$i;
-		mysqli_query($linkopd, "UPDATE $pttable SET
+		mysqli_query($linkopdx, "UPDATE $pttable SET
 			`$idrx` = '$idrxd[$i]',
 			`$rx` = '$rxd[$i]',
 			`$rxg` = '$rgd[$i]',
@@ -53,14 +53,14 @@
 			`$vl` = '$vld[$i]',
 			`$rxb` = '$rxbd[$i]'
 			WHERE id = '$rid'
-			") or die(mysqli_error($linkopd));
+			") or die(mysqli_error($linkopdx));
 		//_SESSION เพือตัด วัตถุดิบ
 		$_SESSION['idrx'.$i]=$idrxd[$i];
 		$_SESSION['rxvol'.$i]=$vld[$i];
 	}
 	
 	//update Staff ที่จ่ายยา
-	mysqli_query($linkopd, "UPDATE $pttable SET `disprxby` = '$_SESSION[staff_id]' WHERE id = '$rid' ") or die(mysqli_error($linkopd));
+	mysqli_query($linkopdx, "UPDATE $pttable SET `disprxby` = '$_SESSION[staff_id]' WHERE id = '$rid' ") or die(mysqli_error($linkopdx));
 	//get Treatment from temp to pt_table
 	$j = 1;	
 	$dtemp = mysqli_query($link, "select * from $tmp ");
@@ -117,7 +117,7 @@
 		$tr1o4v ="tr".$i."o4v";
 		$trby ="trby".$i;
 		
-			mysqli_query($linkopd, "UPDATE $pttable SET
+			mysqli_query($linkopdx, "UPDATE $pttable SET
 				`$idtr` = '$idtrd[$i]',
 				`$tr` = '$trd[$i]',
 				`$trv` = '$trvd[$i]',
@@ -131,7 +131,7 @@
 				`$tr1o4v` = '$tr1o4vd[$i]',
 				`$trby` = '$trbyd[$i]'
 			WHERE id = '$rid'
-				") or die(mysqli_error($linkopd));
+				") or die(mysqli_error($linkopdx));
 		//_SESSION เพือตัด วัตถุดิบ
 		$_SESSION['idtr'.$i]=$idtrd[$i];
 		$_SESSION['trvol'.$i]=$trvd[$i];
@@ -303,8 +303,8 @@
 	mysqli_query($link, "UPDATE drug_id SET `volume` = '$volnew', `volreserve` = '$rsvolnew' WHERE id = $drgid ")  or die(mysqli_error($link));
 
 	}
-	// account system
-	$ctmacno = 1000000 + $ctmid;
+	// account system 11000000-19999999 ลูกหนี้ คนไข้ค้างชำระ
+	$ctmacno = 11000000 + $ctmid;
 	$buytoday = $_SESSION['buyprice'];
 	$olddeb = $_SESSION['olddeb'];
 //	$_SESSION['price'];
@@ -342,20 +342,20 @@
 		mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 	}	
 	
-	//daily_account on debtor;
+	//daily_account on debtor; 10000001 เงินสด
 	if($olddeb !=0)
 	{
 		if($paytoday <= $_SESSION['olddeb'])
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
-											VALUES (now(), '1001', '$ctmacno', 'รับชำระหนี้', '$paytoday', 'd', 's','$_SESSION[user_id]' );";
+											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$paytoday', 'd', 's','$_SESSION[user_id]' );";
 			// Now insert Patient to "patient_id" table
 			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 		}
 		elseif($paytoday >$olddeb)
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
-											VALUES (now(), '1001', '$ctmacno', 'รับชำระหนี้', '$olddeb', 'd','s','$_SESSION[user_id]' );";
+											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$olddeb', 'd','s','$_SESSION[user_id]' );";
 			// Now insert Patient to "patient_id" table
 			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
 		}	
@@ -380,11 +380,11 @@
 	//next ตัดยอด วัตถุดิบ ถ้ามี
 	// ส่วนของขา
 	$_SESSION['TM']=0;
-	include '../libs/rawmatcut.php';
+	include '../../libs/rawmatcut.php';
 	//ส่วน ของ$_SESSION['idrx'.$i] Treatment
 	{
 	$_SESSION['TM']=1;
-	include '../libs/rawmatcut.php';
+	include '../../libs/rawmatcut.php';
 	}
 	//unset _SESSION
 	for($i=1;$i<=4;$i++)

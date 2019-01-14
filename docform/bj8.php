@@ -1,23 +1,28 @@
 <?php 
-include '../login/dbc.php';
+include '../config/dbc.php';
 page_protect();
 date_default_timezone_set('Asia/Bangkok');
-$stday = mysqli_fetch_array(mysqli_query($link, "SELECT date from drug_$_SESSION[drugid] where id=1"));
+
+$drugid = $_SESSION['drugid']; 
+$drugtable = "drug_".$drugid;
+$stday = mysqli_fetch_array(mysqli_query($link, "SELECT date from $drugtable where id=1"));
 
 $fulluri = $_SERVER['REQUEST_URI'];
-$trimString = "/clinic/docform/";
-
+/*
+$trimString = "/clinic/main/account/";
 $actsite = trim($fulluri, $trimString);
+*/
+$actsite = substr($fulluri, 9);
 
 $param = mysqli_query($link, "SELECT * FROM parameter WHERE ID ='1'");
-		while($row = mysqli_fetch_array($param))
-		{
-		$clinic_name = $row['name'];
-		$cliniclcid = $row['cliniclcid'];
-		$name_lc = $row['name_lc'];
-		$cl_addr = $row['address'];
-		$cl_lcid = $row['lcid'];
-		}
+while($row = mysqli_fetch_array($param))
+{
+$clinic_name = $row['name'];
+$cliniclcid = $row['cliniclcid'];
+$name_lc = $row['name_lc'];
+$cl_addr = $row['address'];
+$cl_lcid = $row['lcid'];
+}
 
 $dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE  id = '$_SESSION[drugid]' ");
 while($row = mysqli_fetch_array($dtype))
@@ -26,8 +31,6 @@ while($row = mysqli_fetch_array($dtype))
 	$dgname = $row['dgname'];//
 	$size = $row['size'];//
 }
-
-$drugid = $_SESSION['drugid']; 
 
 $line = 12; //number of table row per print out page
 $rotab=1; //initial table row
@@ -135,35 +138,34 @@ while($row2 = mysqli_fetch_array($dtype2))
 
  //get data
 $dtype = mysqli_query($link, "SELECT * FROM drug_$drugid ORDER BY `id` ASC ");
-$nofrow = 1;
 while($row = mysqli_fetch_array($dtype))
 {
+    $rowno = $row['id'];
     $rdate = new DateTime($row['date']);
-    $sdp[$nofrow] = $rdate->format("d");//
-    $smp[$nofrow] = $rdate->format("m");//
-    $syp[$nofrow] = $rdate->format("Y");//
-    $bydate[$nofrow] = $rdate->format("d-m-Y");
+    $sdp[$rowno] = $rdate->format("d");//
+    $smp[$rowno] = $rdate->format("m");//
+    $syp[$rowno] = $rdate->format("Y");//
+    $bydate[$rowno] = $rdate->format("d-m-Y");
     //order previous month
     if($rdate<$pvdate)
     {
         $pvsvolin = $pvsvolin + $row['volume'];
-        $_SESSION['mklot']=$row['mklot'];//_SESSION  lot ยกไป
     }
-    $spold[$nofrow] = $row['supplier'];//
-//    $mknold[$nofrow] = $row['mkname'];
-//    $mkpold[$nofrow]= $row['mkplace'];
-    $mklold[$nofrow] = $row['mklot'];//
-//    $mkanold[$nofrow] =$row['mkanl'];
-    $mkunold[$nofrow] = $row['mkunit'];//
-    $volp[$nofrow] = $row['volume'];//
+    $supplier[$rowno] = $row['supplier'];//
+    $mkname[$rowno] = $row['mkname'];
+    $mkplace[$rowno]= $row['mkplace'];
+    $mklot[$rowno] = $row['mklot'];//
+    $mkanl[$rowno] =$row['mkanl'];
+    $mkunit[$rowno] = $row['mkunit'];//
+    $volume[$rowno] = $row['volume'];//
+    $customer[$rowno] = $row['customer'];//
     //
-    $bmax = $nofrow; //
-    $nofrow =$nofrow +1;
+    $bmax = $rowno; //
 }
 // ยอดยกมา   
 $oldvo = $pvsvolin - $pvprst;
-
 // จบ ยอดยกมา
+
 $_SESSION['ntimeprst']=$ntimeprst;
 $_SESSION['mpage'] = ceil(($_SESSION['ntimeprst']+1)/$line); //max page per month (หน้าแรกมียอดยกมาด้วย)
 
@@ -188,7 +190,7 @@ $n=1; //initial count item for prescription
 <link rel="schema.DCTYPE" href="http://purl.org/dc/dcmitype/" hreflang="en"/>
 <link rel="schema.DCAM" href="http://purl.org/dc/dcam/" hreflang="en"/>
 <base href="."/>
-<link href="../public/css/bj8.css" rel="stylesheet" type="text/css">
+<link href="../jscss/css/bj8.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 function Clickheretoprint()
 { 
@@ -199,7 +201,7 @@ function Clickheretoprint()
   var docprint=window.open("","",disp_setting); 
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
-   docprint.document.write('<link href="../public/css/bj8.css" rel="stylesheet" type="text/css">'); 
+   docprint.document.write('<link href="../jscss/css/bj8.css" rel="stylesheet" type="text/css">'); 
    docprint.document.write('</head><body onLoad="self.print()"><center>');          
    docprint.document.write(content_vlue);          
    docprint.document.write('</center></body></html>'); 
@@ -214,18 +216,18 @@ function Clickheretoprint()
 
 if ($actsite == "bj8.php")
 {
-                if($ddate>$stday[0])
-                {
-                   echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
-                   $startrec=0;
-                }
-                else
-                {
-                echo "<input type='button' value='*||*'>&nbsp;";
-                $startrec=1;
-                }
+    if($ddate>$stday[0])
+    {
+        echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+        $startrec=0;
+    }
+    else
+    {
+    echo "<input type='button' value='*||*'>&nbsp;";
+    $startrec=1;
+    }
                 
-                echo "<input type='submit' name='todom' value = '@'>&nbsp;";
+    echo "<input type='submit' name='todom' value = '@'>&nbsp;";
     if ($sm < date("m"))
     {
         if ($sy <= date("Y"))
@@ -334,7 +336,7 @@ echo $stday[0];
 					<td rowspan="2" style="text-align:left;width:0.952in; " class="ce71"><p>เลขที่หรืออักษร<br>ของ<br>ครั้งที่ผลิต</p></td>
 					<td rowspan="2" style="text-align:left;width:0.6335in; " class="ce3"><p>ได้มาจาก</p></td>
 					<td colspan="3" style="text-align:left;width:1.2016in; " class="ce3"><p>จ่ายไปให้</p></td>
-					<td colspan="4" style="text-align:left;width:0.7535in; " class="ce3"><p>ปริมาณวัตถุออกฤทธิ์ (<?php echo $mkunold[1]; ?>)</p></td>
+					<td colspan="4" style="text-align:left;width:0.7535in; " class="ce3"><p>ปริมาณวัตถุออกฤทธิ์ (<?php echo $mkunit[1]; ?>)</p></td>
 					<td rowspan="2" style="text-align:left;width:0.6882in; " class="ce71"><p>ผู้รับอนุญาต<br>ให้มีไว้ใน<br>ครอบครอง</p></td>
 					<td style="text-align:left;width:0.01in; " class="Default"> </td>
 				</tr>
@@ -356,7 +358,36 @@ if($rotab<= $ntimeprst)
 		{
 			if($oldvo != 0)//แสดงยอดยกมา
 			{
-			?>	
+               for($j=$bmax; $j>=1; $j=$j-1)
+                {
+                    $date1=date_create($bydate[$j]);
+                    
+                            $ckdate = new DateTime("1".'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
+                            $ckdate = $ckdate->format("d-m-Y");
+                            $date2 =date_create($ckdate);
+                            $diff=date_diff($date1,$date2);
+                            $ddate = $diff->format("%R%a");
+                            if($ddate>=0)                          
+                            {
+                             $mknameold = $mkname[$j];
+                             if(($oldvo - $volume[$j])>0)
+                             {
+                                $mklotold = $mklot[$j - 1]. " / " .$mklot[$j];
+                                $mkanlold = $mkanl[$j - 1]. " / " .$mkanl[$j];
+                             }
+                             else
+                             {
+                                $mklotold = $mklot[$j];
+                                $mkanlold = $mkanl[$j];
+                             }
+                             $supplierold = $supplier[$j];
+                             $mkplaceold = $mkplace[$j];
+                             $mkunitold = $mkunit[$j];
+                                goto jpointnext;
+                            }
+                }
+                jpointnext:
+			?>
 				<tr class="ro3">
 					<td style="text-align:left;width:0.6445in; " class="ce5"><?php 
 					echo "01";
@@ -402,15 +433,15 @@ if($rotab<= $ntimeprst)
 										 break;
 									}?>. <?php $s = $bsy; if($s>=2000) $s = $s - 2500; echo $s;?></td>
 					<td style="text-align:left;width:1.0591in; " class="ce5"><?php echo $dgname.' '.$size.' ('.$dname.')' ; ?> </td>
-					<td style="text-align:left;width:0.852in; " class="ce5"><?php echo $_SESSION['mklot']; ?></td>
-					<td style="text-align:left;width:0.6335in; " class="ce5"> <?php echo $_SESSION['oldsp']; ?> </td>
+					<td style="text-align:left;width:0.852in; " class="ce5"><?php echo $mklotold; ?></td>
+					<td style="text-align:left;width:0.6335in; " class="ce5"> <?php echo $supplierold; ?> </td>
 					<td style="text-align:left;width:1.2016in; " class="ce5"> </td>
 					<td style="text-align:left;width:0.3272in; " class="ce5"> </td>
 					<td style="text-align:left;width:1.6929in; " class="ce5"> </td>
 					<td style="text-align:left;width:0.7535in; " class="ce5"><?php echo $oldvo; ?> </td>
 					<td style="text-align:left;width:0.7535in; " class="ce5"></td>
 					<td style="text-align:left;width:0.7535in; " class="ce5"></td>
-					<td style="text-align:left;width:0.7535in; " class="ce5"> <?php echo $alldrugleft = $oldvo; ?>  </td>
+					<td style="text-align:left;width:0.7535in; " class="ce5"> <?php echo $alldrugleft = $oldvo;?>  </td>
 					<td style="text-align:left;width:0.6882in; " class="ce9"> </td>
 					<td style="text-align:left;width:0.01in; " class="Default"></td>
 				</tr>
@@ -474,15 +505,15 @@ if($rotab<= $ntimeprst)
                                             break;
                                     }?>. <?php $s = $bsy; if($s>=2000) $s = $s - 2500; echo $s;?></td>
                     <td style="text-align:left;width:1.0591in; " class="ce5"><?php echo $dgname.' '.$size.' ('.$dname.')' ; ?> </td>
-                    <td style="text-align:left;width:0.852in; " class="ce5"><?php echo $mklold[$j];?></td>
-                    <td style="text-align:left;width:0.6335in; " class="ce5"><?php echo $_SESSION['oldsp'] = $spold[$j]; ?> </td>
+                    <td style="text-align:left;width:0.852in; " class="ce5"><?php echo $mklot[$j];?></td>
+                    <td style="text-align:left;width:0.6335in; " class="ce5"><?php echo $supplier[$j]; ?> </td>
                     <td style="text-align:left;width:1.2016in; " class="ce5"> </td>
                     <td style="text-align:left;width:0.3272in; " class="ce5"> </td>
                     <td style="text-align:left;width:1.6929in; " class="ce5"> </td>
                     <td style="text-align:left;width:0.7535in; " class="ce5"> </td>
-                    <td style="text-align:left;width:0.7535in; " class="ce5"><?php echo $volp[$j];?></td>
+                    <td style="text-align:left;width:0.7535in; " class="ce5"><?php echo $volume[$j];?></td>
                     <td style="text-align:left;width:0.7535in; " class="ce5"></td>
-                    <td style="text-align:left;width:0.7535in; " class="ce5"><?php echo $alldrugleft = $alldrugleft + $volp[$j];?> </td>
+                    <td style="text-align:left;width:0.7535in; " class="ce5"><?php echo $alldrugleft = $alldrugleft + $volume[$j];?> </td>
                     <td style="text-align:left;width:0.6882in; " class="ce9"></td>
                     <td style="text-align:left;width:0.01in; " class="Default"><?php $_SESSION['BN'.$j] = 1; $n=$n+1;?></td>
                 </tr>
@@ -536,8 +567,40 @@ if($rotab<= $ntimeprst)
 										 break;
 									}?>. <?php $s = $bsy; if($s>=2000) $s = $s - 2500; echo $s;?></td>
 					<td style="text-align:left;width:1.0591in; " class="ce5"><?php echo $dgname.' '.$size.' ('.$dname.')' ; ?> </td>
-					<td style="text-align:left;width:0.852in; " class="ce5"><?php //echo $mklold[$i]; ?></td>
-					<td style="text-align:left;width:0.6335in; " class="ce5"><?php //echo $spold[$i]; ?> </td>
+					<td style="text-align:left;width:0.852in; " class="ce5"><?php
+                           // $drugleft
+                            
+                            
+                            //$prescript previously
+
+                            $pvday = new DateTime($stcd[$i].'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
+                            $pvlprst=0;
+
+                            $pvoll = mysqli_query($link, "SELECT * FROM tr_drug_$drugid ORDER BY `date` ASC ");
+                            while($mmm = mysqli_fetch_array($pvoll))
+                            {
+                                //รวมจ่าย ในเดือนก่อนๆ
+                                $trd = new DateTime($mmm['date']);
+                                if($trd < $pvday)
+                                {
+                                    $pvlprst = $pvlprst + $mmm['volume'];
+                                }
+                            }
+
+                            $allvol=0;
+                            $dvol = mysqli_query($link, "SELECT * FROM $drugtable ORDER BY `id` ASC ");
+                            while($vol = mysqli_fetch_array($dvol))
+                            {
+                                $allvol = $allvol + $vol['volume'];//
+                                if($allvol >= $pvlprst)
+                                {
+                                    echo $vol['mklot'];
+                                    goto Gotit;
+                                }
+                            }
+                            Gotit:
+                            ?></td>
+					<td style="text-align:left;width:0.6335in; " class="ce5"><?php //echo $supplier[$i]; ?> </td>
 					<td style="text-align:left;width:1.2016in; " class="ce5"><?php echo $ptname[$i]; ?> </td>
 					<td style="text-align:left;width:0.3272in; " class="ce5"><?php echo $ptage[$i]; ?> </td>
 					<td style="text-align:left;width:1.6929in; " class="ce5"><?php echo $ptaddre[$i]; ?> </td>

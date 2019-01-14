@@ -1,33 +1,35 @@
 <?php 
-include '../login/dbc.php';
+include '../config/dbc.php';
 page_protect();
 date_default_timezone_set('Asia/Bangkok');
-$stday = mysqli_fetch_array(mysqli_query($link, "SELECT date from drug_$_SESSION[drugid] where id=1"));
 
+$drugid = $_SESSION['drugid']; 
+$drugtable = "drug_".$drugid;
+$stday = mysqli_fetch_array(mysqli_query($link, "SELECT date from $drugtable where id=1"));
 $fulluri = $_SERVER['REQUEST_URI'];
-$trimString = "/clinic/docform/";
-
+/*
+$trimString = "/clinic/main/account/";
 $actsite = trim($fulluri, $trimString);
+*/
+$actsite = substr($fulluri, 9);
 
 $param = mysqli_query($link, "SELECT * FROM parameter WHERE ID ='1'");
-		while($row = mysqli_fetch_array($param))
-		{
-		$clinic_name = $row['name'];
-		$cliniclcid = $row['cliniclcid'];
-		$name_lc = $row['name_lc'];
-		$cl_addr = $row['address'];
-		$cl_lcid = $row['lcid'];
-		}
+while($row = mysqli_fetch_array($param))
+{
+    $clinic_name = $row['name'];
+    $cliniclcid = $row['cliniclcid'];
+    $name_lc = $row['name_lc'];
+    $cl_addr = $row['address'];
+    $cl_lcid = $row['lcid'];
+}
 
-$dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE  id = '$_SESSION[drugid]' ");
+$dtype = mysqli_query($link, "SELECT * FROM drug_id WHERE  id = '$drugid' ");
 while($row = mysqli_fetch_array($dtype))
 {
 	$dname = $row['dname'];//
 	$dgname = $row['dgname'];//
 	$size = $row['size'];//
 }
-
-$drugid = $_SESSION['drugid']; 
 
 $line = 12; //number of table row per print out page
 $rotab=1; //initial table row
@@ -60,8 +62,8 @@ if($_POST['nopage'] == 'Next')
     if($_SESSION['page']>1)
     {
         $rotab=$_SESSION['i']+1;
-    }	
-	
+    }
+
 }
 
 //$prescript this month 
@@ -76,9 +78,10 @@ while($row2 = mysqli_fetch_array($dtype2))
     if($try == $sy AND $trmon == $sm)
     { 
     //จ่าย ในเดือนนี้
+        $rowid = $row2['id'];
         $presth = $presth + $row2['volume'];
         $pvdate = new DateTime('1'.'-'.$_SESSION['sm'].'-'.$_SESSION['sy']);
-        $pt_id[$norow] = $row2['pt_id'];
+        $pt_id[$rowid] = $row2['pt_id'];
     }
 }
 //$prescript previous month 
@@ -95,29 +98,29 @@ while($row2 = mysqli_fetch_array($dtype2))
 
  //get data
 $dtype = mysqli_query($link, "SELECT * FROM drug_$drugid ORDER BY `id` ASC ");
-$nofrow = 1;
 while($row = mysqli_fetch_array($dtype))
 {
+    $rowno = $row['id'];
     $rdate = new DateTime($row['date']);
-    $sdp[$nofrow] = $rdate->format("d");//
-    $smp[$nofrow] = $rdate->format("m");//
-    $syp[$nofrow] = $rdate->format("Y");//
-    $bydate[$nofrow] = $rdate->format("d-m-Y");
+    $sdp[$rowno] = $rdate->format("d");//
+    $smp[$rowno] = $rdate->format("m");//
+    $syp[$rowno] = $rdate->format("Y");//
+    $bydate[$rowno] = $rdate->format("d-m-Y");
     //order previous month
     if($rdate<$pvdate)
     {
         $pvsvolin = $pvsvolin + $row['volume'];
     }
-    $supplier[$nofrow] = $row['supplier'];//
-    $mkname[$nofrow] = $row['mkname'];
-    $mkplace[$nofrow]= $row['mkplace'];
-    $mklot[$nofrow] = $row['mklot'];//
-    $mkanl[$nofrow] =$row['mkanl'];
-    $mkunit[$nofrow] = $row['mkunit'];//
-    $volume[$nofrow] = $row['volume'];//
+    $supplier[$rowno] = $row['supplier'];//
+    $mkname[$rowno] = $row['mkname'];
+    $mkplace[$rowno]= $row['mkplace'];
+    $mklot[$rowno] = $row['mklot'];//
+    $mkanl[$rowno] =$row['mkanl'];
+    $mkunit[$rowno] = $row['mkunit'];//
+    $volume[$rowno] = $row['volume'];//
+    $customer[$rowno] = $row['customer'];//
     //
-    $bmax = $nofrow; //
-    $nofrow =$nofrow +1;
+    $bmax = $rowno; //
 }
 // ยอดยกมา   
 $oldvo = $pvsvolin - $pvprst;
@@ -128,7 +131,6 @@ $_SESSION['mpage'] = ceil(($_SESSION['ntimeprst']+1)/$line); //max page per mont
 $n=1; //initial count item for prescription
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <!--This file was converted to xhtml by OpenOffice.org - see http://xml.openoffice.org/odf2xhtml for more info.-->
@@ -148,7 +150,7 @@ $n=1; //initial count item for prescription
 <link rel="schema.DCTYPE" href="http://purl.org/dc/dcmitype/" hreflang="en"/>
 <link rel="schema.DCAM" href="http://purl.org/dc/dcam/" hreflang="en"/>
 <base href="."/>
-<link href="../public/css/bj9.css" rel="stylesheet" type="text/css">
+<link href="../jscss/css/bj9.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 function Clickheretoprint()
 { 
@@ -159,7 +161,7 @@ function Clickheretoprint()
   var docprint=window.open("","",disp_setting); 
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
-   docprint.document.write('<link href="../public/css/bj9.css" rel="stylesheet" type="text/css">'); 
+   docprint.document.write('<link href="../jscss/css/bj9.css" rel="stylesheet" type="text/css">'); 
    docprint.document.write('</head><body onLoad="self.print()"><center>');          
    docprint.document.write(content_vlue);          
    docprint.document.write('</center></body></html>'); 
@@ -173,18 +175,18 @@ function Clickheretoprint()
 <?php
 if ($actsite == "bj9.php")
 {
-                if($ddate>$stday[0])
-                {
-                   echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
-                   $startrec=0;
-                }
-                else
-                {
-                echo "<input type='button' value='*||*'>&nbsp;";
-                $startrec=1;
-                }
-                
-                echo "<input type='submit' name='todom' value = '@'>&nbsp;";
+    if($ddate>$stday[0])
+    {
+        echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+        $startrec=0;
+    }
+    else
+    {
+    echo "<input type='button' value='*||*'>&nbsp;";
+    $startrec=1;
+    }
+    
+    echo "<input type='submit' name='todom' value = '@'>&nbsp;";
     if ($sm < date("m"))
     {
         if ($sy <= date("Y"))
@@ -326,8 +328,16 @@ if ($actsite == "bj9.php")
                             if($ddate>=0)                          
                             {
                              $mknameold = $mkname[$j];
-                             $mklotold = $mklot[$j];
-                             $mkanlold = $mkanl[$j];
+                             if(($oldvo - $volume[$j])>0)
+                             {
+                                $mklotold = $mklot[$j - 1]. " / " .$mklot[$j];
+                                $mkanlold = $mkanl[$j - 1]. " / " .$mkanl[$j];
+                             }
+                             else
+                             {
+                                $mklotold = $mklot[$j];
+                                $mkanlold = $mkanl[$j];
+                             }
                              $supplierold = $supplier[$j];
                              $mkplaceold = $mkplace[$j];
                              $mkunitold = $mkunit[$j];

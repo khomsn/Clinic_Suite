@@ -1,6 +1,6 @@
 <?php
 
-include 'dbc.php';
+include '../config/dbc.php';
 
 foreach($_GET as $key => $value) {
 	$get[$key] = filter($value);

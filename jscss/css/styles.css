@@ -1,0 +1,267 @@
+.forms {
+background-color: #E4F8FA;
+font: normal 12px arial,verdana;
+padding: 3px;
+
+border: 1px solid #CAE4FF;
+}
+.myaccount {
+background-color: #E4F8FA;
+font: normal 12px arial,verdana;
+padding: 2px 5px;
+border: 1px solid #CAE4FF;
+
+}
+
+.myaccount2 {
+background-color: #E4F8FA;
+font: normal 12px arial,verdana;
+padding: 2px 5px;
+border: 1px solid #000088;
+}
+
+.mypage1 {
+background-color: #FF99FF;
+font: normal 12px arial,verdana;
+padding: 2px 5px;
+border: 1px solid #CAE4FF;
+
+}
+
+.smalltextbox {
+background-color: #99FF99;
+font: normal 12px arial,verdana;
+padding: 2px 5px;
+border: 1px solid #CAE4FF;
+width: 325px;
+}
+
+.bgca5ffd5 {
+    background-color: #a5ffd5;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+    border: 3px solid #73AD21;
+}
+
+input { 
+background-color: #DEE7EF; 
+font-family: MS Sans Serif, Krungthep, Thonburi, Verdana, Helvetica, Arial; 
+font-size: 9pt; 
+color: #000000; 
+
+}
+
+textarea {
+background-color: #DEE7EF;
+font-family: MS Sans Serif, Krungthep, Thonburi, Verdana, Helvetica, Arial;
+font-size: 9pt;
+color: #000000;
+
+}
+
+.main {
+font: normal 12px arial,verdana;
+padding: 2px;
+margin: 2px;
+
+ }
+ 
+ .titlehdr {
+ font: normal 22px arial, verdana;
+ color: #c00;
+ border-bottom: 1px solid #c00;
+ 
+ 
+ }
+ 
+ .titlehdr2 {
+ font: normal 18px arial, verdana;
+ color: #5B41FC;
+ border-bottom: 1px solid #5B41FC;
+ 
+ 
+ }
+ 
+ .center {
+    text-align: center;
+    border: 3px solid green;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+ 
+.msg {
+padding: 5px;
+width: 600px;
+margin: 2px;
+color: #c00;
+border: 1px solid #c00;
+background-color: #FEF1ED;
+font: bold 13px  verdana;
+} 
+ 
+.error {
+font: normal 11px arial, verdana;
+color: #c00;
+border: 1px solid #c00;
+padding: 2px;
+margin: 5px;
+float: left;
+background-color: #FEF1ED;
+}
+ 
+ .example {
+font: normal 10px arial;
+color: red;
+}
+
+.approved {
+font: normal 10px arial;
+color: green;
+}
+
+.loginform {
+font: 16px normal arial;
+font: normal 12px arial,verdana;
+padding: 3px;
+}
+
+.loginform #txtbox {
+font: bold 16px arial;
+color: #f00;
+}
+
+.hdrname {
+ font: italic 28px arial, verdana;
+ color: #0404B4;
+ border-bottom: 1px solid #0404B4;
+ 
+ 
+ }
+.style1 {
+color: #0033FF
+
+}
+.style3 {
+ font-size: 12px;
+ font-family: Arial, Helvetica, sans-serif;
+}
+
+div.pos_r_fix {
+    position: fixed;
+	float: right;
+	right: 10px;
+	top: 15px;
+}
+
+div.pos_fixed {
+    position: fixed;
+    top: 10px;
+    right: 5px;
+    color: red;
+}
+
+div.pos_r_fbox {
+	float: right;
+	position: fixed;
+	width: 600px;
+	right: 30px;
+	top: 120px;
+	background-color: #F5F5DC;
+	font: normal 12px arial,verdana;
+	padding: 2px 5px;
+	border: 1px solid #CAE4FF;
+}
+
+div.pos_r_ls {
+	float: right;
+	position: fixed;
+	width: 90%;
+	right: 30px;
+	top: 30px;
+	background-color: #F5F5DC;
+	font: normal 12px arial,verdana;
+	padding: 2px 5px;
+	border: 1px solid #CAE4FF;
+        opacity: 0.85;
+}
+
+div.pos_r_tr {
+	float: right;
+	position: fixed;
+	width: 600px;
+	right: 30px;
+	top: 30px;
+	background-color: #F5F5DC;
+	font: normal 12px arial,verdana;
+	padding: 2px 5px;
+	border: 1px solid #CAE4FF;
+        opacity: 0.85;
+}
+
+div.pos_r_tr_big {
+	float: right;
+	position: fixed;
+	width: auto;
+	right: 30px;
+	top: 30px;
+	background-color: #F5F5DC;
+	font: normal 26px arial,verdana;
+	padding: 2px 5px;
+	border: 1px solid #CAE4FF;
+    opacity: 0.85;
+    z-index:999;
+}
+
+div.pos_l_fix {
+	float: left;
+	position: fixed;
+	left: 10px;
+	top: 15px;
+}
+
+div.myDIV {
+    position:relative;
+    width:100px;
+    background:red;
+    left:10px;
+    top:100px;
+}
+
+div.pos_r_fix_mypage1 {
+    position: fixed;
+	float: right;
+	right: 10px;
+	top: 15px;
+	background-color: #FF99FF;
+	font: normal 12px arial,verdana;
+	padding: 2px 5px;
+	border: 1px solid #CAE4FF;
+}
+
+.avatar {
+    float: right;
+    width: 44px;
+    height: 44px;
+}
+
+.typenumber {
+    width: 50px;
+}
+
+.addstr {
+    width: 80%;
+}
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+
+div#content iframe {width: 100%} 

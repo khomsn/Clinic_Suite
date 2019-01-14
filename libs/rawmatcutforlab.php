@@ -15,5 +15,5 @@ while($row=mysqli_fetch_array($dtemp))
   $outcount[$k] = $row['outcount'];
 }
 
-  include '../libs/autorawmatcut.php';
+  include '../../libs/autorawmatcut.php';
 ?>

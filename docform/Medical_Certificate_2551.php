@@ -1,8 +1,12 @@
 <?php 
 
-include '../login/dbc.php';
+include '../config/dbc.php';
 page_protect();
 $id = $_SESSION['patdesk'];
+
+$Patient_id = $id;
+include '../libs/opdxconnection.php';
+
 $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 while ($ptinfo = mysqli_fetch_array($ptin))
 {
@@ -11,6 +15,7 @@ while ($ptinfo = mysqli_fetch_array($ptin))
   $lname = $ptinfo['lname'];
   $ctz_id = $ptinfo['ctz_id'];
   $height = $ptinfo['height'];
+  $addstr = $ptinfo['addstr'];
   $address1 = $ptinfo['address1'];
   $address2 = $ptinfo['address2'];
   $address3 = $ptinfo['address3'];
@@ -61,32 +66,96 @@ elseif($_POST['phyex']=="ผิดปกติ")
 {
 $_SESSION['phyex'] = 1;
 }
+if($_POST['disable']=="ปกติ")
+{
+$_SESSION['disable'] = 0;
+}
+elseif($_POST['disable']=="ผิดปกติ")
+{
+$_SESSION['disable'] = 1;
+}
+if($_POST['psycho']=="จิตปกติ")
+{
+$_SESSION['psycho'] = 0;
+}
+elseif($_POST['psycho']=="จิตผิดปกติ")
+{
+$_SESSION['psycho'] = 1;
+}
+if($_POST['downs']=="ปัญญาปกติ")
+{
+$_SESSION['downs'] = 0;
+}
+elseif($_POST['downs']=="ปัญญาอ่อน")
+{
+$_SESSION['downs'] = 1;
+}
+if($_POST['addic']=="ไม่ติดยา")
+{
+$_SESSION['addic'] = 0;
+}
+elseif($_POST['addic']=="ติดยา")
+{
+$_SESSION['addic'] = 1;
+}
+if($_POST['alcoh']=="พิษสุราไม่ปรากฎ")
+{
+$_SESSION['alcoh'] = 0;
+}
+elseif($_POST['alcoh']=="พิษสุราปรากฎ")
+{
+$_SESSION['alcoh'] = 1;
+}
+if($_POST['lepro']=="ไม่เป็นเรื้อน")
+{
+$_SESSION['lepro'] = 0;
+}
+elseif($_POST['lepro']=="เป็นเรื้อน")
+{
+$_SESSION['lepro'] = 1;
+}
+if($_POST['tb']=="ไม่เป็นวัณโรค")
+{
+$_SESSION['tb'] = 0;
+}
+elseif($_POST['tb']=="เป็นวัณโรค")
+{
+$_SESSION['tb'] = 1;
+}
+if($_POST['Brugia']=="ไม่เป็นเท้าช้าง")
+{
+$_SESSION['Brugia'] = 0;
+}
+elseif($_POST['Brugia']=="เป็นเท้าช้าง")
+{
+$_SESSION['Brugia'] = 1;
+}
+
 $_SESSION['phyextext']=$_POST['phyextext'];
-$_SESSION['moretext'] = $_POST['morelist'];
+for($mt=1;$mt<6;$mt++)
+{
+$_SESSION['moretext'.$mt] = $_POST['morelist'.$mt];
+}
 $_SESSION['commenttext'] = $_POST['comment'];
 if($_POST['finish']=="OK")
 {
  $yess = 1;
 }
 
-?>
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>ใบรับรองแพทย์</title>
-<script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
-<?php
+$title = "::ใบรับรองแพทย์::";
+include '../main/header.php';
 
-    $agent = $_SERVER['HTTP_USER_AGENT'];
+$agent = $_SERVER['HTTP_USER_AGENT'];
     
-if(strlen(strstr($agent,"Firefox")) > 0 ){      
+if(strlen(strstr($agent,"Firefox")) > 0 )
+{      
     $browser = 'firefox';
 }
-if($browser=='firefox'){
-    echo "<link rel='stylesheet' href='../public/css/medcert2551firefox.css'>";
+if($browser=='firefox')
+{
+    echo "<link rel='stylesheet' href='../jscss/css/medcert2551firefox.css'>";
 }
-else echo "<link rel='stylesheet' href='../public/css/medcert2551.css'>";
+//else echo "<link rel='stylesheet' href='../jscss/css/medcert2551.css'>";
 
 ?>
 <script language="javascript">
@@ -100,12 +169,10 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
-
 if($browser=='firefox'){
-    echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcert2551firefox_prt.css>');";
+    echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert2551firefox_prt.css>');";
 }
-else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcert2551_prt.css>');";
-
+//else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert2551_prt.css>');";
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -117,16 +184,18 @@ else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medc
 <style type="text/css">
 .text1 { width: 50%; }
 </style>
-</head>
-<body lang="th-TH" text="#000000" dir="ltr" style="background: transparent">
-<?php if($yess){?>
-<div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
-<?php }?>
+<script language="JavaScript" type="text/javascript" src="../jscss/js/autoclick.js"></script>
+<?php 
+echo "</head><body>";
+if($yess)
+{
+  echo "<div align=\"center\"><a href=\"javascript:Clickheretoprint()\" id=\"ATC\">Print</a></div><br>";
+}
+?>
+<div class="myaccount">
 <div class="style3" id="print_content">
 <form method="post" action="Medical_Certificate_2551.php" name="regForm" id="regForm">
-
 <div class="page"><div class="subpage">
-
 <table width=100% border=<?php if($yess) echo "0"; else echo "1"?>>
 <tr><td>
 <p class="western" align="center"><b>ใบรับรองแพทย์</b></p>
@@ -140,7 +209,10 @@ echo $prefix." ".$fname." ".$lname;
 ?>......<br>
 สถานที่อยู่ (ที่สามารถติดต่อได้)...
 <?php 
-echo $address1." หมู่ที่ ".$address2." ต. ".$address3." อ. ".$address4." จ. ".$address5." ".$zip;
+echo $address1;
+if (!empty($addstr)) echo " ถ.".$addstr;
+if ($address2 !=0) echo " หมู่ที่ ".$address2;
+echo " ต. ".$address3." อ. ".$address4." จ. ".$address5." ".$zip;
 ?>...<br>
 <?php
 
@@ -368,9 +440,9 @@ while($par = mysqli_fetch_array($para))
 }?> พ.ศ <?php echo $bsy;?> มีรายละเอียดดังนี้<br>
 น้ำหนักตัว..
 <?php 
- $ptinfo = mysqli_fetch_array(mysqli_query($linkopd, "SELECT MAX(id) FROM $pttable"));
+ $ptinfo = mysqli_fetch_array(mysqli_query($linkopdx, "SELECT MAX(id) FROM $pttable"));
  $maxr = $ptinfo[0];
- $ptinfo = mysqli_query($linkopd, "SELECT * FROM $pttable WHERE id = '$maxr'");
+ $ptinfo = mysqli_query($linkopdx, "SELECT * FROM $pttable WHERE id = '$maxr'");
  while($rows= mysqli_fetch_array($ptinfo))
  {
   $weight = $rows['weight'];
@@ -400,26 +472,69 @@ else echo $_SESSION['phyextext'];
 echo "...";
 }
 ?></p>
-<p class="western" style="margin-bottom: 0in; line-height: 150%">ขอรับรองว่าบุคคลดังกล่าว ไม่เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ ไม่ปรากฏอาการของโรคจิต หรือจิตฟั่นเฟือน  หรือปัญญาอ่อน ไม่ปรากฏ อาการของการติดยาเสพติดให้โทษ และอาการของโรคพิษสุราเรื้อรัง และไม่ปรากฏอาการและอาการแสดงของโรคต่อไปนี้</p>
+<p class="western" style="margin-bottom: 0in; line-height: 150%">ขอรับรองว่าบุคคลดังกล่าว 
+<?php if(!$yess){?><input type=submit name=disable value="ปกติ"> <input type=submit name=disable value="ผิดปกติ">
+<?php 
+}
+if(!$_SESSION['disable']){ echo "ไม่เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ ";}
+
+?>
+<?php if(!$yess){?><input type=submit name=psycho value="จิตปกติ"> <input type=submit name=psycho value="จิตผิดปกติ">
+<?php 
+}
+if(!$_SESSION['psycho']){ echo "ไม่ปรากฏอาการของโรคจิต หรือจิตฟั่นเฟือน ";}
+
+?>
+<?php if(!$yess){?><input type=submit name=downs value="ปัญญาปกติ"> <input type=submit name=downs value="ปัญญาอ่อน">
+<?php 
+}
+if(!$_SESSION['downs']){ echo "หรือปัญญาอ่อน ";}
+
+?>
+<?php if(!$yess){?><input type=submit name=addic value="ไม่ติดยา"> <input type=submit name=addic value="ติดยา">
+<?php 
+}
+if(!$_SESSION['addic']){ echo "ไม่ปรากฏ อาการของการติดยาเสพติดให้โทษ  ";}
+
+?>
+<?php if(!$yess){?><input type=submit name=alcoh value="พิษสุราไม่ปรากฎ"> <input type=submit name=alcoh value="พิษสุราปรากฎ">
+<?php 
+}
+if(!$_SESSION['alcoh']){ echo "และอาการของโรคพิษสุราเรื้อรัง ";}
+
+?>
+และไม่ปรากฏอาการและอาการแสดงของโรคต่อไปนี้</p>
 <ol>
-	<li><p class="western">
-	โรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>
-	<li><p class="western">
-	วัณโรคในระยะอันตราย</p>
-	<li><p class="western">
-	โรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>
-	<?php 
-	if(!$yess)
-	{
-	echo "<li><p class='western'>..<input type='text' name='morelist' class='text1' value='";
-	echo $_SESSION['moretext'];
-	echo "'..</p>";
-	}
-	else
-	{
-	  if(!empty($_SESSION['moretext'])) echo "<li><p class='western'>..".$_SESSION['moretext']."..</p>";
-	}
-	?>
+<?php
+if(!$yess){ echo "<input type=submit name=lepro value='ไม่เป็นเรื้อน'><input type=submit name=lepro value='เป็นเรื้อน'>"; }
+if(!$_SESSION['lepro']){ echo "<li><p class='western'>	โรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>";}
+if(!$yess){ echo "<input type=submit name=tb value='ไม่เป็นวัณโรค'><input type=submit name=tb value='เป็นวัณโรค'>";}
+if(!$_SESSION['tb']){ echo "<li><p class='western'>	วัณโรคในระยะอันตราย</p>";}
+if(!$yess){ echo "<input type=submit name=Brugia value='ไม่เป็นเท้าช้าง'><input type=submit name=Brugia value='เป็นเท้าช้าง'>";}
+if(!$_SESSION['Brugia']){ echo "<li><p class='western'>	โรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>";}
+if(!$yess)
+{
+echo "<li><p class='western'>..<input type='text' name='morelist1' class='text1' value='";
+echo $_SESSION['moretext1'];
+echo "'..</p>";
+    for($mt=1;$mt<5;$mt++)
+    {
+        if(!empty($_SESSION['moretext'.$mt]))
+        {
+            echo "<li><p class='western'>..<input type='text' name='morelist".($mt+1)."' class='text1' value='";
+            echo $_SESSION['moretext'.($mt+1)];
+            echo "'..</p>";
+        }
+    }
+}
+else
+{
+    for($mt=1;$mt<6;$mt++)
+    {
+    if(!empty($_SESSION['moretext'.$mt])) echo "<li><p class='western'>..".$_SESSION['moretext'.$mt]."..</p>";
+    }
+}
+?>
 	<li><p class="western">...........................................................................................................................................................</p>
 </ol>
 <p class="western" style="margin-bottom: 0in; line-height: 150%">สรุปความเห็นและข้อแนะนำของแพทย์.......
@@ -432,7 +547,18 @@ echo "...";
 	}
 	else
 	{
-	  if(!empty($_SESSION['commenttext'])) echo $_SESSION['commenttext'];
+	  if(!empty($_SESSION['commenttext']) OR ($_SESSION['disable']==1) OR ($_SESSION['psycho']==1) OR ($_SESSION['downs']==1) OR ($_SESSION['addic']==1) OR ($_SESSION['alcoh']==1) OR ($_SESSION['lepro']==1) OR ($_SESSION['tb']==1) OR ($_SESSION['Brugia']==1))
+	  {
+	  if($_SESSION['disable']){echo "เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ ";}
+	  if($_SESSION['psycho']){echo "ปรากฏอาการของโรคจิต หรือจิตฟั่นเฟือน ";}
+	  if($_SESSION['downs']){echo "ปรากฏอาการปัญญาอ่อน ";}
+	  if($_SESSION['addic']){echo "ปรากฏอาการของการติดยาเสพติดให้โทษ ";}
+	  if($_SESSION['alcoh']){echo "ปรากฏอาการของโรคพิษสุราเรื้อรัง ";}
+	  if($_SESSION['lepro']){echo "เป็นโรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";}
+	  if($_SESSION['tb']){echo "เป็นวัณโรคในระยะอันตราย ";}
+	  if($_SESSION['Brugia']){echo "เป็นโรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";}
+	  echo $_SESSION['commenttext'];
+	  }
 	  else echo "สุขภาพและร่างกายอยู่ในเกณฑ์ดีตามอายุ";
 	}
 	?>.......</p>
@@ -443,7 +569,7 @@ echo "...";
 วันที่ ๑๔ สิงหาคม ๒๕๕๑ <br>*ใบรับรองแพทย์ฉบับนี้ให้ใช้ได้ ๑ เดือนนับแต่วันที่ตรวจร่างกาย</i></p></span></font></font>
 </td></tr></table></div></div></div>
 <?php if(!$yess){?>
-<div style="text-align: right;">ลงข้อมูลเสร็จ กด OK เพื่อดูใบสำเร็จ <input type=submit name="finish" value="OK"></div>
+<div style="text-align: right;">ลงข้อมูลเสร็จ กด OK เพื่อดูใบสำเร็จ <input type=submit name="finish" value="OK"  id="firstfocus"></div>
 <?php }
 if($yess)
 {
@@ -451,9 +577,17 @@ unset($_SESSION['cil']);
 unset($_SESSION['acsx']);
 unset($_SESSION['admit']);
 unset($_SESSION['phyex']);
+unset($_SESSION['disable']);
+unset($_SESSION['psycho']);
+unset($_SESSION['downs']);
+unset($_SESSION['addic']);
+unset($_SESSION['alcoh']);
+unset($_SESSION['lepro']);
+unset($_SESSION['tb']);
+unset($_SESSION['Brugia']);
 }
 
 ?>
-</form>
+</form></div></div><br>
 </body>
 </html>

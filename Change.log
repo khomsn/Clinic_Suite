@@ -1,3 +1,15 @@
+khomsn-klinic-suite (62.01-13) stable; urgency=low
+  
+    * Version 25620113: Correct PHP code. Change Report Panel.
+    
+khomsn-klinic-suite (61.08-31) stable; urgency=low
+  
+    * Version 25610831: Upgrade System with upgrade mysql db.
+    
+khomsn-klinic-suite (61.07-20) stable; urgency=low
+  
+    * Version 25610720: Big upgrade.
+    
 khomsn-klinic-suite (60.08-16) stable; urgency=low
   
     * Version 25600816: miner correction.

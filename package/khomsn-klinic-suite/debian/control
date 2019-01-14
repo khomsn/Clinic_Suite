@@ -7,7 +7,7 @@ Standards-Version: 59.6
 
 Package: khomsn-klinic-suite
 Architecture: all
-Depends: mysql-server (>= 5.4.0), apache2 (>= 2.4.0), dbconfig-common, debconf (>= 0.5) | debconf-2.0, libjs-sphinxdoc (>= 1.0)
+Depends: mysql-server (>= 5.4.0), apache2 (>= 2.4.0), dbconfig-common, debconf (>= 0.5) | debconf-2.0, libjs-sphinxdoc (>= 1.0), php-imagick
 Recommends: mysql-client | phpmyadmin
 Suggests: mysql-server
 Description: Klinic Managment Suite by Khomsn

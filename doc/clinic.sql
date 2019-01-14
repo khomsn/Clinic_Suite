@@ -697,8 +697,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `md5_id`, `full_name`, `user_name`, `user_email`, `pwd`, `address`, `country`, `tel`, `fax`, `website`, `date`, `users_ip`, `approved`, `activation_code`, `banned`, `accode`, `user_level`, `ctime`, `ckey`, `staff_id`, `user_has_avatar`, `user_background`, `catcenable`, `ddil`) VALUES
-(49, '', 'demo', 'demo', 'demo@localhost', '64a4f7c2d92ac20aea68659e66c8a01db00c7be7a91bdafa1', 'd', '', 'd', '', '', '2015-10-11', '', 1, 0, 0, 30030, 5, '2016-06-03 08:03:56', 'u2yowv3', 0, 0, '', 0, 0),
-(50, 'c0c7c76d30bd3dcaefc96f40275bdc0a', 'Administrator', 'admin', 'admin@localhost', 'a3dc56cc996c89050461c26c3a292af2a257d6ebaec02f722', '', '', '', '', '', '2014-05-06', '', 1, 0, 0, 1, 5, '2016-06-03 08:03:51', '', 0, 0, '', 0, 0);
+(0, '', 'demo', 'demo', 'demo@localhost', '64a4f7c2d92ac20aea68659e66c8a01db00c7be7a91bdafa1', 'd', '', 'd', '', '', '2015-10-11', '', 1, 0, 0, 30030, 5, '2016-06-03 08:03:56', 'u2yowv3', 0, 0, '', 0, 0),
+(1, 'c0c7c76d30bd3dcaefc96f40275bdc0a', 'Administrator', 'admin', 'admin@localhost', 'a3dc56cc996c89050461c26c3a292af2a257d6ebaec02f722', '', '', '', '', '', '2014-05-06', '', 1, 0, 0, 1, 5, '2016-06-03 08:03:51', '', 0, 0, '', 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

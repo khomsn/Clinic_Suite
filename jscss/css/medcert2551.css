@@ -1,0 +1,48 @@
+p { margin-bottom: 0.1in; direction: ltr; color: #000000; line-height: 120%; widows: 2; orphans: 2 }
+p.western { font-family: "TH Sarabun PSK", serif; font-size: 30pt;}
+p.cjk { font-family: "TH Sarabun PSK", serif; font-size: 16pt;}
+p.ctl { font-family: "TH Sarabun PSK", serif; font-size: 14pt;}
+a:link { so-language: zxx }
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font: 30pt "TH Sarabun PSK";
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.page {
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 1cm;
+    margin: 1cm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 0mm;
+    border: 5px red solid;
+    height: 276mm;
+    outline: 10mm #FFEAEA solid;
+}
+@page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}

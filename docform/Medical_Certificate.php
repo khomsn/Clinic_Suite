@@ -1,12 +1,12 @@
 <?php 
-include '../login/dbc.php';
-//include '../libs/prince/prince.php';
-
-//$prince = new Prince('/usr/bin/prince');
-
+include '../config/dbc.php';
 page_protect();
 
 $id = $_SESSION['patdesk'];
+
+$Patient_id = $id;
+include '../libs/opdxconnection.php';
+
 $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 while ($ptinfo = mysqli_fetch_array($ptin))
 {
@@ -19,6 +19,7 @@ $pttable = "pt_".$id;
 $today = date("Y-m-d");
 $_SESSION['diag']=$_POST['diag'];
 $_SESSION['trmtext']=$_POST['trm'];
+$_SESSION['morewhen'] = $_POST['morewhen'];
 $_SESSION['moretext'] = $_POST['morelist'];
 $_SESSION['moretext1'] = $_POST['morelist1'];
 $_SESSION['day'] = $_POST['day'];
@@ -34,13 +35,14 @@ if($_POST['finish']=="OK")
 {
  $yess = 1;
 }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title></title>
-	<script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title></title>
+<script language="JavaScript" type="text/javascript" src="../jscss/js/autoclick.js"></script>
 <?php
     $agent = $_SERVER['HTTP_USER_AGENT'];
     
@@ -48,9 +50,9 @@ if(strlen(strstr($agent,"Firefox")) > 0 ){
     $browser = 'firefox';
 }
 if($browser=='firefox'){
-    echo "<link rel='stylesheet' href='../public/css/medcertfirefox.css'>";
+    echo "<link rel='stylesheet' href='../jscss/css/medcertfirefox.css'>";
 }
-else echo "<link rel='stylesheet' href='../public/css/medcert.css'>";
+else echo "<link rel='stylesheet' href='../jscss/css/medcert.css'>";
 ?>
 <script language="javascript">
 function Clickheretoprint()
@@ -64,9 +66,9 @@ function Clickheretoprint()
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
 if($browser=='firefox'){
-    echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcertfirefox_print.css>');";
+    echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcertfirefox_print.css>');";
 }
-else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medcert_print.css>');";
+else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert_print.css>');";
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -81,10 +83,9 @@ else echo "docprint.document.write('<link rel=stylesheet href=../public/css/medc
 .intext {width: 60%; }
 .inno { width: 40px; }
 </style>
-
 </head>
-<body>
-<a href="Medical_Certificate_eng.php">English</a>
+<body><div style="background-color:rgba(140,205,0,0.5); display:inline-block;">
+<a href="Medical_Certificate_eng.php">English</a></div>
 <?php if($yess){?>
 <div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <?php }?>
@@ -196,9 +197,9 @@ switch ($sm)
 }
 echo " ".$bsy;
 //pt info
- $ptinfo = mysqli_fetch_array(mysqli_query($linkopd, "SELECT MAX(id) FROM $pttable"));
+ $ptinfo = mysqli_fetch_array(mysqli_query($linkopdx, "SELECT MAX(id) FROM $pttable"));
  $maxr = $ptinfo[0];
- $ptinfo = mysqli_query($linkopd, "SELECT * FROM $pttable WHERE id = '$maxr'");
+ $ptinfo = mysqli_query($linkopdx, "SELECT * FROM $pttable WHERE id = '$maxr'");
  while($rows= mysqli_fetch_array($ptinfo))
  {
     $dofhis = $rows['dofhis'];
@@ -215,7 +216,7 @@ else echo $_SESSION['diag'];?> </p>
 if(!$yess)
 {
 ?>
-<input type="text" name="trm" id="text2" value="ยารับประทานและยาฉีด พร้อมคำแนะนำ">
+<input type="text" name="trm" id="text2" value="<?php if (empty($_SESSION['trmtext'])) echo "ยารับประทานและยาฉีด พร้อมคำแนะนำ"; else echo $_SESSION['trmtext']; ?>">
 <?php 
 } 
 else echo $_SESSION['trmtext'];
@@ -224,7 +225,7 @@ else echo $_SESSION['trmtext'];
 <p class="western10"><u>สรุปความเห็นแพทย์</u></p>
 <ol>
 	<li><p class="western10">
-	ได้มารับการตรวจรักษาจริง<?php if(!$yess) {echo "เมื่อ "; echo "<input type='text' name='morelist1' class='intext'  value='".$_SESSION['moretext1']."'>";} else { if(!empty($_SESSION['moretext1']))echo "เมื่อ "; echo $_SESSION['moretext1'];} ?>
+	ได้มารับการตรวจรักษาจริง<?php if(!$yess) {echo "เมื่อ "; echo "<input type='text' name='morewhen' class='intext'  value='".$_SESSION['morewhen']."'>";} else { if(!empty($_SESSION['morewhen']))echo "เมื่อ "; echo $_SESSION['morewhen'];} ?>
 	<?php 
 	if(!$yess)
 	{
@@ -241,6 +242,12 @@ else echo $_SESSION['trmtext'];
 	echo "<li><p class='western10'>..<input type='text' name='morelist' class='intext'  value='";
 	echo $_SESSION['moretext'];
 	echo "'..</p>";
+        if(!empty($_SESSION['moretext']))
+        {
+	echo "<li><p class='western10'>..<input type='text' name='morelist1' class='intext'  value='";
+	echo $_SESSION['moretext1'];
+	echo "'..</p>";
+        }
 	}
 	else
 	{ 
@@ -351,12 +358,20 @@ else echo $_SESSION['trmtext'];
 	      echo " ".$bsy;
 	    }
 	  }
-	  if(!empty($_SESSION['moretext'])) echo "<li><p class='western10'>".$_SESSION['moretext']."</p>";
+	  if(!empty($_SESSION['moretext']))
+	  {
+            echo "<li><p class='western10'>".$_SESSION['moretext']."</p>";
+           }
+	  if(!empty($_SESSION['moretext1']))
+	  {
+            echo "<li><p class='western10'>".$_SESSION['moretext1']."</p>";
+           }
 	}
 if($yess)
 {
  unset($_SESSION['diag']);
  unset($_SESSION['trmtext']);
+ unset($_SESSION['morewhen']);
  unset($_SESSION['moretext']);
  unset($_SESSION['moretext1']);
  unset($_SESSION['day']);
@@ -372,8 +387,8 @@ if($yess)
 </div></div>
 </div>
 <?php if(!$yess){?>
-<div style="text-align: right;">ลงข้อมูลเสร็จ กด OK เพื่อดูใบสำเร็จ <input type=submit name="finish" value="OK"></div>
+<div style="text-align: right;">ลงข้อมูลเสร็จ กด OK เพื่อดูใบสำเร็จ <input type=submit name="finish" value="OK"  id="firstfocus"></div>
 <?php }?>
-</form>
+</form><br>
 </body>
 </html>

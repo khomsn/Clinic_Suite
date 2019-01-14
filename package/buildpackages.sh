@@ -1,15 +1,16 @@
 #!/bin/sh
 
 #copy file first
-  # Control will enter here if $DIRECTORY doesn't exist.
-cp -a ../libs ./khomsn-klinic-suite/var/www/html/
-cp -a ../main ./khomsn-klinic-suite/var/www/html/
-cp -a ../login ./khomsn-klinic-suite/var/www/html/
-cp -a ../public ./khomsn-klinic-suite/var/www/html/
-cp -a ../image ./khomsn-klinic-suite/var/www/html/
-cp -a ../docform ./khomsn-klinic-suite/var/www/html/
-cp -a ../doc ./khomsn-klinic-suite/var/www/html/
+# Control will enter here if $DIRECTORY doesn't exist.
 cp -a ../config ./khomsn-klinic-suite/var/www/html/
+cp -a ../doc ./khomsn-klinic-suite/var/www/html/
+cp -a ../docform ./khomsn-klinic-suite/var/www/html/
+cp -a ../image ./khomsn-klinic-suite/var/www/html/
+cp -a ../jscss ./khomsn-klinic-suite/var/www/html/
+cp -a ../libs ./khomsn-klinic-suite/var/www/html/
+cp -a ../login ./khomsn-klinic-suite/var/www/html/
+cp -a ../main ./khomsn-klinic-suite/var/www/html/
+cp -a ../public ./khomsn-klinic-suite/var/www/html/
 
 cp ../Change.log ./khomsn-klinic-suite/var/www/html/Change.log
 cp ../index.html ./khomsn-klinic-suite/var/www/html/index.html

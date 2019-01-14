@@ -10,4 +10,4 @@ Please complete wherever marked xxxxxxxxx
  */
 define('URL', 'http://127.0.0.1/');
 define('EXTURL', 'xxxx');//change me here!
-define('PROJECT', 'xxxx');//change me here!
+define('PROJECT', 'Khomsn Klinic Suite');//change me here!

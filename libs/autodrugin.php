@@ -1,12 +1,10 @@
-	<script>
-	$(document).ready(function(){
-	<?php 
-	for ($drug=1;$drug<=30;$drug++)
-	{
-            echo "$('#drug".$drug."').autocomplete('../libs/druglistin.php', {
-			selectFirst: true
-		});\n";
-        }
-	?>
-	});
-	</script>
+<script>
+$(document).ready(function(){
+$("#drug").autocomplete({
+    position:{collision:"fit flip"},
+    source:'../../libs/druglistin.php',
+    minLength:1,
+    autoFocus:true
+});
+});
+</script>

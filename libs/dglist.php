@@ -1,21 +1,20 @@
 <?php
-include '../login/dbc.php';
+/*************************This lib use in****************/
+/***** ../libs/autodruggen.php                      *****/
+/********************************************************/
+include '../config/dbc.php';
+$q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
+$my_data=mysqli_real_escape_string($link, $q);
 
-	$q=$_GET['q'];
-	$my_data=mysqli_real_escape_string($linkcm, $q);
+$sql="SELECT DISTINCT name FROM druggeneric WHERE name LIKE '%$my_data%' ORDER BY name";
+$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
 
-	$sql="SELECT name FROM druggeneric WHERE name LIKE '%$my_data%' ORDER BY name";
-	$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
-	
-	if($result)
-	{
-		while($row=mysqli_fetch_array($result))
-		{
-		    if($oldj != $row['name'])
-		    {
-			echo $row['name']."\n";
-			$oldj = $row['name'];
-		     }	
-		}
-	}
+if($result)
+{
+    while($row=mysqli_fetch_array($result))
+    {
+        $data[] = $row['name'];
+    }
+    echo json_encode($data);
+}
 ?>

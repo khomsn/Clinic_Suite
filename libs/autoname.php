@@ -1,21 +1,29 @@
-	<link rel="stylesheet" type="text/css" href="../public/css/jquery.autocomplete.css" />
-	<script type="text/javascript" src="../public/js/jquery.autocomplete.js"></script>
-	<script>
-	$(document).ready(function(){
-	$("#fname").autocomplete("../libs/namelist.php", {
-			selectFirst: true
-		});
-	$("#lname").autocomplete("../libs/lnamelist.php", {
-			selectFirst: true
-		});
-	$("#htel").autocomplete("../libs/plinelist.php", {
-			selectFirst: true
-		});
-	$("#mtel").autocomplete("../libs/cellplist.php", {
-			selectFirst: true
-		});
-	$("#cid").autocomplete("../libs/cidlist.php", {
-			selectFirst: true
-		});
-	});
-	</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#fname").autocomplete({
+        source:'../../libs/namelist.php',
+        minLength:1,
+        autoFocus:true
+    });
+    $("#lname").autocomplete({
+        source:'../../libs/lnamelist.php',
+        minLength:1,
+        autoFocus:true
+    });
+    $("#htel").autocomplete({
+        source:'../../libs/plinelist.php',
+        minLength:1,
+        autoFocus:true
+    });
+    $("#mtel").autocomplete({
+        source:'../../libs/cellplist.php',
+        minLength:1,
+        autoFocus:true
+    });
+    $("#cid").autocomplete({
+        source:'../../libs/cidlist.php',
+        minLength:1,
+        autoFocus:true
+    });
+});
+</script>

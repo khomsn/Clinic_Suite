@@ -63,10 +63,10 @@ if($volume >= $voltoupdate)
       //while($rowac = mysqli_fetch_array($acc))
       //{ $dacno = $rowac['ac_no'];}
 
-	      // assign insertion pattern
+	      // assign insertion pattern 59999999 ตัดยอด
 	      $detail ="เบิกใช้";
 	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-			    VALUES  (now(),'5999','$dacno','$detail','$alldp','c','0')";
+			    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
 	      // Now insert Drug order information to "drug_#id" table
 	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
     
@@ -97,9 +97,7 @@ if($volume >= $voltoupdate)
 		('$id',now(),'$voltoupdate')";
 	// Now insert Patient to "patient_id" table
 	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-    
+  
     }
 }
-
-
 ?>

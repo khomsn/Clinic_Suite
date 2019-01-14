@@ -17,7 +17,7 @@
 		{ 
 			if($_POST[$j] ==1)
 			{
-			$ptin = mysqli_query($linkopd, "select * from $pttable where id='$id' ");
+			$ptin = mysqli_query($linkopdx, "select * from $pttable where id='$id' ");
 			$idrxg = "idrx".$j;
 			$rxg = "rx".$j;
 			$rgng = "rxg".$j;
@@ -62,7 +62,7 @@ $stmt->bind_param("ii", $volreserve, $idres);
            }
 		      $svol = $row2['volume'];
 		      $resvol = $row2['volreserve'];
-		      $cat  = $row2['cat'];		      
+		      $cat  = $row2['cat'];     
 		}
 		if ($vlp > $svol-$resvol)
 		{

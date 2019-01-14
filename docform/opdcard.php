@@ -1,14 +1,18 @@
 <?php 
-include '../login/dbc.php';
+include '../../config/dbc.php';
+
 page_protect();
 
 $id = $_SESSION['patcash'];
+$Patient_id = $id;
+include '../../libs/opdxconnection.php';
+
 
 $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 $pttable = "pt_".$id;
 //
 $today = date("Y-m-d");
-$pin = mysqli_query($linkopd, "select MAX(id) from $pttable ");
+$pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
 $maxrow = mysqli_fetch_row($pin);
 $maxid = $maxrow[0];
 ?>
@@ -32,7 +36,6 @@ $maxid = $maxrow[0];
 <link href="../public/css/opdcard.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="../public/css/medcert.css">
 <script language="JavaScript" type="text/javascript" src="../public/js/autoclick.js"></script>
-
 <script language="javascript">
 function Clickheretoprint()
 { 
@@ -54,7 +57,6 @@ function Clickheretoprint()
 </script>
 </head>
 <body dir="ltr" style="max-width:5.8299in;margin-top:0.25in; margin-bottom:0.25in; margin-left:0.75in; margin-right:0.25in; background-color:transparent; writing-mode:lr-tb; ">
-
 <div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <div id="print_content">
 <div class="page"><div class="subpage">
@@ -68,7 +70,7 @@ echo "<p class=P3>".$row['address']."</p>";
 ?>
 <p class="P5">
 							ข้อมูลการตรวจผู้ป่วย ณ วันที่ <?php 
-							$pin = mysqli_query($linkopd, "select * from $pttable WHERE id= '$maxid' ");
+							$pin = mysqli_query($linkopdx, "select * from $pttable WHERE id= '$maxid' ");
 							while ($row = mysqli_fetch_array($pin))
 							{
 									$date = new DateTime($row['date']);
@@ -137,7 +139,7 @@ echo "<p class=P3>".$row['address']."</p>";
 							?>
 </p>
 					<?php 
-							$ptin = mysqli_query($linkopd, "select * from $pttable WHERE id= '$maxid' ");
+							$ptin = mysqli_query($linkopdx, "select * from $pttable WHERE id= '$maxid' ");
 							while ($row = mysqli_fetch_array($ptin))
 							{
 								echo "<p class=P1><span class=T1>";

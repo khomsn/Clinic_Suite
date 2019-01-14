@@ -2,75 +2,70 @@
 /********************** MYSETTINGS.PHP**************************
 This updates user settings and password
 ************************************************************/
-include 'dbc.php';
+include '../config/dbc.php';
 include '../libs/resizeimage.php';
 
 page_protect();
 
 $err = array();
 $msg = array();
-
+//Avatar part
 if($_POST['submit']=='Upload image')
 {
-        $id = $_SESSION['user_id'];
- //       createAvatar($_FILES['avatar_file']['tmp_name']);
-        
-        if (is_dir(AVATAR_PATH) && is_writable(AVATAR_PATH)) {
-           
-            if (!empty ($_FILES['avatar_file']['tmp_name'])) {
+    $id = $_SESSION['user_id'];
+    //createAvatar($_FILES['avatar_file']['tmp_name']);
+    if (is_dir(AVATAR_PATH) && is_writable(AVATAR_PATH))
+    {
+        if (!empty ($_FILES['avatar_file']['tmp_name']))
+        {
+            // get the image width, height and mime type
+            // btw: why does PHP call this getimagesize when it gets much more than just the size ?
+            $image_proportions = getimagesize($_FILES['avatar_file']['tmp_name']);
+            // dont handle files > 5MB
+            if ($_FILES['avatar_file']['size'] <= 5000000 ) 
+            {
+                if ($image_proportions[0] >= 100 && $image_proportions[1] >= 100) 
+                {
+                    if ($image_proportions['mime'] == 'image/jpeg' || $image_proportions['mime'] == 'image/png')
+                    {
+                        $target_file_path = AVATAR_PATH . $id . ".jpg";
+                        // creates a 44x44px avatar jpg file in the avatar folder
+                        // see the function defintion (also in this class) for more info on how to use
+                        resize_image($_FILES['avatar_file']['tmp_name'], $target_file_path, 120, 120, 85, true);
+                        //$sth = $this->db->prepare("UPDATE users SET user_has_avatar = TRUE WHERE user_id = :user_id");
+                        //$sth->execute(array(':user_id' => $_SESSION['user_id']));
+                        $sth = mysqli_query($link, "UPDATE users SET user_has_avatar = TRUE WHERE id = $id");
 
-                // get the image width, height and mime type
-                // btw: why does PHP call this getimagesize when it gets much more than just the size ?
-                $image_proportions = getimagesize($_FILES['avatar_file']['tmp_name']);
+                        $_SESSION['user_avatar_file'] = $target_file_path;
 
-                // dont handle files > 5MB
-                if ($_FILES['avatar_file']['size'] <= 5000000 ) {
-
-                    if ($image_proportions[0] >= 100 && $image_proportions[1] >= 100) {
-
-                        if ($image_proportions['mime'] == 'image/jpeg' || $image_proportions['mime'] == 'image/png') {
-
-                            $target_file_path = AVATAR_PATH . $id . ".jpg";
-                               
-                            // creates a 44x44px avatar jpg file in the avatar folder
-                            // see the function defintion (also in this class) for more info on how to use
-                            resize_image($_FILES['avatar_file']['tmp_name'], $target_file_path, 120, 120, 85, true);
-
-                            //$sth = $this->db->prepare("UPDATE users SET user_has_avatar = TRUE WHERE user_id = :user_id");
-                            //$sth->execute(array(':user_id' => $_SESSION['user_id']));
-                            $sth = mysqli_query($link, "UPDATE users SET user_has_avatar = TRUE WHERE id = $id");
-
-                            $_SESSION['user_avatar_file'] = $target_file_path;
-
-                            $msg[] = FEEDBACK_AVATAR_UPLOAD_SUCCESSFUL;
-
-                        } else {
-
-                            $err[] = FEEDBACK_AVATAR_UPLOAD_WRONG_TYPE;
-
-                        }
-
-                    } else {
-
-                        $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_SMALL;
-
+                        $msg[] = FEEDBACK_AVATAR_UPLOAD_SUCCESSFUL;
                     }
-
-                } else {
-
-                    $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_BIG;
-
-                } 
-            }  
-
-        } else {
-            
-            $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
-            
+                    else
+                    {
+                        $err[] = FEEDBACK_AVATAR_UPLOAD_WRONG_TYPE;
+                    }
+                }
+                else
+                {
+                    $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_SMALL;
+                }
+            }
+            else
+            {
+                $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_BIG;
+            } 
         }
-      
-
+        else
+        {
+            $msg[] = "No file to upload!";
+        }
+    }
+    else
+    {
+        $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
+    }
 }
+//Background Image to user for this user reset to default
 if($_POST['submit']=='Reset BackGround')
 {
   $id = $_SESSION['user_id'];
@@ -80,131 +75,125 @@ if($_POST['submit']=='Reset BackGround')
   $_SESSION['user_background'] = $target_file;
   $msg[]="BackGround image has been Reset to default!";
 }
+//Background Image to user for this user uses own image as default
 if($_POST['submit']=='Upload BackGround')
 {
-        $id = $_SESSION['user_id'];
- //       createAvatar($_FILES['BackGround_file']['tmp_name']);
-        
-        if (is_dir(IMAGE_PATH) && is_writable(IMAGE_PATH)) {
-	$target_dir = IMAGE_PATH;
-	$target_file = $target_dir ."bg_".$id."-".basename($_FILES["fileToUpload"]["name"]);        
+    $id = $_SESSION['user_id'];
+    if (is_dir(WALLPAPER_PATH) && is_writable(WALLPAPER_PATH))
+    {
+        $target_dir = WALLPAPER_PATH;
+        $target_file = $target_dir ."bg_".$id."-".basename($_FILES["fileToUpload"]["name"]);
         include '../libs/uploadimage.php';
-        
-         $sth = mysqli_query($link, "UPDATE users SET user_background = '$target_file' WHERE id = $id");
-         $_SESSION['user_background'] = $target_file;
-         
-        } else {
-            
-            $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
-            
+        if(empty($err))
+        {
+        $sth = mysqli_query($link, "UPDATE users SET user_background = '$target_file' WHERE id = $id");
+        $_SESSION['user_background'] = $target_file;
         }
-      
-
+    }
+    else
+    {
+        $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
+    }
 }
+
 
 if($_POST['doUpdate'] == 'Update')  
 {
+    $rs_pwd = mysqli_query($link, "select pwd from users where id='$_SESSION[user_id]'");
+    list($old) = mysqli_fetch_row($rs_pwd);
+    $old_salt = substr($old,0,9);
 
-
-$rs_pwd = mysqli_query($link, "select pwd from users where id='$_SESSION[user_id]'");
-list($old) = mysqli_fetch_row($rs_pwd);
-$old_salt = substr($old,0,9);
-
-//check for old password in md5 format
-	if($old === PwdHash($_POST['pwd_old'],$old_salt))
-	{
-	$newsha1 = PwdHash($_POST['pwd_new']);
-	mysqli_query($link, "update users set pwd='$newsha1' where id='$_SESSION[user_id]'");
-	$msg[] = "Your new password is updated";
-	//header("Location: mysettings.php?msg=Your new password is updated");
-	} else
-	{
-	 $err[] = "Your old password is invalid";
-	 //header("Location: mysettings.php?msg=Your old password is invalid");
-	}
-
+    //check for old password in md5 format
+    if($old === PwdHash($_POST['pwd_old'],$old_salt))
+    {
+        $newsha1 = PwdHash($_POST['pwd_new']);
+        mysqli_query($link, "update users set pwd='$newsha1' where id='$_SESSION[user_id]'");
+        $msg[] = "Your new password is updated";
+        //header("Location: mysettings.php?msg=Your new password is updated");
+    }
+    else
+    {
+        $err[] = "Your old password is invalid";
+        //header("Location: mysettings.php?msg=Your old password is invalid");
+    }
 }
 
 if($_POST['doSave'] == 'Save')  
 {
-// Filter POST data for harmful code (sanitize)
-foreach($_POST as $key => $value) {
-	$data[$key] = filter($value);
+    // Filter POST data for harmful code (sanitize)
+    foreach($_POST as $key => $value) {$data[$key] = filter($value);}
+
+    mysqli_query($link, "UPDATE users SET
+                `full_name` = '$data[name]',
+                `address` = '$data[address]',
+                `tel` = '$data[tel]',
+                `fax` = '$data[fax]',
+                `country` = '$data[country]',
+                `website` = '$data[web]'
+                WHERE id='$_SESSION[user_id]'
+                ") or die(mysqli_error($link));
+
+    //header("Location: mysettings.php?msg=Profile Sucessfully saved");
+    $msg[] = "Profile Sucessfully saved";
 }
 
+$rs_settings = mysqli_query($link, "select * from users where id='$_SESSION[user_id]'");
 
-mysqli_query($link, "UPDATE users SET
-			`full_name` = '$data[name]',
-			`address` = '$data[address]',
-			`tel` = '$data[tel]',
-			`fax` = '$data[fax]',
-			`country` = '$data[country]',
-			`website` = '$data[web]'
-			 WHERE id='$_SESSION[user_id]'
-			") or die(mysqli_error($link));
-
-//header("Location: mysettings.php?msg=Profile Sucessfully saved");
-$msg[] = "Profile Sucessfully saved";
- }
- 
-$rs_settings = mysqli_query($link, "select * from users where id='$_SESSION[user_id]'"); 
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <title>My Account Settings</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
-  <script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery-3.3.1.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery.validate.min.js"></script>
+<script>
   $(document).ready(function(){
     $("#myform").validate();
 	 $("#pform").validate();
   });
-  </script>
-<link rel="stylesheet" href="../public/css/styles.css">
-</head>
-
-<body>
-<table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
-  <tr> 
-    <td colspan="3">&nbsp;</td>
-  </tr>
-  <tr> 
-    <td width="160" valign="top"><div class="pos_l_fix">
+</script>
+<link rel="stylesheet" href="<?php echo JSCSS_PATH;?>css/styles.css">
 <?php 
-/*********************** MYACCOUNT MENU ****************************
-This code shows my account menu only to logged in users. 
-Copy this code till END and place it in a new html or php where
-you want to show myaccount options. This is only visible to logged in users
-*******************************************************************/
-if (isset($_SESSION['user_id'])) 
-{
-  include 'menu.php';
-} 
-?></div></td>
-    <td width="732" valign="top">
-<h3 class="titlehdr">My Account - Settings</h3>
+include '../main/bodyheader.php';
+?>
+<table width="100%" border="0" cellspacing="0" cellpadding="5" class="main">
+  <tr><td colspan="3">&nbsp;</td></tr>
+  <tr><td width="160" valign="top">
+        <div class="pos_l_fix">
+        <?php 
+        /*********************** MYACCOUNT MENU ****************************
+        This code shows my account menu only to logged in users. 
+        Copy this code till END and place it in a new html or php where
+        you want to show myaccount options. This is only visible to logged in users
+        *******************************************************************/
+        if (isset($_SESSION['user_id'])) 
+        {
+        include 'menu_ms.php';
+        } 
+        ?>
+        </div>
+      </td>
+    <td width="732" valign="top"><h3 class="titlehdr">My Account - Settings</h3>
       <p> 
-        <?php	
-	if(!empty($err))  {
-	   echo "<div class=\"msg\">";
-	  foreach ($err as $e) {
-	    echo "* Error - $e <br>";
-	    }
-	  echo "</div>";	
-	   }
-	   if(!empty($msg))  {
-	   foreach ($msg as $me)
-	    echo "<div class=\"msg\">" . $me . "</div>";
-
-	   }
+        <?php
+        if(!empty($err))
+        {
+            echo "<div class=\"msg\">";
+            foreach ($err as $e) {echo "* Error - $e <br>";}
+            echo "</div>";	
+        }
+        if(!empty($msg))
+        {
+            foreach ($msg as $me) echo "<div class=\"msg\">" . $me . "</div>";
+        }
 	  ?>
       </p>
-      <p>Here you can make changes to your profile. Please note that you will 
-        not be able to change your email which has been already registered.</p>
+      <div style="background-color:rgba(124,200,0,0.65); display:inline-block;"><p>Here you can make changes to your profile. Please note that you will 
+        not be able to change your email which has been already registered.</p></div>
 	  <?php while ($row_settings = mysqli_fetch_array($rs_settings)) {?>
       <form action="mysettings.php" method="post" name="myform" id="myform" enctype="multipart/form-data">
-        <table width="90%" border="0" align="center" cellpadding="3" cellspacing="3" class="forms">
+        <table width="90%" border="1" align="center" cellpadding="3" cellspacing="3" class="forms">
           <tr> 
             <td colspan="2"> Your Name / Company Name<br> <input name="name" type="text" id="name"  class="required" value="<?php echo $row_settings['full_name']; ?>" size="50"> 
               <span class="example">Your name or company name</span></td>
@@ -278,8 +267,8 @@ if (isset($_SESSION['user_id']))
       </form>
 	  <?php } ?>
       <h3 class="titlehdr">Change Password</h3>
-      <p>If you want to change your password, please input your old and new password 
-        to make changes.</p>
+      <div style="background-color:rgba(124,200,0,0.65); display:inline-block;"><p>If you want to change your password, please input your old and new password 
+        to make changes.</p></div>
       <form name="pform" id="pform" method="post" action="">
         <table width="80%" border="0" align="center" cellpadding="3" cellspacing="3" class="forms">
           <tr> 
@@ -298,13 +287,10 @@ if (isset($_SESSION['user_id']))
       </form>
       <p>&nbsp; </p>
       <p>&nbsp;</p>
-	   
       <p align="right">&nbsp; </p></td>
     <td width="196" valign="top">&nbsp;</td>
   </tr>
-  <tr> 
-    <td colspan="3">&nbsp;</td>
-  </tr>
+  <tr><td colspan="3">&nbsp;</td></tr>
 </table>
 </body>
 </html>

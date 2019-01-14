@@ -1,5 +1,5 @@
 <?php 
-include 'dbc.php';
+include '../config/dbc.php';
 
 page_protect();
 
@@ -130,58 +130,35 @@ list($all) = mysqli_fetch_row($rs_all);
 list($active) = mysqli_fetch_row($rs_active);
 
 ?>
+<!DOCTYPE html>
 <html>
 <head>
 <title>Administration Main Page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery-2.1.3.min.js"></script>
-<script language="JavaScript" type="text/javascript" src="../public/js/jquery.validate.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery-3.3.1.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo JSCSS_PATH;?>js/jquery.validate.min.js"></script>
   <script>
   $(document).ready(function(){
     $("#addForm").validate();
   });
   </script>
-<link rel="stylesheet" href="../public/css/styles.css">  
+<link rel="stylesheet" href="<?php echo JSCSS_PATH;?>css/styles.css">  
 </head>
-
 <body>
 <div class="pos_l_fix">
-
-<div class="myaccount">
-<img src="<?php echo $_SESSION['user_avatar_file']; ?>" />
-<a href="../login/myaccount.php"><p><strong>Main Menu</strong></p></a><br><br>
-<a href="../login/mysettings.php">My Setting</a><br><br>
 <?php 
-if ($_SESSION['user_accode']%13==0)
-echo "<a href=../main/staff.php>Staff</a><br><br>";
-if ($_SESSION['user_accode']%11==0)
+/*********************** MYACCOUNT MENU ****************************
+This code shows my account menu only to logged in users. 
+Copy this code till END and place it in a new html or php where
+you want to show myaccount options. This is only visible to logged in users
+*******************************************************************/
+if (isset($_SESSION['user_id']))
 {
-echo "<a href=../main/ordertemplate.php>Order Template</a><br><br>";
-echo "<a href=../main/catcenable.php>Drug Cat C</a><br><br>";
-}
-if ($_SESSION['user_accode']%2==0)
-echo "<a href=../main/comptemplate.php>รายชื่อบริษัท</a><br><br>";
-?>
-<a href="../login/logout.php">Logout </a><br><br><br>
-<?php
-if (checkAdmin()) 
-{
+    include 'menu_admam.php';
+} 
 /*******************************END**************************/
 ?>
-      <p> <a href="../login/admin.php">Admin CP </a></p>
-
-<?php 
-}
-if($_SESSION['user_accode']%13==0)
-{
-echo "<p> <a href=progpara.php>Programme Parameter</a></p>";
-echo "<p> <a href=stcpdrug.php>Staff Co-Pay Drug</a></p>";
-}
-
-?>
 </div>
-</div>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr><td style="text-align: center; width: 130px; "></td>
     <td width="74%" valign="top" style="padding: 10px;"><h2><font color="#FF0000">Administration 
@@ -552,11 +529,7 @@ echo "<div class=\"msg\">User created with password $pwd....done.</div>";
             </form>
             <p>**All created users will be approved by default.</p></td>
         </tr>
-      </table>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p></td>
+      </table></td>
     <td width="12%">&nbsp;</td>
   </tr>
 </table>

@@ -1,5 +1,5 @@
 <?php 
-include 'dbc.php';
+include '../config/dbc.php';
 session_start();
 if(!checkAdmin()) {
 header("Location: login.php");

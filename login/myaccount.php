@@ -1,11 +1,17 @@
 <?php 
-include 'dbc.php';
+include '../config/dbc.php';
 page_protect();
-
-if(empty($_SESSION['scheight']))
+$msg = array();
+//set start date for Program referense point start
+if(empty($_SESSION['acstrdate']))
 {
-  include 'checkscreen.php';
+    $gddmin = mysqli_query($link, "SELECT `date` FROM `daily_account` WHERE id=1 ");
+    $gddate = mysqli_fetch_array($gddmin);
+    $gdm = $gddate[0];
+    $gdm = date_create($gdm);
+    $_SESSION['acstrdate'] = date_format($gdm, 'Y-m-d');
 }
+
 $sf_settings = mysqli_query($link, "select * from staff where ID = $_SESSION[staff_id]");
 while ($sf = mysqli_fetch_array($sf_settings, MYSQLI_BOTH))
 {
@@ -16,27 +22,9 @@ $_SESSION['sfname'] = $prefix.$sf['F_Name']." ".$sf['L_Name'];
 $_SESSION['Esfname']= $eprefix." ".$sf['EF_Name']." ".$sf['EL_Name'];
 $_SESSION['sflc'] = $sf['license'];
 }
-
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<title>My Account</title>
-<meta content="text/html; charset=utf-8" http-equiv="content-type">
-
-<link rel="stylesheet" href="../public/css/styles.css">
-</head>
-<?php 
-if(!empty($_SESSION['user_background']))
-{
-echo "<body style='background-image: url(".$_SESSION['user_background']." ); background-size: cover;'>";
-}
-else
-{
-?>
-<body  style="background-image: url(../image/mypage.jpg); background-size: cover;">
-<?php
-}
+$title = "::My Account::";
+include '../main/header.php';
+include '../main/bodyheader.php';
 ?>
 <div class="pos_l_fix">
 <?php 
@@ -53,41 +41,28 @@ include 'menu.php';
 ?>
 </div>
 <table border=0 style="width: 100%; ">
-<tr>
-<td style="text-align: center; width: 130px; "></td><td>
-      <h3 class="titlehdr">Welcome <?php echo $_SESSION['user_name']; echo " on Screen ".$_SESSION['scwidth'].'x'.$_SESSION['scheight'];?></h3>  
-	  <?php	
-      if (isset($_GET['msg'])) {
-	  echo "<div class=\"error\">$_GET[msg]</div>";
-	  }
-		$rs_settings = mysqli_query($link, "select * from parameter where id='1'");
-	?>
-			<table style="text-align: center; width: 100%; "
-			 border="0" cellpadding="0" cellspacing="0">
-			  <tbody>
-				<tr><td>
-				<p><h3 class="hdrname"><?php 
-				while ($row_settings = mysqli_fetch_array($rs_settings))
-				{ 
-				  echo $_SESSION['clinic'] = $row_settings['name'];
-				  echo "<br>" ;
-				  $_SESSION['opdidoffset'] = $row_settings['opdidoffset'];
-				}
-				?>
-			   <!--<img style="width: 390px; height: 390px;" alt="" src="../image/logo.jpeg">-->
-				</h3></p></td>
-				</tr>
-				<tr>
-				<td><a href="../main/mycounter.php"><img style="border: 0px solid ; width: 120px; height: 120px;" alt="คลินิก" src="../image/clinic.gif"></a></td>
-				<td><a href="../main/pharmacy.php"><img style="border: 0px solid ; width: 120px; height: 120px;" alt="คลังยา และ ผลิตภัณฑ์" src="../image/drug.png"></a></td></tr>
-				<tr><td><a href="../main/lab.php"><img	style="border: 0px solid ; width: 120px; height: 120px;" alt="Lab" src="../image/lab.jpg"></a></td><td style="text-align: center;">
-				<a href="../main/rawmat.php"><img	style="border: 0px solid ; width: 120px; height: 120px;" alt="RawMat" src="../image/rawmat.jpeg"></a></td>
-				</tr>
-				<tr><td><a href="../main/accounting.php"><img	style="border: 0px solid ; width: 120px; height: 120px;" alt="บัญชีและการเงิน" src="../image/account.gif"></a></td>
-				<td><a href="../main/report.php"><img	style="border: 0px solid ; width: 120px; height: 120px;" alt="รายงานต่างๆ" src="../image/report.jpeg"></a></td></tr>
-			  </tbody>
-			</table>
-</td><td style="text-align: center; width: 130px; "></td></tr>
+<tr><td style="text-align: center; width: 160px; "></td>
+    <td>
+      <h3 class="titlehdr">Welcome <?php echo $_SESSION['user_name'];?></h3>  
+        <?php
+//        if (isset($_GET['msg'])) {echo "<div class=\"error\">$_GET[msg]</div>";}
+        $rs_settings = mysqli_query($link, "select * from parameter where id='1'");
+        if($_SESSION['staff_id']>0)
+        {
+            include '../main/mainitems.php';
+        }
+        else
+        {
+            $msg[] = "Only Staff will see the Menu";
+            $msg[] = "Please register STAFF first then relogin with staff user";
+            echo "<div class=\"msg\">";
+            foreach ($msg as $m) {echo "$m <br>";}
+            echo "</div>";
+        }
+        ?>
+    </td>
+    <td style="text-align: center; width: 130px; "></td>
+</tr>
 </table>
 </body>
 </html>

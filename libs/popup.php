@@ -10,7 +10,7 @@ else
 
   LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
   TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
-  settings ='height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable,toolbar=no,location=no'
+  settings ='height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable,toolbar=no,menubar=no';
 window.open(href, windowname, settings);
 return false;
 }
