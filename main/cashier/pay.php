@@ -4,7 +4,7 @@ include '../../config/dbc.php';
 page_protect();
 
 include '../../libs/progdate.php';
-include '../../libs/trpricecheck.php';
+
 $cpd = mysqli_query($link, "select name from stcpdrug");
 $t=1;
 while($stc=mysqli_fetch_array($cpd))
@@ -119,6 +119,9 @@ echo "</head><body>";
 	}
 	//lab price finish
   //Treatment price
+  
+  include '../../libs/trpricecheck.php';
+  
   $j = 1;
   for($i =1;$i<=4;$i++)
   {
