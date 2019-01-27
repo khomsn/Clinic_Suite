@@ -21,7 +21,7 @@ if($_POST['add'] == 'เพิ่ม')
                 ('$_POST[tname]')";
 
         // Now insert into "drug_group" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
     }
     // go on to other step
     header("Location: group.php");  
@@ -33,9 +33,7 @@ if($_POST['del'] != 0 )
 
 	$id = $_POST['del'];
 	$sql_del = "DELETE FROM drug_group WHERE id = $id";
-
-	// Now insert into "drug_group" table
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 
     // go on to other step
     header("Location: group.php");  

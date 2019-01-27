@@ -267,7 +267,7 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close')
 			`$tr1o3vp` = '$tr3o1v[$i]',
 			`$tr1o4p` = '$tr4o[$i]',
 			`$tr1o4vp` = '$tr4o1v[$i]'
-			") or die(mysqli_error($link));
+			");
 	}
 }
 $title = "ประวัติ Treatment";

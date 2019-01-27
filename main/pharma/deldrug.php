@@ -68,13 +68,13 @@ if($_POST['register'] == 'ลบข้อมูล')
         $sql_del = "DELETE FROM drug_id WHERE id = $id";
 
         // Now delete drug information from drug_id table
-        mysqli_query($link, $sql_del) or die("Deletion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_del) or $err[]=("Deletion Failed:" . mysqli_error($link));
 
         if($sety == 1)
         {
             $setid = "set_drug_".$id;
             $sql_drop ="DROP TABLE `$setid`" ;
-            mysqli_query($link, $sql_drop) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_drop) or $err[]=("Insertion Failed:" . mysqli_error($link));
         }
 
         $tid = "drug_".$id;
@@ -88,12 +88,12 @@ if($_POST['register'] == 'ลบข้อมูล')
         }
         //if have price don't drop table *use in account system ในการคำนวน กำไร
         $sql_drop ="DROP TABLE `$tid`" ;
-        mysqli_query($link, $sql_drop) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_drop) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // Delete Ac No
         NextStep:
         $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
         // Now remove drug information table
-        mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
         
         //loging del item
         $sql_insert = "INSERT into `deleted_drug` 
@@ -101,7 +101,7 @@ if($_POST['register'] == 'ลบข้อมูล')
                 VALUES 
                 ('$id','$dname','$dgname','$size','$dacno','$_SESSION[staff_id]')";
         // Now insert 
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // go on to other step
         
         header("Location: deldrug.php");  

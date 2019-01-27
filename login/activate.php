@@ -17,7 +17,7 @@ if(isset($get['user']) && !empty($get['activ_code']) && !empty($get['user']) && 
     $activ = mysqli_real_escape_string($link, $get['activ_code']);
 
     //check if activ code and user is valid
-    $rs_check = mysqli_query($link, "select id from users where md5_id='$user' and activation_code='$activ'") or die (mysqli_error($link)); 
+    $rs_check = mysqli_query($link, "select id from users where md5_id='$user' and activation_code='$activ'"); 
     $num = mysqli_num_rows($rs_check);
     // Match row found with more than 1 results  - the user is authenticated. 
     if ( $num <= 0 )
@@ -29,7 +29,7 @@ if(isset($get['user']) && !empty($get['activ_code']) && !empty($get['user']) && 
     if(empty($err))
     {
         // set the approved field to 1 to activate the account
-        $rs_activ = mysqli_query($link, "update users set approved='1' WHERE md5_id='$user' AND activation_code = '$activ' ") or die(mysqli_error($link));
+        $rs_activ = mysqli_query($link, "update users set approved='1' WHERE md5_id='$user' AND activation_code = '$activ' ");
         $msg[] = "Thank you. Your account has been activated.";
         $done = 1;
         exit();
@@ -46,7 +46,7 @@ if ($_POST['doActivate']=='Activate')
     $user_email = mysqli_real_escape_string($link, $_POST['user_email']);
     $activ = mysqli_real_escape_string($link, $_POST['activ_code']);
     //check if activ code and user is valid as precaution
-    $rs_check = mysqli_query($link, "select id from users where user_email='$user_email' and activation_code='$activ'") or die (mysqli_error($link)); 
+    $rs_check = mysqli_query($link, "select id from users where user_email='$user_email' and activation_code='$activ'"); 
     $num = mysqli_num_rows($rs_check);
     // Match row found with more than 1 results  - the user is authenticated. 
     if ( $num <= 0 )
@@ -57,7 +57,7 @@ if ($_POST['doActivate']=='Activate')
     //set approved field to 1 to activate the user
     if(empty($err))
     {
-        $rs_activ = mysqli_query($link, "update users set approved='1' WHERE user_email='$user_email' AND activation_code = '$activ' ") or die(mysqli_error($link));
+        $rs_activ = mysqli_query($link, "update users set approved='1' WHERE user_email='$user_email' AND activation_code = '$activ' ");
         $msg[] = "Thank you. Your account has been activated.";
         $done = 1;
     }

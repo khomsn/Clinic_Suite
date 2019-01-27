@@ -16,7 +16,7 @@ if($_POST['save']=="บันทึก")
     //if()
     {
     $sql_insert = "INSERT into `stcpdrug` (name) value ('$_POST[tin]')";
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
     }
 }
 

@@ -25,7 +25,7 @@ if($_POST['register'] == 'แก้ไข')
                 `staffcanorder` = '$_POST[storder]',
                 `stcp` = '$_POST[stcp]'
                 WHERE id='$id'
-                ") or die(mysqli_error($link));
+                ");
     // go on to other step
     header("Location: druglist.php");  
 }

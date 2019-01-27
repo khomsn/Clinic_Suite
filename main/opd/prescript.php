@@ -103,9 +103,7 @@ for($i=1;$i<=10;$i++)
 		// set reserve to 0 if less than 0
 		if($rvolnew < 0) $rvolnew = 0;
 		
-		mysqli_query($link, "UPDATE drug_id SET
-			`volreserve` = '$rvolnew' WHERE `id` ='$redid' LIMIT 1 ;
-			") or die(mysqli_error($link));
+		mysqli_query($link, "UPDATE drug_id SET `volreserve` = '$rvolnew' WHERE `id` ='$redid' LIMIT 1 ;");
 		}
 		
 		$rar = $i;
@@ -138,7 +136,7 @@ if(!empty($rar))
 			`$us` = '$usd',
 			`$vl` = '$vld',
 			`$rxby` = '$rxbyd'
-			") or die(mysqli_error($link));
+			");
         }
         if($i==10)
         {
@@ -152,7 +150,7 @@ if(!empty($rar))
 			`$us` = '',
 			`$vl` = '0',
 			`$rxby` = '0'
-			") or die(mysqli_error($link));       
+			");       
         }
     }
         // go on to other step
@@ -173,7 +171,7 @@ if($_POST['register'] == 'บันทึก')
 		if($_SESSION['sflc'])
         {
             $sql="SELECT * FROM $ordertable WHERE scode = '$usp'";
-            $result = mysqli_query($link,$sql) or die(mysqli_error($link));
+            $result = mysqli_query($link,$sql);
             
             if($result)
             {
@@ -187,7 +185,7 @@ if($_POST['register'] == 'บันทึก')
 		mysqli_query($link, "UPDATE $tmp SET
 			`$us` = '$usp',
 			`$vl` = '$vlp'
-			") or die(mysqli_error($link));
+			");
 		//update reserve volume at drug_id check if new volume = old volume
 		$oldvlp = $_POST['oldvl'.$i]; //$_SESSION['prxv'.$i];
 		if($oldvlp != $vlp)
@@ -202,16 +200,14 @@ if($_POST['register'] == 'บันทึก')
             //$rvolnew 
             if($rvolnew <=0 ) $rvolnew =0;
             
-            mysqli_query($link, "UPDATE drug_id SET
-                `volreserve` = '$rvolnew' WHERE `id` ='$redid' LIMIT 1 ;
-                ") or die(mysqli_error($link));
+            mysqli_query($link, "UPDATE drug_id SET `volreserve` = '$rvolnew' WHERE `id` ='$redid' LIMIT 1 ; ");
         }
 		// go on to other step
 	}
 
 //
     if (ltrim($_POST['inform']) === '') $_POST['inform'] = '';
-    mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$_POST[inform]' WHERE `id` = '$rid[0]' ") or die(mysqli_error($linkopdx));
+    mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$_POST[inform]' WHERE `id` = '$rid[0]' ");
 
     //complete save
     $checkid = 0;
@@ -228,9 +224,9 @@ if($_POST['register'] == 'บันทึก')
     {
         $sql_insert = "INSERT INTO `pt_to_drug` (`id`, `prefix`, `fname`, `lname`) VALUES ('$id', '$prefix', '$fname', '$lname')";
         // Now insert Patient to "pt_to_drug" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
         // Now Delete Patient from "pt_to_doc" table
-        mysqli_query($link, "DELETE FROM pt_to_doc WHERE ID = '$id' ") or die(mysqli_error($link));
+        mysqli_query($link, "DELETE FROM pt_to_doc WHERE ID = '$id' ");
         // go on to other step
         header("Location: ptlpage.php");
         exit();
@@ -238,16 +234,14 @@ if($_POST['register'] == 'บันทึก')
     if($checkid != 0)
     {
         $sql_insert = "INSERT INTO `pt_to_obs` (`id`, `prefix`, `fname`, `lname`) VALUES ('$id', '$prefix', '$fname', '$lname')";
-        // Now insert Patient to "pt_to_drug" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
     }
     // Now Delete Patient from "pt_to_doc" table
-    mysqli_query($link, "DELETE FROM pt_to_doc WHERE ID = '$id' ") or die(mysqli_error($link));
+    mysqli_query($link, "DELETE FROM pt_to_doc WHERE ID = '$id' ");
 
     // go on to other step
     if($_SESSION['user_accode']%11==0) header("Location: appointment.php");
     elseif($_SESSION['user_accode']%7==0) header("Location: ../cashier/ptpay.php");
-    // header("Location: prescriptconfirm.php");  
 }
 
 $title = "::สั่งยา::";
@@ -400,7 +394,7 @@ else echo "<body onload=\"javascript: poponload();\">";
 if(empty($_SESSION['tr']))
 {
     // Now Delete Patient from "pt_to_treatment" table
-    mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ") or die(mysqli_error($link));
+    mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ");
     unset($_SESSION['tr']);
 }
 else
@@ -410,13 +404,12 @@ else
     if(empty($check))
     {
         $sql_insert = "INSERT INTO `pt_to_treatment` (`ptid`, `prefix`, `fname`, `lname`) VALUES ('$id', '$_SESSION[pf]', '$_SESSION[fn]', '$_SESSION[ln]')";
-        // Now insert Patient to "pt_to_drug" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
     }
 }
 if(empty($_SESSION['prolab']))
 {
-    mysqli_query($link, "UPDATE $tmp SET  `prolab` = '0' ") or die(mysqli_error($link));
+    mysqli_query($link, "UPDATE $tmp SET  `prolab` = '0' ");
 }
 unset($_SESSION['prolab']);
 unset($_SESSION['tr']);

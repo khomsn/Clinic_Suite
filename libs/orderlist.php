@@ -9,7 +9,7 @@ $ordertable = 'doctemplate_'.$lcid;
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT scode FROM $ordertable WHERE scode LIKE '$my_data%' ORDER BY scode LIMIT 0,10";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

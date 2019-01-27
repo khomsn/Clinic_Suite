@@ -24,14 +24,14 @@ if (($_POST['pay'] == "ชำระหนี้") OR ($_POST['pay'] == "ตั�
 	//debtors account update
 	if($newdeb <= 0)
 	{
-		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $id ") or die(mysqli_error($link));
+		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $id ");
 	}	
 	elseif($newdeb > 0)
 	{
-		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $id ") or die(mysqli_error($link));
+		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $id ");
 		$sql_insert = "INSERT INTO `debtors` (`ctmid`,`ctmacno`,`price`)
 						VALUES ('$id','$ctmacno','$newdeb');";
-		mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		mysqli_query($link, $sql_insert);
 	}	
 	
 	//daily_account on debtor;
@@ -51,8 +51,7 @@ if (($_POST['pay'] == "ชำระหนี้") OR ($_POST['pay'] == "ตั�
 		}
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
 											VALUES (now(), '$acin', '$ctmacno', '$detail', '$pay', 'd', 's','$_SESSION[user_id]' );";
-			// Now insert Patient to "patient_id" table
-			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+			mysqli_query($link, $sql_insert);
 		}
 	}
     }

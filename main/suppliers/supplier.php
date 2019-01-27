@@ -39,17 +39,14 @@ if(($_POST['register'] == 'ตกลง')  AND (ltrim($_POST['name']!== '')))
                 (`ac_no`, `name`)
                 VALUES
                 ('$ac','$name')";
-    // Now insert Patient to "patient_id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
     // assign insertion pattern
     $sql_insert = "INSERT into `supplier`
                 (`name`,`address`,`tel`, `email`, `agent`, `mobile` , `ac_no` )
                 VALUES
                 ('$name','$address','$_POST[tel]','$email','$_POST[agent]','$_POST[mobile]','$ac')";
-
-    // Now insert Patient to "patient_id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
     // Then get Supplier ID to process to other step.
     $result = mysqli_query($link, "SELECT * FROM supplier
@@ -72,8 +69,7 @@ if(($_POST['register'] == 'ตกลง')  AND (ltrim($_POST['name']!== '')))
 
     ";
 
-    // Now create drug information table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
     // go on to other step
     header("Location: supplier.php");  
 

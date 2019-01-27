@@ -16,7 +16,7 @@ mysqli_query($linkcm, $sql);
 
 if($_POST['set'] == 'ReSet')
 {
-      mysqli_query($linkcm, "TRUNCATE TABLE drandillci") or die(mysqli_error($linkcm));
+      mysqli_query($linkcm, "TRUNCATE TABLE drandillci");
 }
 if($_POST['set'] == 'Set') 
 { 
@@ -30,7 +30,7 @@ if($_POST['set'] == 'Set')
 			    `chronname` = '$_POST[$chronname]',
 			    `drugname` = '$_POST[$drugname]'
 			    WHERE id='$i'
-			    ") or die(mysqli_error($linkcm));
+			    ");
   }
   
     $i = $_SESSION['rowmax'];
@@ -45,7 +45,7 @@ if($_POST['set'] == 'Set')
 			    ('$_POST[$chronname]','$_POST[$drugname]')";
 
     // Now insert into "drandillci" table
-    mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+    mysqli_query($linkcm, $sql_insert);
   }
   unset($_SESSION['rowmax']);
 }

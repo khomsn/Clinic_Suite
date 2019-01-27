@@ -43,7 +43,7 @@ if (ltrim($row_settings['csf'])==="")
     $sql_insert = "INSERT into `tmp_$id` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
 
     // Now insert Patient to "tmp_#id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
     
     $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `tmp_$id`"));
     $rindex = $rindex[0];
@@ -63,7 +63,7 @@ if (ltrim($row_settings['csf'])==="")
 			('$rindex', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
 
     // Now insert Patient to "pt_#id" table
-    mysqli_query($linkopdx, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopdx));
+    mysqli_query($linkopdx, $sql_insert);
     }
     
 if (ltrim($row_settings['csf']) !=="")
@@ -71,7 +71,7 @@ if (ltrim($row_settings['csf']) !=="")
     // assign insertion pattern
     $sql = "UPDATE tmp_$id SET `csf` = '$_POST[csf]', `preg` = '$_POST[preg]',`medcert` = '$medcert',`pricepolicy`= '$staff'";
     // Now insert Patient to "tmp_#id" table
-    mysqli_query($link, $sql) or die("Update Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql);
     
     $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
     $rid = mysqli_fetch_array($pin);
@@ -89,12 +89,12 @@ if (ltrim($row_settings['csf']) !=="")
 			";
     
     // Now insert Patient to "pt_#id" table
-    mysqli_query($linkopdx, $sql) or die("Update Failed:" . mysqli_error($linkopdx));
+    mysqli_query($linkopdx, $sql);
     }
 }
 //update height at patient_id.
 
-if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'") or die(mysqli_error($linkopd));
+if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'");
 // go on to other step
 $ptdoc = 1;
 }

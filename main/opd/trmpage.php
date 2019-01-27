@@ -65,7 +65,7 @@ if($_POST['record']=='Save')
     // Now Delete Patient from "pt_to_lab" table
     if(!$_SESSION['trmnatn'] AND !$_SESSION['drtnatn'])
     {
-        mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ") or die(mysqli_error($link));
+        mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ");
     }
     //redirect to caller page..
     if($_SESSION['frompage'] == "payment")

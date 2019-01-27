@@ -53,7 +53,7 @@ if($_POST['save']=='Save')
             `price` = '0',
             `prog` = '1'
             WHERE Labid='$labid'
-            ") or die(mysqli_error($link));
+            ");
         }
         if(!$_POST[$labid])
         {
@@ -61,7 +61,7 @@ if($_POST['save']=='Save')
             `price` = '$price[$labid]',
             `prog` = '0'
             WHERE Labid='$labid'
-            ") or die(mysqli_error($link));
+            ");
         }
     }
     //get lab price
@@ -71,7 +71,7 @@ if($_POST['save']=='Save')
         $alllabprice = $alpr['price']+$alllabprice;
     }
     //update $tmp table at lab price
-    mysqli_query($link, "UPDATE $temptable SET  `licprice` = '$alllabprice'") or die(mysqli_error($link));
+    mysqli_query($link, "UPDATE $temptable SET  `licprice` = '$alllabprice'");
 }
 $title = "::Lab Investigation::";
 include '../../main/header.php';

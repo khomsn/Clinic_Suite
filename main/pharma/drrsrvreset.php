@@ -4,9 +4,7 @@ page_protect();
 
 if($_POST['reset']=="Reset")
 {
-  		mysqli_query($link, "UPDATE drug_id SET
-			`volreserve` = '0'
-			") or die(mysqli_error($link));
+    mysqli_query($link, "UPDATE drug_id SET `volreserve` = '0'");
 }
 $title = "::ห้องยา::";
 include '../../main/header.php';

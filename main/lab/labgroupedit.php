@@ -2,6 +2,7 @@
 include '../../config/dbc.php';
 page_protect();
 $err = array();
+$msg = array();
 
 if(!($_SESSION['accode']%13==0 or $_SESSION['accode']%5==0)) header("Location: lablist.php");
 
@@ -16,7 +17,7 @@ while ($lsetin = mysqli_fetch_array($lin))
     $L_Set = $lsetin['id'].'-'.$lsetin['S_Name'];
 }
 
-$lsetmemb = mysqli_query($link, "select count(*) as total from lab where L_Set='$L_Set'") or die(mysqli_error($link));
+$lsetmemb = mysqli_query($link, "select count(*) as total from lab where L_Set='$L_Set'");
 list($total) = mysqli_fetch_row($lsetmemb);
 
 if ($total > 0)
@@ -27,7 +28,7 @@ if ($total > 0)
 if($_POST['Save']=='Save') 
 {
     //check for SETNAME
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[L_Name]' AND L_specimen='$_POST[L_specimen]'") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[L_Name]' AND L_specimen='$_POST[L_specimen]'") or $err[] = mysqli_error($link);
     list($total) = mysqli_fetch_row($rs_duplicate);
 	if ($total > 1)
 	{
@@ -44,7 +45,7 @@ if($_POST['Save']=='Save')
 	This code does a second check on the server side if the email already exists. It 
 	queries the database and if it has any existing email it throws user email already exists
 	*******************************************************************/
-	$rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$LLName' AND L_specimen ='$_POST[L_specimen]'") or die(mysqli_error($link));
+	$rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$LLName' AND L_specimen ='$_POST[L_specimen]'") or  $err[] = mysqli_error($link);
 	list($total) = mysqli_fetch_row($rs_duplicate);
 	if ($total > 1)
 	{
@@ -103,7 +104,7 @@ if($_POST['Save']=='Save')
                     `colourcode` = '$_POST[ccode1]',
                     `colourcode2` = '$_POST[ccode2]'
                     WHERE id='$Lid'
-                    ") or die(mysqli_error($link));
+                    ") or $err[] = mysqli_error($link);
         }
     }
     $msg[]="Update Completed";

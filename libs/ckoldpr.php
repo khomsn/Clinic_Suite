@@ -77,7 +77,7 @@ $stmt->bind_param("ii", $volreserve, $idres);
 			`$us` = '$usp',
 			`$vl` = '$vlp',
 			`$svl` = '$svol'
-			") or die(mysqli_error($link));
+			");
 		}
 		elseif($preg==0)
 		{
@@ -88,7 +88,7 @@ $stmt->bind_param("ii", $volreserve, $idres);
 			`$us` = '$usp',
 			`$vl` = '$vlp',
 			`$svl` = '$svol'
-			") or die(mysqli_error($link));
+			");
 		}
 		//now update reservolume
         //update drug_id at volreserve return volume.

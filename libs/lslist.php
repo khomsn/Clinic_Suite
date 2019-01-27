@@ -4,7 +4,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT DISTINCT L_Set FROM lab WHERE L_Set LIKE '%$my_data%' AND L_Set != 'SETNAME' ORDER BY L_Set";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

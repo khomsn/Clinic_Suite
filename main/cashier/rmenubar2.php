@@ -10,7 +10,6 @@ $pdir = "../".PT_AVATAR_PATH;
 $title = "::::";
 include '../../main/header.php';
 include '../../libs/popup.php';
-//include '../../libs/refreshpay.php';
 echo "</head><body>";
 ?>
 <script type="text/javascript" language="javascript">

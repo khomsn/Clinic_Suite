@@ -17,6 +17,6 @@ CREATE TABLE IF NOT EXISTS `$rawmattable` (
 
 ";
 
-// Now create drug information table
+// Now create rawmattable information table
 mysqli_query($link, $sql_insert) or die("Create Table Failed:" . mysqli_error($link));
 ?>

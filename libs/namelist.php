@@ -7,7 +7,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT DISTINCT fname FROM patient_id WHERE fname LIKE '$my_data%' ORDER BY fname LIMIT 0,10";
-	$result = mysqli_query($linkopd,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkopd,$sql);
 	
 	if($result)
 	{

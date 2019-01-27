@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `parameter` (
   `extid` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ";
-mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
 if($_POST['submit']=='Set Logo')
 {
@@ -56,7 +56,7 @@ if($_POST['submit']=='Set Logo')
 if($_POST['save'] == 'บันทึก') 
 { 
 
-    mysqli_query($link, "TRUNCATE TABLE parameter") or die(mysqli_error($link));
+    mysqli_query($link, "TRUNCATE TABLE parameter") or $err[]=(mysqli_error($link));
 
     // Filter POST data for harmful code (sanitize)
     foreach($_POST as $key => $value)
@@ -71,7 +71,7 @@ if($_POST['save'] == 'บันทึก')
 			    '$data[Staffp]','$data[name_lc]','$data[lcid]','$data[maxcp]','$data[print]','$data[DF]','$data[dfp]','$data[offset]','$data[maskingdrugid]','$data[extid]')";
 
     // Now insert Patient to "patient_id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
     // go on to other step
     header("Location: progpara.php");  

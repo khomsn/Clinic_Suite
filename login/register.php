@@ -95,7 +95,7 @@ if($_POST['doRegister'] == 'Register')
         queries the database and if it has any existing email it throws user email already exists
         *******************************************************************/
 
-        $rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_email='$usr_email' OR user_name='$user_name'") or die(mysqli_error($link));
+        $rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_email='$usr_email' OR user_name='$user_name'");
         list($total) = mysqli_fetch_row($rs_duplicate);
 
         if ($total > 0)

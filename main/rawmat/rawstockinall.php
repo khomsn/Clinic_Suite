@@ -117,8 +117,7 @@ if($_POST['doSave'] == 'Save')
             $sql_insert = "INSERT into `$rawmattable`	(`date`,`expdate`,`supplier`,`inv_num`, `volume`, `price`)
             VALUES  ('$bday','$expd','$_POST[supplier]','$_POST[inv_num]','$buyvolume','$buyprice')";
         }
-        // Now insert Drug order information to "drug_#id" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) ;
 
 
         // Update rawmat at volume and buyprice.
@@ -139,8 +138,7 @@ if($_POST['doSave'] == 'Save')
             // assign insertion pattern
             $sql_insert = "INSERT into `sp_$spid`	(`date`,`inid`,`inv_num`, `price`, `payment`)
             VALUES  ('$bday','$rawid','$_POST[inv_num]','$buyprice','$_POST[pay]')";
-            // Now insert Drug order information to "drug_#id" table
-            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_insert);
 
             // accounting system
             if($buyprice!=0)
@@ -156,8 +154,7 @@ if($_POST['doSave'] == 'Save')
                             $pacnum = $_POST['payby'] + 40000000;
                             $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
                             VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
-                            // Now insert Drug order information to "drug_#id" table
-                            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                            mysqli_query($link, $sql_insert) ;
                         }
                     }
                 }
@@ -173,8 +170,7 @@ if($_POST['doSave'] == 'Save')
                     $detail ="ซื้อ ".$_POST['supplier'].' '.$_POST['inv_num'];
                     $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`bors`,`recordby`)
                     VALUES  (now(),'$dacno','$sup_ac','$detail','$_POST[inv_num]','$buyprice','c','b','$_SESSION[user_id]')";
-                    // Now insert Drug order information to "drug_#id" table
-                    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                    mysqli_query($link, $sql_insert);
                 }
             }      
 

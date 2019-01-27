@@ -40,7 +40,7 @@ if($_POST['set']=="SET")
         }
         $finject = mysqli_real_escape_string($linkopdx, $finject);
 
-        mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ") or die(mysqli_error($linkopdx));
+        mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ");
     }
     else
     {
@@ -413,7 +413,7 @@ if($_POST['set']=="SET")
         //<input type=checkbox name=fupin3 value=3>นัด Vaccine พิษสุนัขบ้า
         
         $finject = mysqli_real_escape_string($linkopdx, $finject);
-        mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ") or die(mysqli_error($linkopdx));
+        mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ");
         // go on to other step
         unset($_SESSION['medcert']);
         header("Location: prescriptconfirm.php");   

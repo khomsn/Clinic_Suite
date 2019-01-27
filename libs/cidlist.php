@@ -5,7 +5,7 @@ include '../config/dbc.php';
     $q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
 	$my_data = mysqli_real_escape_string($linkopd, $q);
 	$sql="SELECT ctz_id FROM patient_id WHERE ctz_id LIKE '$my_data%' ORDER BY ctz_id LIMIT 0,10";
-	$result = mysqli_query($linkopd,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkopd,$sql);
 	
 	if($result)
 	{

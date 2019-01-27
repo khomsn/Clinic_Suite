@@ -1,3 +1,7 @@
+khomsn-klinic-suite (62.01-27) stable; urgency=low
+  
+    * Version 25620127: Clean up comments and error handle.
+    
 khomsn-klinic-suite (62.01-13) stable; urgency=low
   
     * Version 25620113: Correct PHP code. Change Report Panel.

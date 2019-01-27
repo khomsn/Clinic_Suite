@@ -19,7 +19,7 @@ if($_POST['add'] == 'เพิ่ม')
 			('$_POST[sellofmon]', '$_POST[perofcom]' )";
 
 	// Now insert into "commission" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_insert);
 // go on to other step
 header("Location: comrate.php");  
 }
@@ -30,7 +30,7 @@ if($_POST['del'] != 0 )
 	$sql_del = "DELETE FROM `commission` WHERE perofcom = $dels";
 
 	// Now insert into "commission" table
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 
 // go on to other step
 header("Location: comrate.php");  

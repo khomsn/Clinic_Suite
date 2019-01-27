@@ -34,7 +34,7 @@ if($_POST['doRegister'] == 'แก้ไข')
     if($_SESSION['oldctzid']!=$ctzidin)
     {
         // check for duplicated record for ctz_id
-        $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or die(mysqli_error($linkopd));
+        $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or $err[]=(mysqli_error($linkopd));
         list($total) = mysqli_fetch_array($rs_duplicate);
 
         if ($total > 0)
@@ -55,7 +55,7 @@ if($_POST['doRegister'] == 'แก้ไข')
     if(!empty($_POST['address3']) and empty($_POST['address4']))
     {
         $sql="SELECT * FROM zip WHERE tname='$_POST[address3]'";
-        $result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+        $result = mysqli_query($linkcm,$sql) or $err[]=(mysqli_error());
         while($row=mysqli_fetch_array($result))
         {
             $_POST['address4'] = $row['aname'];
@@ -66,7 +66,7 @@ if($_POST['doRegister'] == 'แก้ไข')
     if(!empty($_POST['address3']) and !empty($_POST['address4']))
     {
         $sql="SELECT * FROM zip WHERE tname='$_POST[address3]' AND aname='$_POST[address4]'";
-        $result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+        $result = mysqli_query($linkcm,$sql) or $err[]=(mysqli_error());
         while($row=mysqli_fetch_array($result))
         {
             $_POST['address5'] = $row['jname'];
@@ -138,7 +138,7 @@ if($_POST['doRegister'] == 'แก้ไข')
     ";
 
     // Now insert Patient to "patient_id" table
-    mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
+    mysqli_query($linkopd, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkopd));
     //update prefix table
     $imp = mysqli_query($linkcm, "select name from prefix WHERE name = '$_POST[prefix]'");
 
@@ -146,7 +146,7 @@ if($_POST['doRegister'] == 'แก้ไข')
     if(empty($imprs))
     {
         $sql_insert = "INSERT into `prefix` (name) value ('$_POST[prefix]')";
-        mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+        mysqli_query($linkcm, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkcm));
     }
     /*************************** AVATAR PART********************************/
         

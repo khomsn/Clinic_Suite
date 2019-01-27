@@ -56,7 +56,7 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
         }
     }
     // Now insert Drug order information to "drug_#id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
 
     // Update drug_id at volume and buyprice.
@@ -71,8 +71,7 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
 
         $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
         VALUES  (now(),'$dacno','10700000','สินค้าจากวัตถุดิบ','$_POST[price]','c','p','$_SESSION[user_id]')";
-        // Now insert Drug order information to "drug_#id" table10700000 ตัดยอด
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
     }
     //for product not register in supplier and account
 
@@ -89,14 +88,9 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
         // assign insertion pattern
         $sql_insert = "INSERT into `sp_$spid`	(`date`,`inid`,`inv_num`, `price`, `payment`)
         VALUES  ('$bday','$id','$_POST[inv_num]','$_POST[price]','$_POST[pay]')";
-        // Now insert Drug order information to "drug_#id" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 
         // accounting system
-        //$acc = mysqli_query($link, "SELECT ac_no FROM drug_id WHERE id = $id");
-        //while($rowac = mysqli_fetch_array($acc))
-        //{ $dacno = $rowac['ac_no'];}
-
         if ($_POST['pay'] == '1')
         { 
             $sup_ac = $_POST['payby'];
@@ -108,8 +102,7 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
                     $pacnum = $_POST['payby'] + 40000000;
                     $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
                     VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
-                    // Now insert Drug order information to "drug_#id" table
-                    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                    mysqli_query($link, $sql_insert);
                 }
 
             }
@@ -126,8 +119,7 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
             $detail ="ซื้อ ".$_POST['supplier'].' '.$_POST['inv_num'];
             $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`bors`,`recordby`)
             VALUES  (now(),'$dacno','$sup_ac','$detail','$_POST[inv_num]','$_POST[price]','c','b','$_SESSION[user_id]')";
-            // Now insert Drug order information to "drug_#id" table
-            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_insert);
         }
 
     }

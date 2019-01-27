@@ -65,8 +65,7 @@ for($i=1;$i<$imax;$i++)
 		$pacnum = $_POST['payby'] + 40000000;
 		$sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
 						VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
-			// Now insert Drug order information to "drug_#id" table
-			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+			mysqli_query($link, $sql_insert);
 		}
 	}	
 
@@ -74,10 +73,8 @@ for($i=1;$i<$imax;$i++)
 	$detail = "จ่าย ".$spname."->InvNo.".$inv_num;
 	$sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`recordby`)
 		       VALUES  ('$pday','$spacno','$sup_ac','$detail','$inv_num','$price','c','$_SESSION[user_id]')";
-	// Now insert Drug order information to "drug_#id" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_insert);
 
-	
 // go on to other step
 header("Location: updatesp.php");  
  }

@@ -179,7 +179,7 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close' )
 			`$tr1o3vp` = '$Vol3[$i]',
 			`$tr1o4p` = '$Opt4[$i]',
 			`$tr1o4vp` = '$Vol4[$i]'
-			") or die(mysqli_error($link));
+			");
 	}
 
 }

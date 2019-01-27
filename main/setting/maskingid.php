@@ -27,7 +27,7 @@ if($_POST['addmore']=='+')
 {
   
     // check for duplicated record
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from maskid where drugid='$_POST[drugid]'") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from maskid where drugid='$_POST[drugid]'") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -46,7 +46,7 @@ if($_POST['addmore']=='+')
       $sql_insert = "INSERT into `maskid` (`drugid`,`dname`,`dgname`, `mask`) VALUES ('$_POST[drugid]','$dname','$dgname','1')";
 
       // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
       }
     }
 }
@@ -56,13 +56,13 @@ for($j=1;$j<=$i;$j++)
   if($_POST['del'.$j] == 'ลบ')
   {
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM maskid WHERE id = '$j' ") or die(mysqli_error($link));
+	  mysqli_query($link, "DELETE FROM maskid WHERE id = '$j' ") or $err[]=(mysqli_error($link));
   }
 }
 if(!is_null($_POST['mask']))
 {
     $sql_insert = "UPDATE `maskid` SET `mask` = '$_POST[mask]'; ";
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 }
 
 $title = "::Drug used Masking::";

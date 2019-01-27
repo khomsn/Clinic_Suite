@@ -10,9 +10,7 @@ if(($_POST['add'] == 'เพิ่ม')  AND (ltrim($_POST['tname']!== '')))
   			(`name`)
 		    VALUES
 			('$_POST[tname]')";
-
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_insert);
 // go on to other step
 header("Location: subgroup.php");  
 }
@@ -23,9 +21,7 @@ if($_POST['del'] != 0 )
 
 	$id = $_POST['del'];
 	$sql_del = "DELETE FROM drug_subgroup WHERE id = $id";
-
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 
 // go on to other step
 header("Location: subgroup.php");  

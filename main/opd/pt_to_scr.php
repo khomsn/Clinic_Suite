@@ -8,9 +8,9 @@ if($_POST['del'])
 {
     $ptid=$_POST['del'];
     $sql="DROP TABLE tmp_$ptid";
-    mysqli_query($link, $sql) or die("Update Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql);
     $sql="DELETE FROM `pt_to_scr` WHERE `pt_to_scr`.`ID` = $ptid";
-    mysqli_query($link, $sql) or die("Update Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql);
 }
 
 $title = "::ผู้ป่วยรอตรวจร่างกายเบื้องต้น::";

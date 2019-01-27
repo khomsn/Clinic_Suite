@@ -40,7 +40,7 @@ include '../../main/bodyheader.php';
                 
                 $alloutcount[$rawid] = $alloutcount[$rawid]+$outcount[$l] * $outvol[$l];
                 
-                mysqli_query($link, "UPDATE drugcombset SET `outcount` = '0' WHERE `id` = '$l' ")  or die(mysqli_error($link));
+                mysqli_query($link, "UPDATE drugcombset SET `outcount` = '0' WHERE `id` = '$l' ");
             
                 $idin[$l] = $rawid;
                 
@@ -163,15 +163,13 @@ include '../../main/bodyheader.php';
 
                             $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
                             VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-                            // Now insert Drug order information to "rawmat_#id" table
-                            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                            mysqli_query($link, $sql_insert);
                             //
                             Next_rawmat1:
                             //record use stat
                             $sql_insert = "INSERT into `rawmattouse`	(`date`, `rawmatid`, `volume`,`user`)
                             VALUES  (now(),'$drugidout[$a]','$acvol','0')";
-                            // Now insert Drug order information to "rawmat_#id" table
-                            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                            mysqli_query($link, $sql_insert);
 
 
                         }
@@ -180,7 +178,7 @@ include '../../main/bodyheader.php';
                         goto JPincaseof0;
                     }
 
-                    mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$a]' ")  or die(mysqli_error($link));
+                    mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$a]' ");
 
                     //account system and stat
                     if($acvol>0)
@@ -194,23 +192,19 @@ include '../../main/bodyheader.php';
 
                         $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
                         VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-                        // Now insert Drug order information to "rawmat_#id" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                         mysqli_query($link, $sql_insert);
                         //
                         Next_rawmat2:
                         //record use stat
                         $sql_insert = "INSERT into `rawmattouse`	(`date`, `rawmatid`, `volume`,`user`)
                         VALUES  (now(),'$drugidout[$a]','$acvol','0')";
-                        // Now insert Drug order information to "rawmat_#id" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-
-
+                        mysqli_query($link, $sql_insert);
                     }
                 }
                 }/***************************cutrm finished****************/
             }
             JPincaseof0:
-            mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$newoutcount[$a]' WHERE  id = '$rowidin[$a]'") or die(mysqli_error($link));   
+            mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$newoutcount[$a]' WHERE  id = '$rowidin[$a]'");   
         }
     ?>
 <!-- auto rawmat sum and cut stock end-->
@@ -345,8 +339,7 @@ include '../../main/bodyheader.php';
                             (`drugid`,`mandy`,`price`)
                         VALUES
                             ('$didacno[$i]',now(),'$tmprice[$i]')";
-                        // Now insert Patient to "patient_id" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                        mysqli_query($link, $sql_insert);
                     }
                     else
                     { 
@@ -355,11 +348,8 @@ include '../../main/bodyheader.php';
                         if ($tmpricenew<0)$tmpricenew = 0;
                         
                         $sql_insert = "UPDATE `allrsupm` SET `mandy` = now(),`price` = '$tmpricenew'
-                                        WHERE id=$rowid LIMIT 1 ; 
-                                        ";
-
-                        // Now insert Patient to "patient_id" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                                        WHERE id=$rowid LIMIT 1 ; ";
+                        mysqli_query($link, $sql_insert);
                     }
                 }
             }

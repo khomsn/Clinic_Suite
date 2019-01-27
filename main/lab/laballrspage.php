@@ -180,7 +180,7 @@ if($_POST['Save']=="Save")
         if(empty($chpt))
         {
         // Now Delete Patient from "pt_to_lab" table
-        mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ") or die(mysqli_error($link));
+        mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ");
         }
 
     }

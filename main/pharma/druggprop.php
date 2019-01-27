@@ -74,7 +74,7 @@ if($_POST['SetValue'] == "Set Value")
 			      `dinteract` = '$dinteract',
 			      `indication` = '$dindic'
 			      WHERE `dgname`='$dgnamein'
-			      ") or die(mysqli_error($link));
+			      ");
     if(!empty($dciwith))
     {
         if(!empty($dsgroupin))
@@ -84,7 +84,7 @@ if($_POST['SetValue'] == "Set Value")
             if(empty($dicon['id']))
             {
                 $sql_insert = "INSERT into `drandillci` ( chronname, drugname) value ('$dciwith','$dsgroupin')";
-                mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+                mysqli_query($linkcm, $sql_insert);
             }
         }
         if(!empty($dgroupin))
@@ -94,7 +94,7 @@ if($_POST['SetValue'] == "Set Value")
             if(empty($dicon['id']))
             {
                 $sql_insert = "INSERT into `drandillci` ( chronname, drugname) value ('$dciwith','$dgroupin')";
-                mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+                mysqli_query($linkcm, $sql_insert);
             }
         }
         if(empty($dsgroupin) and empty($dgroupin))
@@ -103,7 +103,7 @@ if($_POST['SetValue'] == "Set Value")
             if(empty($dicon['id']))
             {
                 $sql_insert = "INSERT into `drandillci` ( chronname, drugname) value ('$dciwith','$dgnamein')";
-                mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+                mysqli_query($linkcm, $sql_insert);
             }
         }
         
@@ -127,7 +127,7 @@ if($_POST['register'] == "แก้ไข")
 			      `dcat` = '$dcat',
 			      `ciwith` = '$dciwith',
 			      `indication` = '$dindic'
-			      WHERE id='$j' LIMIT 1 ;") or die(mysqli_error($linkcm));
+			      WHERE id='$j' LIMIT 1 ;");
    }
     $minrow = $_SESSION['page']*$pagelimit;
     $_SESSION['page'] = $_SESSION['page']+1;

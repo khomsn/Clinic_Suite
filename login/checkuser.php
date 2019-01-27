@@ -22,7 +22,7 @@ exit();
 
 
 
-$rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_name='$user' ") or die(mysqli_error($link));
+$rs_duplicate = mysqli_query($link, "select count(*) as total from users where user_name='$user' ");
 list($total) = mysqli_fetch_row($rs_duplicate);
 
 	if ($total > 0)

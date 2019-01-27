@@ -70,8 +70,7 @@ if($_POST['Save']=="Save")
 				`chro_ill_5` = '$chrl[5]'
 				WHERE `id` ='$id' LIMIT 1 ; 
 				";
-// Now insert Patient to "patient_id" table
-mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
+mysqli_query($linkopd, $sql_insert);
 header("Location: chronicill.php"); 
 }
 ?>

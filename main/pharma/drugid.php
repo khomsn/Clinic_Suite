@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+$err = array();
 
 $sql_create = "CREATE TABLE IF NOT EXISTS `drug_id` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
@@ -73,7 +74,7 @@ if($_POST['register'] == 'ตกลง')
     // assign account number to new product.
     $ac = $mmm + 1;
 
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from drug_id where dname='$_POST[dname]' AND dgname='$_POST[dgname]' AND size='$_POST[size]' ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from drug_id where dname='$_POST[dname]' AND dgname='$_POST[dgname]' AND size='$_POST[size]' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_row($rs_duplicate);
 
     if ($total > 0)
@@ -90,9 +91,9 @@ if($_POST['register'] == 'ตกลง')
                     VALUES
                     ('$ac','$adn')";
         // Now insert Account number for product to "acnumber" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
         //check to reactive deleted drug
-        $rs_duplicate = mysqli_query($link, "select count(*) as total from deleted_drug where dname='$_POST[dname]' AND dgname='$_POST[dgname]' AND size='$_POST[size]' ") or die(mysqli_error($link));
+        $rs_duplicate = mysqli_query($link, "select count(*) as total from deleted_drug where dname='$_POST[dname]' AND dgname='$_POST[dgname]' AND size='$_POST[size]' ") or $err[]=(mysqli_error($link));
         list($dldrug) = mysqli_fetch_row($rs_duplicate);
 
         if($dldrug)
@@ -112,11 +113,11 @@ if($_POST['register'] == 'ตกลง')
                         ('$id','$_POST[dname]','$_POST[dgname]','$_POST[uses]','$_POST[Indication]','$_POST[size]','$_POST[sellprice]','$_POST[min_limit]','$_POST[type]','$_POST[group]','$_POST[set]',
                         '$ac','$_POST[track]','$_POST[disct]','$_POST[prod]','$_POST[RawMat]','$_POST[cat]','$_POST[unit]','$_POST[candp]','$_POST[stcp]')";
             // Now insert into "drug_id" table
-            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
             //remove this id from deleted_drug
             $sql_del = "DELETE FROM `deleted_drug` WHERE `id` = '$id'";
             // Now DELETE Patient to "pt_to_lab" table
-            mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
         }
         else
@@ -129,7 +130,7 @@ if($_POST['register'] == 'ตกลง')
                         '$ac','$_POST[track]','$_POST[disct]','$_POST[prod]','$_POST[RawMat]','$_POST[cat]','$_POST[unit]','$_POST[candp]','$_POST[stcp]')";
 
             // Now insert into "drug_id" table
-            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
             // Then get Patient ID to process to other step.
             $result = mysqli_query($link, "SELECT * FROM drug_id
@@ -148,7 +149,7 @@ if($_POST['register'] == 'ตกลง')
                             ADD `mklot` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
                             ADD `mkanl` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
                             ADD `mkunit` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ";
-                mysqli_query($link, $sql_add) or die("Insertion Failed:" . mysqli_error($link));
+                mysqli_query($link, $sql_add) or $err[]=("Insertion Failed:" . mysqli_error($link));
                     
                 $id = "tr_drug_".$row['id'];
                 $sql_insert ="
@@ -161,7 +162,7 @@ if($_POST['register'] == 'ตกลง')
                             PRIMARY KEY (`id`)
                             ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
                 // Now create drug information table
-                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
                         
             }
 
@@ -175,7 +176,7 @@ if($_POST['register'] == 'ตกลง')
                             `uses` VARCHAR( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL 
                             ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; ";
                 // Now create drug information table
-                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
                 goto Skipdgname; // not update druggeneric if it is drug set        
             }
 
@@ -186,7 +187,7 @@ if($_POST['register'] == 'ตกลง')
             if(empty($imprs))
             {
                 $sql_insert = "INSERT into `druggeneric`  (`name`, `indication`, `dcat`  )  VALUES ('$_POST[dgname]','$_POST[indication]','$_POST[cat]')";
-                mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+                mysqli_query($linkcm, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkcm));
             }
           Skipdgname:  
         }

@@ -70,17 +70,17 @@ if($_POST['doRegister'] == 'แก้ไข')
 					WHERE `ID` ='$_SESSION[Staff_id]' LIMIT 1 ; 
 					";
 	// Now insert Staff to "staff" table
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_update);
 	
 	$sql_update = "UPDATE `patient_id` SET `staff`= '$_POST[status]' WHERE `ctz_id` = '$_POST[ctz_id]' LIMIT 1 ;";
-	mysqli_query($linkopd, $sql_update) or die("Insertion Failed:" . mysqli_error($linkopd));
+	mysqli_query($linkopd, $sql_update) ;
 	
 	$staffid= $_SESSION['Staff_id'];
 
 	//update users table at staff_id
 	$sql_update = "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id';";
 	// Now insert Staff to "users" table
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_update);
 	
 
     //avatar part

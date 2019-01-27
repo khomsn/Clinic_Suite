@@ -2,9 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 
-//get information
-//$sql_update = "UPDATE `queuesystem` SET `ptid` = '$id' WHERE `FromIp` = '$_SESSION[user_ip]'";
-
 echo "<div id=\"callpt\">";
 $getptid = mysqli_query($link, "select * from `queuesystem` WHERE  `ToIp` = '$_SESSION[user_ip]'");
 while ($row_settings = mysqli_fetch_array($getptid))

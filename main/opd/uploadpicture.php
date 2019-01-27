@@ -88,24 +88,6 @@ if($image) {
 }
 
 ?>
-
-<?php
-/*
-header('Content-type: image/jpeg');
-
-$im = '../public/ptimages/*';
-$image_files = glob($im);
-
-foreach ($image_files as $image_file) {
-    $image = new Imagick($image_file);
-    // Do something for the image and so on...
-    $image->thumbnailImage(1024,0);
-}
-
-$images->writeImages();
-*/
-?>
-
 <form action="uploadpicture.php" method="post" name="myform" id="myform" enctype="multipart/form-data">
     <!-- max size 5 MB (as many people directly upload high res pictures from their digicams) -->
     <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />

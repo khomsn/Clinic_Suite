@@ -6,7 +6,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT name FROM prefix WHERE name LIKE '%$my_data%' ORDER BY name";
-	$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkcm,$sql);
 	
 	if($result)
 	{

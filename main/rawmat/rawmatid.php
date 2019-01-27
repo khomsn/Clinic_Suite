@@ -53,7 +53,7 @@ if($_POST['register'] == 'ตกลง')
     $ac = $mmm + 1;
 
     //
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from rawmat where rawcode='$_POST[rawcode]' AND rawname='$_POST[rawname]' AND size='$_POST[size]' ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from rawmat where rawcode='$_POST[rawcode]' AND rawname='$_POST[rawname]' AND size='$_POST[size]' ");
     list($total) = mysqli_fetch_row($rs_duplicate);
 
     if ($total > 0)
@@ -68,8 +68,7 @@ if($_POST['register'] == 'ตกลง')
     {
         //assign ac_no to table acnumber
         $sql_insert = "INSERT into `acnumber` (`ac_no`, `name`) VALUES  ('$ac','$adn')";
-        // Now insert Account number for product to "acnumber" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 
         // assign insertion pattern
         $sql_insert = "INSERT into `rawmat`
@@ -78,7 +77,7 @@ if($_POST['register'] == 'ตกลง')
         ('$_POST[rawcode]','$_POST[rawname]','$_POST[size]','$_POST[unit]','$_POST[min_limit]','$ac','$_POST[rmpd]','$_POST[rwtype]')";
 
         // Now insert  to "rawmat" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 
         // Then get ID to process to other step.
         $result = mysqli_query($link, "SELECT * FROM rawmat

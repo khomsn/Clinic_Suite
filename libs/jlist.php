@@ -10,7 +10,7 @@ include '../config/dbc.php';
 
 // write your query to search for data
 	$sql="SELECT DISTINCT jname FROM zip WHERE jname LIKE '$my_data%' ORDER BY jname LIMIT 0,10";
-	$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkcm,$sql);
 	
 	if($result)
 	{

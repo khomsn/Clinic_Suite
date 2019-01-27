@@ -7,7 +7,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT DISTINCT hometel FROM patient_id WHERE hometel LIKE '%$my_data%' ORDER BY hometel";
-	$result = mysqli_query($linkopd,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkopd,$sql);
 	
 	if($result)
 	{

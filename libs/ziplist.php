@@ -10,7 +10,7 @@ include '../config/dbc.php';
 
 // write your query to search for data
 	$sql="SELECT DISTINCT zipcode FROM zip WHERE zipcode LIKE '%$my_data%' ORDER BY zipcode LIMIT 0,10";
-	$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkcm,$sql);
 	
 	if($result)
 	{

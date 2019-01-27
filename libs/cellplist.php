@@ -8,7 +8,7 @@ include '../config/dbc.php';
 
 // write your query to search for data
 	$sql="SELECT DISTINCT mobile FROM patient_id WHERE mobile LIKE '$my_data%' ORDER BY mobile LIMIT 0,10";
-	$result = mysqli_query($linkopd,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkopd,$sql);
 	
 	if($result)
 	{

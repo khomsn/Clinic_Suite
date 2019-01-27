@@ -18,11 +18,11 @@ mysqli_query($link, $sql);
 
 if($_POST['set'] == 'ReSet')
 {
-      mysqli_query($link, "TRUNCATE TABLE trpstep") or die(mysqli_error($link));
+      mysqli_query($link, "TRUNCATE TABLE trpstep");
 }
 if($_POST['ลบ'])
 {
-      mysqli_query($link, "DELETE FROM `trpstep` WHERE `id` = '$_POST[ลบ]'") or die(mysqli_error($link));
+      mysqli_query($link, "DELETE FROM `trpstep` WHERE `id` = '$_POST[ลบ]'");
 }
 if($_POST['set'] == 'Set') 
 { 
@@ -46,7 +46,7 @@ if($_POST['set'] == 'Set')
 			    `tristep` = '$_POST[$tristep]',
 			    `tri_pr` = '$_POST[$tripr]'
 			    WHERE id='$i'
-			    ") or die(mysqli_error($link));
+			    ");
   }
   
     $i = $_SESSION['rowmax'];
@@ -64,9 +64,7 @@ if($_POST['set'] == 'Set')
 			    (`drugid`,`firstone`,`init_pr`,`secstep`,`sec_pr`,`tristep`,`tri_pr`)
 			VALUES
 			    ('$_POST[$drugid]','$_POST[$firstone]','$_POST[$initpr]','$_POST[$secstep]','$_POST[$secpr]','$_POST[$tristep]','$_POST[$tripr]')";
-
-    // Now insert Patient to "patient_id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
   }
   unset($_SESSION['rowmax']);
 }

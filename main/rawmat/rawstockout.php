@@ -22,7 +22,7 @@ if($_POST['doSave'] == 'Save')
       $sql_insert = "INSERT into `rawmattouse`	(`date`, `rawmatid`, `volume`,`user`)
 				      VALUES  (now(),'$id','$_POST[volume]','$_SESSION[user_id]')";
       // Now insert Drug order information to "rawmat_#id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert);
 
 
       // Update rawmat at volume
@@ -65,17 +65,13 @@ if($_POST['doSave'] == 'Save')
       $alldp = $price*$_POST['volume'];
       
       // accounting system
-      //$acc = mysqli_query($link, "SELECT ac_no FROM rawmat WHERE id = $id");
-      //while($rowac = mysqli_fetch_array($acc))
-      //{ $dacno = $rowac['ac_no'];}
 	if($_POST['RMat']==1)
 	{
 	      // assign insertion pattern 10700000 ตัดยอด
 	      $detail ="เบิกประกอบสินค้า";
 	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 			    VALUES  (now(),'10700000','$dacno','$detail','$alldp','c','$_SESSION[user_id]')";
-	      // Now insert Drug order information to "rawmat_#id" table
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	      mysqli_query($link, $sql_insert);
 	 }
 	 else
 	 {
@@ -83,8 +79,7 @@ if($_POST['doSave'] == 'Save')
 	      $detail ="เบิกใช้";
 	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 			    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','$_SESSION[user_id]')";
-	      // Now insert Drug order information to "rawmat_#id" table
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	      mysqli_query($link, $sql_insert);
 	 }     
       // go on to other step
       header("Location: rawtouse.php");  

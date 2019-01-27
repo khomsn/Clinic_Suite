@@ -61,7 +61,7 @@ if($_POST['register'] == 'บันทึก')
     $drugallergy = mysqli_real_escape_string($linkopdx, $drugallergy);
     $concurdrug = mysqli_real_escape_string($linkopdx, $concurdrug);
 
-    mysqli_query($link, "UPDATE $tmp SET `preg` = '$_POST[preg]',`pricepolicy` = '$policy'") or die(mysqli_error($link));
+    mysqli_query($link, "UPDATE $tmp SET `preg` = '$_POST[preg]',`pricepolicy` = '$policy'") or $msg[]=(mysqli_error($link));
     if($_POST['preg'] ==1 )
     {
         $dhist = $dhist.' # และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน #';
@@ -88,11 +88,11 @@ if($_POST['register'] == 'บันทึก')
                 `drugallergy` = '$drugallergy',
                 `concurdrug` = '$concurdrug'
                 WHERE  id='$rid'
-                ") or die(mysqli_error($linkopdx));
+                ") or $msg[]=(mysqli_error($linkopdx));
                 
     // go on to other step
     //update height at patient_id use fup to record pregnancy period.
-    mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]', `fup` = '$pregmonth' where id='$id'") or die(mysqli_error($linkopd));
+    mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]', `fup` = '$pregmonth' where id='$id'") or $msg[]=(mysqli_error($linkopd));
 
     //update diagnosis table
     $d1=$_POST['diag'];
@@ -105,7 +105,7 @@ if($_POST['register'] == 'บันทึก')
         if(empty($imprs))
         {
             $sql_insert = "INSERT into `diag` (name) value ('$diags')";
-            mysqli_query($linkcm, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkcm));
+            mysqli_query($linkcm, $sql_insert) or $msg[]=("Insertion Failed:" . mysqli_error($linkcm));
         }
     }
     unset($_SESSION['history'.$pid]);

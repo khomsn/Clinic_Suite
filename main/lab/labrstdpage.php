@@ -43,7 +43,7 @@ if($_POST['Save']=="Save")
 				      WHERE `Labid` ='$labid' LIMIT 1 ; 
 				      ";
 	      // Now update labtable
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	      mysqli_query($link, $sql_insert);
 	    }
 
 	  // RC".$labid.
@@ -75,7 +75,7 @@ if($_POST['Save']=="Save")
 					  WHERE `id` ='$labidin' LIMIT 1 ; 
 					  ";
 		  // Now update labtable
-		  mysqli_query($link, $sql_update) or die("Update Failed:" . mysqli_error($link));
+		  mysqli_query($link, $sql_update);
 		  // Now in labstat table
 		  // 1st check if this labid exist in this month, if yes-> update, no->insert 
 		  //$sd = date("d");
@@ -92,8 +92,7 @@ if($_POST['Save']=="Save")
 			      (`labid`,`MandY`,`vol`)
 			  VALUES
 			      ('$labidin',now(),'1')"; //order only 1 test each time
-		      // Now insert Patient to "patient_id" table
-		      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		      mysqli_query($link, $sql_insert);
 		  }
 		  else
 		  {
@@ -103,7 +102,7 @@ if($_POST['Save']=="Save")
 					  WHERE `labid` ='$labidin'  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' LIMIT 1 ; 
 					  ";
 		  // Now update labtable
-		  mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+		  mysqli_query($link, $sql_update);
 		  }
 		//}
 		//
@@ -122,7 +121,7 @@ if($_POST['Save']=="Save")
 					  WHERE `id` ='$maxid' LIMIT 1 ; 
 					  ";
 		  // Now update pttable
-		  mysqli_query($linkopdx, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopdx));
+		  mysqli_query($linkopdx, $sql_insert);
 		  //recheck if correctly record
 		  $rs_check = mysqli_query($linkopdx, "select count(*) as total FROM `$pttable` WHERE `id` = '$maxid' AND `labid` LIKE '%$compl_name%' AND `labresult` LIKE '%$compl_rs%'") or $err[]=(mysqli_error($linkopdx));
 		  list($total) = mysqli_fetch_array($rs_check);
@@ -139,7 +138,7 @@ if($_POST['Save']=="Save")
 					    WHERE `Labid` ='$labid' LIMIT 1 ; 
 					    ";
 		    // Now update labtable
-		    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		    mysqli_query($link, $sql_insert);
 		  }
 		  //labid has been saved 
 		  labhassaved :
@@ -149,8 +148,7 @@ if($_POST['Save']=="Save")
 		  
 		//Now remove lab id request from table
 		    $rmlab = "DELETE FROM  `$labtable` WHERE `Labid` = '$labid'";
-		//	  $sqlt = "DROP TABLE `$labtable`";
-		    mysqli_query($link, $rmlab) or die("DELETE record Failed:" . mysqli_error($link));
+		    mysqli_query($link, $rmlab);
 		    
 		  //check lcprice for tmp table
 		  $pr1 = mysqli_query($link, "SELECT * from $tmptable");
@@ -162,7 +160,7 @@ if($_POST['Save']=="Save")
 		  $lincp = $lincp - $allcpprice;
 		  $lcp = $lcp + $allcpprice;
 		  //update lab @ labid
-		  mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$lincp', `lcprice` = '$lcp'") or die(mysqli_error($link));
+		  mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$lincp', `lcprice` = '$lcp'");
 	       }
 
 	    // empty result do nothing
@@ -183,10 +181,10 @@ if($_POST['Save']=="Save")
         mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
         
         // Now Delete Patient from "pt_to_lab" table
-        mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ") or die(mysqli_error($link));
+        mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ");
                     
         // Now Delete Patient from "labwait" table
-        mysqli_query($link, "DELETE FROM labwait WHERE ptid = '$id' ") or die(mysqli_error($link));
+        mysqli_query($link, "DELETE FROM labwait WHERE ptid = '$id' ");
         
     }
     notcomplete:

@@ -21,7 +21,7 @@ if(($_POST['addmore']=='+' ) AND (ltrim($_POST['fromip']!== '')) AND (ltrim($_PO
 {
   
     // check for duplicated record
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from queuesystem where FromIp='$_POST[fromip]' and ToIp='$_POST[toip]' ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from queuesystem where FromIp='$_POST[fromip]' and ToIp='$_POST[toip]' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -35,7 +35,7 @@ if(($_POST['addmore']=='+' ) AND (ltrim($_POST['fromip']!== '')) AND (ltrim($_PO
       $sql_insert = "INSERT into `queuesystem` (`FromIp`,`ToIp` ) VALUES ('$_POST[fromip]','$_POST[toip]')";
 
       // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
     }
 }
 
@@ -44,7 +44,7 @@ for($j=1;$j<=$i;$j++)
   if($_POST['del'.$j] == 'ลบ')
   {
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM queuesystem WHERE id = '$j' ") or die(mysqli_error($link));
+	  mysqli_query($link, "DELETE FROM queuesystem WHERE id = '$j' ") or $err[]=(mysqli_error($link));
   }
 }
 $title = "::ระบบเรียกคนไข้::";

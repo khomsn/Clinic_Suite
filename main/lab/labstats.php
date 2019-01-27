@@ -13,14 +13,14 @@ if($_POST['reset'])
   
 	$sql_update = "UPDATE `lab` SET `volume` = '0' WHERE `id` ='$id' LIMIT 1 ; ";
 	// Now update pttable
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_update);
       
 }
 if($_POST['Reset']=="Reset")
 {
 	$sql_update = "UPDATE `lab` SET `volume` = '0';"; 
 	// Now update pttable
-	mysqli_query($link, $sql_update) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_update);
 }
 
 $title = "::Laboratory::";

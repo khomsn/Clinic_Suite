@@ -91,7 +91,7 @@
 				goto JPincaseof0;
 				}
 				
-				mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$l]' ")  or die(mysqli_error($link));
+				mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$l]' ");
 				
 				//account system and stat
 				if(($acsys == "drug") AND ($acvol>0))
@@ -104,14 +104,12 @@
 				    $detail ="เบิกใช้ จำนวน ".$acvol;
 				    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 						  VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-				    // Now insert Drug order information to "drug_#id" table
-				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				    mysqli_query($link, $sql_insert);
 				    
 				    //record drug use //record use statistics
 				    $sql_insert = "INSERT into `drugtouse`	(`date`, `drugid`, `volume`,`user`)
 								    VALUES  (now(),'$drugidout[$l]','$acvol','0')";
-				    // Now insert Drug order information to "drug_#id" table
-				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				    mysqli_query($link, $sql_insert);
 				}
 				if(($acsys == "rawmat") AND ($acvol>0))
 				{
@@ -123,16 +121,13 @@
 				      $detail ="เบิกใช้ จำนวน ".$acvol;
 				      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 						    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-				      // Now insert Drug order information to "rawmat_#id" table
-				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				      mysqli_query($link, $sql_insert);
 				      //
 				      Next_rawmat1:
 				      //record use stat
 				      $sql_insert = "INSERT into `rawmattouse`	(`date`, `rawmatid`, `volume`,`user`)
 								      VALUES  (now(),'$drugidout[$l]','$acvol','0')";
-				      // Now insert Drug order information to "rawmat_#id" table
-				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-
+				      mysqli_query($link, $sql_insert);
 				      
 				}
 		      }
@@ -141,7 +136,7 @@
 
 	  JPincaseof0:
 
-	    mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$outcount[$l]' WHERE  drugidin = '$idin[$l]' AND drugidout = '$idout[$l]'") or die(mysqli_error($link));   
+	    mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$outcount[$l]' WHERE  drugidin = '$idin[$l]' AND drugidout = '$idout[$l]'");   
 
 	}
     }
@@ -237,7 +232,7 @@
 				goto JPincaseof1;
 				}
 				
-				mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$l]' ")  or die(mysqli_error($link));
+				mysqli_query($link, "UPDATE $tabletoupdate SET `volume` = '$volnew' WHERE `id` = '$drugidout[$l]' ");
 				
 				//account system and stat
 				if(($acsys == "drug") AND ($acvol>0))
@@ -250,14 +245,12 @@
 				    $detail ="เบิกใช้ จำนวน ".$acvol;
 				    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 						  VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-				    // Now insert Drug order information to "drug_#id" table
-				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				    mysqli_query($link, $sql_insert);
 				    
 				    //record drug use //record use statistics
 				    $sql_insert = "INSERT into `drugtouse`	(`date`, `drugid`, `volume`,`user`)
 								    VALUES  (now(),'$drugidout[$l]','$acvol','0')";
-				    // Now insert Drug order information to "drug_#id" table
-				    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				    mysqli_query($link, $sql_insert);
 				}
 				if(($acsys == "rawmat") AND ($acvol>0))
 				{
@@ -269,15 +262,13 @@
 				      $detail ="เบิกใช้ จำนวน ".$acvol;
 				      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 						    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-				      // Now insert Drug order information to "rawmat_#id" table
-				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				      mysqli_query($link, $sql_insert);
 				      //
 				      Next_rawmat2:
 				      //record use stat
 				      $sql_insert = "INSERT into `rawmattouse`	(`date`, `rawmatid`, `volume`,`user`)
 								      VALUES  (now(),'$drugidout[$l]','$acvol','0')";
-				      // Now insert Drug order information to "rawmat_#id" table
-				      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+				      mysqli_query($link, $sql_insert);
 
 				      
 				}
@@ -287,7 +278,7 @@
 
 	  JPincaseof1:
 
-	    mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$outcount[$l]' WHERE  drugidin = '$idin[$l]' AND drugidout = '$idout[$l]'") or die(mysqli_error($link));   
+	    mysqli_query($link, "UPDATE drugcombset SET  `outcount` = '$outcount[$l]' WHERE  drugidin = '$idin[$l]' AND drugidout = '$idout[$l]'");   
 
 	}
     }

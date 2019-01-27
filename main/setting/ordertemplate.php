@@ -22,7 +22,7 @@ if(($_POST['addmore']=='+' ) AND (ltrim($_POST['shortcut']!== '')) AND (ltrim($_
 {
   
     // check for duplicated record
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from $doctemplate where scode='$_POST[shortcut]'") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from $doctemplate where scode='$_POST[shortcut]'") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -36,7 +36,7 @@ if(($_POST['addmore']=='+' ) AND (ltrim($_POST['shortcut']!== '')) AND (ltrim($_
       $sql_insert = "INSERT into `$doctemplate` (`scode`,`textconv` ) VALUES ('$_POST[shortcut]','$_POST[fulltext]')";
 
       // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
     }
 }
 
@@ -45,7 +45,7 @@ for($j=1;$j<=$i;$j++)
   if($_POST['del'.$j] == 'ลบ')
   {
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM $doctemplate WHERE id = '$j' ") or die(mysqli_error($link));
+	  mysqli_query($link, "DELETE FROM $doctemplate WHERE id = '$j' ") or $err[]=(mysqli_error($link));
   }
 }
 $title = "::Shortcut for Drug Uses::";

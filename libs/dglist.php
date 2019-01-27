@@ -7,7 +7,7 @@ $q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
 $my_data=mysqli_real_escape_string($link, $q);
 
 $sql="SELECT DISTINCT name FROM druggeneric WHERE name LIKE '%$my_data%' ORDER BY name";
-$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+$result = mysqli_query($linkcm,$sql);
 
 if($result)
 {

@@ -1,6 +1,8 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+$err = array();
+
 $sql = "
 CREATE TABLE IF NOT EXISTS `stockplace` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +25,7 @@ if(($_POST['addmore']=='+')  AND (ltrim($_POST['plindex']!== '')) AND (ltrim($_P
 {
   
 // check for duplicated record
-$rs_duplicate = mysqli_query($link, "select count(*) as total from stockplace where placeindex='$_POST[plindex]'") or die(mysqli_error($link));
+$rs_duplicate = mysqli_query($link, "select count(*) as total from stockplace where placeindex='$_POST[plindex]'") or $err[]=(mysqli_error($link));
 list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -37,7 +39,7 @@ list($total) = mysqli_fetch_array($rs_duplicate);
       $sql_insert = "INSERT into `stockplace` (`placeindex`,`fullplace` ) VALUES ('$_POST[plindex]','$_POST[fullplace]')";
 
       // Now insert Patient to "stockplace" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
     }
 }
 
@@ -46,7 +48,7 @@ for($j=1;$j<=$i;$j++)
   if($_POST['del'] == $j)
   {
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM stockplace WHERE id = '$j' ") or die(mysqli_error($link));
+	  mysqli_query($link, "DELETE FROM stockplace WHERE id = '$j' ") or $err[]=(mysqli_error($link));
   }
 }
 

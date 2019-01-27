@@ -53,7 +53,7 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close')
 	{
 		$sql_insert = "INSERT INTO $table (`drugid`, `volume`, `uses`) VALUES ('$idrx[$i]', '$rxv[$i]', '$rxuses[$i]')";
 		// Now insert into "set_drug_X" table
-		mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		mysqli_query($link, $sql_insert);
 	}
 }
 

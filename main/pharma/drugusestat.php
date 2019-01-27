@@ -149,7 +149,7 @@ include '../../main/bodyheader.php';
                         VALUES
                         ('$didacno[$i]',now(),'$tmprice[$i]')";
                         // Now insert into "allrsupm" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                        mysqli_query($link, $sql_insert);
                     }
                     else
                     { 
@@ -160,7 +160,7 @@ include '../../main/bodyheader.php';
                         $sql_insert = "UPDATE `allrsupm` SET `mandy` = now(),`price` = '$tmpricenew' WHERE id=$rowid LIMIT 1 ;";
 
                         // Now insert into "allrsupm" table
-                        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                        mysqli_query($link, $sql_insert);
                     }
                 }
             }

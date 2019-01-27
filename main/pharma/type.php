@@ -11,9 +11,7 @@ if($_POST['add'] == 'เพิ่ม')
                 (`name`)
                 VALUES
                 ('$_POST[tname]')";
-
-        // Now insert Patient to "patient_id" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 	}
     // go on to other step
     header("Location: type.php");  
@@ -25,9 +23,7 @@ if($_POST['ddel'] != 0 )
 	$id = $_POST['ddel'];
 	
 	$sql_del = "DELETE FROM drug_type WHERE id = $id";
-
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 
     // go on to other step
     header("Location: type.php");  

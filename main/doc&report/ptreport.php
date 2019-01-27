@@ -104,14 +104,14 @@ include '../../main/bodyheader.php';
 		      echo "</th><th style='text-align: right;'>";
 		      echo "<span class=currency>".$AllNP."</span>";
 		      echo "</th></tr>";
-$lyear = $sy-1;
-$thisdate = date_create();
-date_date_set($thisdate, $lyear, 10, 1);
-$strdate = date_format($thisdate, 'Y-m-d');
+                    $lyear = $sy-1;
+                    $thisdate = date_create();
+                    date_date_set($thisdate, $lyear, 10, 1);
+                    $strdate = date_format($thisdate, 'Y-m-d');
 
-$thisdate = date_create();
-date_date_set($thisdate, $sy, 9, 30);
-$stpdate = date_format($thisdate, 'Y-m-d');
+                    $thisdate = date_create();
+                    date_date_set($thisdate, $sy, 9, 30);
+                    $stpdate = date_format($thisdate, 'Y-m-d');
       
 		      echo "<tr><th> ยอดรวม ตั้งแต่ 1 ตุลาคม ".($bsy-1)." - 30 กันยายน ".$bsy."</th><th  style='text-align: right;'>";
 		      $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE  vsdate>='$strdate' AND vsdate<='$stpdate' ");

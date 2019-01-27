@@ -11,7 +11,7 @@ if($_POST['Next']=='Next')
     queries the database and if it has any existing email it throws user email already exists
     *******************************************************************/
 
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[LLSName]'") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[LLSName]'") or $err[]=mysqli_error($link);
     list($total) = mysqli_fetch_row($rs_duplicate);
 
     if ($total > 0)
@@ -78,7 +78,7 @@ if($_POST['Save']=='Save')
         queries the database and if it has any existing email it throws user email already exists
         *******************************************************************/
 
-        $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$LLName' AND L_specimen ='$_POST[L_specimen]'") or die(mysqli_error($link));
+        $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$LLName' AND L_specimen ='$_POST[L_specimen]'") or $err = mysqli_error($link);
         list($total) = mysqli_fetch_row($rs_duplicate);
         if ($total > 0)
         {
@@ -102,7 +102,7 @@ if($_POST['Save']=='Save')
                 VALUES
                     ('$id','$_SESSION[LLSName]','$_SESSION[SLSName]','SETNAME','$_POST[L_specimen]','$_POST[Linfo]','$_POST[L_price]','$_POST[labtime]','$_POST[ccode1]','$_POST[ccode2]')";
         // Now insert Lab table for set name
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 
 
         for($i=1;$i<=$setnumber;$i++)
@@ -123,7 +123,7 @@ if($_POST['Save']=='Save')
                     VALUES
                     ('$id','$LLName','$SLName','$LSN','$_POST[L_specimen]','$Lrunit','$norr','$rmin','$rmax','$_POST[Linfo]','$price','$_POST[labtime]','$_POST[ccode1]','$_POST[ccode2]')";
             // Now insert Lab table
-            mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_insert);
         }
 	//go on 
 	unset($_SESSION['LLSName']);

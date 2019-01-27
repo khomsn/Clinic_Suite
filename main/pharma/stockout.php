@@ -32,7 +32,7 @@ if($_POST['doSave'] == 'Save')
       $sql_insert = "INSERT into `drugtouse`	(`date`, `drugid`, `volume`,`user`)
 				      VALUES  (now(),'$id','$_POST[volume]','$_SESSION[user_id]')";
       // Now insert Drug order information to "drug_#id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert);
 
 
       // Update drug_id at volume
@@ -75,17 +75,13 @@ if($_POST['doSave'] == 'Save')
       $alldp = $price*$_POST['volume'];
       
       // accounting system
-      //$acc = mysqli_query($link, "SELECT ac_no FROM drug_id WHERE id = $id");
-      //while($rowac = mysqli_fetch_array($acc))
-      //{ $dacno = $rowac['ac_no'];}
 	if($_POST['RMat']==1)
 	{
 	      // assign insertion pattern
 	      $detail ="เบิกประกอบสินค้า"; //10300000 ตัดยอด
 	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 			    VALUES  (now(),'10300000','$dacno','$detail','$alldp','c','$_SESSION[user_id]')";
-	      // Now insert Drug order information to "drug_#id" table
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	      mysqli_query($link, $sql_insert);
 	 }
 	 else
 	 {
@@ -93,10 +89,8 @@ if($_POST['doSave'] == 'Save')
 	      $detail ="เบิกใช้";
 	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
 			    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','$_SESSION[user_id]')";
-	      // Now insert Drug order information to "drug_#id" table
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	      mysqli_query($link, $sql_insert);
 	 }     
-    //new 
     //record drug use per month in dupm table for statistics
     $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE())");
     $dupmo = mysqli_fetch_array($dupmin);
@@ -106,26 +100,19 @@ if($_POST['doSave'] == 'Save')
 		(`drugid`,`mon`,`vol`)
 	    VALUES
 		('$id',now(),'$_POST[volume]')";
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_insert);
     
     }
     else
     {
-    //get old vol to update
-      //$oldvol = $dupmo['vol'];
       $newvol = $dupmo['vol'] + $_POST['volume'];
       
       $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
 				      WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE()) LIMIT 1 ; 
 				      ";
-
-      // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert);
     
     }
-    //new
-	      
       // go on to other step
       header("Location: drtouse.php");  
     }

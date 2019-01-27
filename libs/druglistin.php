@@ -7,7 +7,7 @@ include '../config/dbc.php';
 
 	
 	$sql="SELECT * FROM drug_id WHERE (dname LIKE '%$my_data%' OR dgname LIKE '%$my_data%') AND track='0' ORDER BY dgname";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

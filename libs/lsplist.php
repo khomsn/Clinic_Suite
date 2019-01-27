@@ -4,7 +4,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 
 	$sql="SELECT DISTINCT L_specimen FROM lab WHERE L_specimen LIKE '%$my_data%' ORDER BY L_specimen";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

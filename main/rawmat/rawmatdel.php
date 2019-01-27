@@ -46,7 +46,7 @@ if($_POST['register'] == 'ลบข้อมูล')
         $sql_del = "DELETE FROM rawmat WHERE id = $id";
 
         // Now delete drug information from rawmat table
-        mysqli_query($link, $sql_del) or die("Deletion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_del) or $err[]=("Deletion Failed:" . mysqli_error($link));
 
         $tid = "rawmat_".$id;
         $ftid = mysqli_query($link, "select * from $tid");
@@ -59,19 +59,19 @@ if($_POST['register'] == 'ลบข้อมูล')
         }
         //if have price don't drop table *use in account system ในการคำนวน กำไร
         $sql_drop ="DROP TABLE `$tid`" ;
-        mysqli_query($link, $sql_drop) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_drop) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // Delete Ac No
         NextStep:
         $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
         // Now remove drug information table
-        mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
         //loging del item
         $sql_insert = "INSERT into `deleted_rm` 
                 (`id`,`rawcode`,`rawname`, `size`, `ac_no`,`bystid` ) 
                 VALUES 
                 ('$id','$rawcode','$rawname','$size','$dacno','$_SESSION[staff_id]')";
         // Now insert 
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // go on to other step
         header("Location: rawmatdel.php"); 
 	} 

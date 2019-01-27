@@ -37,7 +37,7 @@ if($_POST['Save']=='Save')
     queries the database and if it has any existing email it throws user email already exists
     *******************************************************************/
 
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[L_Name]' AND L_specimen='$_POST[L_specimen]'") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from lab where L_Name='$_POST[L_Name]' AND L_specimen='$_POST[L_specimen]'");
     list($total) = mysqli_fetch_row($rs_duplicate);
 
     if ($total > 0)
@@ -58,7 +58,7 @@ if($_POST['Save']=='Save')
             VALUES
                 ('$id','$_POST[L_Name]','$_POST[S_Name]','','$_POST[L_specimen]','$_POST[Lrunit]','$_POST[normal_r]','$_POST[r_min]','$_POST[r_max]','$_POST[Linfo]','$_POST[L_price]','$_POST[labtime]','$_POST[ccode1]','$_POST[ccode2]')";
         // Now insert Lab table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) ;
         $msg[] = $_POST['L_Name']." with ".$_POST['L_specimen']." Specimen created successful.";
     }
 

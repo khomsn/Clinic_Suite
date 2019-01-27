@@ -172,16 +172,16 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close')
 			`$us` = '$usp',
 			`$vl` = '$vlp',
 			`$svl` = '$svlp'
-			") or die(mysqli_error($link));
+			") ;
 	}
 	if($_SESSION['prolab'])
 	{
-                mysqli_query($link, "UPDATE $tmp SET `prolab` = '1'") or die(mysqli_error($link));
+                mysqli_query($link, "UPDATE $tmp SET `prolab` = '1'");
                 unset($_SESSION['prolab']);
 	}
 	if($_SESSION['course'])
 	{
-                mysqli_query($link, "UPDATE $tmp SET `course` = '1'") or die(mysqli_error($link));
+                mysqli_query($link, "UPDATE $tmp SET `course` = '1'");
                 unset($_SESSION['course']);
 	}
 

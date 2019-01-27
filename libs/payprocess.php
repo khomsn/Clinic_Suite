@@ -52,15 +52,14 @@
 			`$us` = '$usd[$i]',
 			`$vl` = '$vld[$i]',
 			`$rxb` = '$rxbd[$i]'
-			WHERE id = '$rid'
-			") or die(mysqli_error($linkopdx));
+			WHERE id = '$rid' ");
 		//_SESSION เพือตัด วัตถุดิบ
 		$_SESSION['idrx'.$i]=$idrxd[$i];
 		$_SESSION['rxvol'.$i]=$vld[$i];
 	}
 	
 	//update Staff ที่จ่ายยา
-	mysqli_query($linkopdx, "UPDATE $pttable SET `disprxby` = '$_SESSION[staff_id]' WHERE id = '$rid' ") or die(mysqli_error($linkopdx));
+	mysqli_query($linkopdx, "UPDATE $pttable SET `disprxby` = '$_SESSION[staff_id]' WHERE id = '$rid' ");
 	//get Treatment from temp to pt_table
 	$j = 1;	
 	$dtemp = mysqli_query($link, "select * from $tmp ");
@@ -130,8 +129,7 @@
 				`$tr1o4` = '$tr1o4d[$i]',
 				`$tr1o4v` = '$tr1o4vd[$i]',
 				`$trby` = '$trbyd[$i]'
-			WHERE id = '$rid'
-				") or die(mysqli_error($linkopdx));
+			WHERE id = '$rid'");
 		//_SESSION เพือตัด วัตถุดิบ
 		$_SESSION['idtr'.$i]=$idtrd[$i];
 		$_SESSION['trvol'.$i]=$trvd[$i];
@@ -156,9 +154,7 @@
 		  $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
 						  WHERE id='$idstat'; 
 						  ";
-
-		  // Now insert Patient to "patient_id" table
-		  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		  mysqli_query($link, $sql_insert);
 		
 		}
 		else
@@ -167,12 +163,10 @@
 			    (`drugid`,`mon`,`vol`)
 			VALUES
 			    ('$drgid',now(),'$vld[$i]')";
-		    // Now insert Patient to "patient_id" table
-		    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+		    mysqli_query($link, $sql_insert);
 		
 		}
-		//new
-		//
+
 		$drugtable = "drug_".$drgid;
 		//get ctz-id
 		$ptin = mysqli_query($linkopd, "select * from patient_id where id='$ctmid' ");
@@ -223,7 +217,7 @@
 			{
 				$drugtrack = "tr_drug_".$drgid; 
 				mysqli_query($link, " INSERT INTO $drugtrack  (`date` , `ctz_id` , `pt_id` , `volume` )
-												VALUES (now(), '$ctzid', '$ctmid', '$vld[$i]');  ")  or die(mysqli_error($link));
+												VALUES (now(), '$ctzid', '$ctmid', '$vld[$i]');  ");
 			}	
 			//tracking end
 			$volold = $rowd['volume'];
@@ -250,7 +244,7 @@
 						{
 							$drugtrack = "tr_drug_".$id2; 
 							mysqli_query($link, " INSERT INTO $drugtrack  (`date` , `ctz_id` , `pt_id` , `volume` )
-											VALUES (now(), '$ctzid', '$ctmid', '$volout');  ")  or die(mysqli_error($link));
+											VALUES (now(), '$ctzid', '$ctmid', '$volout');  ");
 						}	
 						//tracking end
 						// update drug_# here-------//
@@ -283,7 +277,7 @@
 							}	
 						}	
 						// update drug_# here---end----//
-						mysqli_query($link, "UPDATE drug_id SET `volume` = '$volnew' WHERE id = $id2 ")  or die(mysqli_error($link));
+						mysqli_query($link, "UPDATE drug_id SET `volume` = '$volnew' WHERE id = $id2 ");
 					}	
 				}
 			}	
@@ -300,7 +294,7 @@
 	 
 	if($rsvolnew < 0) $rsvolnew = 0;
 	
-	mysqli_query($link, "UPDATE drug_id SET `volume` = '$volnew', `volreserve` = '$rsvolnew' WHERE id = $drgid ")  or die(mysqli_error($link));
+	mysqli_query($link, "UPDATE drug_id SET `volume` = '$volnew', `volreserve` = '$rsvolnew' WHERE id = $drgid ");
 
 	}
 	// account system 11000000-19999999 ลูกหนี้ คนไข้ค้างชำระ
@@ -326,17 +320,16 @@
 	if(empty($tty)) $tty=0;
 	$sql_insert = " INSERT INTO `sell_account` ( `day` , `month` ,`year` ,`ctmid` , `ctmacno` , `cash` , `own` , `total`, `ddx`, `tty`, `vsdate`)
 									VALUES ('$sd', '$sm', '$sy', '$ctmid', '$ctmacno', '$cashtoday', '$own', '$buytoday', '$diags', '$tty', '$visitdt');";
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_insert);
 	
 	//debtors account update
 	if($newdeb <= 0)
 	{
-		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $ctmid ") or die(mysqli_error($link));
+		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $ctmid ");
 	}	
 	elseif($newdeb > 0)
 	{
-		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $ctmid ") or die(mysqli_error($link));
+		mysqli_query($link, "DELETE FROM `debtors` WHERE `ctmid` = $ctmid ");
 		$sql_insert = "INSERT INTO debtors (`ctmid`,`ctmacno`,`price`)
 						VALUES ('$ctmid','$ctmacno','$newdeb');";
 		mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
@@ -349,28 +342,29 @@
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
 											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$paytoday', 'd', 's','$_SESSION[user_id]' );";
-			// Now insert Patient to "patient_id" table
-			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+			mysqli_query($link, $sql_insert);
 		}
 		elseif($paytoday >$olddeb)
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
 											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$olddeb', 'd','s','$_SESSION[user_id]' );";
-			// Now insert Patient to "patient_id" table
-			mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+			mysqli_query($link, $sql_insert);
 		}	
 	}
 	
 	//remove tmp table
 	$sql_del = " DROP TABLE $tmp " ;
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 	
 	// Now Delete Patient from "pt_to_lab" table
-	mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$ctmid' ") or die(mysqli_error($link));
+	mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$ctmid' ");
+				  
+	// Now Delete Patient from "pt_to_treatment" table
+	mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$ctmid' ");
 				  
 	//remove patient form pt-to-drug
 	$sql_del = "DELETE FROM `pt_to_drug` WHERE `id` = '$ctmid' ";
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 	// go on to other step
 	//check OPD Card printting
 	$prt = mysqli_fetch_row(mysqli_query($link, "select prtopdcard from parameter where ID='1'"));

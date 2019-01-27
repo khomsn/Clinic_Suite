@@ -15,7 +15,7 @@ mysqli_query($link, "UPDATE rawmat SET
 			`rmfpd` = '$_POST[rmpd]',
 			`rmtype` = '$_POST[rwtype]'
 			WHERE id='$id'
-			") or die(mysqli_error($link));
+			");
 // go on to other step
 header("Location: rawmatlist.php");  
 

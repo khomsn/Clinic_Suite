@@ -14,7 +14,7 @@ mysqli_query($link, "UPDATE supplier SET
 			`email` = '$_POST[email]',
 			`paydetail` = '$_POST[paydetail]'
 			 WHERE id='$id'
-			") or die(mysqli_error($link));
+			") ;
 
 // go on to other step
 header("Location: listsp.php");  

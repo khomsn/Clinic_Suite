@@ -217,8 +217,7 @@ include '../../main/bodyheader.php';
                     `rindex` smallint(6) NOT NULL DEFAULT '$maxr'
                     ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
                     ";
-                    // Now insert Patient to "patient_id" table
-                    mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));
+                    mysqli_query($link, $sql_insert) or $err = mysqli_error($link);
                 } 
             }
         echo "</table>";

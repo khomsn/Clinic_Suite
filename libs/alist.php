@@ -9,7 +9,7 @@ include '../config/dbc.php';
 
 // write your query to search for data
 	$sql="SELECT DISTINCT aname FROM zip WHERE aname LIKE '$my_data%' ORDER BY aname";
-	$result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+	$result = mysqli_query($linkcm,$sql);
 	
 	if($result)
 	{

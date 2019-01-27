@@ -31,7 +31,7 @@ mysqli_query($link, "UPDATE drug_id SET
 			`typen` = '$_POST[type]',
 			`groupn` = '$_POST[group]'
 			 WHERE id='$id'
-			") or die(mysqli_error($link));
+			");
 // go on to other step
 header("Location: drugset.php");  
 

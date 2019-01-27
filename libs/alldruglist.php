@@ -7,7 +7,7 @@ include '../config/dbc.php';
 	$my_data=mysqli_real_escape_string($link, $q);
 	
 	$sql="SELECT * FROM drug_id WHERE dname LIKE '%$my_data%' OR dgname LIKE '%$my_data%' ORDER BY dgname";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{
@@ -17,7 +17,7 @@ include '../config/dbc.php';
 		}
 	}
 	$sql="SELECT * FROM deleted_drug WHERE  dname LIKE '%$my_data%' OR dgname LIKE '%$my_data%' ORDER BY dgname";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

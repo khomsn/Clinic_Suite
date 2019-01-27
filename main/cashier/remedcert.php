@@ -15,7 +15,7 @@ if($_POST['register'] == 'บันทึก')
       $medcert = $_POST['medcert'];
     }
     
-    mysqli_query($link, "UPDATE `tmp_$id` SET  `medcert` = '$medcert' ") or die(mysqli_error($link));
+    mysqli_query($link, "UPDATE `tmp_$id` SET  `medcert` = '$medcert' ");
  
     $result = mysqli_query($linkopd, "SELECT * FROM patient_id WHERE id='$id' ");
 	while($row = mysqli_fetch_array($result))
@@ -24,11 +24,10 @@ if($_POST['register'] == 'บันทึก')
 	      $ID = $row['id'];	$prefix= $row['prefix'];	$F_Name = $row['fname'];	$L_Name = $row['lname'];
 	}
     $sql_insert = "INSERT INTO `pt_to_doc` (`ID`, `prefix`, `F_Name`, `L_Name`) VALUES ('$ID', '$prefix', '$F_Name', '$L_Name')";
-    // Now insert Patient to "patient_id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
     // Now Delete Patient from "pt_to_drug" table
-    mysqli_query($link, "DELETE FROM pt_to_drug WHERE id = '$id' ") or die(mysqli_error($link));
+    mysqli_query($link, "DELETE FROM pt_to_drug WHERE id = '$id' ");
   // go on to other step
   if($_SESSION['sflc']!="0") header("Location: ../opd/pt_to_doctor.php"); 
   else header("Location: ../opd/pt_to_drug.php");  

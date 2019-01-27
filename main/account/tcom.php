@@ -113,7 +113,7 @@ include '../../main/bodyheader.php';
             echo "</th><th width=30% style='text-align: right;'>"; 
             echo "<span class=currency>".($cashpin - $cashpout)."</span>";
             echo "</th></tr>";
-        //ยอดยกมา จบ										
+        //ยอดยกมา จบ	
         if($sm == date("m") and $sy == date("Y")) $imax = date("d");
         elseif($sm == 1 or $sm == 3 or $sm == 5 or $sm == 7 or $sm == 8 or $sm == 10 or $sm == 12) $imax=31;
         elseif($sm == 2 and $sy%4 == 0) $imax = 29;

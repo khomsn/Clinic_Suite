@@ -91,7 +91,7 @@ include 'catcset.php';
 include 'drugfilter.php';
 /***********************************************************/
 	$sql="SELECT * FROM drug_id WHERE ( $cat AND $fdout AND $foutlast  AND $fddi) AND ( dname LIKE '%$my_data%' OR dgname LIKE '%$my_data%' OR typen LIKE '%$my_data%' OR groupn LIKE '%$my_data%' OR indication LIKE '%$my_data%') AND volume > 0 ORDER BY dgname";
-	$result = mysqli_query($link,$sql) or die(mysqli_error());
+	$result = mysqli_query($link,$sql);
 	
 	if($result)
 	{

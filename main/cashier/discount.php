@@ -25,12 +25,11 @@ if($_POST['add'] == 'เพิ่ม')
 	if($tyes == 0)
 	{
         $sql_insert = "INSERT into `discount` (`ctmid`,`percent`)  VALUES ('$id', '$_POST[percent]' )";
-        // Now insert into "discount" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert);
 	}
 	else
 	{
-		mysqli_query($link, " UPDATE `discount` SET `percent` = '$_POST[percent]' WHERE `ctmid` = '$id' ") or die(mysqli_error($link));
+		mysqli_query($link, " UPDATE `discount` SET `percent` = '$_POST[percent]' WHERE `ctmid` = '$id' ");
 	}
 }
 
@@ -38,8 +37,7 @@ if($_POST['add'] == 'เพิ่ม')
 if($_POST['del'] == 'ลบ' ) 
 { 
 	$sql_del = "DELETE FROM discount WHERE ctmid = $id";
-	// Now insert into "discount" table
-	mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_del);
 }
 
 $title = "::กำหนดส่วนลด::";

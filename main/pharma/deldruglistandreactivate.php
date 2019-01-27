@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+$err=array();
 
 $filter = mysqli_query($link, "select * from deleted_drug ORDER BY `dgname` ASC");
 
@@ -41,7 +42,7 @@ if($_POST['Reactivate'] != 0)
     // assign account number to new product.
     $ac = $mmm + 1;
 
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from drug_id where dname='$dname' AND dgname='$dgname' AND size='$size' ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from drug_id where dname='$dname' AND dgname='$dgname' AND size='$size' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_row($rs_duplicate);
 
     if ($total > 0)
@@ -58,7 +59,7 @@ if($_POST['Reactivate'] != 0)
                     VALUES
                     ('$ac','$adn')";
         // Now insert Account number for product to "acnumber" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
         // assign insertion pattern
         $sql_insert = "INSERT into `drug_id`
@@ -67,11 +68,11 @@ if($_POST['Reactivate'] != 0)
                     ('$did','$dname','$dgname','','','$size','0','0','','','0',
                     '$ac','0','0','0','0','','','0','0')";
         // Now insert into "drug_id" table
-        mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
         //remove this id from deleted_drug
         $sql_del = "DELETE FROM `deleted_drug` WHERE `id` = '$did'";
         // Now DELETE Patient to "pt_to_lab" table
-        mysqli_query($link, $sql_del) or die("Insertion Failed:" . mysqli_error($link));
+        mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
     }
     // go on to other step
     header("Location: deldruglistandreactivate.php");  

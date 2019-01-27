@@ -173,15 +173,15 @@ echo "</head><body>";
 			echo $row[$trv];
 			echo "</td>";
 			echo "<td style='text-align:right;'>";
-if($did ==  $tr_drugid[$s])
-{
-    if($row[$trv]>=$first1[$s]) 
-    $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
-    if($row[$trv]>=$sec2[$s]) 
-    $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-    if($row[$trv]>=$tri3[$s]) 
-    $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-}			
+            if($did ==  $tr_drugid[$s])
+            {
+                if($row[$trv]>=$first1[$s]) 
+                $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
+                if($row[$trv]>=$sec2[$s]) 
+                $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+                if($row[$trv]>=$tri3[$s]) 
+                $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+            }
 			echo $price1;
 			echo "</td></tr>";
 			$allprice = $allprice+$price1;

@@ -21,7 +21,7 @@ if(!is_null($_POST['catc']) OR !is_null($_POST['ddil']))
                 `catcenable` = '$data[catc]',
                 `ddil` = '$data[ddil]'
                 WHERE id='$_SESSION[user_id]'
-                ") or die(mysqli_error($link));
+                ") or $err[]=(mysqli_error($link));
 
     //header("Location: mysettings.php?msg=Profile Sucessfully saved");
     $msg[] = "Profile Sucessfully saved";

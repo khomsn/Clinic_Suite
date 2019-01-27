@@ -55,17 +55,26 @@ include '../../main/bodyheader.php';
     echo "</th><th>"; 
     echo $row['rmtype'];
     echo "</th><th>"; 
-    $supplierold = ''; //initialize
-    $getprice = mysqli_query($link, "select * from $rawmattable WHERE supplier!='$_SESSION[clinic]' AND price!='0' ORDER BY `id` DESC ,`supplier` DESC ,`price` DESC");
-    while($row2 = mysqli_fetch_array($getprice))
+    $getsup = mysqli_query($link, "select distinct supplier from $rawmattable where supplier!='$_SESSION[clinic]' AND price!='0'");
+    $sp=0;
+    while($gs = mysqli_fetch_array($getsup))
     {
-    $suppliernew = $row2['supplier'];
-    $pos = strpos($supplierold, $suppliernew);
-    if($pos === false)
-    {
-    echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
+        $sup[$sp]=$gs['supplier'];
+        $sp=$sp+1;
     }
-    $supplierold = $supplierold." : ".$row2['supplier'];                                                                                    
+    
+    for($n=0;$n<$sp;$n++)
+    {
+        $supplier=$sup[$n];
+        
+        $gr = mysqli_fetch_array(mysqli_query($link, "select MAX(id) from $rawmattable WHERE supplier='$supplier' AND price!='0'"));
+        $rowid = $gr[0];
+        
+        $gp = mysqli_query($link, "select * from $rawmattable WHERE id = $rowid");
+        while($row2 = mysqli_fetch_array($gp))
+        {
+            echo "[".$row2['supplier'].":".number_format(($row2['price']/$row2['volume']),2)."]";
+        }
     }
     echo "</th></tr>";
     $i = $i+1;

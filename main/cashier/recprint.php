@@ -236,15 +236,15 @@ function Clickheretoprint()
 			echo $row[$trv];
 			echo "</td>";
 			echo "<td style='text-align:right;'>";
-if($did ==  $tr_drugid[$s])
-{
-    if($row[$trv]>=$first1[$s]) 
-    $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
-    if($row[$trv]>=$sec2[$s]) 
-    $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-    if($row[$trv]>=$tri3[$s]) 
-    $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-}			
+            if($did ==  $tr_drugid[$s])
+            {
+                if($row[$trv]>=$first1[$s]) 
+                $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
+                if($row[$trv]>=$sec2[$s]) 
+                $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+                if($row[$trv]>=$tri3[$s]) 
+                $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
+            }			
 			echo $price1;
 			echo "</td></tr>";
 			$allprice = $allprice+$price1;
@@ -252,45 +252,6 @@ if($did ==  $tr_drugid[$s])
 		}
 	}
   }
-/*		
-		$j = 1;
-		for($i =1;$i<=4;$i++)
-		{
-		$ptin = mysqli_query($link, "select * from $tmp ");
-		while ($row = mysqli_fetch_array($ptin))
-		{
-			$idtr = "idtr".$i;
-			$tr ="tr".$i;
-			$trv = "trv".$i;
-			//echo "<tr><td>".$i."</td><td>";
-			if($row[$idtr] !=0)
-			{
-				echo "<tr><td>".$j."</td><td  style='text-align:left;'>";
-				echo $row[$tr];
-				echo "</td>";
-				echo "<td style='text-align:right;'>";
-				$did = $row[$idtr];
-				$ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
-				if($ptin2 !=0)
-				{
-				while ($row2 = mysqli_fetch_array($ptin2))
-				{
-					echo $row2['sellprice'];
-					$price1 = $row2['sellprice'] * $row[$trv] - floor($row2['sellprice'] * $row[$trv] * $row2['disct'] * $perdc);
-				}
-				}
-				echo "</td>";
-				echo "<td>";
-				echo $row[$trv];
-				echo "</td>";
-				echo "<td style='text-align:right;'>";
-				echo $price1;
-				echo "</td></tr>";
-				//$allprice = $allprice+$price1;
-				$j = $j+1;
-			}
-		}
-		}*/
 		//Lab part
 		//lab price and pricepolicy
 		$ptin = mysqli_query($link, "select * from $tmp ");

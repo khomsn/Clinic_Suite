@@ -88,7 +88,7 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
 					  ) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 					  ";
 	  // Now create table
-	  mysqli_query($link, $sql_insert) or die("Create table Failed:" . mysqli_error($link));
+	  mysqli_query($link, $sql_insert) or $err[]=("Create table Failed:" . mysqli_error($link));
 
     $i = $_POST['nofrow']; //no of row to process
     for($j=1;$j<=$i;$j++)
@@ -127,7 +127,7 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
 	  {
 	  $sql_insert = "INSERT INTO `pt_to_lab` (`ptid`, `prefix`, `fname`, `lname`) VALUES ('$ptid','$prefix','$fname', '$lname')";
 	  // Now insert Patient to "pt_to_lab" table
-	  mysqli_query($link, $sql_insert) or die("Insertion to `pt_to_lab` Failed:" . mysqli_error($link));
+	  mysqli_query($link, $sql_insert) or $err[]=("Insertion to `pt_to_lab` Failed:" . mysqli_error($link));
 	  }
   
 	  /***********insert ptid in to labwait table *************/
@@ -139,7 +139,7 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
 	  if(empty($checkid))
 	  {
         $sqllw = "INSERT into `labwait` (`ptid`,`rid`,`tablename`) value ('$ptid','$presentrid','$labtable')";
-        mysqli_query($link, $sqllw) or die("Insertion `labwait` Failed:" . mysqli_error($link));
+        mysqli_query($link, $sqllw) or $err[]=("Insertion `labwait` Failed:" . mysqli_error($link));
 	  }
 
     /****************insert lab id to $labtable **************************/
@@ -156,7 +156,7 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
         {
             $sql_delete = "DELETE FROM $labtable WHERE `Labid` = '$lbdold'";
             // Now DELETE Patient to "pt_to_lab" table
-            mysqli_query($link, $sql_delete) or die("DELETE $labtable Failed:" . mysqli_error($link));
+            mysqli_query($link, $sql_delete) or $err[]=("DELETE $labtable Failed:" . mysqli_error($link));
     
         }
         
@@ -186,14 +186,14 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
                 if(!empty($labname))
                 {
                     //check for lab duplicate
-                    $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or die(mysqli_error($link));
+                    $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or $err[]=(mysqli_error($link));
                     list($total) = mysqli_fetch_row($rs_duplicate);
 
                     if ($total == 0)
                     {
                         $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
                         // Now insert Patient to "pt_to_drug" table
-                        mysqli_query($link, $sql_insert) or die("Insertion `$labtable` Failed:" . mysqli_error($link));
+                        mysqli_query($link, $sql_insert) or $err[]=("Insertion `$labtable` Failed:" . mysqli_error($link));
                     }
                 }
             }
@@ -210,21 +210,21 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
             }
             
             //check for lab duplicate
-            $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or die(mysqli_error($link));
+            $rs_duplicate = mysqli_query($link, "select count(*) as total from $labtable where Labname='$labname' ") or $err[]=(mysqli_error($link));
             list($total) = mysqli_fetch_row($rs_duplicate);
 
             if ($total == 0)
             {
                 $sql_insert = "INSERT INTO `$labtable` (`Labid`,`Labname`,`price`) VALUES ('$lbd','$labname','$lprice')";
                 // Now insert Patient to "pt_to_drug" table
-                mysqli_query($link, $sql_insert) or die("Insertion `$labtable` Failed:" . mysqli_error($link));
+                mysqli_query($link, $sql_insert) or $err[]=("Insertion `$labtable` Failed:" . mysqli_error($link));
             }
         }
 	 }
 	$msg[] = "Lab request complete!";
 	//ACCOUNT PART for lab price
 	//update lab @ labid
-	mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$alllabprice'") or die(mysqli_error($link));
+	mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$alllabprice'") or $err[]=(mysqli_error($link));
 	
     }
     
@@ -240,22 +240,22 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
 	  {
 	  $sql_insert = "DELETE FROM `pt_to_lab` WHERE `ptid` = '$ptid'";
 	  // Now DELETE Patient to "pt_to_lab" table
-	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	  mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 	  //rm from labwait
 	  $sql_insert = "DELETE FROM `labwait` WHERE `ptid` = '$ptid' AND  `rid` = '$presentrid'";
 	  // Now DELETE Patient to "pt_to_lab" table
-	  mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+	  mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 	  }
 
       /********* Remove labtemp table******************/
 	  $labtable = "labtmp_".$ptid."_".$presentrid;
 	  
       $sql_insert = "DROP TABLE IF EXISTS $labtable";
-      mysqli_query($link, $sql_insert) or die("Drop Table Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) or $err[]=("Drop Table Failed:" . mysqli_error($link));
       
       	//ACCOUNT PART for lab price
       //update lab @ labid
-      mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '0'") or die(mysqli_error($link));
+      mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '0'") or $err[]=(mysqli_error($link));
 
     }
    

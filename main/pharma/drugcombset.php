@@ -17,11 +17,11 @@ mysqli_query($link, $sql);
 
 if($_POST['set'] == 'ReSet')
 {
-      mysqli_query($link, "TRUNCATE TABLE drugcombset") or die(mysqli_error($link));
+      mysqli_query($link, "TRUNCATE TABLE drugcombset");
 }
 if($_POST['ลบ'])
 {
-      mysqli_query($link, "DELETE FROM `drugcombset` WHERE `id` = '$_POST[ลบ]'") or die(mysqli_error($link));
+      mysqli_query($link, "DELETE FROM `drugcombset` WHERE `id` = '$_POST[ลบ]'");
 }
 if($_POST['set'] == 'Set') 
 { 
@@ -41,7 +41,7 @@ if($_POST['set'] == 'Set')
 			    `outvol` = '$_POST[$outvol]',
 			    `outsetpoint` = '$_POST[$outsetpoint]'
 			    WHERE id='$i'
-			    ") or die(mysqli_error($link));
+			    ");
   }
   
     $i = $_SESSION['rowmax'];
@@ -59,7 +59,7 @@ if($_POST['set'] == 'Set')
 			    ('$_POST[$idin]','$_POST[$invol]','$_POST[$idout]','$_POST[$outvol]','$_POST[$outsetpoint]')";
 
     // Now insert into "drugcombset" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) ;
   }
   unset($_SESSION['rowmax']);
 }

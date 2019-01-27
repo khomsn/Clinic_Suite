@@ -15,8 +15,7 @@ if($volume >= $voltoupdate)
 {
       $sql_insert = "INSERT into `drugtouse`	(`date`, `drugid`, `volume`,`user`)
 				      VALUES  (now(),'$id','$voltoupdate','0')";
-      // Now insert Drug order information to "drug_#id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert);
 
 
       // Update drug_id at volume
@@ -44,7 +43,6 @@ if($volume >= $voltoupdate)
 		      $upvol = $dcustomer + $dleft;
 		      mysqli_query($link, "UPDATE $drugtable SET `customer` = '$upvol' WHERE `id` = '$rowid'");
 		      $ctv = $ctv - $dleft;
-		      //$alldp = $alldp + $dprice* $dleft / $dvolume;
 	      }	
 	      else
 	      {
@@ -52,25 +50,18 @@ if($volume >= $voltoupdate)
 		      $upvol = $dcustomer + $ctv;
 		      mysqli_query($link, "UPDATE $drugtable SET `customer` = '$upvol' WHERE `id` = '$rowid'");
 		      $ctv = 0;
-		      //$alldp = $alldp + $dprice* $ctv / $dvolume;
 	      }	
       }	
       // Price to cut
       $alldp = $price*$voltoupdate;
       
-      // accounting system
-      //$acc = mysqli_query($link, "SELECT ac_no FROM drug_id WHERE id = $id");
-      //while($rowac = mysqli_fetch_array($acc))
-      //{ $dacno = $rowac['ac_no'];}
-
-	      // assign insertion pattern 59999999 ตัดยอด
-	      $detail ="เบิกใช้";
-	      $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
-			    VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
-	      // Now insert Drug order information to "drug_#id" table
-	      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    // accounting system
+    // assign insertion pattern 59999999 ตัดยอด
+    $detail ="เบิกใช้";
+    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`recordby`)
+        VALUES  (now(),'59999999','$dacno','$detail','$alldp','c','0')";
+    mysqli_query($link, $sql_insert);
     
-    //new 
     //record drug use per month in dupm table for statistics
     $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE())");
     while($dupmo = mysqli_fetch_array($dupmin))
@@ -81,23 +72,14 @@ if($volume >= $voltoupdate)
     if(!empty($idstat))
     {
      
-      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
-				      WHERE id = '$dupmo[id]'; 
-				      ";
-
-      // Now insert Patient to "patient_id" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol' WHERE id = '$dupmo[id]'; ";
+      mysqli_query($link, $sql_insert);
     
     }
     else
     {
-      $sql_insert = "INSERT into `dupm`
-		(`drugid`,`mon`,`vol`)
-	    VALUES
-		('$id',now(),'$voltoupdate')";
-	// Now insert Patient to "patient_id" table
-	mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-  
+        $sql_insert = "INSERT into `dupm` (`drugid`,`mon`,`vol`) VALUES ('$id',now(),'$voltoupdate')";
+        mysqli_query($link, $sql_insert);
     }
 }
 ?>

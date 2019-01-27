@@ -38,7 +38,7 @@ $concurdrug = mysqli_real_escape_string($link, $concurdrug);
 
 $sql_insert = "UPDATE `patient_id` SET `concurdrug` = '$concurdrug' WHERE `id` = '$id' LIMIT 1 ;";
 // Now insert Patient to "patient_id" table
-mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
+mysqli_query($linkopd, $sql_insert);
 header("Location: concurdrug.php"); 
 }
 ?>

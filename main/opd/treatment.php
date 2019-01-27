@@ -56,7 +56,7 @@ for($i=1;$i<=4;$i++)
 			`$tr1o4p` = '',
 			`$tr1o4vp` = '0',
 			`$trby` = '0'
-			") or die(mysqli_error($link));
+			") ;
 		// go on to other step
 		header("Location: treatment.php"); 	
 	}
@@ -81,7 +81,7 @@ if (ltrim($_POST['inform']) === '') $_POST['inform'] = '';
 mysqli_query($linkopdx, "UPDATE $pttable SET
 			`inform` = '$_POST[inform]' 
 			WHERE `id` = '$rid[0]' 
-			") or die(mysqli_error($linkopdx));
+			") ;
 // go on to other step
 header("Location: prescript.php");  
 }
@@ -191,7 +191,7 @@ echo "</head><body>";
 if(empty($_SESSION['tr']))
 {
     // Now Delete Patient from "pt_to_treatment" table
-    mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ") or die(mysqli_error($link));
+    mysqli_query($link, "DELETE FROM pt_to_treatment WHERE ptid = '$id' ");
     unset($_SESSION['tr']);    
 }
 else
@@ -201,8 +201,7 @@ else
       if(empty($check))
       {
       $sql_insert = "INSERT INTO `pt_to_treatment` (`ptid`, `prefix`,`fname`, `lname`) VALUES ('$id', '$prefix','$fname', '$lname')";
-      // Now insert Patient to "pt_to_drug" table
-      mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+      mysqli_query($link, $sql_insert) ;
       }
 }
 unset($_SESSION['tr']);

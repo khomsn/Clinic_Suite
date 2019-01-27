@@ -26,7 +26,7 @@ if($_POST['doRegister'] == 'Register')
         }
     }
     // check for duplicated record for ctz_id
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -53,7 +53,7 @@ if($_POST['doRegister'] == 'Register')
     $gender = mysqli_real_escape_string($link, $_POST['Gender']);
 
     // check for duplicated record
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where F_Name='$fname' and L_Name='$lname' and gender='$gender' ") or die(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where F_Name='$fname' and L_Name='$lname' and gender='$gender' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -76,7 +76,7 @@ if($_POST['doRegister'] == 'Register')
     if(!empty($_POST['address3']))
     {
         $sql="SELECT * FROM zip WHERE tname='$_POST[address3]'";
-        $result = mysqli_query($linkcm,$sql) or die(mysqli_error());
+        $result = mysqli_query($linkcm,$sql) or $err[]=(mysqli_error());
             while($row=mysqli_fetch_array($result))
             {
             $_POST['address4'] = $row['aname'];
@@ -95,14 +95,14 @@ if($_POST['doRegister'] == 'Register')
 
 
     // Now insert staff to "staff" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
     //create OPD
     // check for duplicated record
-    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and ctz_id='$_POST[ctz_id]'") or die(mysqli_error($linkopd));
+    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and ctz_id='$_POST[ctz_id]'") or $err[]=(mysqli_error($linkopd));
     list($total) = mysqli_fetch_array($rs_duplicate);
     // check for duplicated record if same person
-    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and birthday='$birthday'") or die(mysqli_error($linkopd));
+    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and birthday='$birthday'") or $err[]=(mysqli_error($linkopd));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -119,7 +119,7 @@ if($_POST['doRegister'] == 'Register')
 
 
     // Now insert Patient to "patient_id" table
-    mysqli_query($linkopd, $sql_insert) or die("Insertion Failed:" . mysqli_error($linkopd));
+    mysqli_query($linkopd, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkopd));
     // Then get Patient ID to process to other step.
     $result = mysqli_query($linkopd, "SELECT id FROM patient_id
     WHERE fname='$fname' AND lname='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]'");
@@ -144,12 +144,12 @@ if($_POST['doRegister'] == 'Register')
     
     $sql_insert = "INSERT into `acnumber` (`ac_no`,`name`)  VALUES  ('$acfp','$acnfp')";
     // Now insert Patient to "acnumber" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
 	//update users table at staff_id
 	$sql_update = "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id';";
 	// Now insert Staff to "users" table
-	mysqli_query($link, $sql_update) or die("Update Failed:" . mysqli_error($link));
+	mysqli_query($link, $sql_update) or $err[]=("Update Failed:" . mysqli_error($link));
 	
 
     //avatar part

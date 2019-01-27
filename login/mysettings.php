@@ -131,7 +131,7 @@ if($_POST['doSave'] == 'Save')
                 `country` = '$data[country]',
                 `website` = '$data[web]'
                 WHERE id='$_SESSION[user_id]'
-                ") or die(mysqli_error($link));
+                ");
 
     //header("Location: mysettings.php?msg=Profile Sucessfully saved");
     $msg[] = "Profile Sucessfully saved";

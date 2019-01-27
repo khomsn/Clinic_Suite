@@ -38,8 +38,7 @@ if($_POST['doSave'] == 'Save')
     VALUES  ('$bday','$_POST[expd]','$_POST[supplier]','$_POST[inv_num]','$_POST[volume]','$_POST[price]')";
     }
 
-    // Now insert Drug order information to "rawmat_#id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert) ;
 
 
     // Update rawmat at volume and buyprice.
@@ -55,14 +54,9 @@ if($_POST['doSave'] == 'Save')
     $rawid = "R".$id;
     $sql_insert = "INSERT into `sp_$spid`	(`date`,`inid`,`inv_num`, `price`, `payment`)
     VALUES  ('$bday','$rawid','$_POST[inv_num]','$_POST[price]','$_POST[pay]')";
-    // Now insert Drug order information to "rawmat_#id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
     // accounting system
-    //$acc = mysqli_query($link, "SELECT ac_no FROM rawmat WHERE id = $id");
-    //while($rowac = mysqli_fetch_array($acc))
-    //{ $dacno = $rowac['ac_no'];}
-
     if ($_POST['pay'] == '1')
     { 
         $sup_ac = $_POST['payby'];
@@ -74,8 +68,7 @@ if($_POST['doSave'] == 'Save')
                 $pacnum = $_POST['payby'] + 40000000;
                 $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
                 VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
-                // Now insert Drug order information to "rawmat_#id" table
-                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                mysqli_query($link, $sql_insert);
             }
         }
     }
@@ -89,8 +82,7 @@ if($_POST['doSave'] == 'Save')
     $detail ="ซื้อ ".$_POST['supplier'].' '.$_POST['inv_num'];
     $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`, `inv_num`, `price`,`type`,`bors`,`recordby`)
     VALUES  (now(),'$dacno','$sup_ac','$detail','$_POST[inv_num]','$_POST[price]','c','b','$_SESSION[user_id]')";
-    // Now insert Drug order information to "rawmat_#id" table
-    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+    mysqli_query($link, $sql_insert);
 
     // go on to other step
     //header("Location: stock.php"); 
