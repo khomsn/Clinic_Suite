@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $title = "::บัญชีและการเงิน::";
@@ -73,9 +74,9 @@ include '../../main/bodyheader.php';
                                 <tr>
                                     <th style="width: 30%;" >รายได้จากการขาย ประจำวันที่
                                     </th>
-                                    <th>เงินสด
+                                    <th>เงินรับ
                                     </th>
-                                    <th>ค้างจ่าย
+                                    <th>ค้างรับ
                                     </th>
                                     <th>รวม(บาท)
                                     </th>
@@ -94,7 +95,7 @@ include '../../main/bodyheader.php';
                                         $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE  day = '$i' AND month ='$sm' AND year ='$sy' ");
                                         while($row = mysqli_fetch_array($dtype))
                                         {
-                                            $cash[$i] = $cash[$i] + $row['cash']; 
+                                            $cash[$i] = $cash[$i] + $row['pay']; 
                                             $own[$i] = $own[$i] + $row['own'];
                                         } 
                                             echo "</th><th width=15% style='text-align: right;'>";

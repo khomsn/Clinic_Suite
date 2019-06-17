@@ -154,7 +154,7 @@ switch ($sm)
   echo "ธันวาคม";
   break;
 }?> พ.ศ. <?php echo $bsy;?></p>
-<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้า <u><?php echo $_SESSION['sfname'];?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> ได้ทำการตรวจรักษา<br>
+<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้า <u><?php echo $_SESSION['sfname'];?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> ได้ทำการตรวจรักษา 
 <u> <?php echo $prefix." ".$fname." ".$lname;?> </u> เมื่อวันที่ <u> <?php echo $sd." ";
 switch ($sm)
 {

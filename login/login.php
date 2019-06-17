@@ -7,6 +7,8 @@ include '../config/dbc.php';
 
 $err = array();
 
+if(empty($_POST['doLogin'])) $_POST['doLogin']=''; //init value
+
 //
 // Get client's IP address
 if (isset($_SERVER['HTTP_CLIENT_IP']) && array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
@@ -99,9 +101,30 @@ if ($_POST['doLogin']=='Login')
                 $_SESSION['user_background'] = $bgimage;
                 
                 //update stock at the end of the month 
-                $lastday = cal_days_in_month(CAL_GREGORIAN, date("d"), date("Y"));
+                $lastday = cal_days_in_month(CAL_GREGORIAN, date("n"), date("Y"));
                 $sd = date("d");
-                if($sd==$lastday)  header("Location: ../main/drugusestat.php");
+                if($sd==$lastday)
+                {
+                    $drc = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM `dr_rm_ustcheck` "));
+
+                    if(!$drc[0])
+                    {
+                        header("Location: ../main/pharma/drugusestat.php");
+                        mysqli_query($link, "update `dr_rm_ustcheck` set `drcheck` = 1");
+                    }
+
+                    if(!$drc[1])
+                    {
+                        header("Location: ../main/rawmat/rawmatusestat.php");
+                        mysqli_query($link, "update `dr_rm_ustcheck` set `rmcheck` = 1");
+                    }
+                    
+                    header("Location: myaccount.php");
+                }
+                elseif($sd==1){
+                    mysqli_query($link, "update `dr_rm_ustcheck` set `drcheck` = 0, `rmcheck` = 0 ");
+                    header("Location: myaccount.php");
+                }
                 else  header("Location: myaccount.php");
             }
         }

@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $title = "::บัญชีและการเงิน::";
@@ -67,7 +68,7 @@ include '../../main/bodyheader.php';
 				 break;
 			}?> พ.ศ. <?php echo $bsy; //date("Y")+543;?></h3>
                 <table style="text-align: center; margin-left: auto; margin-right: auto; width: 50%;" border="0" cellpadding="2" cellspacing="2" class="TFtable">
-                    <tr><th  >ยอดขาย ประจำวันที่</th><th width = 10%>เงินสด</th><th width = 10%>ค้างจ่าย</th><th width = 10%>รวม(บาท)</th></tr>
+                    <tr><th  >ยอดขาย ประจำวันที่</th><th width = 10%>จ่าย</th><th width = 10%>ค้างจ่าย</th><th width = 10%>รวม(บาท)</th></tr>
                     <?php 	
                     if($sm == date("m") and $sy == date("Y")) $imax = date("d");
                     elseif($sm == 1 or $sm == 3 or $sm == 5 or $sm == 7 or $sm == 8 or $sm == 10 or $sm == 12) $imax=31;
@@ -82,7 +83,7 @@ include '../../main/bodyheader.php';
                             $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE  day = '$i' AND month ='$sm' AND year ='$sy' ");
                             while($row = mysqli_fetch_array($dtype))
                             {
-                                $cash[$i] = $cash[$i] + $row['cash']; 
+                                $cash[$i] = $cash[$i] + $row['pay']; 
                                 $own[$i] = $own[$i] + $row['own'];
                             } 
                                 echo "</td><td width=15%  style='text-align: right;'>";

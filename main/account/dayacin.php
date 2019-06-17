@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $_SESSION['sd'] = $sd;

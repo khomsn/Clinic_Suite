@@ -9576,13 +9576,13 @@ OPD:
 
                 $sql  = 'INSERT INTO `initdb` (`refname`, `state`) VALUES (\'patient_id\', \'1\')';
                 mysqli_query($link, $sql);
-                $opd = $opd+1; if($opd == 2) goto CLN; if($OPD<=1) goto RFL;
+                $opd = $opd+1; if($opd == 2) goto CLN; if($opd<=1) goto RFL;
             }
         
     }
 
 CLN:
-    if($CMN AND $OPD AND $CLN) break;
+    if( ($common == 6) AND ($opd == 2) AND ($clinic == 24)) break;
 
     if($dbrefname[$j] == "clinic" AND $dbstate[$j] == 1)
     {
@@ -9961,7 +9961,8 @@ CLN:
                 `year` smallint(4) NOT NULL,
                 `ctmid` int(11) NOT NULL,
                 `ctmacno` int(11) NOT NULL,
-                `cash` decimal(7,2) NOT NULL,
+                `payby_acno` int(11) NOT NULL DEFAULT '10000001',
+                `pay` decimal(7,2) NOT NULL,
                 `own` decimal(7,2) NOT NULL,
                 `total` decimal(7,2) NOT NULL,
                 `ddx` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

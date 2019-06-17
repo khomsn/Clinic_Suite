@@ -2,6 +2,7 @@
 include '../../config/dbc.php';
 
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $title = "::บัญชีและการเงิน::";
@@ -83,7 +84,7 @@ include '../../main/bodyheader.php';
                                 }
                                 
                                 $i = 1;	
-                                $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE day = '$sd' AND month ='$sm' AND year ='$sy' ");
+                                $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE day = '$sd' AND month ='$sm' AND year ='$sy' AND payby_acno = '10000001'");
                                 while($row = mysqli_fetch_array($dtype))
                                 {
                                 // Print out the contents of each row into a table
@@ -98,8 +99,8 @@ include '../../main/bodyheader.php';
                                     echo "</th><th >"; 
                                     echo $row2['prefix'].' '.$row2['fname'].'  '.$row2['lname'];
                                     echo "</th><th width=20%  style='text-align: right;'>"; 
-                                    echo "<span class=currency>".$row['cash']."</span>";
-                                    $cash = $cash + $row['cash']; 
+                                    echo "<span class=currency>".$row['pay']."</span>";
+                                    $cash = $cash + $row['pay']; 
                                     echo "</th><th width=20%  style='text-align: right;'>";
                                     for($m=0;$m<$dpid;$m++)
                                     {

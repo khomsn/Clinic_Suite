@@ -287,6 +287,14 @@ include '../../libs/iframeautofocus.php';
 				  echo "' value='ลบ'>";
 				  }
 				  echo "</td></tr>";
+                    //check Treatment not done
+                    if($row['idtr'.$i]!=0)
+                    {
+                        if($row['trby'.$i]==0)
+                        {
+                            if($_SESSION['tr']!=1) $_SESSION['tr']=1;
+                        }
+                    }
 				  }
 			  }
 			?>

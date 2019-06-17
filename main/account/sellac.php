@@ -2,6 +2,7 @@
 include '../../config/dbc.php';
 
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $title = "::บัญชีและการเงิน::";
@@ -70,9 +71,16 @@ include '../../main/bodyheader.php';
 				<table style="text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
 					<tr><td style="width: 50%; vertical-align: top; background-color: rgb(255, 255, 204);">
                         <table style="text-align: center; margin-left: auto; margin-right: auto; width: 100%;" border="1" cellpadding="2" cellspacing="2" class="TFtable">
-                            <tr><th width = 8%>ลำดับ</th><th>รายละเอียด</th><th width = 10%>เงินสด</th><th width = 10%>ค้างจ่าย</th><th width = 10%>รวม(บาท)</th></tr>
+                            <tr><th width = 8%>ลำดับ</th><th>รายละเอียด</th><th width = 10%>จ่ายโดย</th><th width = 10%>จ่าย</th><th width = 10%>ค้างจ่าย</th><th width = 10%>รวม(บาท)</th></tr>
                             <?php 	
-                                $i = 1;
+                                $i = 1;$ac=1;
+                                $dtype = mysqli_query($link, "SELECT DISTINCT payby_acno FROM sell_account WHERE day = '$sd' AND month ='$sm' AND year ='$sy' ");
+                                while($row = mysqli_fetch_array($dtype))
+                                {
+                                    $pbacno[$ac]=$row['payby_acno'];
+                                    $ac = $ac+1;
+                                }
+                                
                                 $dtype = mysqli_query($link, "SELECT * FROM sell_account WHERE day = '$sd' AND month ='$sm' AND year ='$sy' ");
                                 while($row = mysqli_fetch_array($dtype))
                                 {
@@ -84,9 +92,20 @@ include '../../main/bodyheader.php';
                                     $row2 = mysqli_fetch_array(mysqli_query($linkopd, "SELECT * FROM patient_id WHERE id = '$ptid' "));
                                     echo $row2['prefix'].' '.$row2['fname'].'  '.$row2['lname'];
                                     //echo $row['ctmid'];
+                                    echo "</th><th width=10%  style='text-align: right;'>";
+                                    $byac = $row['payby_acno'];
+                                    $pb = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM acnumber WHERE ac_no = '$byac' "));
+                                    echo $pb['name'];
                                     echo "</th><th width=10%  style='text-align: right;'>"; 
-                                    echo "<span class=currency>".$row['cash']."</span>";
-                                    $cash = $cash + $row['cash']; 
+                                    echo "<span class=currency>".$row['pay']."</span>";
+                                    $pay = $pay + $row['pay'];
+                                    for($j=1;$j<$ac;$j++)
+                                    {
+                                        if($byac==$pbacno[$j])
+                                        {
+                                            $pbacn[$byac] = $pbacn[$byac] + $row['pay'];
+                                        }
+                                    }
                                     echo "</th><th width=10%  style='text-align: right;'>"; 
                                     echo "<span class=currency>".$row['own']."</span>";
                                     $own = $own + $row['own'];
@@ -95,41 +114,46 @@ include '../../main/bodyheader.php';
                                     echo "</th></tr>";
                                     $i = $i + 1;
                                 } 
-                                echo "<tr><th>&nbsp;</th><th>ยอดรวม</th><th  style='text-align: right;'>";
-                                echo "<span class=currency>".$cash."</span>";
+                                echo "<tr><th>&nbsp;</th><th>ยอดรวม</th><th></th><th  style='text-align: right;'>";
+                                echo "<span class=currency>".$pay."</span>";
                                 echo "</th><th  style='text-align: right;'>";
                                 echo "<span class=currency>".$own."</span>";
                                 echo "</th><th  style='text-align: right;'>";
-                                echo "<span class=currency>".($cash + $own)."</span>";
+                                echo "<span class=currency>".($pay + $own)."</span>";
                                 echo "</th></tr>";
                             ?>
                         </table>
                         <?php 
-                            $sdate = $sy.'-'.$sm.'-'.$sd; 
-                            $dtype = mysqli_query($link, "SELECT * FROM daily_account WHERE date = '$sdate' AND ac_no_i = '10000001' AND ac_no_o ='40000001' ");
-                            $dtail = "ยอดขายเงินสด ประจำวัน";
-                            $i =0;
-                            while ($row = mysqli_fetch_array($dtype))
+                            $sdate = $sy.'-'.$sm.'-'.$sd;
+                            for($j=1;$j<=$ac;$j++)
                             {
-                                $i = $i+1;
+                                $acin = $pbacno[$j];
+                                $dtype = mysqli_query($link, "SELECT * FROM daily_account WHERE date = '$sdate' AND ac_no_i = '$acin' AND ac_no_o ='40000001' ");
+                                if($acin == 10000001) $dtail = "ยอดขายเงินสด ประจำวัน";
+                                else $dtail = "ยอดขาย ประจำวัน";
+                                $i =0;
+                                while ($row = mysqli_fetch_array($dtype))
+                                {
+                                    $i = $i+1;
+                                }
+                                if( $i == 0 )
+                                {
+                                    // assign insertion pattern
+                                    $sql_insert = "INSERT into `daily_account`
+                                                    (`date`,`ac_no_i`,`ac_no_o`, `detail`, `price`, `type`, `bors`, `recordby`)
+                                                    VALUES
+                                                    ('$sdate','$acin','40000001','$dtail','$pbacn[$acin]','d','s','0')";
+                                    // Now insert Patient to "patient_id" table
+                                    if($pbacn[$acin] == 0) goto noupdate;
+                                    mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
+                                }
+                                else
+                                {
+                                    if($pbacn[$acin] == 0) goto noupdate;
+                                    mysqli_query($link, "UPDATE  `daily_account` SET `price` = '$pbacn[$acin]' WHERE `date` = '$sdate' AND ac_no_i = '$acin'  AND ac_no_o = '40000001' ");
+                                }
+                                noupdate:
                             }
-                            if( $i == 0 )
-                            {
-                                // assign insertion pattern
-                                $sql_insert = "INSERT into `daily_account`
-                                                (`date`,`ac_no_i`,`ac_no_o`, `detail`, `price`, `type`, `bors`, `recordby`)
-                                                VALUES
-                                                ('$sdate','10000001','40000001','$dtail','$cash','d','s','0')";
-                                // Now insert Patient to "patient_id" table
-                                if($cash == 0) goto noupdate;
-                                mysqli_query($link, $sql_insert) or die("Insertion Failed:" . mysqli_error($link));
-                            }
-                            else
-                            {
-                                if($cash == 0) goto noupdate;
-                                mysqli_query($link, "UPDATE  `daily_account` SET `price` = '$cash' WHERE `date` = '$sdate' and ac_no_o = '40000001' ");
-                            }
-                            noupdate:
                         ?>
 					</td></tr>
 				</table>

@@ -4,12 +4,11 @@ include '../../config/dbc.php';
 page_protect();
 if($_POST['Rec'])
 {
-$_SESSION['ptid'] = $_POST['Rec'];
-$rid = "rid".$_POST['Rec'];
-$table = "tb".$_POST['Rec'];
-$_SESSION['rid'] = $_POST[$rid];
-$_SESSION['ltb'] = $_POST[$table];
-header("Location: laballrspage.php");
+    $str_arr = explode ("@", $_POST['Rec']); 
+    $_SESSION['ptid'] = $str_arr[0];
+    $_SESSION['rid'] = $str_arr[1];
+    $_SESSION['ltb'] = $_POST['tb'.$_SESSION['ptid'].$_SESSION['rid']];
+    header("Location: laballrspage.php");
 }
 
 $title = "::Laboratory List::";
@@ -53,9 +52,8 @@ include '../../main/bodyheader.php';
 		    }
 		 
 		     echo "<tr><td style='text-align:center;'>";
-		     echo "<input type='submit' name='Rec' value='".$rows['ptid']."'>";
-		     echo "<input type='hidden' name='rid".$rows['ptid']."' value='".$rows['rid']."'>";
-		     echo "<input type='hidden' name='tb".$rows['ptid']."' value='".$rows['tablename']."'>";
+		     echo "<input type='submit' name='Rec' value='".$rows['ptid']."@".$rows['rid']."'>";
+		     echo "<input type='hidden' name='tb".$rows['ptid'].$rows['rid']."' value='".$rows['tablename']."'>";
 		     echo "</td><td>";
 		     echo $ptname;
 		     echo "</td><td>";

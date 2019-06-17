@@ -2,7 +2,7 @@
 include '../../config/dbc.php';
 page_protect();
 
-include '../../libs/progdate.php';
+include '../../libs/dateandtimezone.php';
 
 $id = $_SESSION['patcash'];
 $Patient_id = $id;
@@ -35,6 +35,7 @@ if($_POST['OK'] == 'ใบเสร็จรับเงิน')
     $_SESSION['paytoday'] = $_POST['totalpay'];
     $_SESSION['newdeb'] = $_SESSION['price'] - $_SESSION['paytoday'];
     $_SESSION['vd'] = $visitdt;
+    $_SESSION['pbac'] = $_POST['payby'];
     //check if not pay yet
     if(mysqli_num_rows(mysqli_query($link, "select * from $tmp"))==0)
     {
@@ -71,6 +72,7 @@ elseif($_POST['OK'] == 'จ่าย')
         goto CannotPay;
     }
     //
+    $_SESSION['pbac'] = $_POST['payby'];
     $_SESSION['paytoday'] = $_POST['totalpay'];
     $_SESSION['newdeb'] = $_SESSION['price'] - $_SESSION['paytoday'];
     include '../../libs/payprocess.php';
@@ -95,6 +97,7 @@ elseif($_POST['OK'] == 'จ่าย')
         unset($_SESSION['price']);
         unset($_SESSION['mrid']);
         unset($_SESSION['patcash']);
+        unset($_SESSION['pbac']);
         header("Location: thankyou2.php ");
     }
     //unset($_SESSION['patcash']);
@@ -227,7 +230,17 @@ echo "</div></h3>";
 <tr></tr><tr></tr><tr></tr>
 <TR BGCOLOR="#FFFFCC">
 <th><big><big>ยอดที่จ่าย</big></big></th>
-<th><input id="TotalPay" STYLE="color: #A901DB; font-family: Verdana; font-weight: bold; font-size: 36px; background-color: #A9F5F2; text-align: center;" type="number" name="totalpay" size="10"  value="<?php 
+<th>
+<select name='payby'>
+<?php
+$payby = mysqli_query($link, "select * from acnumber WHERE ac_no <= 10000249 ");
+while( $pb = mysqli_fetch_array($payby))
+{
+    echo "<option value=".$pb['ac_no'].">".$pb['name']."</option>";
+}
+?>
+</select>
+<input id="TotalPay" STYLE="color: #A901DB; font-family: Verdana; font-weight: bold; font-size: 36px; background-color: #A9F5F2; text-align: center;" type="number" name="totalpay" size="10"  value="<?php 
 echo $_SESSION['price'];?>" min=0 max=<?php echo $_SESSION['price'];?>></th>
 </tr>
 <form method="get" action="recprint.php">
@@ -251,14 +264,13 @@ echo $_SESSION['price'];?>" min=0 max=<?php echo $_SESSION['price'];?>></th>
 </table>
 <br>
 <div style="text-align: center;">
-<div style="display:none;"><input type="submit" name="OK" value="จ่าย"></div>
-<input type="submit" name="OK" value="ใบเสร็จรับเงิน"><div style="background-color:rgba(0,255,0,0.5); display:inline-block;">* ต้องใช้คู่กับ <a href="remedcert.php" TARGET="MAIN">ใบรับรองแพทย์</a></div>
-<br>
 <br>
 <input type="submit" name="OK" value="จ่าย">
 <br>
 <br>
+<input type="submit" name="OK" value="ใบเสร็จรับเงิน"><div style="background-color:rgba(0,255,0,0.5); display:inline-block;">* ต้องใช้คู่กับ <a href="remedcert.php" TARGET="MAIN">ใบรับรองแพทย์</a></div>
+<br>
 </div>
 </form>
-<br>
+<br><br>
 </body></html>

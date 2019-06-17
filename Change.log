@@ -1,3 +1,15 @@
+khomsn-klinic-suite (62.06-17) stable; urgency=low
+  
+    * Version 25620617: update accounting and payment method, and Correct Lab display.
+    
+khomsn-klinic-suite (62.02-26) stable; urgency=low
+  
+    * Version 25620226: Sprit code and Initial some value to improve compatibility.
+    
+khomsn-klinic-suite (62.02-24) stable; urgency=low
+  
+    * Version 25620224: Add English language in Reciept form.
+    
 khomsn-klinic-suite (62.01-27) stable; urgency=low
   
     * Version 25620127: Clean up comments and error handle.

@@ -1,15 +1,17 @@
 <?php
 //lab price and pricepolicy
-	$tpptin = mysqli_query($link, "select * from $tmp ");
-	while ($row = mysqli_fetch_array($tpptin))
-	{
-	  $alllabprice = $row['licprice']+$row['lcprice'];
-	  $pricepolicy = $row['pricepolicy'];
-	  if($row['licprice']) $rmovelab = 0;
-	  else $rmovelab = 1;
-	}
-	//lab price finish
-	
+$allprice=0; //init value
+
+$tpptin = mysqli_query($link, "select * from $tmp ");
+while ($row = mysqli_fetch_array($tpptin))
+{
+    $alllabprice = $row['licprice']+$row['lcprice'];
+    $pricepolicy = $row['pricepolicy'];
+    if($row['licprice']) $rmovelab = 0;
+    else $rmovelab = 1;
+}
+//lab price finish
+
 include '../../libs/trpricecheck.php';
 
   //Treatment price
@@ -72,7 +74,7 @@ include '../../libs/trpricecheck.php';
 		{
 			$did = $row[$idrx];
 			$tpptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
-			if($tpptin2 !=0)
+			if($tpptin2)
 			{
 			while ($row2 = mysqli_fetch_array($tpptin2))
 			{

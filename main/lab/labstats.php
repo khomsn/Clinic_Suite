@@ -1,10 +1,11 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $thisdate = date_create();
-date_date_set($thisdate, $sy, $sm, $sd);
+date_date_set($thisdate, $_SESSION['sy'], $_SESSION['sm'], $_SESSION['sd']);
 $ddate = date_format($thisdate, 'Y-m-d');
 
 if($_POST['reset'])
@@ -57,18 +58,17 @@ include '../../main/bodyheader.php';
         {
             echo "<input type='submit' name='todom' value = '@'>&nbsp;";
         }
-        if ($sm < date("m"))
+        if ($_SESSION['sm'] < date("m"))
         {
-            if ($sy <= date("Y")){echo "<input type='submit' name='todom' value = '>>'>";}
+            if ($_SESSION['sy'] <= date("Y")){echo "<input type='submit' name='todom' value = '>>'>";}
         }
-        if ($sy <= date("Y"))
+        if ($_SESSION['sy'] <= date("Y"))
         {
-            if ($sm > date("m")){echo "<input type='submit' name='todom' value = '>>'> ";}
+            if ($_SESSION['sm'] > date("m")){echo "<input type='submit' name='todom' value = '>>'> ";}
         }
     }
     echo "  รายงานการใช้ Lab ประจำเดือน ";
-    $m = $sm;// date("m");
-    switch ($m)
+    switch ($_SESSION['sm'])
     {
         case 1:
         echo "มกราคม";
@@ -135,7 +135,7 @@ include '../../main/bodyheader.php';
         }
         echo $ttvol;
         echo "</td><td style='text-align:right;'>";
-        $labstin = mysqli_query($link, "SELECT vol FROM labstat WHERE labid = $rows[id]  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy'");
+        $labstin = mysqli_query($link, "SELECT vol FROM labstat WHERE labid = $rows[id]  AND MONTH(MandY) = '$_SESSION[sm]' AND YEAR(MandY) = '$_SESSION[sy]'");
         $ttv = mysqli_fetch_array($labstin);
         echo $ttv[0];
         echo "</td><td style='text-align:right;'>";

@@ -3,7 +3,8 @@
 /***** ../libs/autodrug.php                         *****/
 /********************************************************/
 include '../config/dbc.php';
-	$q=$_GET['q'];
+//	$q=$_GET['q'];
+    $q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
 	$my_data=mysqli_real_escape_string($link, $q);
 	
 	$sql="SELECT * FROM drug_id WHERE dname LIKE '%$my_data%' OR dgname LIKE '%$my_data%' ORDER BY dgname";

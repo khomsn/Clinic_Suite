@@ -148,13 +148,15 @@ if($_POST['doSave'] == 'Save')
                     $sup_ac = $_POST['payby'];
                     if($_POST['payby'] != 10000001)//ค่าธรรมเนียม 10000001 เงินสด 10000002-10000249 ธนาคาร
                     {
-                        if($_POST['free']!=0)
+                        if($_POST['fee']!=0)
                         {
                             // assign insertion pattern
                             $pacnum = $_POST['payby'] + 40000000;
                             $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
-                            VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
+                            VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน/ขนส่ง','$_POST[fee]','c','p','$_SESSION[user_id]')";
                             mysqli_query($link, $sql_insert) ;
+                            // now reset fee
+                            $_POST['fee']=0;
                         }
                     }
                 }
@@ -373,7 +375,7 @@ if($prod!='1')
         echo "</option>";
     }	
     ?>
-    </select>&nbsp;ค่าธรรมเนียมการโอน<input type="number" min=0 name="free" size="6" >
+    </select>&nbsp;ค่าธรรมเนียมการโอน<input type="number" min=0 name="fee" size="6" >
 </div></td></tr>
 </table>
 <p align="center"><input name="doSave" type="submit" id="doSave" value="Save"></p>

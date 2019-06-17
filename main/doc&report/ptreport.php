@@ -2,6 +2,7 @@
 include '../../config/dbc.php';
 
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $dtype = mysqli_query($link, "SELECT year FROM sell_account WHERE  id=1");

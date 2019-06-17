@@ -200,7 +200,7 @@ function GenKey($length = 7)
 
 function logout()
 {
-    global $link,$linkcm,$linkopd;
+    global $link;
     
     session_start();
 

@@ -2,6 +2,7 @@
 include '../../config/dbc.php';
 
 page_protect();
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $title = "::บัญชีและการเงิน::";
@@ -34,7 +35,7 @@ include '../../main/bodyheader.php';
 <tbody>
 <tr><td style="width: 50%; vertical-align: top; background-color: rgb(255, 255, 204);">
     <table style="text-align: center; margin-left: auto; margin-right: auto; width: 100%;" border="1" cellpadding="2" cellspacing="2" class="TFtable">
-    <tr><th  >เลขระเบียน</th><th  >ชื่อ</th><th>จำนวน (บาท)</th><th>มารักษาครั้งสุดท้าย</th><th></th></tr>
+    <tr><th>เลขระเบียน</th><th>ชื่อ</th><th>จำนวน (บาท)</th><th>มารักษาครั้งสุดท้าย</th><th>อายุ</th></tr>
     <?php
         $deb=mysqli_query($link, "select * from debtors");
         while($gd = mysqli_fetch_array($deb))
@@ -94,8 +95,8 @@ include '../../main/bodyheader.php';
 			}
 			echo " พ.ศ. ";
 			echo $lv['year']+543;                
-                echo "</td>";
-                echo "</td><td>name</td></tr>";
+                echo "</td><td>";
+                echo "</td></tr>";
             }
         }
     ?>

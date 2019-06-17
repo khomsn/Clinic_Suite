@@ -372,11 +372,13 @@ else echo "<body onload=\"javascript: poponload();\">";
                                     }
                                     echo "</td></tr>";
                                     //check Treatment not done
-                                    if($row['trby'.$i]==0)
+                                    if($row['idtr'.$i]!=0)
                                     {
-                                        $_SESSION['tr']=1;
+                                        if($row['trby'.$i]==0)
+                                        {
+                                            if($_SESSION['tr']!=1) $_SESSION['tr']=1;
+                                        }
                                     }
-                                    
                                 }
                             }
                             echo "<tr><td></td><td>รวม Lab+Treatment+Drug</td><td>".$alllabprice."</td><td>".$TMPrice."</td><td></td><td>".($allprice+$alllabprice)."</td><td></td><td></td><td></td></tr>";

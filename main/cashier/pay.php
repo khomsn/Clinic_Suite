@@ -2,7 +2,11 @@
 include '../../config/dbc.php';
 
 page_protect();
+if(empty($_SESSION['checkup'])) $_SESSION['checkup']=0;
 
+$perdc=$discount=$allprice=$TT_Yall=0; //init value
+
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 
 $cpd = mysqli_query($link, "select name from stcpdrug");
@@ -29,9 +33,10 @@ while ($row_settings = mysqli_fetch_array($pin))
 	{
 		$rid = $row_settings['id'];
 	}
-if($_POST['codp'])
+
+if($_SESSION['checkup'])
 {
-$coursepd = $_POST['codp'];
+    $coursepd = $_POST['codp'];
 }
 
 $title = "::Cashier + จ่ายยา::";
@@ -196,7 +201,7 @@ echo "</head><body>";
 	while ($row = mysqli_fetch_array($ptin))
 	{
 	//check for course and program check up lab
-		$checkup = $row['prolab'];
+		$_SESSION['checkup'] = $row['prolab'];
 		$course = $row['course'];
 	//
 		$idrx = "idrx".$i;
@@ -212,7 +217,7 @@ echo "</head><body>";
 			echo "<td style='text-align:right;'>";
 			$did = $row[$idrx];
 			$ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
-			if($ptin2 !=0)
+			if($ptin2)
 			{
 			while ($row2 = mysqli_fetch_array($ptin2))
 			{
@@ -438,7 +443,7 @@ if($course)
 	</tr>
 <?php
 }
-if($checkup)
+if($_SESSION['checkup'])
 {
 ?>
 	<tr>

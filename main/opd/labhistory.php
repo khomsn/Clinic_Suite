@@ -149,9 +149,6 @@ function Clickheretoprint()
   $filter = mysqli_query($link, "select * from lab WHERE `L_Set` !='SETNAME' ORDER BY `id` ASC  ");
   while ($labinfo = mysqli_fetch_array($filter))
   {
-//	  $labset = $labinfo['L_Set'];
-//	  $labset =  substr($labset,5);
-//	  $labspec = $labinfo['L_specimen'];
 	  $labnomr = $labinfo['normal_r'];
 	  $labunit = $labinfo['Lrunit'];
 	  $labmin = $labinfo['r_min'];
@@ -163,15 +160,9 @@ function Clickheretoprint()
 	  if($lname1==$charsl[$i])
 	    {
 	      echo "<tr><td>";
-//	      echo $i+1;
-//	      echo "</td><td style='text-align:left;'>";
-//	      echo $charsl[$i];
-//	      echo "</td><td>";
-//	      echo $labset;
-//	      echo "</td><td>";
-//	      echo $labspec;
-//	      echo "</td><td>";
-              echo "<a HREF=labhistory.php?labidin=".$lsname." >";
+          echo "<a HREF=labhistory.php?labidin=";
+          echo urlencode ($lsname);
+          echo " >";
 	      echo $lsname;
 	      echo "</a>";
 	      echo "</td><td>";

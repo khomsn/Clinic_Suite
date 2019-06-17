@@ -97,9 +97,17 @@ if($_POST['doRegister'] == 'แก้ไข')
     $concurdrug = mysqli_real_escape_string($link, $concurdrug);
     if(empty($_POST['address2'])) $_POST['address2']=0;
     if(empty($_POST['zipcode'])) $_POST['zipcode']=0;
-    if(empty($_POST['monk'])) $_POST['monk']=0;
+    if(empty($_POST['monk']))
+    { 
+        $_POST['monk']=0;
+        $pricepolicy = 2;
+    }
+    else
+    {
+        $pricepolicy = $_POST['monk'];
+    }
     
-    $sql_update = "UPDATE $tmp SET `staff` = '$_POST[monk]'";
+    $sql_update = "UPDATE $tmp SET `pricepolicy` = '$pricepolicy'";
     mysqli_query($link, $sql_update);
     
     // assign insertion pattern WHERE `patient_id`.`id` =1 LIMIT 1 ;

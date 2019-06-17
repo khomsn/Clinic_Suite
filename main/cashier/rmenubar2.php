@@ -2,10 +2,12 @@
 include '../../config/dbc.php';
 page_protect();
 $id = $_SESSION['patdesk'];
- 
+
 $tmp = "tmp_".$id;
 //$pdir = PT_AVATAR_PATH.$id."/";
 $pdir = "../".PT_AVATAR_PATH;
+
+if(empty($_SESSION['price'])) $_SESSION['price']= -0.0000001;
 
 $title = "::::";
 include '../../main/header.php';

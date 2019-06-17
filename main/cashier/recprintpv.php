@@ -7,7 +7,14 @@ $id = $_SESSION['patdesk'];
 $Patient_id = $id;
 include '../../libs/opdxconnection.php';
 
-
+if($_POST['language'] == 'English')
+{
+    $_SESSION['language'] = "English";
+}
+elseif($_POST['language'] == 'Thai')
+{
+    $_SESSION['language'] = "ไทย";
+}
 $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 $pttable = "pt_".$id;
 //
@@ -62,9 +69,18 @@ function Clickheretoprint()
    docprint.focus(); 
 }
 </script>
+<script type='text/javascript'>
+$(document).ready(function Cl() 
+{ 
+    $('input[name=language]').change(function Cl(){
+        $('form').submit();
+    });
+});
+</script>
 </head><body>
 <div class="myaccount">
-    <form method="post" action="recprintpv.php" name="regForm" id="regForm"><div style="text-align: center;">
+    <form method="post" action="recprintpv.php" name="regForm" id="regForm"><input type="radio" name="language" value="English" <?php if ($_SESSION['language'] == "English") echo "checked";?>>English<input type="radio" name="language" value="Thai" <?php if ($_SESSION['language'] =="ไทย") echo "checked";?>>ไทย
+    <div style="text-align: center;">
     <table width=100%>
     <tr><td width=33%>
     <?php 
@@ -139,86 +155,156 @@ function Clickheretoprint()
         <div class="page">
         <div class="subpage">
         <div class="a">
-        <div style="text-align: center;">ใบเสร็จรับเงิน เลขที่.<?php echo $id.$sy.$sm.$sd.$hms2;?><br>
+        <div style="text-align: center;"><?php if($_SESSION['language']=='English') echo "RECEIPT No."; else echo " ใบเสร็จรับเงิน เลขที่."; echo $id.$sy.$sm.$sd.$hms2;?><br>
         <?php
             $rs_settings = mysqli_query($link, "select * from parameter where id='1'");
             while ($row_settings = mysqli_fetch_array($rs_settings))
             {
+                if($_SESSION['language']=='English')
+                {
+                echo $row_settings['Ename'];
+                echo "<br>";
+                echo "License number ";
+                echo $row_settings['cliniclcid'];
+                echo "<br>";
+                echo $row_settings['Eaddress']."<br>Tel.";
+                }
+                else
+                {
                 echo $row_settings['name'];
                 echo "<br>";
                 echo "ใบอนุญาตเลขที่ ";
                 echo $row_settings['cliniclcid'];
                 echo "<br>";
                 echo $row_settings['address']."<br>โทร.";
+                }
                 echo $row_settings['tel'].",";
                 echo $row_settings['mobile']."<br> Email:";
                 echo $row_settings['email'];
             }
             
-        ?>
-        <br>วันที่ <?php echo $sd; ?> <?php $m = $sm;
-                switch ($m)
-                {
-                    case 1:
-                    echo "มกราคม";
-                    break;
-                    case 2:
-                    echo "กุมภาพันธ์";
-                    break;
-                    case 3:
-                    echo "มีนาคม";
-                    break;
-                    case 4:
-                    echo "เมษายน";
-                    break;
-                    case 5:
-                    echo "พฤษภาคม";
-                    break;
-                    case 6:
-                    echo "มิถุนายน";
-                    break;
-                    case 7:
-                    echo "กรกฎาคม";
-                    break;
-                    case 8:
-                    echo "สิงหาคม";
-                    break;
-                    case 9:
-                    echo "กันยายน";
-                    break;
-                    case 10:
-                    echo "ตุลาคม";
-                    break;
-                    case 11:
-                    echo "พฤศจิกายน";
-                    break;
-                    case 12:
-                    echo "ธันวาคม";
-                    break;
-                }?> พ.ศ. <?php echo $bsy; //date("Y")+543;?><br>
-                                ได้รับเงินจาก &nbsp; 
-                                <?php
-                        while ($row_settings = mysqli_fetch_array($ptin))
-                        {
-                            echo $row_settings['prefix'];
-                            echo "&nbsp;"; 
-                            echo $row_settings['fname'];
-                            echo "&nbsp; &nbsp; &nbsp;"; 
-                            echo $row_settings['lname'];
-                            if($row_settings['reccomp']!=0)
-                            {			
-                            echo "<br>";
-                            $comp = mysqli_query($link, "SELECT * FROM reccompany WHERE id='$row_settings[reccomp]'");
-                            $crow = mysqli_fetch_array($comp);
-                            echo "ในนาม ".$crow['comdt'];
-                            }
-                        }
-                        echo "<br>";
-                                ?>
+	echo "<br>";
+	
+	if($_SESSION['language']=='English') echo "Date ";
+	else echo "วันที่ ";
+	echo $sd;
+	$m = $sm;
+        if($_SESSION['language']=='English')
+        {
+			switch ($m)
+			{
+				 case 1:
+				 echo " January ";
+				 break;
+ 				 case 2:
+				 echo " February ";
+				 break;
+				 case 3:
+				 echo " March ";
+				 break;
+				 case 4:
+				 echo " April ";
+				 break;
+				 case 5:
+				 echo " May ";
+				 break;
+				 case 6:
+				 echo " June ";
+				 break;
+				 case 7:
+				 echo " July ";
+				 break;
+				 case 8:
+				 echo " August ";
+				 break;
+				 case 9:
+				 echo " September ";
+				 break;
+				 case 10:
+				 echo " October ";
+				 break;
+				 case 11:
+				 echo " November ";
+				 break;
+				 case 12:
+				 echo " December ";
+				 break;
+            }
+			echo $sy; //date("Y")+543;
+			echo "<br>Recieved payment from "; 
+        }
+        else
+        {
+			switch ($m)
+			{
+				 case 1:
+				 echo " มกราคม";
+				 break;
+ 				 case 2:
+				 echo " กุมภาพันธ์";
+				 break;
+				 case 3:
+				 echo " มีนาคม";
+				 break;
+				 case 4:
+				 echo " เมษายน";
+				 break;
+				 case 5:
+				 echo " พฤษภาคม";
+				 break;
+				 case 6:
+				 echo " มิถุนายน";
+				 break;
+				 case 7:
+				 echo " กรกฎาคม";
+				 break;
+				 case 8:
+				 echo " สิงหาคม";
+				 break;
+				 case 9:
+				 echo " กันยายน";
+				 break;
+				 case 10:
+				 echo " ตุลาคม";
+				 break;
+				 case 11:
+				 echo " พฤศจิกายน";
+				 break;
+				 case 12:
+				 echo " ธันวาคม";
+				 break;
+            }
+			echo " พ.ศ.".$bsy; //date("Y")+543;
+			echo "<br>ได้รับเงินจาก "; 
+		}
+
+        while ($row_settings = mysqli_fetch_array($ptin))
+        {
+            echo $row_settings['prefix'];
+            echo "&nbsp;"; 
+            echo $row_settings['fname'];
+            echo "&nbsp; &nbsp; &nbsp;"; 
+            echo $row_settings['lname'];
+            if($row_settings['reccomp']!=0)
+            {			
+            echo "<br>";
+            $comp = mysqli_query($link, "SELECT * FROM reccompany WHERE id='$row_settings[reccomp]'");
+            $crow = mysqli_fetch_array($comp);
+            if($_SESSION['language']=='English')
+            echo "In the name of ".$crow['comdt'];
+            else
+            echo "ในนาม ".$crow['comdt'];
+            }
+        }
+        echo "<br>";
+    ?>
                                 
         <table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
-            <tr><th width="6%">No</th><th width="">รายการทั้งหมด</th><th width="15%">ราคา</th><th width="12%">จำนวน</th><th width="10%">รวม</th></tr>
-            <?php 
+		<?php 
+		if($_SESSION['language']=='English')
+		 echo "<tr><th width='6%'>No</th><th>Item</th><th>Price</th><th width='12%'>Vol.</th><th width='10%'>Subtotal</th></tr>";
+        else
+		 echo "<tr><th width='6%'>No</th><th>รายการทั้งหมด</th><th>ราคา</th><th width='12%'>จำนวน</th><th width='10%'>รวม</th></tr>";
     //Treatment price
     $j = 1;
     for($i =1;$i<=4;$i++)
@@ -348,6 +434,9 @@ function Clickheretoprint()
                 if($row[$idrx] !=0 and $row[$rgx] =='DF')
                 {
                     echo "<tr><td>".$j."</td><td style='text-align:left;'>";
+                    if($_SESSION['language']=='English')
+                    echo "Doctor Fee";
+                    else
                     echo "ค่าตรวจรักษาโดยแพทย์";
                     echo "</td>";
                     echo "<td style='text-align:right;'>";
@@ -456,7 +545,12 @@ function Clickheretoprint()
             }
             if($alllabprice>0)
             {
-            echo "<tr><td>".$j."</td><td style='text-align:left;'>ค่าตรวจทาง Lab รวมทั้งหมด</td><td></td><td></td><td style='text-align:right;'>".$alllabprice;
+            echo "<tr><td>".$j."</td><td style='text-align:left;'>";
+            if($_SESSION['language']=='English')
+            echo "All Labs Price ";
+            else
+            echo "ค่าตรวจทาง Lab รวมทั้งหมด";
+            echo "</td><td></td><td></td><td style='text-align:right;'>".$alllabprice;
             echo "</td></tr>";
             $allprice= $allprice+$alllabprice;
             }
@@ -476,6 +570,9 @@ function Clickheretoprint()
                 if($row3['price']>0 AND $row3['date']==$newdate AND $ownp < $row3['price'])
                 {
                     echo "<tr><td>".$j."</td><td style='text-align:left;'>";
+                    if($_SESSION['language']=='English')
+                    echo "Previous Debt";
+                    else
                     echo "จ่ายยอดค้างชำระ";
                     echo "</td><td>";
                     echo $row3['price'] - $ownp; 
@@ -490,24 +587,37 @@ function Clickheretoprint()
         ?>
         <table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
             <tr><?php 
+            if($_SESSION['language']=='English')
+            echo "<th width='82%'> Grand Total</th><th width='10%' style='text-align:right;'>";
+            else
             echo "<th width='82%'> ยอดรวมสุทธิ</th><th width='10%' style='text-align:right;'>";
             echo ($allprice + $olddeb);
-            echo "</th></tr>";
+            echo "&#xE3F;</th></tr>";
             $depnow = mysqli_fetch_array(mysqli_query($link, "select price from `debtors` WHERE ctmid = $id"));
             if($depnow[0]>0)
             {
+            if($_SESSION['language']=='English')
+            echo "<tr><th width='82%'>Arrear</th><th width = 10% style='text-align:right;'>";
+            else
             echo "<tr><th width='82%'>ค้างจ่าย</th><th width = 10% style='text-align:right;'>";
             echo $depnow[0];
-            echo "</th></tr>";
+            echo "&#xE3F;</th></tr>";
             }
+            if($_SESSION['language']=='English')
+            echo "<tr><th width='82%'>Paid</th><th width = 10% style='text-align:right;'>";
+            else
             echo "<tr><th width='82%'>จ่าย</th><th width = 10% style='text-align:right;'>"; 
             echo ($allprice + $olddeb - $depnow[0]);
-            echo "</th></tr>";
+            echo "&#xE3F;</th></tr>";
             ?>
         </table>
         <br>
-        รับเงินโดย:<u>
+        
         <?php
+        if($_SESSION['language']=='English')
+        echo "Cashier:<u>";
+        else
+        echo "รับเงินโดย:<u>";
             $staff = mysqli_query($link, "select * from staff WHERE ID = '$disprx' ");
             while($row_vl = mysqli_fetch_array($staff))
             {

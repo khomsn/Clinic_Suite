@@ -50,20 +50,21 @@ if($_POST['set'] == 'Set')
   }
   
     $i = $_SESSION['rowmax'];
-    $drugid = "drugid".$i;
-    $firstone = "firstone".$i;
-    $initpr = "initpr".$i;
-    $secstep = "secstep".$i;
-    $secpr = "secpr".$i;
-    $tristep = "tristep".$i;
-    $tripr = "tripr".$i;
-  if(!empty($_POST[$drugid]))
+    $drugid = $_POST['drugid'.$i];
+    $firstone = $_POST['firstone'.$i];
+    $initpr = $_POST['initpr'.$i];
+    $secstep = $_POST['secstep'.$i];
+    $secpr = $_POST['secpr'.$i];
+    $tristep = $_POST['tristep'.$i];
+    $tripr = $_POST['tripr'.$i];
+    
+  if(!empty($drugid))
   {
     // assign insertion pattern
     $sql_insert = "INSERT into `trpstep`
 			    (`drugid`,`firstone`,`init_pr`,`secstep`,`sec_pr`,`tristep`,`tri_pr`)
 			VALUES
-			    ('$_POST[$drugid]','$_POST[$firstone]','$_POST[$initpr]','$_POST[$secstep]','$_POST[$secpr]','$_POST[$tristep]','$_POST[$tripr]')";
+			    ('$drugid','$firstone','$initpr','$secstep','$secpr','$tristep','$tripr')";
     mysqli_query($link, $sql_insert);
   }
   unset($_SESSION['rowmax']);

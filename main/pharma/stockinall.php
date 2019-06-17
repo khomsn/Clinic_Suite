@@ -103,7 +103,7 @@ if($_POST['doSave'] == 'Save')
                
         while ($row_settings = mysqli_fetch_array($stock_in))
         {
-            $volume = $row_settings['stinvolume']; //get volume to update
+            $volume = $row_settings['volume']; //get volume to update
             $dacno = $row_settings['ac_no']; //get account no into stock 
             $prod = $row_settings['prod'];
         }
@@ -161,14 +161,16 @@ if($_POST['doSave'] == 'Save')
                     $sup_ac = $_POST['payby'];
                     if($_POST['payby'] != 10000001)//ค่าธรรมเนียม
                     {
-                        if($_POST['free']!=0)
+                        if($_POST['fee']!=0)
                         {
                             // assign insertion pattern
                             $pacnum = $_POST['payby'] + 40000000;
                             $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
-                            VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
+                            VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน/ค่าขนส่ง','$_POST[fee]','c','p','$_SESSION[user_id]')";
                             // Now insert Drug order information to "drug_#id" table
                             mysqli_query($link, $sql_insert);
+                            //reset fee
+                            $_POST['fee']=0;
                         }
                     }
                 }
@@ -387,7 +389,7 @@ echo "</tr>";
             echo "</option>";
         }	
         ?>
-        </select>&nbsp;ค่าธรรมเนียมการโอน<input type="number" min=0 name="free" size="6" >
+        </select>&nbsp;ค่าธรรมเนียมการโอน<input type="number" min=0 name="fee" size="6" >
     </div></td></tr>
 </table>
 <p align="center"><input name="doSave" type="submit" id="doSave" value="Save"></p>

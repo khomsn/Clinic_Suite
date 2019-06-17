@@ -1,6 +1,7 @@
 <?php
 //check if Pt is in Pay station
 	$id = $_SESSION['patcash'];
+	$tmax = $tty = 0;
 	$result1 = mysqli_query($link, "SELECT id FROM  pt_to_drug WHERE id = '$id'");
 	if(mysqli_num_rows($result1) == 0) 
 	{
@@ -98,6 +99,7 @@
 			}
 		}	
 	}
+
 	// _SESSION tmax for cut rawmatcut
 	$_SESSION['tmax']=$tmax;
 	//put data to pttable
@@ -225,7 +227,7 @@
 			//get ต้นทุนยา ส่งไป account
 			$tty = $tty + $vld[$i]*$price;
 			// ต้นทุน end
-			if($rowd['set'] == 1)
+			if($rowd['seti'] == 1)
 			{
 				$setdrug = "set_drug_".$drgid;
 				$drugset = mysqli_query($link, "select * from $setdrug");
@@ -301,7 +303,7 @@
 	$ctmacno = 11000000 + $ctmid;
 	$buytoday = $_SESSION['buyprice'];
 	$olddeb = $_SESSION['olddeb'];
-//	$_SESSION['price'];
+	$pbac = $_SESSION['pbac'];
 	$paytoday = $_SESSION['paytoday'];
 	$newdeb = $_SESSION['newdeb'];
 	//sell account
@@ -318,8 +320,8 @@
 	$diags = $_SESSION['diag'];
 	$diags = mysqli_real_escape_string($link, $diags);
 	if(empty($tty)) $tty=0;
-	$sql_insert = " INSERT INTO `sell_account` ( `day` , `month` ,`year` ,`ctmid` , `ctmacno` , `cash` , `own` , `total`, `ddx`, `tty`, `vsdate`)
-									VALUES ('$sd', '$sm', '$sy', '$ctmid', '$ctmacno', '$cashtoday', '$own', '$buytoday', '$diags', '$tty', '$visitdt');";
+	$sql_insert = " INSERT INTO `sell_account` ( `day` , `month` ,`year` ,`ctmid` , `ctmacno` ,`payby_acno` , `pay` , `own` , `total`, `ddx`, `tty`, `vsdate`)
+									VALUES ('$sd', '$sm', '$sy', '$ctmid', '$ctmacno', '$pbac', '$cashtoday', '$own', '$buytoday', '$diags', '$tty', '$visitdt');";
 	mysqli_query($link, $sql_insert);
 	
 	//debtors account update
@@ -341,13 +343,13 @@
 		if($paytoday <= $_SESSION['olddeb'])
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
-											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$paytoday', 'd', 's','$_SESSION[user_id]' );";
+											VALUES (now(), '$pbac', '$ctmacno', 'รับชำระหนี้', '$paytoday', 'd', 's','$_SESSION[user_id]' );";
 			mysqli_query($link, $sql_insert);
 		}
 		elseif($paytoday >$olddeb)
 		{
 			$sql_insert = " INSERT INTO `daily_account` ( `date` , `ac_no_i` , `ac_no_o` , `detail` , `price` , `type`, `bors`, `recordby`	)
-											VALUES (now(), '10000001', '$ctmacno', 'รับชำระหนี้', '$olddeb', 'd','s','$_SESSION[user_id]' );";
+											VALUES (now(), '$pbac', '$ctmacno', 'รับชำระหนี้', '$olddeb', 'd','s','$_SESSION[user_id]' );";
 			mysqli_query($link, $sql_insert);
 		}	
 	}

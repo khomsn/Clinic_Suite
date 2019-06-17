@@ -3,8 +3,11 @@ include '../../config/dbc.php';
 
 page_protect();
 
+unset($_SESSION['checkup']);
+
 $dimdir = "../".DRUGIMAGE_PATH;
 
+include '../../libs/dateandtimezone.php';
 include '../../libs/progdate.php';
 include '../../libs/trpricecheck.php';
 
@@ -95,6 +98,8 @@ while ($row_settings = mysqli_fetch_array($ptin))
     $inform = $row_settings['inform']; 
     $_SESSION['diag'] = $row_settings['ddx'];
 }
+
+$perdc=0; //init value
 $disc = mysqli_query($link, "select * from discount WHERE ctmid = $ctmid ");
 while( $rowd = mysqli_fetch_array($disc))
 {
@@ -192,7 +197,8 @@ for($i=1;$i<=10;$i++)
         {
             $did = $row[$idrx];
             $ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
-            if($ptin2 !=0)
+            
+            if(!empty($ptin2))
             {
                 while ($row2 = mysqli_fetch_array($ptin2))
                 {
@@ -211,9 +217,9 @@ for($i=1;$i<=10;$i++)
             echo "<span class=\"popuptext\" id=\"myPopup".$i."\">";
             //echo $loca;
             $loca1 = mysqli_query($link, "SELECT `fullplace` FROM `stockplace` WHERE `placeindex` = '$loca' ");
-            while ($loca1 = mysqli_fetch_array($loca1))
+            while ($loc = mysqli_fetch_array($loca1))
             {
-                echo $loca1['fullplace'];
+                echo $loc['fullplace'];
             }
            // echo $loca1[0];
             echo "</span>";
