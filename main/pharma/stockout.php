@@ -2,16 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 
-$sql_create = "CREATE TABLE IF NOT EXISTS `drugtouse` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `drugid` smallint(6) NOT NULL,
-  `volume` smallint(6) NOT NULL,
-  `user` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-mysqli_query($link, $sql_create);
-
 $fulluri = $_SERVER['REQUEST_URI'];
 $id = filter_var($fulluri, FILTER_SANITIZE_NUMBER_INT);
 
@@ -94,7 +84,7 @@ if($_POST['doSave'] == 'Save')
     //record drug use per month in dupm table for statistics
     $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE())");
     $dupmo = mysqli_fetch_array($dupmin);
-    if(empty($dupmo))
+    if(empty($dupmo['id']))
     {
       $sql_insert = "INSERT into `dupm`
 		(`drugid`,`mon`,`vol`)
@@ -149,13 +139,13 @@ include '../../main/bodyheader.php';
 					$stock_in = mysqli_query($link, "select * from drug_id where id='$id' ");
 					while ($row_settings = mysqli_fetch_array($stock_in))
 					{
-						echo "<div class='bgca5ffd5'><big><big><big><big>";
+						echo "<div class='bgca5ffd5'>";
 						echo $row_settings['dname'];
 						echo "&nbsp;ขนาด :&nbsp;";
 						echo $row_settings['size'];
 						echo "&nbsp;คงคลัง :&nbsp;";
 						echo $row_settings['volume'];
-						echo "</big></big></big></big></div>";
+						echo "</div>";
 						$RMat = $row_settings['RawMat'];
 					}
 				?>

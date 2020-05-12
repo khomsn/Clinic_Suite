@@ -9,9 +9,8 @@ if (isset($_SESSION['user_id']))
 ?><div style="margin: 0 left; width:165px;" class="myaccount">
 <div><img src="../../<?php echo $_SESSION['user_avatar_file']; ?>" width="160" height="160"/></div><br>
 <a href="../../login/myaccount.php" TARGET="_top">Main Menu</a><br>
+<a href="../../main/register/search_pt.php" TARGET="_top">เวชระเบียน</a><br>
 <p><strong>Clinic Menu</strong></p>
-<a href="../opd/search_pt.php" TARGET="_top">ค้นหารายชื่อผู้ป่วย</a><br>
-<a href="../opd/PIDregister.php" TARGET="_top">ลงทะเบียนผู้ป่วยใหม่</a><br><br>
 <a href="../opd/pt_to_doctor.php" TARGET="_top">ผู้ป่วยรอตรวจ</a><br>
 <a href="../opd/pt_to_obs.php" TARGET="_top">ผู้ป่วยรอสังเกตอาการ</a><br>
 <a href="../opd/pt_to_lab.php" TARGET="_top">ผู้ป่วยรอตรวจ LAB</a><br>

@@ -195,7 +195,7 @@ echo "</head><body>";
 	}
   }
   //drug price
-  for($i=1;$i<=10;$i++)
+  for($i=1;$i<=14;$i++)
   {
 	$ptin = mysqli_query($link, "select * from $tmp ");
 	while ($row = mysqli_fetch_array($ptin))

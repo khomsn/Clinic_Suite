@@ -9,7 +9,8 @@
 if ($_SESSION['user_accode']%7 == 0)
 {
 echo "<a href='../../main/rawmat/rawmatid.php'>เพิ่ม รายการ RawMat</a><br>
-<a href='../../main/rawmat/rawmatdel.php'>ลบ รายการ RawMat</a><br>";
+<a href='../../main/rawmat/rawmatdel.php'>ลบ รายการ RawMat</a><br>
+<a href='../../main/rawmat/delrmlistandreactivate.php'>รายการวัตถุดิบที่ถูกลบ</a><br>";
 }
 if ($_SESSION['user_accode']%7 == 0 OR $_SESSION['user_accode']%3 == 0)
 {

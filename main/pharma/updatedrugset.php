@@ -81,7 +81,7 @@ include 'drugmenu.php';
 		    echo $row_settings['size'];
 		  ?>
 		  <br>
-		  <a HREF="drugsetadd.php" onClick="return popup(this, 'notes','800','500','yes')" ><big><big>เพิ่มยา</big></big></a> 
+		  <a HREF="drugsetadd.php" onClick="return popup(this, 'notes','800','500','yes')" >เพิ่มยา</a> 
 		  <br>
 		  </div>
 		  <hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">

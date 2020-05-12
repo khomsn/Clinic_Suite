@@ -2,19 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 
-$sql="CREATE TABLE IF NOT EXISTS `drugcombset` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `drugidin` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `invol` tinyint(4) NOT NULL DEFAULT '0',
-  `drugidout` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `outvol` decimal(3,1) NOT NULL DEFAULT '0.0',
-  `outsetpoint` decimal(4,1) NOT NULL DEFAULT '0.0',
-  `outcount` decimal(4,1) NOT NULL DEFAULT '0.0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
-
-mysqli_query($link, $sql);
-
 if($_POST['set'] == 'ReSet')
 {
       mysqli_query($link, "TRUNCATE TABLE drugcombset");
@@ -85,8 +72,8 @@ include '../../main/bodyheader.php';
 <!--menu-->
 <form method="post" action="drugcombset.php" name="regForm" id="regForm">
 <h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์   รายการสั่งยา รวม ที่จะทำการตัด ยอด Stock อัตโนมัติ เมื่อการสั่งถึงกำหนด <button type=submit name=set value=Set>Set</button>  <button type=submit name=set value=ReSet>Reset</button></h3>
-<table style="text-align: center;" border="1" cellpadding="2" cellspacing="2">
-<tbody><tr><th>DrugIDin</th><th>DrugInVol</th><th>DrugIDOut</th><th>DrugOutVol</th><th>DrugOutSP</th><th>ลบ</th></tr>
+<table style="text-align: center;" border="1" cellpadding="2" cellspacing="2" bgcolor="#F0FFFF">
+<tbody><tr><th>DrugIDin</th><th>DN</th><th>DrugInVol</th><th>DrugIDOut</th><th>RN</th><th>DrugOutVol</th><th>DrugOutSP</th><th>ลบ</th></tr>
 <?php 
 $drug = mysqli_query($link, "select * from drugcombset");
 $i=1;
@@ -94,6 +81,25 @@ while($dcs = mysqli_fetch_array($drug))
 {
  echo "<tr><th>";
  echo "<input type=text class=typenumber name='idin".$dcs['id']."' value='".$dcs['drugidin']."'>";
+ echo "</th><th>";
+ //echo "<div style='background-color:rgba(124,200,0,0.85); display:inline-block;'>";
+ if (stripos($dcs['drugidin'], 'L') === FALSE)
+ {
+    $dn = mysqli_fetch_array(mysqli_query($link, "select * from drug_id where id='$dcs[drugidin]'"));
+    echo $dn['dname'];
+ }
+ else
+ {
+    $lid = substr($dcs['drugidin'], 1);
+    $ln = mysqli_fetch_array(mysqli_query($link, "select * from lab where id='$lid'"));
+    if (substr($ln['L_Set'], 5) != "")
+    {
+        echo $lsetname = substr($ln['L_Set'], 5);
+        echo "-";
+    }
+    echo $ln['S_Name'];
+ }
+// echo "</div>";
 // echo $dsc['drugidin'];
  echo "</th><th>";
  echo "<input type=text class=typenumber name='invol".$dcs['id']."' value='".$dcs['invol']."'>";
@@ -102,6 +108,20 @@ while($dcs = mysqli_fetch_array($drug))
  echo "<input type=text class=typenumber name='idout".$dcs['id']."' value='".$dcs['drugidout']."'>";
 // echo $dsc['drugidout'];
  echo "</th><th>";
+// echo "<div style='background-color:rgba(124,200,0,0.85); display:inline-block;'>";
+ if (stripos($dcs['drugidout'], 'R') === FALSE)
+ {
+    $dn = mysqli_fetch_array(mysqli_query($link, "select * from drug_id where id='$dcs[drugidout]'"));
+    echo $dn['dname']."-".$dn['size'];
+ }
+ else
+ {
+    $lid = substr($dcs['drugidout'], 1);
+    $ln = mysqli_fetch_array(mysqli_query($link, "select * from rawmat where id='$lid'"));
+    echo $ln['rawcode'];
+ }
+// echo "</div>";
+ echo "</th><th>"; 
  echo "<input type=text class=typenumber name='outvol".$dcs['id']."' value='".$dcs['outvol']."'>";
 // echo $dsc['outvol'];
  echo "</th><th>";
@@ -115,8 +135,8 @@ $i=$dcs['id']+1;
 }
 $_SESSION['rowmax'] = $i;
 ?>
-<tr><th><input type='text' class='typenumber ' name='idin<?php echo $i;?>' autofocus></th><th><input type='text' class='typenumber ' name='invol<?php echo $i;?>'></th>
-<th><input type='text' class='typenumber ' name='idout<?php echo $i;?>'></th><th><input type='text' class='typenumber ' name='outvol<?php echo $i;?>'></th>
+<tr><th><input type='text' class='typenumber ' name='idin<?php echo $i;?>' autofocus></th><th></th><th><input type='text' class='typenumber ' name='invol<?php echo $i;?>'></th>
+<th><input type='text' class='typenumber ' name='idout<?php echo $i;?>'></th><th></th><th><input type='text' class='typenumber ' name='outvol<?php echo $i;?>'></th>
 <th><input type='text' class='typenumber ' name='outsetpoint<?php echo $i;?>'></th></tr>
 </tbody>
 </table>

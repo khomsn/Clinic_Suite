@@ -1,11 +1,11 @@
 <script>
 $(document).ready(function(){
 <?php
-for($d=1;$d<=10;$d++)
+for($d=1;$d<=14;$d++)
 {
 echo "$('#dgname".$d."').autocomplete({ source:'../../libs/dglist.php', minLength:1, autoFocus:true});\n";
 }
-for($d=1;$d<=10;$d++)
+for($d=1;$d<=14;$d++)
 {
 echo "$('#dggsname".$d."').autocomplete({ source:'../../libs/dgglist.php', minLength:1, autoFocus:true}); \n";
 }

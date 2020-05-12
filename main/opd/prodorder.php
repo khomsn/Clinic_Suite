@@ -116,7 +116,7 @@ elseif ($_POST['todo'] == 'OK' or $_POST['todo'] == 'Close')
 	$pin = mysqli_query($link, "select * from $tmp ");
 	while ($row = mysqli_fetch_array($pin))
 	{	
-		for($i=1;$i<=10;$i++)
+		for($i=1;$i<=14;$i++)
 		{
 			$cn = "idrx".$i;
 			if($row[$cn] == 0)

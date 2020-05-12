@@ -1,7 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
-
+$splkup=$_POST['spname'];
 $title = "::ยาและผลิตภัณฑ์::";
 include '../../main/header.php';
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../../jscss/css/table_alt_color1.css\"/>";
@@ -23,9 +23,8 @@ include '../../main/bodyheader.php';
 		/*******************************END**************************/
 		?></div>
 		</td><td>
-<!--menu-->
+<!--menu--><form method="post" action="druglow.php" name="regForm" id="regForm">
 			<h3 class="titlehdr">รายการ ยา และ ผลิตภัณฑ์ และ วัตถุดิบ ที่ถึงจุดสั่งซื้อ</h3>
-			<form method="post" action="druglist.php" name="regForm" id="regForm">
 				<table style="text-align: center;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr>
@@ -37,6 +36,7 @@ include '../../main/bodyheader.php';
 								echo "<table class='TFtable' border='1' style='text-align: left; margin-left: auto; margin-right: auto; background-color: rgb(152, 161, 76);'>";
 								echo "<tr> <th>No</th><th>ชื่อ</th> <th>ชื่อสามัญ</th><th>ขนาด</th><th>จำนวน</th><th>ร้าน</th><th>จำนวนที่สั่ง</th><th>Unit</th><th>BP-S</th></tr>";
 								$i=1;
+								$k=1;
 								while($row = mysqli_fetch_array($dtype))
 								 {
                                     // Print out the contents of each row into a table
@@ -52,8 +52,21 @@ include '../../main/bodyheader.php';
                                     echo $row['volume'];
                                     echo "</th><th>";
                                     $drugtable = "drug_".$row['id'];
-                                    $spname = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM $drugtable where supplier!='$_SESSION[clinic]' ORDER BY id DESC LIMIT 1;"));
-                                    echo $spname['supplier'];
+                                    if(empty($splkup)){
+                                        $spname = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM $drugtable where supplier!='$_SESSION[clinic]' ORDER BY id DESC LIMIT 1;"));
+                                        echo $spname['supplier'];
+                                        for($j=1;$j<=$k;$j++){
+                                            if ($supname[$j]==$spname['supplier']) goto Next1;
+                                        }
+                                        $supname[$k] = $spname['supplier'];
+                                        $k = $k+1;
+                                        Next1:
+                                    }
+                                    else
+                                    {
+                                        $spname = mysqli_fetch_array(mysqli_query($link, "SELECT * FROM $drugtable where supplier!='$_SESSION[clinic]' AND supplier='$splkup' ORDER BY id DESC LIMIT 1;"));
+                                        echo $spname['supplier'];
+                                    }
                                     echo "</th><th>";
                                     echo $spname['volume'];
                                     echo "</th><th>";
@@ -93,11 +106,29 @@ include '../../main/bodyheader.php';
 					</tr>
 				</tbody>
 				</table>
-			</form>
 <!--menu end-->
 		</td>
-		<td width="160"></td>
+		<td width="160"><div style="background-color:rgba(124,200,0,0.65); display:inline-block;">รายชื่อบริษัท<select tabindex="1" name="spname" id="AcNo" class="required">
+		    <?php
+		    for($n=0;$n<$k;$n++)
+		    {
+			    echo "<option value='";
+			    echo $supname[$n];
+			    echo "'";
+			    echo ">";
+			    echo $supname[$n]."</option>";
+		    }
+		    ?></td>
 	</tr>
 </table>
 <!--end menu-->
+</form>
 </body></html>
+<script type="text/javascript">
+
+  jQuery(function() {
+    jQuery('#AcNo').change(function() {
+        this.form.submit();
+    });
+});
+</script>

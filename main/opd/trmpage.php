@@ -24,6 +24,10 @@ while ($row = mysqli_fetch_array($tmptin))
 	$rxby8 =$row['rxby8'];
 	$rxby9 =$row['rxby9'];
 	$rxby10 =$row['rxby10'];
+	$rxby11 =$row['rxby11'];
+	$rxby12 =$row['rxby12'];
+	$rxby13 =$row['rxby13'];
+	$rxby14 =$row['rxby14'];
 }
 
 if($_POST['record']=='Save')
@@ -44,6 +48,10 @@ if($_POST['record']=='Save')
   if(!empty($_POST['rxby8'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1;  $rxby8 = $_POST['rxby8'];}
   if(!empty($_POST['rxby9'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1;  $rxby9 = $_POST['rxby9'];}
   if(!empty($_POST['rxby10'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1; $rxby10 = $_POST['rxby10'];}
+  if(!empty($_POST['rxby11'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1; $rxby11 = $_POST['rxby11'];}
+  if(!empty($_POST['rxby12'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1; $rxby12 = $_POST['rxby12'];}
+  if(!empty($_POST['rxby13'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1; $rxby13 = $_POST['rxby13'];}
+  if(!empty($_POST['rxby14'])){$_SESSION['drtnatn']=$_SESSION['drtnatn']-1; $rxby14 = $_POST['rxby14'];}
 	
  	mysqli_query($link, "UPDATE `$tmptable` SET 
 					`trby1` = '$trby1',
@@ -59,7 +67,11 @@ if($_POST['record']=='Save')
 					`rxby7` = '$rxby7',
 					`rxby8` = '$rxby8',
 					`rxby9` = '$rxby9',
-					`rxby10` = '$rxby10'
+					`rxby10` = '$rxby10',
+					`rxby11` = '$rxby11',
+					`rxby12` = '$rxby12',
+					`rxby13` = '$rxby13',
+					`rxby14` = '$rxby14'
 					") or die(mysqli_error($link));
 
     // Now Delete Patient from "pt_to_lab" table
@@ -165,7 +177,7 @@ $tmptin = mysqli_query($link, "select * from $tmptable ");
 while ($row = mysqli_fetch_array($tmptin))
 {
     $_SESSION['drtnatn']=0;
-    for($i = 1;$i<=10;$i++)
+    for($i = 1;$i<=14;$i++)
     {
         $idrx="idrx".$i;
         $rx = "rx".$i;

@@ -14,8 +14,9 @@ include 'opdxconnection.php';
 
 if(!empty($_SESSION['Patient_id']))
 {
-$tabletocreate = "pt_".$_SESSION['Patient_id'];
-$sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
+    $tabletocreate = "pt_".$_SESSION['Patient_id'];
+
+    $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				`id` SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 				`date` DATETIME NOT NULL ,
 				 `ccp` VARCHAR( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
@@ -131,6 +132,30 @@ $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				 `rx10uses` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `rx10v` SMALLINT( 3 ) NOT NULL  DEFAULT '0',
 				 `rxby10` SMALLINT NOT NULL DEFAULT '0' ,
+				 `idrx11` SMALLINT NOT NULL DEFAULT '0' ,
+				 `rx11` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rxg11` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx11uses` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx11v` SMALLINT( 3 ) NOT NULL  DEFAULT '0',
+				 `rxby11` SMALLINT NOT NULL DEFAULT '0' ,
+				 `idrx12` SMALLINT NOT NULL DEFAULT '0' ,
+				 `rx12` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rxg12` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx12uses` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx12v` SMALLINT( 3 ) NOT NULL  DEFAULT '0',
+				 `rxby12` SMALLINT NOT NULL DEFAULT '0' ,
+				 `idrx13` SMALLINT NOT NULL DEFAULT '0' ,
+				 `rx13` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rxg13` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx13uses` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx13v` SMALLINT( 3 ) NOT NULL  DEFAULT '0',
+				 `rxby13` SMALLINT NOT NULL DEFAULT '0' ,
+				 `idrx14` SMALLINT NOT NULL DEFAULT '0' ,
+				 `rx14` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rxg14` VARCHAR( 60 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx14uses` VARCHAR( 300 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
+				 `rx14v` SMALLINT( 3 ) NOT NULL  DEFAULT '0',
+				 `rxby14` SMALLINT NOT NULL DEFAULT '0' ,
 				 `disprxby` SMALLINT NOT NULL DEFAULT '0' ,
 				 `temp` DECIMAL (3,1) NOT NULL DEFAULT '0',
 				 `weight` DECIMAL (4,1) NOT NULL DEFAULT '0' ,
@@ -141,7 +166,7 @@ $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				 `rr` TINYINT NOT NULL DEFAULT '0',
 				 `labid` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `labresult` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `fup` date NULL,
+				 `fup` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `doctor` VARCHAR( 100 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `dtlc` VARCHAR( 20 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `chronicill` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
@@ -150,7 +175,18 @@ $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				 `obsandpgnote` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL
 				) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
-// Now insert Patient to "patient_id" table
-mysqli_query($linkopdx, $sql_insert) or die("Create Failed:" . mysqli_error($linkopdx));
+        // Now insert Patient to "patient_id" table
+        mysqli_query($linkopdx, $sql_insert) or die("Create Failed:" . mysqli_error($linkopdx));
+
+    $sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='$tabletocreate' ORDER BY `id`" );
+    $tableversion = mysqli_num_rows($sql_select);
+    if(!$tableversion)
+    {
+        $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES ('$tabletocreate', '1')";
+        mysqli_query($link, $sql);
+    }
+    else
+    {/*********** update data base code here *****************/
+    }
 }
 ?>

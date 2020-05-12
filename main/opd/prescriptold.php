@@ -75,7 +75,7 @@ include '../../libs/reloadopener.php';
 <tr><td width =18% style="text-align: center;"><?php if($_SESSION['rid'] > 1){ echo "<input type='submit' name='todo' value='<<' "; if($reload) echo "onClick='reloadParent();'"; echo "/>";} ?></td>
     <td width =16% style="text-align: center;"><?php if($_SESSION['rid'] < ($_SESSION['mxid'] - 1)){ echo "<input type='submit' name='todo' value='>>' "; if($reload) echo "onClick='reloadParent();'"; echo "/>";} ?></td>
     <td width =16% style="text-align: center;"><?php echo "<input type='submit' name='todo' value='Last' >"; ?></td>
-    <td width =16% style="text-align: center;"><a HREF="drugorder.php"><big>Order</big></a>:</td>
+    <td width =16% style="text-align: center;"><a HREF="drugorder.php">Order</a>:</td>
     <td widht =16% style="text-align: center;"><input type='submit' name='todo' value='OK' onClick='reloadParent();'/></td>
     <td width =18% style="text-align: center;"><input type="submit" name="todo" value="Close" onClick="reloadParentAndClose();"/>
 </td></tr>
@@ -154,7 +154,7 @@ include '../../libs/reloadopener.php';
             $ptin = mysqli_query($linkopdx, "select * from $pttable WHERE id = '$_SESSION[rid]' ");
             while ($row = mysqli_fetch_array($ptin))
             {
-                for($i=1;$i<=10;$i++)
+                for($i=1;$i<=14;$i++)
                 {
                     $rx ="rx".$i;
                     $rxgn ="rxg".$i;

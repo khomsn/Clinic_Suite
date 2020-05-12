@@ -26,6 +26,14 @@ $sql= "CREATE TABLE IF NOT EXISTS `lab` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='lab' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'lab\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 
 $title = "::Laboratory::";
 include '../../main/header.php';

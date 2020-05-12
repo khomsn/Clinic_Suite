@@ -6,7 +6,7 @@ include '../../libs/resizeimage.php';
 
 if($_SESSION['user_accode']%13 != 0)
 // go on to other step
-header("Location: ../../main/staff/staff.php");  
+header("Location: staff.php");  
 
 					 
 if($_POST['doRegister'] == 'แก้ไข') 
@@ -67,7 +67,7 @@ if($_POST['doRegister'] == 'แก้ไข')
 					`clog` = '$log2',
 					`ch_by` = '$_SESSION[user_id]',
 					`status` = '$_POST[status]'
-					WHERE `ID` ='$_SESSION[Staff_id]' LIMIT 1 ; 
+					WHERE `ID` ='$_SESSION[Staffid]' LIMIT 1 ; 
 					";
 	// Now insert Staff to "staff" table
 	mysqli_query($link, $sql_update);
@@ -75,7 +75,7 @@ if($_POST['doRegister'] == 'แก้ไข')
 	$sql_update = "UPDATE `patient_id` SET `staff`= '$_POST[status]' WHERE `ctz_id` = '$_POST[ctz_id]' LIMIT 1 ;";
 	mysqli_query($linkopd, $sql_update) ;
 	
-	$staffid= $_SESSION['Staff_id'];
+	$staffid= $_SESSION['Staffid'];
 
 	//update users table at staff_id
 	$sql_update = "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id';";
@@ -146,9 +146,9 @@ if($_POST['doRegister'] == 'แก้ไข')
         $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
     }
 	//unset SESSION variable
-	//unset($_SESSION['Staff_id']);
+	//unset($_SESSION['Staffid']);
 	// go on to other step
-	header("Location: ../../main/staff/staffupdate.php");  
+	header("Location: staffupdate.php");  
 }
 $title = "::Staff แก้ไขทะเบียน::";
 include '../../main/header.php';
@@ -184,7 +184,7 @@ include '../../main/bodyheader.php';
                             auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
                             <tr>
                             <?php 
-                            $result = mysqli_query($link, "SELECT * FROM staff WHERE id = '$_SESSION[Staff_id]'");
+                            $result = mysqli_query($link, "SELECT * FROM staff WHERE id = '$_SESSION[Staffid]'");
                             while($row = mysqli_fetch_array($result))
                             {
                                 $ctzid = $row['ctz_id'];
@@ -379,7 +379,7 @@ include '../../main/bodyheader.php';
                                 <input type="radio" name="status" value=1 <?php if($status) echo "checked";?>>Active
                                 <input type="radio" name="status" value=0 <?php if(!($status)) echo "checked";?>>Inactive
                                 <hr style="width: 100%; height: 2px;">
-                                <img src="<?php echo "../".AVATAR_PATH."st_".$_SESSION[Staff_id].".jpg"; ?>" />
+                                <img src="<?php echo "../".AVATAR_PATH."st_".$_SESSION[Staffid].".jpg"; ?>" />
                                 <label for="avatar_file">Select an avatar image (Max size 2 MB):</label>
                                 <!-- max size 5 MB (as many people directly upload high res pictures from their digicams) -->
                                 <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />

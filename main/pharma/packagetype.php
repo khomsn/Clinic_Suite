@@ -2,16 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 $err = array();
-//create table if not EXISTS
-$ctb = "CREATE TABLE IF NOT EXISTS `packagetype` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='type of package';";
-
-mysqli_query($link, $ctb) or die("Insertion Failed:" . mysqli_error($link));
-//done table creation
 
 if(($_POST['add'] == 'เพิ่ม')  AND (ltrim($_POST['name']!== '')))
 { 

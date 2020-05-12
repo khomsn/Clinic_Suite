@@ -3,37 +3,6 @@ include '../../config/dbc.php';
 page_protect();
 $err = array();
 
-$sql_create = "CREATE TABLE IF NOT EXISTS `drug_id` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `dname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `uses` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  `indication` text COLLATE utf8_unicode_ci,
-  `size` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `volume` smallint(6) NOT NULL DEFAULT '0',
-  `volreserve` smallint(6) NOT NULL DEFAULT '0',
-  `sellprice` float(8,2) NOT NULL DEFAULT '0.00',
-  `min_limit` smallint(4) NOT NULL DEFAULT '0',
-  `typen` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `groupn` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `subgroup` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `seti` tinyint(1) NOT NULL DEFAULT '0',
-  `ac_no` int(11) NOT NULL,
-  `track` tinyint(1) NOT NULL DEFAULT '0',
-  `disct` tinyint(1) NOT NULL DEFAULT '0',
-  `prod` tinyint(1) NOT NULL DEFAULT '0',
-  `RawMat` tinyint(1) NOT NULL DEFAULT '0',
-  `cat` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `dinteract` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `unit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `candp` tinyint(1) NOT NULL DEFAULT '0',
-  `staffcanorder` tinyint(1) NOT NULL DEFAULT '0',
-  `stcp` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-
-mysqli_query($link, $sql_create);
-
 if($_POST['register'] == 'ตกลง') 
 { 
 

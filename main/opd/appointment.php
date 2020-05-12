@@ -10,9 +10,18 @@ $sql="CREATE TABLE IF NOT EXISTS `appointment` (
   `ptid` int(11) NOT NULL,
   `FuBy` int(11) DEFAULT NULL,
   `FuFor` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ddx` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `ddx` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `recorddate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 mysqli_query($link, $sql);
+
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='appointment' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'appointment\', \'1\')";
+    mysqli_query($link, $sql);
+}
 
 $id = $_SESSION['patdesk'];
 
@@ -28,7 +37,8 @@ $rid[0];
 $pin = mysqli_query($linkopdx, "select `inform` from $pttable  WHERE `id` = '$rid[0]' ");
 $inf = mysqli_fetch_array($pin);
 $finject = $inf[0];
-
+$recorddate = date('Y-m-d');
+$rctime = date("h:i:s");
 if($_POST['set']=="SET")
 {
     if($_POST['calfup']== 1)
@@ -41,25 +51,55 @@ if($_POST['set']=="SET")
         $finject = mysqli_real_escape_string($linkopdx, $finject);
 
         mysqli_query($linkopdx, "UPDATE $pttable SET `inform` = '$finject' WHERE `id` = '$rid[0]' ");
+        mysqli_query($link, "DELETE from appointment WHERE  `recorddate` = '$recorddate' and `ptid` = '$id'");
     }
     else
     {
-        if($_POST['fupinj3']==5)//นัด ฉีดยา ต่อเนื่อง
+        if($_POST['fupinj3']==5){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัด ฉีดยา ต่อเนื่อง 5 วัน #";
-        if($_POST['fupinj3']==4)//นัด ฉีดยา ต่อเนื่อง
+        $flup = 5;
+        }
+        if($_POST['fupinj3']==4){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัด ฉีดยา ต่อเนื่อง 4 วัน #";
-        if($_POST['fupinj3']==3)//นัด ฉีดยา ต่อเนื่อง
+        $flup = 4;
+        }
+        if($_POST['fupinj3']==3){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัด ฉีดยา ต่อเนื่อง 3 วัน #";
-        if($_POST['fupinj3']==2)//นัด ฉีดยา ต่อเนื่อง
+        $flup = 3;
+        }
+        if($_POST['fupinj3']==2){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัด ฉีดยา ต่อเนื่อง 2 วัน #";
-        if($_POST['fupinj3']==1)//นัด ฉีดยา ต่อเนื่อง
+        $flup = 2;
+        }
+        if($_POST['fupinj3']==1){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัด ฉีดยา ต่อเนื่อง 1 วัน #";
-        if($_POST['fupinj3time']==3)//นัด ฉีดยา ต่อเนื่อง
+        $flup = 1;
+        }
+        if($_POST['fupinj3time']==3){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัดฉีดยา ทุก 24 ชม #";
-        if($_POST['fupinj3time']==2)//นัด ฉีดยา ต่อเนื่อง
+        }
+        if($_POST['fupinj3time']==2){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัดฉีดยา ทุก 12 ชม #";
-        if($_POST['fupinj3time']==1)//นัด ฉีดยา ต่อเนื่อง
+        }
+        if($_POST['fupinj3time']==1){//นัด ฉีดยา ต่อเนื่อง
         $finject = $finject ."# นัดฉีดยา ทุก 8 ชม #";
+        }
+        if($flup)
+        {
+            $datetime = new DateTime();
+            //echo $datetime->format('Y-m-d');
+            for($i=1;$i<=$flup;$i++){
+            $datetime->add(new DateInterval('P1D'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', '$finject', '$ddx', '$recorddate');";
+            mysqli_query($link, $sql_insert);
+            }
+        }
         if($_POST['fup']==90)
         {
             $datetime = new DateTime();
@@ -86,6 +126,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตาม วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = 90;
         }
         if($_POST['fup']==60)//นัด 2 เดือน 60 วัน
         {
@@ -113,6 +154,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตาม วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = 60;
         }
         if($_POST['fup']==30)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -140,6 +182,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 30 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase =30;
         }
         if($_POST['fup']==21)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -167,6 +210,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 3 สัปดาห์ วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = 21;
         }
         if($_POST['fup']==14)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -194,6 +238,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 2 สัปดาห์ วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = 14;
         }
         if($_POST['fup']==7)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -221,6 +266,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 7 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = 7;
         }
         if($_POST['fup']==5)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -248,6 +294,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 5 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase =5;
         }
         if($_POST['fup']==3)//นัด ฉีดยา ต่อเนื่อง
         {
@@ -275,15 +322,19 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก 3 วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase =3;
         }
-        if($_POST['fup']==1)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัดติดตาม วันพรุ่งนี้ #";
-        if($_POST['lab']==1)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัด ตรวจ Lab งดอาหาร 12 ชม กินยาความดันและน้ำเปล่าได้ก่อนมา #";
-        if($_POST['lab']==2)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัด ตรวจ Lab งดอาหาร 6 ชม กินยาความดันและน้ำเปล่าได้ก่อนมา #";
-        if($_POST['lab']==3)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัด ตรวจ Lab ไม่ต้องงดอาหาร #";
+        if($_POST['fup']==1){//นัด ฉีดยา ต่อเนื่อง
+            $finject = $finject ."# นัดติดตาม วันพรุ่งนี้ #";
+            $datetime = new DateTime();
+            //echo $datetime->format('Y-m-d');
+            $datetime->add(new DateInterval('P1D'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            $flcase = 1;
+            //echo $hinjd .$hinjm.$hinjy;
+        }
         //
         if(!empty($_POST['nfolday']))
         {
@@ -312,6 +363,7 @@ if($_POST['set']=="SET")
                 case 12:$m =  "ธันวาคม";break;
             } 
             $finject = $finject ."# นัดติดตามอีก ".$nd." วัน วันที่ ".$hinjd." ".$m." ".$sye." #";
+            $flcase = $nd;
         } 
 
         $fdate = $_POST['fupdate'];
@@ -321,6 +373,7 @@ if($_POST['set']=="SET")
         $sd = substr($fdate, 3, -5);
         $sm = substr($fdate, 0, 2);
         $sy = substr($fdate, -4); 
+        //echo $hinjd .$hinjm.$hinjy;
         $sye = $sy+543;
         $date = new DateTime($sy.'-'.$sm.'-'.$sd);
         $date = $date->format('m/d/Y');
@@ -345,8 +398,27 @@ if($_POST['set']=="SET")
             $date2=date_create($datetime);
             $diff=date_diff($date2,$date1);
             $diff1 = $diff->format("%a");
+            $hinjd = $sd;
+            $hinjm = $sm;
+            $hinjy = $sy;
 
             $finject = $finject ."# นัดติดตามอีก ".$diff1." วัน ในวันที่ ".$sd." ".$m." ".$sye." #";
+            $flcase = $diff1;
+        }
+        
+        if($_POST['lab']==1)//นัด ฉีดยา ต่อเนื่อง
+        $finject = $finject ."# นัด ตรวจ Lab งดอาหาร 12 ชม กินยาความดันและน้ำเปล่าได้ก่อนมา #";
+        if($_POST['lab']==2)//นัด ฉีดยา ต่อเนื่อง
+        $finject = $finject ."# นัด ตรวจ Lab งดอาหาร 6 ชม กินยาความดันและน้ำเปล่าได้ก่อนมา #";
+        if($_POST['lab']==3)//นัด ฉีดยา ต่อเนื่อง
+        $finject = $finject ."# นัด ตรวจ Lab ไม่ต้องงดอาหาร #";
+        
+        if($flcase){
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', '$finject', '$ddx', '$recorddate');";
+            mysqli_query($link, $sql_insert);
         }
         //<input type=checkbox name=fupin1 value=1>นัด ฉีดยาคุมกำเนิด
         if($_POST['fupin1'] == 3)
@@ -358,6 +430,11 @@ if($_POST['set']=="SET")
             $hinjm = $datetime->format('m');
             $hinjy = $datetime->format('Y');
             //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'ฉีดยาคุมกำเนิด', 'คุมกำเนิด', '$recorddate');";
+            mysqli_query($link, $sql_insert);
             $sye = $hinjy+543;
             switch ($hinjm)
             {
@@ -386,6 +463,11 @@ if($_POST['set']=="SET")
             $hinjm = $datetime->format('m');
             $hinjy = $datetime->format('Y');
             //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'ฉีดยาคุมกำเนิด', 'คุมกำเนิด', '$recorddate');";
+            mysqli_query($link, $sql_insert);
             $sye = $hinjy+543;
             switch ($hinjm)
             {
@@ -405,10 +487,58 @@ if($_POST['set']=="SET")
             $finject = $finject ."# นัด ฉีดยาคุมกำเนิด วันที่ ".$hinjd." ".$m." ".$sye." หรือกำลังมีประจำเดือน #";
         }
         //<input type=checkbox name=fupin2 value=2>นัด Vaccine TT
-        if($_POST['fupin2']==2)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัด Vaccine TT บาดทะยัก อีก 1 และ 6 เดือน #";
-        if($_POST['fupin3']==3)//นัด ฉีดยา ต่อเนื่อง
-        $finject = $finject ."# นัด Vaccine พิษสุนัขบ้า นับจากวันนี้#";
+        if($_POST['fupin2']==2){//นัด ฉีดยา ต่อเนื่อง
+            $finject = $finject ."# นัด Vaccine TT บาดทะยัก อีก 1 และ 6 เดือน #";
+            $datetime = new DateTime();
+            //echo $datetime->format('Y-m-d');
+            $datetime->add(new DateInterval('P1M'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'Vaccine TT บาดทะยัก', 'Vaccination', '$recorddate');";
+            mysqli_query($link, $sql_insert);
+            //echo $datetime->format('Y-m-d');
+            $datetime->add(new DateInterval('P6M'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'Vaccine TT บาดทะยัก', 'Vaccination', '$recorddate');";
+            mysqli_query($link, $sql_insert);
+        }
+        if($_POST['fupin3']==3){//นัด ฉีดยา ต่อเนื่อง
+            $finject = $finject ."# นัด Vaccine พิษสุนัขบ้า นับจากวันนี้#";
+            $datetime = new DateTime();
+            //echo $datetime->format('Y-m-d');
+            $datetime->add(new DateInterval('P7D'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'Vaccine พิษสุนัขบ้า', 'Vaccination', '$recorddate');";
+            mysqli_query($link, $sql_insert);
+            //echo $datetime->format('Y-m-d');
+            $datetime->add(new DateInterval('P21D'));
+            $hinjd = $datetime->format('d');
+            $hinjm = $datetime->format('m');
+            $hinjy = $datetime->format('Y');
+            //echo $hinjd .$hinjm.$hinjy;
+            $sql_insert = "INSERT INTO `appointment` 
+                                    (`id`, `date`, `time`, `ptid`, `FuBy`, `FuFor`, `ddx`, `recorddate`)
+                            VALUES 
+                                    (NULL, '$hinjy"."-".$hinjm."-"."$hinjd', '$rctime', '$Patient_id', '$_SESSION[staff_id]', 'Vaccine พิษสุนัขบ้า', 'Vaccination', '$recorddate');";
+            mysqli_query($link, $sql_insert);
+         }
 
         //<input type=checkbox name=fupin3 value=3>นัด Vaccine พิษสุนัขบ้า
         

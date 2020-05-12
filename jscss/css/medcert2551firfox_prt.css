@@ -46,3 +46,11 @@ body {
         page-break-after: always;
     }
 }
+div.ptavatar {
+    float: right;
+	right: 30px;
+	top: 30px;
+	position: fixed;
+    width: 140x;
+    height: 140px;
+}

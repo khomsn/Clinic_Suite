@@ -149,6 +149,37 @@ if ($_SESSION['user_accode']%2==0  and $_SESSION['user_level']>1)
 			}
 		}
 }
+if ($_SESSION['user_accode']%13 == 0)
+{
+echo "<br>";
+echo "<a href='../../main/account/bankaccountbalance.php'>รายการเดินบัญชีธนาคาร</a><br>";
+	if ($actsite == "bankaccountbalance.php")
+		{
+                        if($ddate>$_SESSION['acstrdate'])
+                        {
+                         if( ( (date("Y",strtotime($ddate)))<=(date("Y",strtotime($_SESSION['acstrdate']))) ) AND  ((date("m",strtotime($ddate)))<=(date("m",strtotime($_SESSION['acstrdate'])))))
+                            echo "<input type='button' value='*||*'>&nbsp;";
+                         else 
+                            echo "<input type='submit' name='todom' value = '<<'>&nbsp;";
+                        }
+                        echo "<input type='submit' name='todom' value = '@'>&nbsp;";
+			if ($sm < date("m"))
+			{
+				if ($sy <= date("Y"))
+				{
+				echo "<input type='submit' name='todom' value = '>>'>";
+				}
+			}
+			if ($sm >= date("m"))
+			{
+				if ($sy < date("Y"))
+				{
+				echo "<input type='submit' name='todom' value = '>>'>";
+				}
+			}
+		echo "<br>";
+		}
+}
 ?>
 <br>
 <?php 

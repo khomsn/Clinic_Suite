@@ -6,6 +6,7 @@
 <a href="../../main/pharma/druglist.php">รายการยาและผลิตภัณฑ์</a><br>
 <a href='../../main/pharma/drugset.php'>ชุดยา</a><br><br>
 <a href='../../main/pharma/drugusestat.php'>Drug/Month</a><br><br>
+<a href='../../main/pharma/druglowlife.php'>ยาใกล้หมดอายุ</a><br><br>
 <?php
 if($_SESSION['user_level']==5)
 {

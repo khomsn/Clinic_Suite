@@ -6,9 +6,9 @@ include '../../libs/refreshptcall.php';
 <br>
 
 <a href="../../login/myaccount.php">Main Menu</a><br><br>
+<a href="../../main/register/search_pt.php">เวชระเบียน</a><br><br>
+
 <p><strong><a href="../../main/opd/mycounter.php">Counter Menu</a></strong></p><br>
-<a href="../../main/opd/search_pt.php">ค้นหารายชื่อผู้ป่วย</a><br>
-<a href="../../main/opd/PIDregister.php">ลงทะเบียนผู้ป่วยใหม่</a><br><br>
 <p><strong>Clinic Menu</strong></p>
 <a href="../../main/opd/pt_to_scr.php">ผู้ป่วยรอซักประวัติ</a><br>
 <a href="../../main/opd/pt_to_doctor.php">ผู้ป่วยรอตรวจ</a><br>

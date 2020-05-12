@@ -2,18 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 
-$sql = "
-CREATE TABLE IF NOT EXISTS `drandillci` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-";
-
-mysqli_query($linkcm, $sql);
-
 if($_POST['set'] == 'ReSet')
 {
       mysqli_query($linkcm, "TRUNCATE TABLE drandillci");

@@ -1,25 +1,6 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
-$sql_create = "
-CREATE TABLE IF NOT EXISTS `rawmat` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sunit` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lowlimit` smallint(6) NOT NULL DEFAULT '0',
-  `volume` smallint(6) NOT NULL DEFAULT '0',
-  `ac_no` int(11) NOT NULL,
-  `rmfpd` tinyint(1) NOT NULL DEFAULT '0',
-  `rmtype` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'other',
-  `location` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-";
-
-mysqli_query($link, $sql_create);
 
 if($_POST['register'] == 'ตกลง') 
 { 

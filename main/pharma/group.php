@@ -2,14 +2,6 @@
 include '../../config/dbc.php';
 page_protect();
 
-$sql_create = "CREATE TABLE IF NOT EXISTS `drug_group` (
-  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='group of product';";
-mysqli_query($link, $sql_create);
-
 if($_POST['add'] == 'เพิ่ม') 
 { 
     if(!preg_match('/^\s*$/',$_POST['tname']))

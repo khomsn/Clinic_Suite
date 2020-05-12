@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS `reccompany` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='reccompany' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'reccompany\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $err = array();
 $msg = array();
 

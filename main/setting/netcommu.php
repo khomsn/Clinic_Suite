@@ -13,6 +13,14 @@ $sql ="CREATE TABLE  IF NOT EXISTS `queuesystem` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='queuesystem' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'queuesystem\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $pin = mysqli_query($link, "select MAX(id) from queuesystem");
 $rid = mysqli_fetch_array($pin);
 $i = $rid[0];

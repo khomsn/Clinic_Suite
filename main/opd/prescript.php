@@ -17,7 +17,7 @@ $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable");
 $rid = mysqli_fetch_array($pin);
 $_SESSION['mrid'] = $rid[0]; //Set to search for previous record for drug  and Treatment
 
-for($i=1;$i<=10;$i++)
+for($i=1;$i<=14;$i++)
 {
     $idrx[$i]="idrx".$i;
     $rx[$i] = "rx".$i;
@@ -27,7 +27,7 @@ for($i=1;$i<=10;$i++)
 $tempin = mysqli_query($link, "select * from $tmp ");
 while ($row = mysqli_fetch_array($tempin))
 {
-    for($t10=1;$t10<=10;$t10++)
+    for($t10=1;$t10<=14;$t10++)
     {
       $gdid[$t10]=$row[$rxg[$t10]];
     }
@@ -87,7 +87,7 @@ $ordertable = "doctemplate_".$_SESSION['sflc'];
 
 include '../../libs/price.php';
 
-for($i=1;$i<=10;$i++)
+for($i=1;$i<=14;$i++)
 {
 	if($_POST[$i] == 'ลบ')
 	{
@@ -111,13 +111,13 @@ for($i=1;$i<=10;$i++)
 }
 if(!empty($rar))
 {
-    for($i=$rar;$i<=10;$i++)
+    for($i=$rar;$i<=14;$i++)
     {
         $n=$i+1;
         
         $upd = mysqli_fetch_array(mysqli_query($link, "select * from $tmp"));
         //set data value
-		if($i<10)
+		if($i<14)
 		{
             $idrx = $upd['idrx'.$n];
             $rx= $upd['rx'.$n];
@@ -138,7 +138,7 @@ if(!empty($rar))
 			`$rxby` = '$rxbyd'
 			");
         }
-        if($i==10)
+        if($i==14)
         {
             $us = "rx".$i."uses";
             $vl = "rx".$i."v";
@@ -162,7 +162,7 @@ if($_POST['register'] == 'บันทึก')
     //unset to activate auto popup
     unset($_SESSION['Prescription']);
 //UPDATE $tmp 
-	for($i=1;$i<=10;$i++)
+	for($i=1;$i<=14;$i++)
 	{
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
@@ -271,7 +271,7 @@ else echo "<body onload=\"javascript: poponload();\">";
   <form method="post" action="prescript.php" name="regForm" id="regForm">
 	  <table style="text-align: left; width: 100%; height: 413px;" border="0" cellpadding="0" cellspacing="0"  class="forms">
 		  <tr><td style="width: 80%; vertical-align: middle;">
-            <div style="text-align: center;"><big><big>ชื่อ: &nbsp; 
+            <div style="text-align: center;">ชื่อ: &nbsp; 
                 <?php
                 while ($row_settings = mysqli_fetch_array($ptin))
                 {
@@ -292,14 +292,14 @@ else echo "<body onload=\"javascript: poponload();\">";
                     $_SESSION['weight']=$row_settings['weight'];
                 }
                 ?>
-                </big></big></div>
+                </div>
         </td></tr>
         <tr><td><div style="text-align: center;">ข้อมูล แนะนำ:<br><textarea cols="80" rows="2" type="text" name="inform" ><?php echo  $inform;?></textarea><hr style="width: 80%; height: 1px;">
 			  <?php 
 			  if ($_SESSION['user_accode']%11==0 OR $_SESSION['user_accode']%7==0 OR $_SESSION['patdesk']==$extid)
 			  {
 			  ?>
-			  <a HREF="drugorder.php" onClick="return popup(this,'name','950','600','yes')" ><big>Order</big></a> : 
+			  <a HREF="drugorder.php" onClick="return popup(this,'name','950','600','yes')" >Order</a> : 
 			  <a HREF="prescriptold.php" onClick="return popup(this,'name','950','600','yes')" >(ยาเก่า)</a> 
 			  <?php } else {?><a HREF="prodorder.php" onClick="return popup(this,'name','950','600','yes')" >สั่งผลิตภัณฑ์</a><a 
 			  <?php }?><br>
@@ -310,7 +310,7 @@ else echo "<body onload=\"javascript: poponload();\">";
 						  $ptin = mysqli_query($link, "select * from $tmp ");
                             while ($row = mysqli_fetch_array($ptin))
                             {
-                                for($i = 1;$i<=10;$i++)
+                                for($i = 1;$i<=14;$i++)
                                 {
                                     $idrx="idrx".$i;
                                     $rx = "rx".$i;
@@ -349,7 +349,7 @@ else echo "<body onload=\"javascript: poponload();\">";
                                     echo "</td>";
                                     echo "<td>";
                                     echo "<input type=search size=40% name=use$i id=ordertxt$i value='$row[$us]'";
-                                    if($i==10) echo " autofocus";
+                                    if($i==14) echo " autofocus";
                                     echo ">";
                                     echo "</td>";
                                     echo "<td>";

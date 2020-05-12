@@ -35,6 +35,7 @@ if($_POST['CallForInspection'] == "เรียกตัวเข้าตรว
 if($_POST['rec'] == "DDx" OR $_POST['rec'] == "ReDDx") 
 {
     $_SESSION['history'.$pid]= $_POST['dhist'];
+    $_SESSION['DDx'] = $_POST['diag'];
     $_SESSION['phex'.$pid]=$_POST['phex'];
     header("Location: histaking.php"); 
 }
@@ -110,6 +111,7 @@ if($_POST['register'] == 'บันทึก')
     }
     unset($_SESSION['history'.$pid]);
     unset($_SESSION['phex'.$pid]);
+    unset($_SESSION['DDx']);
     //go on 
     header("Location: prescript.php");  
 }
@@ -231,7 +233,7 @@ include '../../main/bodyheader.php';
         <?php echo $drugale;?>
         <a href="chronicill.php" onclick="return popup(this,'name','800','600','yes')">โรคประจำตัว:</a>:<?php echo $chron;?></span><br>
         <a href="concurdrug.php" onclick="return popup(this,'name','800','600','yes')">ยาที่ใช้ประจำ:</a>:<?php echo $_SESSION['concurdrug'];?></span><br>
-        <big><big>มาปรึกษาเรื่อง : 
+        มาปรึกษาเรื่อง : 
         <?php 
         $tmpin = mysqli_query($link, "select * from $tmp ");
         while($row_settings = mysqli_fetch_array($tmpin))
@@ -240,7 +242,7 @@ include '../../main/bodyheader.php';
             $policy = $row_settings['pricepolicy'];
         }
         ?>
-        </big></big>
+        
         <hr style="width: 80%; height: 2px;"><br>
         <input type="radio" name="policy" value="2" <?php if($policy==2) echo "checked";?>>ตรวจโรค
         <input type="radio" name="policy" value="3" <?php if($policy==3) echo "checked";?>>ทำหัตการ
@@ -355,7 +357,7 @@ include '../../main/bodyheader.php';
     </div>
     <hr style="width: 80%; height: 2px;">
     <div style="text-align: left;">
-        <big>ประวัติ:</big><br>
+        ประวัติ:<br>
         <textarea autofocus  cols="100%" rows="3" type="text" name="dhist" style="width: 100%;" id="firstfocus"><?php
         if($preg == 1)
         {
@@ -367,7 +369,7 @@ include '../../main/bodyheader.php';
         }
         if($preg == 0) echo $hist;
         ?></textarea><br>
-        <a HREF="PhysExamCheckList.php" onClick="return popup(this,'name','800','600','yes')" >ตรวจร่างกาย</a></big><span STYLE="Padding-left: 5px; border: 5px groove #ffffff"><big><a HREF="uploadpicture.php" onClick="return popup(this,'name','400','600','yes')" >Picture</a></big></span> <br>
+        <a HREF="PhysExamCheckList.php" onClick="return popup(this,'name','800','600','yes')" >ตรวจร่างกาย</a><span STYLE="Padding-left: 5px; border: 5px groove #ffffff"><a HREF="uploadpicture.php" onClick="return popup(this,'name','400','600','yes')" >Picture</a></span> <br>
         <textarea cols="70%" rows="5" name="phex" type="text"  style="width: 100%;"><?php
         if(empty($phex))
         {
@@ -476,3 +478,56 @@ echo " ". $endTime = date('h:i:s', $endTime);
 }
 ?>
 </body></html>
+<script  type="text/javascript">
+jQuery.fn.putCursorAtEnd = function() {
+
+  return this.each(function() {
+    
+    // Cache references
+    var $el = $(this),
+        el = this;
+
+    // Only focus if input isn't already
+    if (!$el.is(":focus")) {
+     $el.focus();
+    }
+
+    // If this function exists... (IE 9+)
+    if (el.setSelectionRange) {
+
+      // Double the length because Opera is inconsistent about whether a carriage return is one character or two.
+      var len = $el.val().length * 2;
+      
+      // Timeout seems to be required for Blink
+      setTimeout(function() {
+        el.setSelectionRange(len, len);
+      }, 1);
+    
+    } else {
+      
+      // As a fallback, replace the contents with itself
+      // Doesn't work in Chrome, but Chrome supports setSelectionRange
+      $el.val($el.val());
+      
+    }
+
+    // Scroll to the bottom, in case we're in a tall textarea
+    // (Necessary for Firefox and Chrome)
+    this.scrollTop = 999999;
+
+  });
+
+};
+
+(function() {
+  
+  var searchInput = $("#firstfocus");
+
+  searchInput
+    .putCursorAtEnd() // should be chainable
+    .on("focus", function() { // could be on any event
+      searchInput.putCursorAtEnd()
+    });
+  
+})();
+</script>

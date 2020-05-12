@@ -34,6 +34,14 @@ CREATE TABLE IF NOT EXISTS `parameter` (
 ";
 mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='parameter' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'parameter\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 if($_POST['submit']=='Set Logo')
 {
         $logopath = "../".IMAGE_PATH;        

@@ -68,9 +68,9 @@ include '../../main/bodyheader.php';
 
 	    $pttable = "pt_".$i;
 	    if($clinic==2)
-	    $ptin = mysqli_query($linkopdx, "select * from $pttable where (`idrx1`='$drugid' or `idrx2`='$drugid' or `idrx3`='$drugid' or `idrx4`='$drugid' or `idrx5`='$drugid' or `idrx6`='$drugid' or `idrx7`='$drugid' or `idrx8`='$drugid' or `idrx9`='$drugid' or `idrx10`='$drugid') AND `clinic`='$_SESSION[clinic]'");
+	    $ptin = mysqli_query($linkopdx, "select * from $pttable where (`idrx1`='$drugid' or `idrx2`='$drugid' or `idrx3`='$drugid' or `idrx4`='$drugid' or `idrx5`='$drugid' or `idrx6`='$drugid' or `idrx7`='$drugid' or `idrx8`='$drugid' or `idrx9`='$drugid' or `idrx10`='$drugid' or `idrx11`='$drugid' or `idrx12`='$drugid' or `idrx13`='$drugid' or `idrx14`='$drugid') AND `clinic`='$_SESSION[clinic]'");
 	    else 
-	    $ptin = mysqli_query($linkopdx, "select * from $pttable where `idrx1`='$drugid' or `idrx2`='$drugid' or `idrx3`='$drugid' or `idrx4`='$drugid' or `idrx5`='$drugid' or `idrx6`='$drugid' or `idrx7`='$drugid' or `idrx8`='$drugid' or `idrx9`='$drugid' or `idrx10`='$drugid'");
+	    $ptin = mysqli_query($linkopdx, "select * from $pttable where `idrx1`='$drugid' or `idrx2`='$drugid' or `idrx3`='$drugid' or `idrx4`='$drugid' or `idrx5`='$drugid' or `idrx6`='$drugid' or `idrx7`='$drugid' or `idrx8`='$drugid' or `idrx9`='$drugid' or `idrx10`='$drugid' or `idrx11`='$drugid' or `idrx12`='$drugid' or `idrx13`='$drugid' or `idrx14`='$drugid'");
 	    
 	    while ($row2 = mysqli_fetch_array($ptin))
 	    {

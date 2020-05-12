@@ -3,7 +3,7 @@
 	$pin = mysqli_query($link, "select * from $tmp ");
 	while ($row = mysqli_fetch_array($pin))
 	{	
-		for($i=1;$i<=10;$i++)
+		for($i=1;$i<=14;$i++)
 		{
 			$cn = "idrx".$i;
 			if($row[$cn] == 0)
@@ -13,7 +13,7 @@
 			}
 		}
 //		echo $cn; echo  "and"; echo $imin;
-		for($j=1;$j<=10;$j++)
+		for($j=1;$j<=14;$j++)
 		{ 
 			if($_POST[$j] ==1)
 			{

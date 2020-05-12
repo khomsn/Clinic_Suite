@@ -3,17 +3,6 @@ include '../../config/dbc.php';
 page_protect();
 $err = array();
 
-$sql_create = "CREATE TABLE IF NOT EXISTS `deleted_rm` (
-  `id` int(11) NOT NULL UNIQUE KEY,
-  `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ac_no` int(11) NOT NULL,
-  `dtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bystid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
-mysqli_query ($link, $sql_create);
-
 $filter = mysqli_query($link, "select * from rawmat ");		
 while ($row = mysqli_fetch_array($filter))
 {
@@ -62,9 +51,9 @@ if($_POST['register'] == 'ลบข้อมูล')
         mysqli_query($link, $sql_drop) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // Delete Ac No
         NextStep:
-        $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
+//        $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
         // Now remove drug information table
-        mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
+//        mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
         //loging del item
         $sql_insert = "INSERT into `deleted_rm` 
                 (`id`,`rawcode`,`rawname`, `size`, `ac_no`,`bystid` ) 

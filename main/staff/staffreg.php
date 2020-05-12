@@ -26,7 +26,7 @@ if($_POST['doRegister'] == 'Register')
         }
     }
     // check for duplicated record for ctz_id
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where ctz_id='$_POST[ctz_id]' AND ctz_id !=0 ") or $err[]=(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where ctz_id='$ctzid' AND ctz_id !=0 ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -49,11 +49,13 @@ if($_POST['doRegister'] == 'Register')
     $byear = $_POST['year'];
     if($_POST['Era'] == 1) $year = $byear - 543;
     if($_POST['Era'] == 2) $year = $byear;
+    // format birthday for mysql
+    $birthday = $year.'-'.$month.'-'.$day;
 
     $gender = mysqli_real_escape_string($link, $_POST['Gender']);
 
     // check for duplicated record
-    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where F_Name='$fname' and L_Name='$lname' and gender='$gender' ") or $err[]=(mysqli_error($link));
+    $rs_duplicate = mysqli_query($link, "select count(*) as total from staff where F_Name='$fname' and L_Name='$lname' and gender='$gender' and birthday='$birthday' and ctz_id='$ctzid' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -67,10 +69,8 @@ if($_POST['doRegister'] == 'Register')
 
     $row = mysqli_fetch_array($result);
     // Pass Patient ID as a session parameter.
-    $user_id= $row['id'];
+    $user_id = $row['id'];
     if(empty($user_id)) $user_id=0;
-    // format birthday for mysql
-    $birthday = $year.'-'.$month.'-'.$day;
     // check address
 
     if(!empty($_POST['address3']))
@@ -89,20 +89,29 @@ if($_POST['doRegister'] == 'Register')
     $sql_insert = "INSERT into `staff`
                 (`ctz_id`,`prefix`,`F_Name`,`L_Name`,`Eprefix`,`EF_Name`,`EL_Name`, `gender`, `birthday`, `posit`, `license`, `add_hno`, `add_mu`, `add_str`, `add_t`, `add_a`, `add_j`, `add_zip`, `h_tel`, `mobile`, `email`, `user_id`, `status` )
                 VALUES
-                ('$_POST[ctz_id]','$prefix','$fname','$lname','$Eprefix','$Efname','$Elname','$gender','$birthday','$_POST[Posit]','$_POST[license]','$_POST[address1]','$_POST[address2]','$addstr','$_POST[address3]','$_POST[address4]','$_POST[address5]',
+                ('$ctzid','$prefix','$fname','$lname','$Eprefix','$Efname','$Elname','$gender','$birthday','$_POST[Posit]','$_POST[license]','$_POST[address1]','$_POST[address2]','$addstr','$_POST[address3]','$_POST[address4]','$_POST[address5]',
                 '$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_POST[email]','$user_id','$_POST[status]')
                 ";
 
-
     // Now insert staff to "staff" table
     mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
+    // Then get Staff ID to process to other step.
+    $pin = mysqli_query($link, "select MAX(ID) from `staff`");
+    $maxrow = mysqli_fetch_row($pin);
+    $_SESSION['Staffid'] = $maxrow[0];
+    $staffid = $_SESSION['Staffid'];
+
+    if($user_id != 0)
+    {
+    //update users table at staff_id
+	$sql_update = "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id';";
+	// Now insert Staff to "users" table
+	mysqli_query($link, $sql_update);
+	}
 
     //create OPD
     // check for duplicated record
-    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and ctz_id='$_POST[ctz_id]'") or $err[]=(mysqli_error($linkopd));
-    list($total) = mysqli_fetch_array($rs_duplicate);
-    // check for duplicated record if same person
-    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and birthday='$birthday'") or $err[]=(mysqli_error($linkopd));
+    $rs_duplicate = mysqli_query($linkopd, "select count(*) as total from patient_id where fname='$fname' and lname='$lname' and gender='$gender' and birthday='$birthday' and ctz_id='$ctzid'") or $err[]=(mysqli_error($linkopd));
     list($total) = mysqli_fetch_array($rs_duplicate);
 
     if ($total > 0)
@@ -113,7 +122,7 @@ if($_POST['doRegister'] == 'Register')
     $sql_insert = "INSERT into `patient_id`
                 (`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `address1`, `address2`, `address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `staff` )
                 VALUES
-                ('$_POST[ctz_id]','$_POST[prefix]','$fname','$lname','$gender','$birthday','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
+                ('$ctzid','$_POST[prefix]','$fname','$lname','$gender','$birthday','$_POST[address1]','$_POST[address2]','$_POST[address3]','$_POST[address4]','$_POST[address5]',
                 '$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_POST[status]')
                 ";
 
@@ -122,7 +131,7 @@ if($_POST['doRegister'] == 'Register')
     mysqli_query($linkopd, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkopd));
     // Then get Patient ID to process to other step.
     $result = mysqli_query($linkopd, "SELECT id FROM patient_id
-    WHERE fname='$fname' AND lname='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]'");
+    WHERE fname='$fname' AND lname='$lname' AND gender='$gender' AND ctz_id='$ctzid'");
 
     $row = mysqli_fetch_array($result);
     // Pass Patient ID as a session parameter.
@@ -131,12 +140,6 @@ if($_POST['doRegister'] == 'Register')
     include '../../libs/pt_table.php';
     //end opd creation
     jumphere:
-    // Then get Staff ID to process to other step.
-    $result = mysqli_query($link, "SELECT ID FROM staff WHERE F_Name='$fname' AND L_Name='$lname' AND gender='$gender' AND ctz_id='$_POST[ctz_id]");
-
-    $row = mysqli_fetch_array($result);
-    // Pass Patient ID as a session parameter.
-    $staffid = $row[0];
     
     //assign account no. for payment to this staff_id //51000000-59999998 เงินเดือน จ่าย 51000000 for non staff payment //start with 51000000 + staff_id
     $acfp = 51000000+$staffid;
@@ -145,12 +148,6 @@ if($_POST['doRegister'] == 'Register')
     $sql_insert = "INSERT into `acnumber` (`ac_no`,`name`)  VALUES  ('$acfp','$acnfp')";
     // Now insert Patient to "acnumber" table
     mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
-
-	//update users table at staff_id
-	$sql_update = "UPDATE users SET `staff_id` = '$staffid' WHERE `id` = '$user_id';";
-	// Now insert Staff to "users" table
-	mysqli_query($link, $sql_update) or $err[]=("Update Failed:" . mysqli_error($link));
-	
 
     //avatar part
     $stimpath = "../".AVATAR_PATH;
@@ -214,10 +211,8 @@ if($_POST['doRegister'] == 'Register')
     {
         $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
     }
-        
-    $_SESSION['Staff_id']= $staffid;
     // go on to other step
-    header("Location: ../../main/staft/staffupdate.php");  
+    header("Location: staffupdate.php");  
 }
 ERROR_JP:
 $title = "::Staff::";

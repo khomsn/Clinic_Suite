@@ -2,12 +2,29 @@
 include '../../config/dbc.php';
 page_protect();
 
+if(!empty($_SESSION['DDx']) AND !$_SESSION['cddx'])
+{
+    $n = substr_count($_SESSION['DDx'], '-');
+    //$str = 'hypertext;language;programming';
+    $charsl = preg_split('/-/', $_SESSION['DDx']);
+    
+    for($i=1;$i<=$n;$i++)
+    {
+
+        $_SESSION['dx'.$i] = rtrim($charsl[$i], "1234567890 ");
+        $_SESSION['DX'] = $i;
+    }
+    $_SESSION['cddx'] = 1;
+}
+
 if($_POST['add'] == "เพิ่ม") 
 {
     //update post value first
     for($j=1;$j<=$_SESSION['DX'];$j++)
     {
-        $_SESSION['dx'.$j]=$_POST['diag'.$j];
+        $diags = $_POST['diag'.$j];
+        //echo $diags = mysqli_real_escape_string($link, $diags);
+        $_SESSION['dx'.$j] = $diags;
     }
     
     $j=$_SESSION['DX'];
@@ -16,7 +33,9 @@ if($_POST['add'] == "เพิ่ม")
     
     if(ltrim($dx)!=='')
     {
-        $_SESSION['dx'.$j]=$_POST['diag'.$j];
+        $diags = $_POST['diag'.$j];
+        //echo $diags = mysqli_real_escape_string($link, $diags);
+        $_SESSION['dx'.$j] = $diags;
         $validid = 1;
 
        if(($_SESSION['DX']<5) AND $validid)
@@ -75,6 +94,7 @@ if($_POST['todo']=='Diag')
   }
     unset($_SESSION['DX']);
     unset($_SESSION['close']);
+    unset($_SESSION['cddx']);
 echo '<script>window.opener.location.reload()</script>';
 echo '<script>self.close()</script>';
    
@@ -106,12 +126,12 @@ include '../../libs/autodiag.php';
 			if($j==$_SESSION['DX'])
 			{
 			echo	"<tr><th>".$j."</th><th><input name='diag".$j."' type=text id=diag".$j;
-			echo        " value='".$_SESSION['dx'.$j]."' size=50 autofocus/></th>";
+			echo        " value=\"".$_SESSION['dx'.$j]."\" size=50 autofocus/></th>";
 			}
 			else
 			{
 			echo	"<tr><th>".$j."</th><th><input name='diag".$j."' type=text id=diag".$j;
-			echo        " value='".$_SESSION['dx'.$j]."' size=50 /></th>";
+			echo        " value=\"".$_SESSION['dx'.$j]."\" size=50 /></th>";
 			}
 			echo	    "<th><input type=submit name='add' value='เพิ่ม'></th>";
 			echo	    "<th><input type=submit name='del".$j."' value='ลบ'></th>";

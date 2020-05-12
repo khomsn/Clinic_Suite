@@ -8,7 +8,7 @@ header("Location: staff.php");
 
 if($_POST['found'] == 'แก้ไขข้อมูล')
 {
-	$_SESSION['Staff_id'] = $_POST['ptid'];
+	$_SESSION['Staffid'] = $_POST['ptid'];
 	// go on to other step
 	header("Location: staffupdate.php");  
 }

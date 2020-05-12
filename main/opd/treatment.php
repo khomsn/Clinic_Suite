@@ -97,7 +97,7 @@ echo "</head><body>";
 		<form method="post" action="treatment.php" name="regForm" id="regForm">
 			<table style="text-align: left; width: 100%; height: 413px;" border="1" cellpadding="2" cellspacing="2"  class="forms">
 				<tr><td style="width: 80%; vertical-align: middle;">
-                    <div style="text-align: center;"><big>ชื่อ: &nbsp; 
+                    <div style="text-align: center;">ชื่อ: &nbsp; 
                     <?php
                         echo $prefix;
                         echo "&nbsp;";
@@ -114,12 +114,12 @@ echo "</head><body>";
                             $inform = $row_settings['inform']; 
                         }
                     ?>
-                    </big></div>
+                    </div>
                 </td></tr>
                 <tr><td><div style="text-align: center;">ข้อมูล แนะนำ:<br>
 							<textarea cols="80" rows="2" type="text" name="inform" ><?php echo  $inform;?></textarea>
                             <hr style="width: 80%; height: 1px;">
-							<a HREF="tmnew.php" onClick="return popup(this,'name','1000','600','yes');" ><big><big>Treatment</big></big></a> :  
+							<a HREF="tmnew.php" onClick="return popup(this,'name','1000','600','yes');" >Treatment</a> :  
 							<a HREF="tmold.php" onClick="return popup(this,'name','1000','600','yes');" > ประวัติ(เก่า)</a><br>
 							<table  class='TFtable' style="width: 100%; text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
 								<tr><th width = 10 >No</th>

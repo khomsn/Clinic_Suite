@@ -36,6 +36,14 @@ $sql = "CREATE TABLE IF NOT EXISTS `staff` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='staff' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'staff\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $title = "::Staff::";
 include '../../main/header.php';
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../../jscss/css/table_alt_color1.css\"/>";

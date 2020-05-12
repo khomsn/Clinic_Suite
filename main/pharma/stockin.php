@@ -145,13 +145,13 @@ include '../../libs/validate.php';
     $stock_in = mysqli_query($link, "select * from drug_id where id='$id' ");
     while ($row_settings = mysqli_fetch_array($stock_in))
     {
-    echo "<div style=\"text-align: center; background-color:rgba(0,255,0,0.7);\"><big><big><big><big>";
+    echo "<div style=\"text-align: center; background-color:rgba(0,255,0,0.7);\">";
     echo $row_settings['dname'];
     echo "&nbsp;(";
     echo $row_settings['dgname'];
     echo ")&nbsp;ขนาด :&nbsp;";
     echo $row_settings['size'];
-    echo "</big></big></big></big></div>";
+    echo "</div>";
     }
     ?>
     <form action="stockin.php?msg=<?php echo $id?>" method="post" name="inForm" id="inForm">

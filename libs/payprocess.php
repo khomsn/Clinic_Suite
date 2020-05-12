@@ -14,7 +14,7 @@
 	$dtemp = mysqli_query($link, "select * from $tmp ");
 	while ($rowd = mysqli_fetch_array($dtemp))
 	{
-		for($i=1;$i<=10;$i++)
+		for($i=1;$i<=14;$i++)
 		{
 			$idrxt = "idrx".$i;
 			$rxt = "rx".$i;
@@ -388,7 +388,7 @@
 	  unset($_SESSION['idtr'.$i]);
 	  unset($_SESSION['trvol'.$i]);
 	}
-	for($i=1;$i<=10;$i++)
+	for($i=1;$i<=14;$i++)
 	{
 	  unset($_SESSION['idrx'.$i]);
 	  unset($_SESSION['rxvol'.$i]);

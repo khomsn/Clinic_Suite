@@ -14,6 +14,14 @@ $sql = "CREATE TABLE IF NOT EXISTS `$doctemplate` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='$doctemplate' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'$doctemplate\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $pin = mysqli_query($link, "select MAX(id) from $doctemplate");
 $rid = mysqli_fetch_array($pin);
 $i = $rid[0];

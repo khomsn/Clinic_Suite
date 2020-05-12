@@ -44,17 +44,17 @@ include '../../main/bodyheader.php';
 				<table style="text-align: left; width: 703px; height: 413px;" border="0" cellpadding="2" cellspacing="2">
 				<tbody>
 					<tr><td style="width: 646px; vertical-align: middle; background-color: rgb(255, 255, 204);">
-							<div style="text-align: center;"><big><big><big><big>ชื่อ: 
+							<div style="text-align: center;">ชื่อ: 
 						<?php	
 						while ($rowsp = mysqli_fetch_array($sply))
 						{
 							echo $rowsp['name'];
 						?>
-							</big></big></big></big></div>
+							</div>
 							<hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;"><br>
-							<div style="text-align: center;"><big><big>
-							ที่อยู่: &nbsp;<?php echo $rowsp['address'];?></big></big>
-							<br><big><big>โทรศัพท์:&nbsp;<?php  echo $rowsp['tel']	?></big></big>
+							<div style="text-align: center;">
+							ที่อยู่: &nbsp;<?php echo $rowsp['address'];?>
+							<br>โทรศัพท์:&nbsp;<?php  echo $rowsp['tel']	?>
 							<hr style="width: 80%; height: 2px;">
 							วิธีการชำระเงิน<br>
 							<input name="paydetail" type="text" size=50 value="<?php echo $rowsp['paydetail'];?>"></div>

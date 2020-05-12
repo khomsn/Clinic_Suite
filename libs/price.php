@@ -60,7 +60,7 @@ include '../../libs/trpricecheck.php';
   $TMPrice = $allprice;
   
   //drug price
-  for($i=1;$i<=10;$i++)
+  for($i=1;$i<=14;$i++)
   {
 	$tpptin = mysqli_query($link, "select * from $tmp ");
 	while ($row = mysqli_fetch_array($tpptin))

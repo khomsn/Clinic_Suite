@@ -32,7 +32,7 @@ $today = date("Y-m-d");
 $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable");
 $rid = mysqli_fetch_array($pin);
 
-$popupmaxid = 10;
+$popupmaxid = 14;
 
 $title = "::Cashier + จ่ายยา::";
 include '../../main/header.php';
@@ -183,7 +183,7 @@ for($i =1;$i<=4;$i++)
 <tr><th width = 10 >No</th><th>ชื่อการค้า</th><th>ขนาด</th><th>Generic Name</th><th width=50%>วิธีการใช้</th><th width = 35px>จำนวน</th></tr>
 <?php 
 $j=1;
-for($i=1;$i<=10;$i++)
+for($i=1;$i<=14;$i++)
 {
     $ptin = mysqli_query($link, "select * from $tmp ");
     while ($row = mysqli_fetch_array($ptin))

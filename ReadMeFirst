@@ -1,93 +1,80 @@
-# ขั้นตอนการติดตั้ง Programme Clinic Suite
-#----------------------------------------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"><title>ReadMeFirst</title>
+</head>
+<body>
+# ขั้นตอนการติดตั้ง Programme Clinic Suite<br>
+#----------------------------------------------------------------<br>
+<br>
+Requirement:<br>
+1. Linux os on a computer assigned to be a Server, for ease of use , Kubuntu is recommended.<br>
+2. Install apache2 web server, mysql server+client, php, for ease of use please install phpmyadmin package.<br>
+3. Require root access to Server.<br>
+<br>
+สำหรับการติดตั้งใน ระบบ MS Windows ท่านต้องติดตั้ง web server , mysql server, php server ให้ใช้งานได้ก่อนจึงจะเอา file Programme ไปแทนที่ได้ ซึ่งต้องหาความรู้เองครับผมไม่เคยใช้ระบบ MS Windows มานานมากกว่า 20 ปีแล้วจึงไม่สามรถช่วยได้<br>
+#----------------------------------------------------------------<br>
+<br>
+ขั้นตอนการติดตั้งระบบ:<br>
+#----------------------------------------------------------------<br>
+#----------------------------------------------------------------<br>
+<br>
+เมื่อติดตั้งระบบพื้นฐาน ครบแล้ว ให้ทำการติดตั่งตามขั้นตอนดังนี้<br>
 
-Requirement:
-1. Linux os on a computer assigned to be a Server, for ease of use , Kubuntu is recommended.
-2. Install apache2 web server, mysql server+client, php, for ease of use please install phpmyadmin package.
-3. Require root access to Server.
+#----------------------------------------------------------------<br>
+การติดตั้ง โดย COPY FILE จาก GITHUB.COM<br>
+#----------------------------------------------------------------<br>
+<br>
+1. login > root เข้าระบบ linux<br>
+2. ทดสอบระบบ web server โดยเข้า firefox ที่ localhost ว่ามี หน้า web หรือยัง ถ้ายังไม่มีให้ติดตั้ง apache2 package ก่อน<br>
+3. ติดตั้ง mysql package ทั้ง server และ client พร้อมกำหนด user+password<br>
+    3.1 Set user_name และ password ของ Mysql server เพื่อใช้ในการ ควบคุม ติดตั้ง database<br>
+    3.2 เมื่อ Login เข้า Mysql server เพื่อสร้าง user_name/password สำหรับ khomsn-klinic-suite ในการเชื่อมต่อ หรือ ทำตามข้อ 4 ต่อไป<br>
+4. ติดตั้ง phpmyadmin package<br>
+5. login เข้า <a href="http://localhost/phpmyadmin" target="_blank">localhost/phpmyadmin</a> โดย root user<br>
+    ข้ามไปทำตาม 5.1 ต่อไป<br>
+<br>
+#----------------------------------------------------------------<br>
+การติดตั้ง โดย package khomsn-klinic-suite_xxx.deb<br>
+#----------------------------------------------------------------<br>
+<br>
+1 login > root เข้าระบบ linux<br>
+2 login เข้า <a href="http://localhost/phpmyadmin" target="_blank">localhost/phpmyadmin</a> โดย root user หรือ admin user<br>
+    ทำตามขั้นตอนที่ 5.1 ต่อไป<br>
+3. ติดตั้ง khomsn-klinic-suite_xxx.deb <br>
+    3.1 ให้ใส่ user name = "xxxx" และ  user password = "yyyy" ตาม 5.1.1 และ 5.1.2<br>
+#----------------------------------------------------------------<br>
+<br>
+5.1 เมื่อ เข้า phpmyadmin แล้ว ให้ add user สำหรับใช้ติดต่อ กับ database , grant all previllages<br>
+5.1.1 กำหนด user name = "xxxx" <br>
+5.1.2 กำหนด user password = "yyyy"<br>
+#----------------------------------------------------------------<br>
 
-สำหรับการติดตั้งใน ระบบ MS Windows ท่านต้องติดตั้ง web server , mysql server, php server ให้ใช้งานได้ก่อนจึงจะเอา file Programme ไปแทนที่ได้ ซึ่งต้องหาความรู้เองครับผมไม่เคยใช้ระบบ MS Windows มานานมากกว่า 20 ปีแล้วจึงไม่สามรถช่วยได้
-#----------------------------------------------------------------
-
-ขั้นตอนการติดตั้งระบบ:
-#----------------------------------------------------------------
-#----------------------------------------------------------------
-
-เมื่อติดตั้งระบบพื้นฐาน ครบแล้ว ให้ทำการติดตั่งตามขั้นตอนดังนี้
-
-#----------------------------------------------------------------
-การติดตั้ง โดย COPY FILE จาก GITHUB.COM
-#----------------------------------------------------------------
-
-1. login > root เข้าระบบ linux
-2. ทดสอบระบบ web server โดยเข้า firefox ที่ localhost ว่ามี หน้า web หรือยัง ถ้ายังไม่มีให้ติดตั้ง apache2 package ก่อน
-3. ติดตั้ง mysql package ทั้ง server และ client พร้อมกำหนด user+password
-4. ติดตั้ง phpmyadmin package
-5. login เข้า localhost/phpmyadmin โดย root user
-    ข้ามไปทำตาม 5.1 ต่อไป
-
-#----------------------------------------------------------------
-การติดตั้ง โดย package khomsn-klinic-suite_xxx.deb
-#----------------------------------------------------------------
-
-1. login > root เข้าระบบ linux
-2. ติดตั้ง khomsn-klinic-suite_xxx.deb
-3. login เข้า localhost/phpmyadmin โดย root user
-    ทำตามขั้นตอนที่ 5.1 ต่อไป
-#----------------------------------------------------------------
-
-5.1 เมื่อ เข้า phpmyadmin แล้ว ให้ add user สำหรับใช้ติดต่อ กับ database , grant all previllages
-5.1.1 กำหนด user name = "xxxx" 
-5.1.2 กำหนด user password = "yyyy"
-#----------------------------------------------------------------
-
-6. สร้าง Database
-
-6.1 Database สำหรับข้อมูลทั่วไป ที่ไม่ใช่ OPD Card จะอยู่ใน database ชื่อ clinic
-
-    -> login หน้า web เข้า "localhost/phpmyadmin"
-    เลือก "Import" -> Importing into the current server
-    เลือก Browse your computer: [กดเลือก file --> "/var/www/http/doc/clinic.sql"]    (Max: 2,048KiB)
-    กด ปุ่ม [GO]
-    
-6.2 Database สำหรับข้อมูล OPD Card จะอยู่ใน database ชื่อ clinic_opd
-
-    เลือก "Import" -> Importing into the current server
-    เลือก Browse your computer: [กดเลือก file --> "/var/www/http/doc/clinic_opd.sql"]    (Max: 2,048KiB)
-    กด ปุ่ม [GO]
-    
-6.3 Database สำหรับข้อมูล Common  จะอยู่ใน database ชื่อ clinic_common
-
-    เลือก "Import" -> Importing into the current server
-    เลือก Browse your computer: [กดเลือก file --> "/var/www/http/doc/clinic_common.sql"]    (Max: 2,048KiB)
-    กด ปุ่ม [GO]
-#---------------------จบการสร้าง database------------------------------------------
-
-7. copy clinic directory ไปที่ /var/www/ (สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)
-8. เปลี่ยนชื่อ clinic directory เป็น html (สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)
-#----------------------------------------------------------------
-
-
-9. edit "/etc/khomsn/klinic/dbuspwd.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET คือ
-define ("DB_USER", "xxxx"); // set database user //change me here! <---จาก 5.1.1
-define ("DB_PASS","yyyy"); // set database password //change me here! <---จาก 5.1.2
-#----------------------------------------------------------------
-
-10. edit "/etc/khomsn/klinic/emailserver.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET (ถ้าต้องการให้ ระบบ ส่ง Email ในการ Register ผู้ใช้งาน) 
-define("EMAIL_SMTP_USERNAME", 'xxxx@gmail.com'); // change me Here! <---email ที่จะใช้ติดต่อกับผู้ใช้ระบบ กรณีที่ จะเปลียน register/password
-define("EMAIL_SMTP_PASSWORD", 'xxxxx'); // change me Here! <---email_password ที่จะใช้ติดต่อกับผู้ใช้ระบบ กรณีที่ จะเปลียน register/password
-11. edit "/etc/khomsn/klinic/recaptchakey.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET (ถ้าต้องการให้ ระบบ รับการ Register ผู้ใช้งาน จากหน้า WEB) 
-
-ในส่วนนี้จะเป็นตัว reCAPTCHA ของ google ทีจะใช้อ้างอิงในการ ลงทะเบียนผู้ใช้แบบ online 
-/*************** reCAPTCHA KEYS****************/
-//localhost
-$publickey = "xxxxxxxxx"; //change me here!
-$privatekey = "xxxxxxxxxxxxx"; //change me here!
-//internet site
-$publickey = "xxxxxxxxxxxx"; //change me here!
-$privatekey = "xxxxxxxxxxxxxxx"; //change me here!
-
- ######## จบในส่วนของ mysql ########
-#----------------------------------------------------------------
- 
+7. copy clinic directory ไปที่ /var/www/ (สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)<br>
+8. เปลี่ยนชื่อ clinic directory เป็น html (สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)<br>
+#----------------------------------------------------------------<br>
+<br>
+9. edit "/etc/khomsn/klinic/dbuspwd.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET คือ<br>
+define ("DB_USER", "xxxx"); // set database user //change me here! <---จาก 5.1.1(สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)<br>
+define ("DB_PASS","yyyy"); // set database password //change me here! <---จาก 5.1.2(สำหรับ การติดตั้ง จาก GITHUB.com เท่านั่น)<br>
+#----------------------------------------------------------------<br>
+<br>
+10. edit "/etc/khomsn/klinic/emailserver.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET (ถ้าต้องการให้ ระบบ ส่ง Email ในการ Register ผู้ใช้งาน) <br>
+define("EMAIL_SMTP_USERNAME", 'xxxx@gmail.com'); // change me Here! <---email ที่จะใช้ติดต่อกับผู้ใช้ระบบ กรณีที่ จะเปลียน register/password<br>
+define("EMAIL_SMTP_PASSWORD", 'xxxxx'); // change me Here! <---email_password ที่จะใช้ติดต่อกับผู้ใช้ระบบ กรณีที่ จะเปลียน register/password<br>
+11. edit "/etc/khomsn/klinic/recaptchakey.php" ในตำแหน่งที่ มี คำว่า "//change me here!" เปลี่ยนค่า xxxx ต่างๆ ตามที่ SET (ถ้าต้องการให้ ระบบ รับการ Register ผู้ใช้งาน จากหน้า WEB) <br>
+<br>
+ในส่วนนี้จะเป็นตัว reCAPTCHA ของ google ทีจะใช้อ้างอิงในการ ลงทะเบียนผู้ใช้แบบ online <br>
+/*************** reCAPTCHA KEYS****************/<br>
+//localhost<br>
+$publickey = "xxxxxxxxx"; //change me here!<br>
+$privatekey = "xxxxxxxxxxxxx"; //change me here!<br>
+//internet site<br>
+$publickey = "xxxxxxxxxxxx"; //change me here!<br>
+$privatekey = "xxxxxxxxxxxxxxx"; //change me here!<br>
+<br>
+ ######## จบในส่วนของ mysql ########<br>
+#----------------------------------------------------------------<br>
+ <br>
 12. กลับไป ที่ firefox ไป ที่ localhost ทำการ login เข้า Clinic Suite โดย user= "admin" , password = "admin" ทำการเพิ่ม user ของระบบ และกำหนดสิทธิการใช้งานได้
+</body></html>

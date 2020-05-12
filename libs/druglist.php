@@ -14,6 +14,10 @@ include '../config/dbc.php';
 	$dg[8] = $_GET['dg8'];
 	$dg[9] = $_GET['dg9'];
 	$dg[10] = $_GET['dg10'];
+	$dg[11] = $_GET['dg11'];
+	$dg[12] = $_GET['dg12'];
+	$dg[13] = $_GET['dg13'];
+	$dg[14] = $_GET['dg14'];
 //	$q=$_GET['q'];
 // get the search term
     $q = isset($_REQUEST['term']) ? $_REQUEST['term'] : "";
@@ -23,7 +27,7 @@ include '../config/dbc.php';
 include 'ptdrugill.php';
 
 /***********************************/
-for($i=1;$i<=10;$i++)
+for($i=1;$i<=14;$i++)
 {
   if(!empty($dg[$i]))
     {

@@ -19,6 +19,14 @@ $sql_create = "CREATE TABLE IF NOT EXISTS `supplier` (
 
 mysqli_query($link, $sql_create);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='supplier' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'supplier\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 if(($_POST['register'] == 'ตกลง')  AND (ltrim($_POST['name']!== '')))
 { 
 

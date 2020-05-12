@@ -1,6 +1,26 @@
-khomsn-klinic-suite (62.06-17) stable; urgency=low
+khomsn-klinic-suite (63.05-01) stable; urgency=low
   
-    * Version 25620617: update accounting and payment method, and Correct Lab display.
+    * Version 25630501: Rewrite installation process and database configuration
+    
+khomsn-klinic-suite (63.04-25) stable; urgency=low
+  
+    * Version 25630425: Fix prehist and more.
+    
+khomsn-klinic-suite (62.10-17) stable; urgency=low
+  
+    * Version 25621017: Fix DUPM logging.
+    
+khomsn-klinic-suite (62.10-13) stable; urgency=low
+  
+    * Version 25621013: Fix Reciept.
+    
+khomsn-klinic-suite (62.08-27) stable; urgency=low
+  
+    * Version 25620827: Separate file to Register and fix pt_table.
+    
+khomsn-klinic-suite (62.06-30) stable; urgency=low
+  
+    * Version 25620630: Fix Reciept.
     
 khomsn-klinic-suite (62.02-26) stable; urgency=low
   

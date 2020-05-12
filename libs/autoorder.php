@@ -32,7 +32,6 @@ $(document).ready(function(){
     });
     $("#ordertxt5").autocomplete({
         position:{collision:"fit flip"},
-        position:{collision:"fit flip"},
         source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
         minLength:1,
         autoFocus:true
@@ -62,6 +61,30 @@ $(document).ready(function(){
         autoFocus:true
     });
     $("#ordertxt10").autocomplete({
+        position:{collision:"fit flip"},
+        source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
+        minLength:1,
+        autoFocus:true
+    });
+    $("#ordertxt11").autocomplete({
+        position:{collision:"fit flip"},
+        source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
+        minLength:1,
+        autoFocus:true
+    });
+    $("#ordertxt12").autocomplete({
+        position:{collision:"fit flip"},
+        source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
+        minLength:1,
+        autoFocus:true
+    });
+    $("#ordertxt13").autocomplete({
+        position:{collision:"fit flip"},
+        source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
+        minLength:1,
+        autoFocus:true
+    });
+    $("#ordertxt14").autocomplete({
         position:{collision:"fit flip"},
         source:"../../libs/orderlist.php?actor=<?php echo $_SESSION['sflc'];?>",
         minLength:1,

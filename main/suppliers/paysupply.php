@@ -60,14 +60,22 @@ for($i=1;$i<$imax;$i++)
 	$sup_ac = $_POST['payby'];
 	if($_POST['payby'] != 10000001)//ค่าธรรมเนียมธนาคาร
 	{
-	  if($_POST['free']!= 0){
+	  if($_POST['fee']!= 0){
 		// assign insertion pattern
 		$pacnum = $_POST['payby'] + 40000000;
 		$sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
-						VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[free]','c','p','$_SESSION[user_id]')";
+						VALUES  (now(),'$pacnum','$_POST[payby]','ค่าธรรมเนียมการโอนเงิน','$_POST[fee]','c','p','$_SESSION[user_id]')";
 			mysqli_query($link, $sql_insert);
 		}
 	}	
+    if($_POST['discount']!= 0){
+    // assign insertion pattern
+    $pacnum = $spacno + 20000000;
+    $detail = "ส่วนลดค่ายา ".$spname."->InvNo.".$inv_num;
+    $sql_insert = "INSERT into `daily_account`	(`date`,`ac_no_i`, `ac_no_o`, `detail`,`price`,`type`,`bors`,`recordby`)
+                    VALUES  (now(),'$_POST[payby]','$pacnum','$detail','$_POST[discount]','d','p','$_SESSION[user_id]')";
+        mysqli_query($link, $sql_insert);
+    }
 
 	// assign insertion pattern
 	$detail = "จ่าย ".$spname."->InvNo.".$inv_num;
@@ -107,7 +115,7 @@ include '../../main/bodyheader.php';
 	</td>
 	<td width="732" valign="top">
 	<h3 class="titlehdr">จ่ายค่า ยาและผลิตภัณฑ์: <?php echo $spname;?></h3>
-	<h3 class="titlehdr2"><div>ใบส่งของเลขที่ <?php echo $inv_num;?></div><div>Due Date (m/d/Y):<input name=duedate type="date" value="<?php echo $duedate;?>"><input type=submit name=set value="SET"></div></h3>
+	<h3 class="titlehdr2"><div style="background-color:rgba(124,200,0,0.85); display:inline-block;">ใบส่งของเลขที่ <?php echo $inv_num;?></div><div>Due Date (m/d/Y):<input name=duedate type="date" value="<?php echo $duedate;?>"><input type=submit name=set value="SET"></div></h3>
 		<table width="90%" border="1" align="center" cellpadding="3" cellspacing="3" class="forms">
 			<tr><td width=100%; align = center>วันที่&nbsp;
 			      <select tabindex="1" name="day">
@@ -204,7 +212,7 @@ include '../../main/bodyheader.php';
 	      $mi = $mi+1;
     }
       echo "<tr><th>รวม</th><th>". ($mi-1) ." รายการ</th><th>ราคา (บาท)</th><th><span class=currency>".$allprice."</span></th></tr>";
-      echo "</table>";?><br>ชำระโดย&nbsp;
+      echo "</table>";?><div style="background-color:rgba(124,200,0,0.65); display:inline-block;"><br>ชำระโดย&nbsp;
       <select tabindex="10" name="payby" class="required" >
       <?php //10000001 เงินสด    10000002-10000249 ธนาคาร
 
@@ -218,8 +226,8 @@ include '../../main/bodyheader.php';
 	      echo "</option>";
       }	
       ?>
-      </select>&nbsp;ค่าธรรมเนียมการโอน<input type="number" min="0" step="1" name="free" size="6" >
-	</div>
+      </select>&nbsp;ส่วนลดค่ายา<input type="number" min="0" name="discount" size="6" >&nbsp;ค่าธรรมเนียมการโอน<input type="number" min="0" name="fee" size="6" >
+	</div></div>
 	<p align="center"><input name="doSave" type="submit" id="doSave" value="จ่าย"></p>
     </td><td width="196" valign="top">&nbsp;</td></tr>
 </table>

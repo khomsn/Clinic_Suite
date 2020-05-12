@@ -1,20 +1,6 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
-$sql ="CREATE TABLE IF NOT EXISTS `trpstep` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `drugid` int(11) NOT NULL UNIQUE KEY,
-  `firstone` tinyint(4) NOT NULL,
-  `init_pr` int(11) NOT NULL,
-  `secstep` tinyint(4) NOT NULL,
-  `sec_pr` int(11) NOT NULL,
-  `tristep` tinyint(4) NOT NULL,
-  `tri_pr` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='treatment price step cal';
-";
-
-mysqli_query($link, $sql);
-
 
 if($_POST['set'] == 'ReSet')
 {

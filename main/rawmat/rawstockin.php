@@ -109,13 +109,13 @@ include '../../main/bodyheader.php';
         $stock_in = mysqli_query($link, "select * from rawmat where id='$id' ");
         while ($row_settings = mysqli_fetch_array($stock_in))
         {
-            echo "<div style=\"text-align: center; background-color:rgba(0,255,0,0.7);\"><big><big><big><big>";
+            echo "<div style=\"text-align: center; background-color:rgba(0,255,0,0.7);\">";
             echo $row_settings['rawcode'];
             echo "&nbsp;(";
             echo $row_settings['rawname'];
             echo ")&nbsp;ขนาด :&nbsp;";
             echo $row_settings['size'];
-            echo "</big></big></big></big></div>";
+            echo "</div>";
         }
     ?>
     <form action="rawstockin.php?msg=<?php echo $id?>" method="post" name="inForm" id="inForm">

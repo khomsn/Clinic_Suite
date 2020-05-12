@@ -80,8 +80,6 @@ margin: 2px;
  font: normal 18px arial, verdana;
  color: #5B41FC;
  border-bottom: 1px solid #5B41FC;
- 
- 
  }
  
  .center {
@@ -149,6 +147,11 @@ color: #0033FF
  font-family: Arial, Helvetica, sans-serif;
 }
 
+div.dt {
+    font: normal 12px arial,verdana;
+    color:  #c9113b;
+}
+
 div.pos_r_fix {
     position: fixed;
 	float: right;
@@ -162,7 +165,9 @@ div.pos_fixed {
     right: 5px;
     color: red;
 }
-
+div.bgc1 {
+    background-color: #FAFAFA;
+}
 div.pos_r_fbox {
 	float: right;
 	position: fixed;

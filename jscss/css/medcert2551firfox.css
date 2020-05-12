@@ -46,3 +46,18 @@ body {
         page-break-after: always;
     }
 }
+
+div.ptavatar {
+    float: right;
+	right: 30px;
+	top: 30px;
+    width: 145x;
+    height: 145px;
+}
+
+div.pos_r_fix {
+    position: fixed;
+	float: right;
+	right: 10px;
+	top: 15px;
+}

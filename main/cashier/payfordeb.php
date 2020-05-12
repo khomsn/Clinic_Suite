@@ -14,8 +14,8 @@ $id = filter_var($fulluri, FILTER_SANITIZE_NUMBER_INT);
 </head>
 
 <body >
-<iframe src="../opd/lmenubar.php" height="600" width="15%" frameborder="0" style="float:left;" name="lmenu"></iframe>
+<iframe src="../register/lmenubar.php" height="600" width="15%" frameborder="0" style="float:left;" name="lmenu"></iframe>
 <iframe src="paydeb.php" height="650" width="68%" frameborder="0" style="float:none;" name="MAIN"></iframe>
-<iframe src="../opd/rmenuopd.php" height="600" width="15%" frameborder="0" style="float:right;" name="rmenu"></iframe>
+<iframe src="../register/rmenuopd.php" height="600" width="15%" frameborder="0" style="float:right;" name="rmenu"></iframe>
 </body>
 </html>

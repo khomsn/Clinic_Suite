@@ -7,7 +7,7 @@ include '../../libs/refreshptcall.php';
 
 <a href="../../login/myaccount.php">Main Menu</a><br><br>
 <a href="../../main/opd/mycounter.php"><p><strong>Counter Menu</strong></p></a><br>
-<a href="../../main/opd/search_pt.php">เวชระเบียน</a><br><br>
+<a href="../../main/register/search_pt.php">เวชระเบียน</a><br><br>
 
 <a href="../../main/opd/pt_to_doctor.php">ผู้ป่วยรอตรวจ</a><br><br>
 <a href="../../main/opd/pt_to_obs.php">ผู้ป่วยรอสังเกตอาการ</a><br><br>

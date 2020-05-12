@@ -95,8 +95,12 @@ include '../../main/bodyheader.php';
 			}
 			echo " พ.ศ. ";
 			echo $lv['year']+543;                
-                echo "</td><td>";
-                echo "</td></tr>";
+            echo "</td><td>";
+            $date1=date_create(date("Y-m-d"));
+            $date2=date_create($gn['birthday']);
+            $diff=date_diff($date2,$date1);
+            echo $diff->format("%Y ปี %m เดือน %d วัน");                
+            echo "</td></tr>";
             }
         }
     ?>

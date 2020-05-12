@@ -11,17 +11,11 @@ if [ "$1" = "configure" ]; then
 
 	# The following only on a new install
 	if [ "$2" = "" ]; then
-
-		# Generate an htpasswd file for the web based setup
-#		if [ ! -f /etc/khomsn-klinic-suite/htpasswd.setup ]; then
-		
 			db_get khomsn-klinic-suite/setup-username
 			setup_username=${RET:-admin}
 			
 			db_get khomsn-klinic-suite/setup-password
 				setup_password=${RET}
-			db_get khomsn-klinic-suite/admin-password
-				admin_password=${RET}
 			echo "<?php
 
 define (\"DB_USER\", \"$setup_username\"); // set database user //change me here!
@@ -29,9 +23,6 @@ define (\"DB_PASS\", \"$setup_password\"); // set database password //change me 
 " > /etc/khomsn/klinic/dbuspwd.php
 			db_reset khomsn-klinic-suite/setup-username || true
 			db_reset khomsn-klinic-suite/setup-password || true
-			db_reset khomsn-klinic-suite/admin-password || true
-
-#		fi
 
 	fi
 
@@ -42,6 +33,13 @@ rm -rf /var/cache/debconf/*
 ln -sf /etc/khomsn/klinic/dbuspwd.php /var/www/html/config/dbuspwd.php
 ln -sf /etc/khomsn/klinic/emailserver.php /var/www/html/config/emailserver.php
 ln -sf /etc/khomsn/klinic/recaptchakey.php /var/www/html/config/recaptchakey.php
+
+chmod 0640 /etc/khomsn/klinic/dbuspwd.php
+chmod 0640 /etc/khomsn/klinic/emailserver.php
+chmod 0640 /etc/khomsn/klinic/recaptchakey.php
+chown root:www-data /etc/khomsn/klinic/dbuspwd.php
+chown root:www-data /etc/khomsn/klinic/emailserver.php
+chown root:www-data /etc/khomsn/klinic/recaptchakey.php
 
 chmod 0755 /var/www/html/libs/PHPMailer-master
 chmod 0755 /var/www/html/libs/fpdf181

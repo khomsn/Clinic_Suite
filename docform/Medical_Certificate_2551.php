@@ -3,6 +3,7 @@
 include '../config/dbc.php';
 page_protect();
 $id = $_SESSION['patdesk'];
+$pdir = "../".PT_AVATAR_PATH;
 
 $Patient_id = $id;
 include '../libs/opdxconnection.php';
@@ -137,6 +138,7 @@ for($mt=1;$mt<6;$mt++)
 $_SESSION['moretext'.$mt] = $_POST['morelist'.$mt];
 }
 $_SESSION['commenttext'] = $_POST['comment'];
+$_SESSION['conclusion'] = $_POST['conclusion'];
 if($_POST['finish']=="OK")
 {
  $yess = 1;
@@ -144,7 +146,11 @@ if($_POST['finish']=="OK")
 
 $title = "::ใบรับรองแพทย์::";
 include '../main/header.php';
-
+if($yess)
+echo "<link rel='stylesheet' href='../jscss/css/medcert2551_prt.css'>";
+else
+echo "<link rel='stylesheet' href='../jscss/css/medcert2551.css'>";
+/*
 $agent = $_SERVER['HTTP_USER_AGENT'];
     
 if(strlen(strstr($agent,"Firefox")) > 0 )
@@ -156,7 +162,7 @@ if($browser=='firefox')
     echo "<link rel='stylesheet' href='../jscss/css/medcert2551firefox.css'>";
 }
 //else echo "<link rel='stylesheet' href='../jscss/css/medcert2551.css'>";
-
+*/
 ?>
 <script language="javascript">
 function Clickheretoprint()
@@ -169,10 +175,12 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
+/*
 if($browser=='firefox'){
     echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert2551firefox_prt.css>');";
 }
-//else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert2551_prt.css>');";
+*/
+echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert2551_prt.css>');";
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -192,21 +200,26 @@ if($yess)
   echo "<div align=\"center\"><a href=\"javascript:Clickheretoprint()\" id=\"ATC\">Print</a></div><br>";
 }
 ?>
-<div class="myaccount">
-<div class="style3" id="print_content">
 <form method="post" action="Medical_Certificate_2551.php" name="regForm" id="regForm">
-<div class="page"><div class="subpage">
-<table width=100% border=<?php if($yess) echo "0"; else echo "1"?>>
-<tr><td>
-<p class="western" align="center"><b>ใบรับรองแพทย์</b></p>
-<p class="western"><i><b>ส่วนที่ ๑ ของผู้ขอรับใบรับรองสุขภาพ</b></i></p>
-<p class="western"  style="margin-bottom: 0in; line-height: 150%">ข้าพเจ้า ......
+<div id="print_content">
+<table width=100% border=<?php if($yess) echo "0"; else echo "1"?>><tr><td>
+<div class="page">
+<div class="subpage">
+<p class="mainheader">ใบรับรองแพทย์</p>
+<?php
+echo "<div style='float:right;'>";
+    $avatar = $pdir. "pt_". $id . ".jpg";
+echo "<img src='". $avatar."' width='120' height='120' />";
+echo "</div>";
+?>
+<p class="subheader">ส่วนที่ ๑ ของผู้ขอรับใบรับรองสุขภาพ</p>
+<p class="ptinfo">ข้าพเจ้า ...
 <?php 
 
  $ptname =$prefix." ".$fname." ".$lname;
 echo $prefix." ".$fname." ".$lname;
 
-?>......<br>
+?>....<br>
 สถานที่อยู่ (ที่สามารถติดต่อได้)...
 <?php 
 echo $address1;
@@ -221,18 +234,18 @@ if (empty($ctz_id)) $ctz_id=0;
 if(preg_match('/^[0-9][0-9]*$/', $ctz_id, $matches))
 {
     if($ctz_id > 1000000000000) 
-        echo "หมายเลขบัตรประชาชน........";
+        echo "หมายเลขบัตรประชาชน...";
     else
     {
         echo " โปรดตรวจสอบ เลขประจำตัวใหม่ XXXXXXXXXXXXX ";
         exit();
     }
 }
-else echo "หมายเลข PASSPORT.....";
+else echo "หมายเลข PASSPORT...";
 
 echo $ctz_id;
 
-?>........ข้าพเจ้าขอใบรับรองสุขภาพโดยมีประวัติสุขภาพดังนี้<br>
+?>...ข้าพเจ้าขอใบรับรองสุขภาพโดยมีประวัติสุขภาพดังนี้<br>
 ๑.โรคประจำตัว <?php if(!$yess){?><input type=submit name=cil value="ไม่มี"> <input type=submit name=cil value="มี">
 <?php
 }
@@ -294,7 +307,7 @@ if(!$yess){
 ?><br>
 ๔.ประวัติอื่นที่สำคัญ..............<?php if(!$yess){?><input type='text' name='imphtext' class='text1' value='<?php 
 echo $_SESSION['imphtext'];?>'><?php } else echo $_SESSION['imphtext'];?>...................................</p>
-<p class="western" align="right" style="margin-bottom: 0in; line-height: 100%">ลงชื่อ...........................................................................</p>
+<p class="signplace">ลงชื่อ...........................................................................</p>
 <?php 
     $date = new DateTime($today);
     $sd = $date->format("d");
@@ -302,7 +315,7 @@ echo $_SESSION['imphtext'];?>'><?php } else echo $_SESSION['imphtext'];?>.......
     $sy = $date->format("Y");
     $bsy = $sy +543;
 ?>
-<p class="ctl">(ในกรณีเด็กที่ไม่สามารถรับรองตนเองได้ให้ผู้ปกครองลงนามรับรองแทนได้)
+<p class="comment">(ในกรณีเด็กที่ไม่สามารถรับรองตนเองได้ให้ผู้ปกครองลงนามรับรองแทนได้)
   วันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
 {
   case 1:
@@ -342,11 +355,9 @@ echo $_SESSION['imphtext'];?>'><?php } else echo $_SESSION['imphtext'];?>.......
   echo "ธันวาคม";
   break;
 }?> พ.ศ. <?php echo $bsy;?></p>
-</td></tr>
-<tr><td>
 <hr>
-<p class="western"><i><b>ส่วนที่ ๒ ของแพทย์</b></i></p>
-<p class="western" style="margin-bottom: 0in; line-height: 150%">สถานที่ตรวจ 
+<p class="subheader">ส่วนที่ ๒ ของแพทย์</p>
+<p class="klpresent">สถานที่ตรวจ 
 <u><?php 
 $para = mysqli_query($link, "SELECT * FROM parameter WHERE ID = 1");
 while($par = mysqli_fetch_array($para))
@@ -355,7 +366,7 @@ while($par = mysqli_fetch_array($para))
  $cliniclcid =$par['cliniclcid'];
  echo $par['name']." ".$par['address']." โทร.".$par['tel'];
 }
-?></u> </p><p class="western">วันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
+?></u> </p><p class="klpresent">วันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
 {
   case 1:
   echo "มกราคม";
@@ -395,11 +406,11 @@ while($par = mysqli_fetch_array($para))
   break;
 }?> พ.ศ.
  <?php echo $bsy;?> *</p>
-<p class="western">ข้าพเจ้า 
+<p class="klpresent">ข้าพเจ้า 
 <u><?php 
  echo $_SESSION['sfname'];
 ?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> </p>
-<p class="western" style="margin-bottom: 0in; line-height: 150%">สถานที่ประกอบวิชาชีพเวชกรรม <u><?php echo $clinic;?></u> ใบอนุญาตเลขที่ <u><?php echo $cliniclcid;?></u><br>ได้ตรวจร่างกาย <u><?php echo $ptname;?></u> แล้วเมื่อวันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
+<p class="klpresent">สถานที่ประกอบวิชาชีพเวชกรรม <u><?php echo $clinic;?></u> ใบอนุญาตเลขที่ <u><?php echo $cliniclcid;?></u><br>ได้ตรวจร่างกาย <u><?php echo $ptname;?></u> แล้วเมื่อวันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
 {
   case 1:
   echo "มกราคม";
@@ -472,7 +483,7 @@ else echo $_SESSION['phyextext'];
 echo "...";
 }
 ?></p>
-<p class="western" style="margin-bottom: 0in; line-height: 150%">ขอรับรองว่าบุคคลดังกล่าว 
+<p class="klpresent">ขอรับรองว่าบุคคลดังกล่าว 
 <?php if(!$yess){?><input type=submit name=disable value="ปกติ"> <input type=submit name=disable value="ผิดปกติ">
 <?php 
 }
@@ -503,27 +514,27 @@ if(!$_SESSION['addic']){ echo "ไม่ปรากฏ อาการของ
 if(!$_SESSION['alcoh']){ echo "และอาการของโรคพิษสุราเรื้อรัง ";}
 
 ?>
-และไม่ปรากฏอาการและอาการแสดงของโรคต่อไปนี้</p>
-<ol>
+และไม่ปรากฏอาการและอาการแสดงของโรคต่อไปนี้
+<ol class="num">
 <?php
-if(!$yess){ echo "<input type=submit name=lepro value='ไม่เป็นเรื้อน'><input type=submit name=lepro value='เป็นเรื้อน'>"; }
-if(!$_SESSION['lepro']){ echo "<li><p class='western'>	โรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>";}
-if(!$yess){ echo "<input type=submit name=tb value='ไม่เป็นวัณโรค'><input type=submit name=tb value='เป็นวัณโรค'>";}
-if(!$_SESSION['tb']){ echo "<li><p class='western'>	วัณโรคในระยะอันตราย</p>";}
-if(!$yess){ echo "<input type=submit name=Brugia value='ไม่เป็นเท้าช้าง'><input type=submit name=Brugia value='เป็นเท้าช้าง'>";}
-if(!$_SESSION['Brugia']){ echo "<li><p class='western'>	โรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม</p>";}
+if(!$yess){ echo "<li><input type=submit name=lepro value='ไม่เป็นเรื้อน'><input type=submit name=lepro value='เป็นเรื้อน'>"; }
+if(!$_SESSION['lepro']){if($yess) echo "<li>"; echo "โรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม";}
+if(!$yess){ echo "<li><input type=submit name=tb value='ไม่เป็นวัณโรค'><input type=submit name=tb value='เป็นวัณโรค'>";}
+if(!$_SESSION['tb']){if($yess) echo "<li>"; echo "วัณโรคในระยะอันตราย";}
+if(!$yess){ echo "<li><input type=submit name=Brugia value='ไม่เป็นเท้าช้าง'><input type=submit name=Brugia value='เป็นเท้าช้าง'>";}
+if(!$_SESSION['Brugia']){if($yess) echo "<li>"; echo "โรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม";}
 if(!$yess)
 {
-echo "<li><p class='western'>..<input type='text' name='morelist1' class='text1' value='";
+echo "<li><input type='text' name='morelist1' class='text1' value='";
 echo $_SESSION['moretext1'];
-echo "'..</p>";
+echo "'>";
     for($mt=1;$mt<5;$mt++)
     {
         if(!empty($_SESSION['moretext'.$mt]))
         {
-            echo "<li><p class='western'>..<input type='text' name='morelist".($mt+1)."' class='text1' value='";
+            echo "<li><input type='text' name='morelist".($mt+1)."' class='text1' value='";
             echo $_SESSION['moretext'.($mt+1)];
-            echo "'..</p>";
+            echo "'>";
         }
     }
 }
@@ -531,45 +542,64 @@ else
 {
     for($mt=1;$mt<6;$mt++)
     {
-    if(!empty($_SESSION['moretext'.$mt])) echo "<li><p class='western'>..".$_SESSION['moretext'.$mt]."..</p>";
+    if(!empty($_SESSION['moretext'.$mt])) echo "<li>".$_SESSION['moretext'.$mt];
     }
 }
 ?>
-	<li><p class="western">...........................................................................................................................................................</p>
-</ol>
-<p class="western" style="margin-bottom: 0in; line-height: 150%">สรุปความเห็นและข้อแนะนำของแพทย์.......
+	<li>...........................................................................................................................................................
+</ol></p>
+<p class="klpresent">สรุปความเห็น<?php 
+	if(!$yess)
+	{
+	echo "<input type='text' name='conclusion' class='text1' value='";
+	echo $_SESSION['conclusion'];
+	echo "'>";
+	}
+	?>
+และข้อแนะนำของแพทย์.......
 <?php 
 	if(!$yess)
 	{
 	echo "<input type='text' name='comment' class='text1' value='";
 	echo $_SESSION['commenttext'];
-	echo "'";
+	echo "'>";
 	}
 	else
 	{
-	  if(!empty($_SESSION['commenttext']) OR ($_SESSION['disable']==1) OR ($_SESSION['psycho']==1) OR ($_SESSION['downs']==1) OR ($_SESSION['addic']==1) OR ($_SESSION['alcoh']==1) OR ($_SESSION['lepro']==1) OR ($_SESSION['tb']==1) OR ($_SESSION['Brugia']==1))
-	  {
-	  if($_SESSION['disable']){echo "เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ ";}
-	  if($_SESSION['psycho']){echo "ปรากฏอาการของโรคจิต หรือจิตฟั่นเฟือน ";}
-	  if($_SESSION['downs']){echo "ปรากฏอาการปัญญาอ่อน ";}
-	  if($_SESSION['addic']){echo "ปรากฏอาการของการติดยาเสพติดให้โทษ ";}
-	  if($_SESSION['alcoh']){echo "ปรากฏอาการของโรคพิษสุราเรื้อรัง ";}
-	  if($_SESSION['lepro']){echo "เป็นโรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";}
-	  if($_SESSION['tb']){echo "เป็นวัณโรคในระยะอันตราย ";}
-	  if($_SESSION['Brugia']){echo "เป็นโรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";}
-	  echo $_SESSION['commenttext'];
-	  }
-	  else echo "สุขภาพและร่างกายอยู่ในเกณฑ์ดีตามอายุ";
+	  if($_SESSION['disable']){echo "เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ "; $ms=1;}
+	  if($_SESSION['psycho']){echo "ปรากฏอาการของโรคจิต หรือจิตฟั่นเฟือน ";$ms=1;}
+	  if($_SESSION['downs']){echo "ปรากฏอาการปัญญาอ่อน ";$ms=1;}
+	  if($_SESSION['addic']){echo "ปรากฏอาการของการติดยาเสพติดให้โทษ ";$ms=1;}
+	  if($_SESSION['alcoh']){echo "ปรากฏอาการของโรคพิษสุราเรื้อรัง ";$ms=1;}
+	  if($_SESSION['lepro']){echo "เป็นโรคเรื้อนในระยะติดต่อหรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";$ms=1;}
+	  if($_SESSION['tb']){echo "เป็นวัณโรคในระยะอันตราย ";$ms=1;}
+	  if($_SESSION['Brugia']){echo "เป็นโรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม ";$ms=1;}
+    if(!empty($_SESSION['conclusion'])) echo $_SESSION['conclusion'];
+    else 
+    {
+        if($_SESSION['cil']){
+            echo " มีโรคประจำตัวเป็น ".$_SESSION['ciltext'];
+            if(!$_SESSION['disable']){echo " ร่างกายอยู่ในเกณฑ์ดีตามอายุ ";}
+        } else {
+            if(!$ms) echo "สุขภาพและร่างกายอยู่ในเกณฑ์ดีตามอายุ ";
+        }
+    }
+    if (!empty($_SESSION['commenttext'])) echo $_SESSION['commenttext'];
 	}
 	?>.......</p>
-<p class="western" style="margin-bottom: 0in; line-height: 0.14in"><br></p>
-<p class="western"  align="right" style="margin-bottom: 0in; line-height: 100%">ลงชื่อ.........................................................แพทย์ผู้ตรวจร่างกาย</p>
-<p class="ctl" style="margin-bottom: 0in; line-height: 150%"><i><b>หมายเหตุ</b> (๑)ต้องเป็นแพทย์ซึ่งได้ขึ้นทะเบียนรับใบอนุญาตประกอบวิชาชีพเวชกรรม (๒)ให้แสดงว่าเป็นผู้มีร่างกายสมบูรณ์เพียงใด (๓)แบบฟอร์มนี้ได้รับการรับรองจากมติคณะกรรมการแพทยสภาในการประชุมครั้งที่
- ๘/๒๕๕๑
-วันที่ ๑๔ สิงหาคม ๒๕๕๑ <br>*ใบรับรองแพทย์ฉบับนี้ให้ใช้ได้ ๑ เดือนนับแต่วันที่ตรวจร่างกาย</i></p></span></font></font>
-</td></tr></table></div></div></div>
+<br>
+<p class="signplace">ลงชื่อ.........................................................แพทย์ผู้ตรวจร่างกาย</p>
+<p class="reminder"><b>หมายเหตุ</b> (๑)ต้องเป็นแพทย์ซึ่งได้ขึ้นทะเบียนรับใบอนุญาตประกอบวิชาชีพเวชกรรม (๒)ให้แสดงว่าเป็นผู้มีร่างกายสมบูรณ์เพียงใด (๓)แบบฟอร์มนี้ได้รับการรับรองจากมติคณะกรรมการแพทยสภาในการประชุมครั้งที่ ๘/๒๕๕๑ วันที่ ๑๔ สิงหาคม ๒๕๕๑ <br>*ใบรับรองแพทย์ฉบับนี้ให้ใช้ได้ ๑ เดือนนับแต่วันที่ตรวจร่างกาย</p>
+</div>
+</div>
+</td></tr></table>
+</div>
 <?php if(!$yess){?>
 <div style="text-align: right;">ลงข้อมูลเสร็จ กด OK เพื่อดูใบสำเร็จ <input type=submit name="finish" value="OK"  id="firstfocus"></div>
+</form>
+<br>
+</body>
+</html>
 <?php }
 if($yess)
 {
@@ -585,9 +615,7 @@ unset($_SESSION['alcoh']);
 unset($_SESSION['lepro']);
 unset($_SESSION['tb']);
 unset($_SESSION['Brugia']);
+unset($_SESSION['conclusion']);
+unset($_SESSION['commenttext']);
 }
-
 ?>
-</form></div></div><br>
-</body>
-</html>

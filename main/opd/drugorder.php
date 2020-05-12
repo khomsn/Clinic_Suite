@@ -34,7 +34,7 @@ if($_SESSION['ORDER']==0)
     while ($row = mysqli_fetch_array($filter))
     {
         $_SESSION['DG']=1;
-        for($t=1;$t<=10;$t++)
+        for($t=1;$t<=14;$t++)
         {
             $idrx[$t]= $row['idrx'.$t];
             $rx[$t]=$row['rx'.$t];
@@ -82,7 +82,7 @@ if($_SESSION['ORDER']==0)
         }
     }
 
-    for($t=1;$t<=10;$t++)
+    for($t=1;$t<=14;$t++)
     {
         if(!empty($_SESSION['drug'.$t]))
         {
@@ -94,7 +94,7 @@ if($_SESSION['ORDER']==0)
     $j=1; $k=1;
     for($i=1;$i<=$_SESSION['DG'];$i++)
     {
-        for($j=$k;$j<=10;$j++)
+        for($j=$k;$j<=14;$j++)
         {
             if(empty($_SESSION['drug'.$j]))
             {
@@ -169,8 +169,18 @@ if ($_SESSION['DG']<1)
 else $i = $_SESSION['DG'];
 
 //check ddiltemp and change 
-$_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
+$gettmpddil = mysqli_fetch_array(mysqli_query($link, "SELECT `ddiltemp` FROM $tmp"));
 
+
+if(!is_null($_POST['ddiltemp']))
+{
+    $_SESSION['ddiltemp_'.$id] = $_POST['ddiltemp'];
+    mysqli_query($link, "UPDATE $tmp SET `ddiltemp` = '$_POST[ddiltemp]' ");
+}
+else
+{
+    if(!empty($gettmpddil[0])) $_SESSION['ddiltemp_'.$id] = $gettmpddil[0];
+}
 
 if($_POST['add'] == 'เพิ่ม') 
 { 
@@ -211,7 +221,7 @@ if($_POST['add'] == 'เพิ่ม')
             }
         //
     }
-  if($_SESSION['DG']<10)
+  if($_SESSION['DG']<14)
     {
         $_SESSION['DG'] = $_SESSION['DG']+1;
         $i = $_SESSION['DG'];
@@ -227,7 +237,7 @@ if($_SESSION['close'] == 2)
     $_POST['todo'] = 'Close';
 }
 
-for($n=1;$n<=10;$n++)
+for($n=1;$n<=14;$n++)
 {
   if($_POST['del'.$n]=='ลบ')
   {
@@ -299,13 +309,13 @@ if($_POST['todo']=='Close')
    //Set to no reload from same page
    $_SESSION['Prescription'] = 1;
    
-    for($a=1;$a<=10;$a++)
+    for($a=1;$a<=14;$a++)
     {
       $_SESSION['drug'.$a]=$_POST['drug'.$a];
       $drug = $_SESSION['drug'.$a];
       $drugid[$a] = strstr($drug, '-', true); 
     }
-    for($a=1;$a<=10;$a++)
+    for($a=1;$a<=14;$a++)
     {
         $idrx[$a] = $drugid[$a];
         
@@ -335,7 +345,7 @@ if($_POST['todo']=='Close')
             $idrx[$a]=0;
         }
    // }
-   // for($a=1;$a<=10;$a++)
+   // for($a=1;$a<=14;$a++)
    // {
     // check to empty data if no idrx = 0
         if($idrx[$a]==0)
@@ -409,7 +419,7 @@ $(document).ready(function() {
   <tr>
     <td><?php echo "BW = ".$_SESSION['weight']." kg ";  echo "DDIL default = ".$_SESSION['ddil'];?> [กำหนด DDIL เฉพาะรายนี้:
     <?php 
-    if(empty($_SESSION['ddiltemp_'.$id]) AND ($_SESSION['ddiltemp_'.$id]!=='0'))
+    if(is_null($_SESSION['ddiltemp_'.$id]))
     {
         $_SESSION['ddiltemp_'.$id]=$_SESSION['ddil'];
     }

@@ -19,6 +19,14 @@ CREATE TABLE IF NOT EXISTS `maskid` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='maskid' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'maskid\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $pin = mysqli_query($link, "select MAX(id) from maskid");
 $rid = mysqli_fetch_array($pin);
 $i = $rid[0];
@@ -32,7 +40,6 @@ if($_POST['addmore']=='+')
 
     if ($total > 0)
     {
-      //$err[] = "ผู้ป่วยอยู่ในระบบการบริการแล้ว";
       $err[] = "คำเตือน: Drug ID =  ".$_POST['drugid']."  ได้ถูกกำหนดไว้ในบัญชีของท่านแล้ว.";
     }
     else
@@ -58,6 +65,12 @@ for($j=1;$j<=$i;$j++)
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM maskid WHERE id = '$j' ") or $err[]=(mysqli_error($link));
   }
+ if(!is_null($_POST['mask'.$j]))
+ {
+    $maskj = $_POST['mask'.$j];
+    $sql_insert = "UPDATE `maskid` SET `mask` = '$maskj' WHERE id = '$j'; ";
+    mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
+ }
 }
 if(!is_null($_POST['mask']))
 {
@@ -91,16 +104,15 @@ include '../../main/bodyheader.php';
             <tr><td width="100%" valign="top">
             <form action="maskingid.php" method="post" name="ptd" id="ptd">
                 <h3 class="titlehdr">Maskin Drug Id in OPD Card<?php
-                $result = mysqli_query($link, "SELECT * FROM maskid ORDER BY dgname ASC ");
+/*                $result = mysqli_query($link, "SELECT * FROM maskid ORDER BY dgname ASC ");
                 while ($row_settings = mysqli_fetch_array($result))
                 {
                     $mask=$row_settings['mask'];
                 }
+*/
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo "Masking ID <input type='radio' name='mask' value='1'";
-                if ($mask=='1') echo "checked";
+                echo "Masking All-ID <input type='radio' name='mask' value='1'";
                 echo ">ON<input type='radio' name='mask' value='0'";
-                if ($mask=='0') echo "checked";
                 echo ">OFF";
                 echo "</h3>";
                 
@@ -108,13 +120,14 @@ include '../../main/bodyheader.php';
                 
                 $n_of_row = mysqli_num_rows($result);
                 echo "<table border='1' width=100% class='TFtable'>";
-                echo "<tr><th>No</th><th  width=15%>Drug Id</th><th>Drug Name</th><th>Generig Name</th><th>+</th></tr>";
+                echo "<tr><th>No</th><th  width=15%>Drug Id</th><th>Mask</th><th>Drug Name</th><th>Generig Name</th><th>+</th></tr>";
                 // keeps getting the next row until there are no more to get
                         // Print out the contents of each row into a table
                         echo "<tr><th>";
                         echo "-";
                         echo "</th><th>";
                         echo "<input type=text name='drugid' autofocus>";
+                        echo "</th><th>";
                         echo "</th><th>";
                         echo "</th><th>";
                         echo "</th><th>";
@@ -130,13 +143,28 @@ include '../../main/bodyheader.php';
                         echo "</th><th>";
                         echo $row_settings['drugid'];
                         echo "</th><th>";
+                        echo "<input type='radio' name='mask".$row_settings['id']."' value='1'";
+                        if ($row_settings['mask']=='1') echo "checked";
+                        echo ">ON<input type='radio' name='mask".$row_settings['id']."' value='0'";
+                        if ($row_settings['mask']=='0') echo "checked";
+                        echo ">OFF";
+                        echo "</th><th>";
                         echo $row_settings['dname'];
                         echo "</th><th>";
                         echo $row_settings['dgname'];
                         echo "</th><th>+";
                         echo "</th></tr>";
-                        $mask=$row_settings['mask'];
-                
+echo "
+<script type='text/javascript'>
+$(document).ready(function() 
+{ 
+  
+    $('input[name=mask".$row_settings['id']."]').change(function(){
+        $('form').submit();
+    });
+});
+</script>
+";              
                 }
                 echo "</table>";
                 ?>
@@ -145,3 +173,11 @@ include '../../main/bodyheader.php';
 </td></tr></table>
 </body>
 </html>
+<script type='text/javascript'>
+$(document).ready(function() 
+{ 
+    $('input[name=mask]').change(function(){
+        $('form').submit();
+    });
+});
+</script>

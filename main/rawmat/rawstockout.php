@@ -118,7 +118,7 @@ include '../../main/bodyheader.php';
 					$stock_in = mysqli_query($link, "select * from rawmat where id='$id' ");
 					while ($row_settings = mysqli_fetch_array($stock_in))
 					{
-						echo "<div class='bgca5ffd5'><big><big><big><big>";
+						echo "<div class='bgca5ffd5'>";
 						echo "Code:".$row_settings['rawcode'];
 						echo "<br>";
 						echo $row_settings['rawname'];
@@ -126,7 +126,7 @@ include '../../main/bodyheader.php';
 						echo $row_settings['size'];
 						echo "<br>คงคลัง :&nbsp;";
 						echo $row_settings['volume'];
-						echo "</big></big></big></big></div>";
+						echo "</div>";
 						$RMat = $row_settings['rmfpd'];
 					}
 				?>

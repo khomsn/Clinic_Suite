@@ -30,13 +30,8 @@ if($_POST['submit']=='Upload Image')
         } else {
             
             $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
-            
         }
-      
-
 }
-
-
 ?>
 <html>
 <head>

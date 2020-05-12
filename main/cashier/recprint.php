@@ -16,6 +16,7 @@ $pttable = "pt_".$id;
 $tmp = "tmp_".$id;
 $today = date("Y-m-d");
 $visitdt = $_SESSION['vd'];
+$all_ddft_price=0;
 
 $pin = mysqli_query($linkopdx, "select * from $pttable  ORDER BY `id` ASC ");
 while ($row_settings = mysqli_fetch_array($pin))
@@ -56,9 +57,9 @@ if($_POST['OK'] == 'จ่าย')
     }
 
     include '../../libs/payprocess.php';	
-    //session_start(); 
+
     /************ Delete the sessions****************/
-    //unset($_SESSION['patcash']);
+
     unset($_SESSION['buyprice']);
     unset($_SESSION['olddeb']);
     unset($_SESSION['patdesk']);
@@ -265,105 +266,106 @@ $(document).ready(function()
         }
         echo "<br>";
     ?>
-	<table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
-		<?php 
-		if($_SESSION['language']=='English')
-		 echo "<tr><th width='6%'>No</th><th>Item</th><th>Price</th><th width='12%'>Vol.</th><th width='10%'>Subtotal</th></tr>";
-        else
-		 echo "<tr><th width='6%'>No</th><th>รายการทั้งหมด</th><th>ราคา</th><th width='12%'>จำนวน</th><th width='10%'>รวม</th></tr>";
-		//treatment part
-  //Treatment price
-  $j = 1;
-  for($i =1;$i<=4;$i++)
-  {
-	$ptin = mysqli_query($link, "select * from $tmp ");
-	while ($row = mysqli_fetch_array($ptin))
-	{
-		$idtr = "idtr".$i;
-		$tr ="tr".$i;
-		$trv = "trv".$i;
-		//echo "<tr><td>".$i."</td><td>";
-		if($row[$idtr] !=0)
-		{
-			echo "<tr><td>".$j."</td><td  style='text-align:left;'>";
-			echo $row[$tr];
-			echo "</td>";
-			echo "<td style='text-align:right;'>";
-			$did = $row[$idtr];
-			//check id if match jump
-			for($s=1;$s<=$t;$s++)
-			{
-			  if($did ==  $tr_drugid[$s]) goto jpoint1;
-			}
-			$ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
-			if($ptin2 !=0)
-			{
-			while ($row2 = mysqli_fetch_array($ptin2))
-			{
-			//check for candp
-				$candp = $row2['candp'];
-				if($candp == 2)
-				{
-				 $checkuprdp = $checkuprdp + floor($coursepd*$row2['sellprice']*$row[$trv]/100);
-				}
-			//
-				echo $row2['sellprice'];
-				$buypr = $row2['buyprice']*$row[$trv];
-				$dcount = floor($row2['sellprice'] * $row[$trv] * $row2['disct'] * $perdc);
-				if ($dcount>$buypr)
-				{
-				  $dcount=$buypr;
-				}
-				$price1 = $row2['sellprice'] * $row[$trv] - $dcount;
-				$discount =$discount + $dcount;
-			}
-			}
-			jpoint1:
-			echo "</td>";
-			echo "<td>";
-			echo $row[$trv];
-			echo "</td>";
-			echo "<td style='text-align:right;'>";
-            if($did ==  $tr_drugid[$s])
+<table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
+<?php 
+if($_SESSION['language']=='English')
+    echo "<tr><th width='6%'>No</th><th>Item</th><th>Price</th><th width='12%'>Vol.</th><th width='10%'>Subtotal</th></tr>";
+else
+    echo "<tr><th width='6%'>No</th><th>รายการทั้งหมด</th><th>ราคา</th><th width='12%'>จำนวน</th><th width='10%'>รวม</th></tr>";
+/*******************************treatment part*********************************/
+//Treatment price
+$j = 1;
+for($i =1;$i<=4;$i++)
+{
+$ptin = mysqli_query($link, "select * from $tmp ");
+while ($row = mysqli_fetch_array($ptin))
+{
+    $idtr = "idtr".$i;
+    $tr ="tr".$i;
+    $trv = "trv".$i;
+    if($row[$idtr] !=0)
+    {
+        echo "<tr><td>".$j."</td><td  style='text-align:left;'>";
+        echo $row[$tr];
+        echo "</td>";
+        echo "<td style='text-align:right;'>";
+        $did = $row[$idtr];
+        /* check for treatment step price */
+        $stp = mysqli_query($link, "select * from trpstep WHERE drugid = $did ");
+        if($stp !=0)
+        {
+            while ($stpc = mysqli_fetch_array($stp))
             {
-                if($row[$trv]>=$first1[$s]) 
-                $price1 = ($row[$trv]-$first1[$s]+1)*$f1price[$s];
-                if($row[$trv]>=$sec2[$s]) 
-                $price1 = ($row[$trv]-$sec2[$s]+1)*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-                if($row[$trv]>=$tri3[$s]) 
-                $price1 = ($row[$trv]-$tri3[$s]+1)*$tri3price[$s]+($tri3[$s]-$sec2[$s])*$sec2price[$s]+($sec2[$s]-$first1[$s])*$f1price[$s];
-            }			
-			echo $price1;
-			echo "</td></tr>";
-			$allprice = $allprice+$price1;
-			$j = $j+1;
-		}
-	}
-  }
-		//Lab part
-		//lab price and pricepolicy
-		$ptin = mysqli_query($link, "select * from $tmp ");
-		while ($row = mysqli_fetch_array($ptin))
-		{
-		  $alllabprice = $row['licprice']+$row['lcprice'];
-		  $pricepolicy = $row['pricepolicy'];
-		  if($row['licprice']) $rmovelab = 0;
-		  else $rmovelab = 1;
-		}
-		if($alllabprice)
-		{
-		  echo "<tr><td>".$j."</td><td style='text-align:left;'>";
-		  if($_SESSION['language']=='English')
-		  echo "All Labs Price ";
-		  else
-		  echo "ค่าตรวจทาง Lab รวมทั้งหมด"; 
-		  echo "</td><td></td><td></td><td style='text-align:right;'>".$alllabprice;
-		  echo "</td></tr>";
-		  $j=$j+1;
-		}
-		//lab price finish
-		//DF part
-		for($i=1;$i<=10;$i++)
+                if($row[$trv]>=$stpc['firstone']) 
+                    $price1 = ($row[$trv]-$stpc['firstone']+1)*$stpc['init_pr'];
+                if($row[$trv]>=$stpc['secstep']) 
+                    $price1 = ($row[$trv]-$stpc['secstep']+1)*$stpc['sec_pr']+($stpc['secstep']-$stpc['firstone'])*$stpc['init_pr'];
+                if($row[$trv]>=$stpc['tristep']) 
+                    $price1 = ($row[$trv]-$stpc['tristep']+1)*$stpc['tri_pr']+($stpc['tristep']-$stpc['secstep'])*$stpc['sec_pr']+($stpc['secstep']-$stpc['firstone'])*$stpc['init_pr'];
+            }
+        }
+        else
+        {
+
+            $ptin2 = mysqli_query($link, "select * from drug_id WHERE id = $did ");
+            if($ptin2 !=0)
+            {
+            while ($row2 = mysqli_fetch_array($ptin2))
+            {
+            //check for candp /cource and product
+                $candp = $row2['candp'];
+                if($candp == 2)
+                {
+                    $checkuprdp = $checkuprdp + floor($coursepd*$row2['sellprice']*$row[$trv]/100);
+                }
+            //
+                echo $row2['sellprice'];
+                $buypr = $row2['buyprice']*$row[$trv];
+                $dcount = floor($row2['sellprice'] * $row[$trv] * $row2['disct'] * $perdc);
+                if ($dcount>$buypr)
+                {
+                    $dcount=$buypr;
+                }
+                $price1 = $row2['sellprice'] * $row[$trv] - $dcount;
+            }
+            }
+        }
+        echo "</td>";
+        echo "<td>";
+        echo $row[$trv];
+        echo "</td>";
+        echo "<td style='text-align:right;'>";
+        echo $pricetr=$price1;
+        echo "</td></tr>";
+        $allprice = $allprice+$pricetr;
+        $j = $j+1;
+    }
+}
+}
+/***********************Lab part*************************************************/
+    //lab price and pricepolicy
+    $ptin = mysqli_query($link, "select * from $tmp ");
+    while ($row = mysqli_fetch_array($ptin))
+    {
+        $alllabprice = $row['licprice']+$row['lcprice'];
+        $pricepolicy = $row['pricepolicy'];
+        if($row['licprice']) $rmovelab = 0;
+        else $rmovelab = 1;
+    }
+    if($alllabprice)
+    {
+        echo "<tr><td>".$j."</td><td style='text-align:left;'>";
+        if($_SESSION['language']=='English')
+        echo "All Labs Price ";
+        else
+        echo "ค่าตรวจทาง Lab รวมทั้งหมด"; 
+        echo "</td><td></td><td></td><td style='text-align:right;'>".$alllabprice;
+        echo "</td></tr>";
+        $j=$j+1;
+    }
+    //lab price finish
+/****************************DF part*************************************************/
+		for($i=1;$i<=14;$i++)
 		{
 		$ptin = mysqli_query($link, "select * from $tmp ");
 		while ($row = mysqli_fetch_array($ptin))
@@ -425,9 +427,9 @@ $(document).ready(function()
 			$j = $j+1;
 		}
 		
-		//drug part
+/**********************************drug part**********************************************/
 		
-		for($i=1;$i<=10;$i++)
+		for($i=1;$i<=14;$i++)
 		{
 		$ptin = mysqli_query($link, "select * from $tmp ");
 		while ($row = mysqli_fetch_array($ptin))
@@ -465,57 +467,71 @@ $(document).ready(function()
 			}
 		}
 		}
-		//accout system buy for today
-		//$_SESSION['buyprice'] = $allprice;
-		$ptin3 = mysqli_query($link, "select * from `debtors` WHERE ctmid = $id ");
-		while ($row3 = mysqli_fetch_array($ptin3))
-		{
-			if($row3['price']>0)
-			{
-				echo "<tr><td>".$j."</td><td style='text-align:left;'>";
-				if($_SESSION['language']=='English')
-				echo "Previous Debt";
-				else
-				echo "ยอดค้างชำระครั้งก่อน";
-				echo "</td><td>";
-				echo $row3['price'];
-				echo "</td><td>1</td><td style='text-align:right;'>";
-				echo $row3['price'];
-				//for account system
-				//$_SESSION['olddeb'] = $row3['price'];
-				//$allprice = $allprice+$row3['price'];
-				echo "</td></tr>";
-			}
-		}
-	echo "</table>";
-	?>
-	<table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
-		<tr><th><?php if($_SESSION['language']=='English') echo "Grand Total"; else echo "ยอดรวมสุทธิ";?></th><th width = 10% style='text-align:right;'>
-		<?php 
-			echo $_SESSION['price']."&#3647;";
-			?></th>
-		</tr>
-		<tr><th><?php if($_SESSION['language']=='English') echo "Paid"; else echo "จ่าย";?></th><th width = 10% style='text-align:right;'><?php echo  $_SESSION['paytoday']."&#xE3F;";?>
-		</th></tr>
-	</table>
-	<br>
-	<?php
-	if($_SESSION['language']=='English') 
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cashier: ";
-	else
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รับเงินโดย: ";
-	
-	    $staff = mysqli_query($link, "select * from staff WHERE ID = '$_SESSION[staff_id]' ");
-	    while($row_vl = mysqli_fetch_array($staff))
-	    {
-	      $prefix = $row_vl['prefix'];
-	      $stfname = $row_vl['F_Name'];
-	      $stlname = $row_vl['L_Name'];
-	    }
-	    echo $prefix.' '.$stfname.' '.$stlname;
-	?>
-   </div></div></div></div></div></div>
-	</td></tr>   
+/**********all drug + df + treatment price***********/
+        $all_ddft_price = $allprice;
+
+/**************accout system buy for today******************************/
+
+$ptin3 = mysqli_query($link, "select * from `debtors` WHERE ctmid = $id ");
+while ($row3 = mysqli_fetch_array($ptin3))
+{
+    if($row3['price']>0)
+    {
+        echo "<tr><td>".$j."</td><td style='text-align:left;'>";
+        if($_SESSION['language']=='English')
+        echo "Previous Debt";
+        else
+        echo "ยอดค้างชำระครั้งก่อน";
+        echo "</td><td>";
+        echo $row3['price'];
+        echo "</td><td>1</td><td style='text-align:right;'>";
+        echo $row3['price'];
+        echo "</td></tr>";
+    }
+}
+echo "</table>";
+?>
+<table class="d" style="background-color: rgb(255, 204, 153); text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="1" cellspacing="1">
+    <?php 
+    echo "<tr><th>";
+    if($_SESSION['language']=='English') echo "Grand Total"; else echo "ยอดรวมสุทธิ";
+    echo "</th><th width = 10% style='text-align:right;'>";
+    echo $_SESSION['price']."&#3647;";
+    echo "</th></tr>";
+    if($all_ddft_price>$_SESSION['price'])
+    {
+    if($_SESSION['language']=='English')
+    echo "<tr><th width='82%'> Discount on medicines</th><th width='10%' style='text-align:right;'>";
+    else
+    echo "<tr><th width='82%'> ส่วนลดค่ายา</th><th width='10%' style='text-align:right;'>";
+    echo ($all_ddft_price - $_SESSION['price']);
+    echo "&#xE3F;</th></tr>";
+    }
+    echo "<tr><th>";
+    if($_SESSION['language']=='English') echo "Paid"; else echo "จ่าย";
+    echo "</th><th width = 10% style='text-align:right;'>";
+    echo  $_SESSION['paytoday']."&#xE3F;";
+    echo "</th></tr>";
+    ?>
+</table>
+<br>
+<?php
+if($_SESSION['language']=='English') 
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cashier: ";
+else
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รับเงินโดย: ";
+
+    $staff = mysqli_query($link, "select * from staff WHERE ID = '$_SESSION[staff_id]' ");
+    while($row_vl = mysqli_fetch_array($staff))
+    {
+        $prefix = $row_vl['prefix'];
+        $stfname = $row_vl['F_Name'];
+        $stlname = $row_vl['L_Name'];
+    }
+    echo $prefix.' '.$stfname.' '.$stlname;
+?>
+</div></div></div></div></div></div>
+</td></tr>   
 </table>
 </form>
 </body></html>

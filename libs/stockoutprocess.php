@@ -72,7 +72,7 @@ if($volume >= $voltoupdate)
     if(!empty($idstat))
     {
      
-      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol' WHERE id = '$dupmo[id]'; ";
+      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol' WHERE id = '$idstat'; ";
       mysqli_query($link, $sql_insert);
     
     }

@@ -3,18 +3,6 @@ include '../../config/dbc.php';
 page_protect();
 $err = array();
 
-$sql_create = "CREATE TABLE  IF NOT EXISTS `deleted_drug` (
-  `id` int(11) NOT NULL,
-  `dname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `dgname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `size` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `ac_no` int(11) NOT NULL,
-  `dtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bystid` int(11) NOT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-mysqli_query($link, $sql_create);
-
 $filter = mysqli_query($link, "select * from drug_id ");		
 while ($row = mysqli_fetch_array($filter))
 {
@@ -91,10 +79,10 @@ if($_POST['register'] == 'ลบข้อมูล')
         mysqli_query($link, $sql_drop) or $err[]=("Insertion Failed:" . mysqli_error($link));
         // Delete Ac No
         NextStep:
-        $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
+/*        $sql_del = "DELETE FROM acnumber WHERE ac_no = $dacno";
         // Now remove drug information table
         mysqli_query($link, $sql_del) or $err[]=("Insertion Failed:" . mysqli_error($link));
-        
+ */       
         //loging del item
         $sql_insert = "INSERT into `deleted_drug` 
                 (`id`,`dname`,`dgname`, `size`, `ac_no`,`bystid` ) 

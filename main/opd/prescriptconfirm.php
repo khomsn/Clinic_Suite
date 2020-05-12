@@ -20,7 +20,7 @@ $ordertable = "doctemplate_".$_SESSION['sflc'];
 
 include '../../libs/price.php';
 
-for($i=1;$i<=10;$i++)
+for($i=1;$i<=14;$i++)
 {
 	if($_POST[$i] == 'ลบ')
 	{
@@ -44,13 +44,13 @@ for($i=1;$i<=10;$i++)
 }
 if(!empty($rar))
 {
-    for($i=$rar;$i<=10;$i++)
+    for($i=$rar;$i<=14;$i++)
     {
         $n=$i+1;
         
         $upd = mysqli_fetch_array(mysqli_query($link, "select * from $tmp"));
         //set data value
-		if($i<10)
+		if($i<14)
 		{
 		$idrx = $upd['idrx'.$n];
 		$rx= $upd['rx'.$n];
@@ -71,7 +71,7 @@ if(!empty($rar))
 			`$rxby` = '$rxbyd'
 			");
         }
-        if($i==10)
+        if($i==14)
         {
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
@@ -99,7 +99,7 @@ if($_SESSION['staff']==1 or $_SESSION['staff']==9)
     unset($_SESSION['staff']);
 }
 //UPDATE $tmp 
-	for($i=1;$i<=10;$i++)
+	for($i=1;$i<=14;$i++)
 	{
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
@@ -188,7 +188,7 @@ include '../../libs/iframeautofocus.php';
       <table style="text-align: left; width: 100%; height: 413px;" border="0" cellpadding="0" cellspacing="0"  class="forms">
 	<tbody>
 	<tr><td style="width: 80%; vertical-align: middle;"><div style="text-align: center;">
-	    <big><big>ชื่อ: &nbsp; 
+	    ชื่อ: &nbsp; 
 	    <?php
 	    
 	      while ($row_settings = mysqli_fetch_array($ptin))
@@ -212,7 +212,7 @@ include '../../libs/iframeautofocus.php';
 		      $inform = $row_settings['inform']; 
 		      $_SESSION['weight']=$row_settings['weight'];
 	      }	
-	    ?></big></big>
+	    ?>
 	</div></td></tr>
         <tr><td><div style="text-align: center;">
 		  ข้อมูล แนะนำ:<br>
@@ -222,7 +222,7 @@ include '../../libs/iframeautofocus.php';
 		  if ($_SESSION['user_accode']%11==0 OR $_SESSION['user_accode']%7==0)
 		  {
 		  ?>
-		<a HREF="drugorder.php" onClick="return popup(this,'name','950','600','yes')" ><big>Order</big></a> : 
+		<a HREF="drugorder.php" onClick="return popup(this,'name','950','600','yes')" >Order</a> : 
 		<a HREF="prescriptold.php" onClick="return popup(this,'name','800','600','yes')" >(ยาเก่า)</a> 
 		<?php } else {?><a HREF="prodorder.php" onClick="return popup(this,'name','800','600','yes')" >สั่งผลิตภัณฑ์</a><a 
 		<?php }?><br>
@@ -235,7 +235,7 @@ include '../../libs/iframeautofocus.php';
 			  {
 				  $_SESSION['medcert']=$row['medcert'];
 				  $pricepolicy = $row['pricepolicy'];
-				  for($i = 1;$i<=10;$i++)
+				  for($i = 1;$i<=14;$i++)
 				  {
 				  $idrx="idrx".$i;
 				  $rx = "rx".$i;

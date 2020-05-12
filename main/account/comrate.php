@@ -9,6 +9,13 @@ $sql_create = "CREATE TABLE IF NOT EXISTS `commission` (
 
 mysqli_query($link, $sql_create);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='commission' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'commission\', \'1\')";
+    mysqli_query($link, $sql);
+}
 
 if($_POST['add'] == 'เพิ่ม') 
 { 

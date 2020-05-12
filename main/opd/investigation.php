@@ -90,7 +90,7 @@ include '../../main/bodyheader.php';
 					<tr>
 						<td style="width: 80%; vertical-align: middle;">
 							<div style="text-align: center;">
-							<big>ชื่อ: &nbsp; 
+							ชื่อ: &nbsp; 
 							<a HREF="labhistory.php" onClick="return popup(this,'name','800','600','yes')" ><?php
 							
 							while ($row_settings = mysqli_fetch_array($ptin))
@@ -100,7 +100,7 @@ include '../../main/bodyheader.php';
 								echo $row_settings['lname'];
 							}				
 							?></a>
-							</big>
+							
 							
 						</td>
 					</tr>	
@@ -109,7 +109,7 @@ include '../../main/bodyheader.php';
 </div>
 <div style="text-align: center;"><a HREF="labselect.php" onClick="return popup(this,'name','1000','600','yes');" >Lab Test</a>:
 <?php if($havepl[0]) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <input type=submit name=save value=Save>";?>
-<br>*! <big>ก่อนจะทำการสั่ง Lab ใหม่ กรุณาตรวจว่า Lab เดิม บันทึกเข้า OPD card หรือยัง ไปที่ หน้า Lab</big>
+<br>*! ก่อนจะทำการสั่ง Lab ใหม่ กรุณาตรวจว่า Lab เดิม บันทึกเข้า OPD card หรือยัง ไปที่ หน้า Lab
 	    <table class='TFtable' style="width: 100%; text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
 		    <tr>
 			    <th>No</th><th >ชื่อ</th><th>Set</th><th>Specimen</th><th>Result</th><th>Unit</th><th>Normal#</th>

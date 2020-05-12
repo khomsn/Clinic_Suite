@@ -1,48 +1,72 @@
-p { margin-bottom: 0.1in; direction: ltr; color: #000000; line-height: 120%; widows: 2; orphans: 2 }
-p.western { font-family: "TH Sarabun PSK", serif; font-size: 30pt;}
-p.cjk { font-family: "TH Sarabun PSK", serif; font-size: 16pt;}
-p.ctl { font-family: "TH Sarabun PSK", serif; font-size: 14pt;}
-a:link { so-language: zxx }
+p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
+a:link { color: #000080; so-language: zxx; text-decoration: underline }
+a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 
 body {
-    margin: 0;
-    padding: 0;
+    margin: 10;
+    padding: 10;
     background-color: #FAFAFA;
-    font: 30pt "TH Sarabun PSK";
+    font: 10pt "Kinnari";
 }
+
+p.mainheader {
+  font: bold 12pt/30pt Kinnari;
+  text-align: center;
+}
+
+p.subheader {
+  font: bold 11pt/30pt Kinnari;
+  font-style: oblique;
+}
+
+p.ptinfo {
+    font: 10pt/30pt Kinnari;
+    line-height: 150%;
+    margin-bottom: 0in;
+}
+
+p.klpresent {
+    font: 10pt/30pt Kinnari;
+    line-height: 150%;
+    margin-bottom: 0in;
+}
+
+p.signplace {
+    font: 10pt Kinnari;
+    margin-bottom: 0in;
+    line-height: 100%;
+    text-align: right;
+}
+
+p.comment {
+    font: 8pt/30pt Kinnari;
+    line-height: 125%;
+    margin-bottom: 0in;
+    font-style: normal;
+}
+
+p.reminder {
+    font: 8pt/30pt Kinnari;
+    line-height: 125%;
+    margin-bottom: 0in;
+    font-style: italic;
+}
+
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-.page {
-    width: 21cm;
-    min-height: 29.7cm;
-    padding: 1cm;
-    margin: 1cm auto;
-    border: 1px #D3D3D3 solid;
-    border-radius: 5px;
-    background: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+div.ptavatar {
+    float: right;
+	right: 30px;
+	top: 30px;
+	position: fixed;
+    width: 140x;
+    height: 140px;
 }
-.subpage {
-    padding: 0mm;
-    border: 5px red solid;
-    height: 276mm;
-    outline: 10mm #FFEAEA solid;
-}
-@page {
-    size: A4;
-    margin: 0;
-}
-@media print {
-    .page {
-        margin: 0;
-        border: initial;
-        border-radius: initial;
-        width: initial;
-        min-height: initial;
-        box-shadow: initial;
-        background: initial;
-        page-break-after: always;
-    }
+
+ol.num {
+    font: 10pt/30pt Kinnari;
+    line-height: 100%;
 }

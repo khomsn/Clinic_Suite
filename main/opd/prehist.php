@@ -2,101 +2,138 @@
 include '../../config/dbc.php';
 
 page_protect();
-$_SESSION['todoc']=0;
+
+$staff = mysqli_query($link, "select * from staff WHERE ID = ' $_SESSION[staff_id]' ");
+while($row_vl = mysqli_fetch_array($staff))
+{
+  $stfname = $row_vl['F_Name'];
+  $stlname = $row_vl['L_Name'];
+  $stpref = $row_vl['prefix'];
+  $stposit = $row_vl['posit'];
+}
+
+$stb = $stpref.' '.$stfname.' '.$stlname.', '.$stposit;
 
 $id = $_SESSION['patdesk'];
 $Patient_id = $id;
 include '../../libs/opdxconnection.php';
 
-$ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
 $pttable = "pt_".$id;
+$tmptable = "tmp_".$id;
 
 if($_POST['register'] == 'บันทึก') 
 { 
 
-//$date = date("Y-m-d");
-//check for "csf" if blank don't insert
-if (ltrim($_POST['csf'])!=="")
-{
-$medcert = 0;
-
-if($_POST['medc'])
-{
-  $medcert = $_POST['medcert'];
-}
-
-//check staff
-$pstaff=mysqli_fetch_array(mysqli_query($linkopd, "select staff from patient_id where id='$id'"));
-$staff = $pstaff[0];//พนักงาน
-if($staff == 0)
-{
-$staff = $_POST['policy']; //คนไข้ทั่วไป
-}
-
-//check if already record
-$tptin = mysqli_query($link, "select * from  `tmp_$id` ");
-$row_settings = mysqli_fetch_array($tptin);
-
-if (ltrim($row_settings['csf'])==="")
+    //$date = date("Y-m-d");
+    //check for "csf" if blank don't insert
+    if (ltrim($_POST['csf'])!=="")
     {
-    // assign insertion pattern
-    $sql_insert = "INSERT into `tmp_$id` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
+        $medcert = 0;
 
-    // Now insert Patient to "tmp_#id" table
-    mysqli_query($link, $sql_insert);
-    
-    $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `tmp_$id`"));
-    $rindex = $rindex[0];
+        if($_POST['medc'])
+        {
+        $medcert = $_POST['medcert'];
+        }
 
-    // assign insertion pattern
-    if(empty($_POST['weight'])) $_POST['weight']=0;
-    if(empty($_POST['height'])) $_POST['height']=0;
-    if(empty($_POST['temp'])) $_POST['temp']=0;
-    if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
-    if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
-    if(empty($_POST['hr'])) $_POST['hr']=0;
-    if(empty($_POST['rr'])) $_POST['rr']=0;
-  
-    $sql_insert = "INSERT into `pt_$id`
-			    (`id`,`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
-			VALUES
-			('$rindex', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
+        //check staff
+        $pstaff=mysqli_fetch_array(mysqli_query($linkopd, "select staff from patient_id where id='$id'"));
+        $staff = $pstaff[0];//พนักงาน
+        if($staff == 0)
+        {
+        $staff = $_POST['policy']; //คนไข้ทั่วไป
+        }
 
-    // Now insert Patient to "pt_#id" table
-    mysqli_query($linkopdx, $sql_insert);
+        //check if already record
+        $tptin = mysqli_query($link, "select * from  `$tmptable` ");
+        $row_settings = mysqli_fetch_array($tptin);
+
+        if (ltrim($row_settings['csf'])==="")
+            {
+            // assign insertion pattern
+            $sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
+
+            // Now insert Patient to "tmp_#id" table
+            mysqli_query($link, $sql_insert);
+            
+            // get row index to insert and update to pt_table
+            $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
+            $_SESSION['rindex'] = $rindex[0];
+
+            // assign insertion pattern
+            if(empty($_POST['weight'])) $_POST['weight']=0;
+            if(empty($_POST['height'])) $_POST['height']=0;
+            if(empty($_POST['temp'])) $_POST['temp']=0;
+            if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
+            if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
+            if(empty($_POST['hr'])) $_POST['hr']=0;
+            if(empty($_POST['rr'])) $_POST['rr']=0;
+
+            $vs = "BP:".$_POST['bpsys']."/".$_POST['bpdia']." mmHg, HR:".$_POST['hr']."bpm, T:".$_POST['temp']."C, RR:".$_POST['rr']."tpm";
+            $_SESSION['vs'] = $vs;
+        
+            $sql_insert = "INSERT into `$pttable`
+                    (`id`,`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
+                    VALUES
+                    ('$_SESSION[rindex]', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
+
+            while($_SESSION['rindex'] != $MaxRowCheck)
+                {
+                // Now insert Patient to "pt_#id" table
+                mysqli_query($linkopdx, $sql_insert);
+                // Check back if it is recorded.
+                $result = mysqli_query($linkopdx, "select MAX(id) from $pttable where id='$_SESSION[rindex]'");
+                $maxrow = mysqli_fetch_array($result);
+                $MaxRowCheck = $maxrow[0];
+                }
+            }
+            
+        if (ltrim($row_settings['csf']) !=="")
+            {
+            // get row index to insert and update to pt_table
+            $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
+            $_SESSION['rindex'] = $rindex[0];
+           // assign insertion pattern
+            $sql = "UPDATE $tmptable SET `csf` = '$_POST[csf]', `preg` = '$_POST[preg]',`medcert` = '$medcert',`pricepolicy`= '$staff'";
+            // Now insert Patient to "tmp_#id" table
+            mysqli_query($link, $sql);
+            
+            $pgo = mysqli_query($linkopdx, "select * from $pttable where  id = '$_SESSION[rindex]' ");
+            while ($row_settings = mysqli_fetch_array($pgo))
+            {
+                $oldprog = $row_settings['obsandpgnote'];
+            }
+            //if (ltrim($prog) === '') goto emptyresult;
+            $vs = "BP:".$_POST['bpsys']."/".$_POST['bpdia']." mmHg, HR:".$_POST['hr']."bpm, T:".$_POST['temp']."C, RR:".$_POST['rr']."tpm";
+            $_SESSION['vs'] = "BP:".$_SESSION['oldbpsys']."/".$_SESSION['oldbpdia']." mmHg, HR:".$_SESSION['oldhr']."bpm, T:".$_SESSION['oldtemp']."C, RR:".$_SESSION['oldrr']."tpm";
+            if($_SESSION['vs'] !== $vs) {
+                $newprog = "[".date('Y-m-d H:i:s')."] ".$vs." #By ".$stb." [END]\n";
+                $progupdate = $oldprog.$newprog;
+            }
+            else {
+            $progupdate = $oldprog;
+            }
+        // assign insertion pattern
+            $sql = "UPDATE $pttable SET
+                    `weight` = '$_POST[weight]',
+                    `height` = '$_POST[height]',
+                    `temp` = '$_POST[temp]',
+                    `bpsys` = '$_POST[bpsys]',
+                    `bpdia` = '$_POST[bpdia]',
+                    `hr` = '$_POST[hr]',
+                    `rr` = '$_POST[rr]',
+                    `ccp` = '$_POST[csf]',
+                    `obsandpgnote` = '$progupdate'
+                    WHERE `id`='$_SESSION[rindex]'
+                    ";
+            
+            // Now insert Patient to "pt_#id" table
+            mysqli_query($linkopdx, $sql);
+            }
+        //update height at patient_id.
+        if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'");
+        // go on to other step
+        $ptdoc = 1;
     }
-    
-if (ltrim($row_settings['csf']) !=="")
-    {
-    // assign insertion pattern
-    $sql = "UPDATE tmp_$id SET `csf` = '$_POST[csf]', `preg` = '$_POST[preg]',`medcert` = '$medcert',`pricepolicy`= '$staff'";
-    // Now insert Patient to "tmp_#id" table
-    mysqli_query($link, $sql);
-    
-    $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
-    $rid = mysqli_fetch_array($pin);
-   // assign insertion pattern
-    $sql = "UPDATE $pttable SET
-			`weight` = '$_POST[weight]',
-			`height` = '$_POST[height]',
-			`temp` = '$_POST[temp]',
-			`bpsys` = '$_POST[bpsys]',
-			`bpdia` = '$_POST[bpdia]',
-			`hr` = '$_POST[hr]',
-			`rr` = '$_POST[rr]',
-			`ccp` = '$_POST[csf]'
-			 WHERE  id='$rid[0]'
-			";
-    
-    // Now insert Patient to "pt_#id" table
-    mysqli_query($linkopdx, $sql);
-    }
-}
-//update height at patient_id.
-
-if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'");
-// go on to other step
-$ptdoc = 1;
 }
 if($_POST['register']=='ส่งเข้าห้องตรวจ')
 {
@@ -149,6 +186,12 @@ if($_POST['register']=='ส่งเข้าห้องตรวจ')
 	  mysqli_query($link, $sql_insert);
 	  // Now Delete Patient from "pt_to_doc" table
 	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$id' ");
+	  unset($_SESSION['rindex']);
+	  unset($_SESSION['oldbpdia']);
+	  unset($_SESSION['oldbpsys']);
+	  unset($_SESSION['oldhr']);
+	  unset($_SESSION['oldtemp']);
+	  unset($_SESSION['oldrr']);
 header("Location: pt1page.php");
 }
 $title = "::ประวัติ ตรวจร่างกาย::";
@@ -163,21 +206,19 @@ include '../../main/bodyheader.php';
                 <div style="text-align: center;">
                     <h3>ชื่อ: &nbsp; 
                     <?php
-                        $pin1 = mysqli_query($link, "select * from `tmp_$id` ");
+                        $pin1 = mysqli_query($link, "select * from `$tmptable` ");
                         while($rid1 = mysqli_fetch_array($pin1))
                         {
                             $preg=$rid1['preg'];
                             $hrec=$rid1['csf'];
                             $medcert=$rid1['medcert'];
                             $pricepolicy=$rid1['pricepolicy'];
+                            if(empty($_SESSION['rindex']))
+                            $_SESSION['rindex']=$rid1['rindex'];
                         }
                         if(!empty($hrec))
                         {
-                            $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
-                            $rid = mysqli_fetch_array($pin);
-                            $rid[0];
-                            
-                            $pin = mysqli_query($linkopdx, "select * from $pttable WHERE id=$rid[0]");
+                            $pin = mysqli_query($linkopdx, "select * from $pttable WHERE id='$_SESSION[rindex]'");
                             while($rid = mysqli_fetch_array($pin))
                             {
                                 $weight=$rid['weight'];
@@ -190,6 +231,8 @@ include '../../main/bodyheader.php';
                                 $ccp=$rid['ccp'];
                             }
                         }
+                        
+                        $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
                         while ($row_settings = mysqli_fetch_array($ptin))
                         { 
                             $_SESSION['prefix']= $row_settings['prefix'];
@@ -263,13 +306,13 @@ include '../../main/bodyheader.php';
                         echo "<input type=hidden name=height value=".$hin[0].">";
                     }
                     ?>
-                    Temp <input maxlength="4" size="5" name="temp" value="<?php echo $temp;?>" > C.
+                    Temp <input maxlength="4" size="5" name="temp" value="<?php echo $_SESSION['oldtemp'] = $temp;?>" > C.
                     &nbsp; &nbsp; &nbsp;
-                    หายใจ <input maxlength="4" size="5" name="rr" value ="16" value="<?php echo $rr;?>" > / นาฑี 
+                    หายใจ <input maxlength="4" size="5" name="rr" value ="16" value="<?php echo $_SESSION['oldrr'] = $rr;?>" > / นาฑี 
                     <br><br>
-                    BP  Sys <input maxlength="3" size="4" name="bpsys" value="<?php echo $bpsys;?>" > / Dia <input  maxlength="3" size="4" name="bpdia" value="<?php echo $bpdia;?>"  > mmHg.
+                    BP  Sys <input maxlength="3" size="4" name="bpsys" value="<?php echo $_SESSION['oldbpsys'] = $bpsys;?>" > / Dia <input  maxlength="3" size="4" name="bpdia" value="<?php echo $_SESSION['oldbpdia'] = $bpdia;?>"  > mmHg.
                     &nbsp; &nbsp; &nbsp; 
-                    HR <input maxlength="3" size="4" name="hr" value="<?php echo $hr;?>"  > BPM.
+                    HR <input maxlength="3" size="4" name="hr" value="<?php echo $_SESSION['oldhr'] = $hr;?>"  > BPM.
                     <br>
                     </div>
                     <hr style="width: 80%; height: 2px;"><br>

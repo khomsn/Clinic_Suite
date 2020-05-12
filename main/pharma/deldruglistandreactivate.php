@@ -15,9 +15,10 @@ if($_POST['Reactivate'] != 0)
         $dname = $infor['dname'];
         $dgname = $infor['dgname'];
         $size = $infor['size'];
+        $ac = $infor['ac_no'];
         $adn = $dname.'-'.$size;
     }
-
+/*
     //10300000-10699999 สินค้า assign account no. 10300000-10699999 สินค้า //start with 10300000 + drug_id
 
     $mmm=10300000;
@@ -41,7 +42,7 @@ if($_POST['Reactivate'] != 0)
     Nextacno:
     // assign account number to new product.
     $ac = $mmm + 1;
-
+*/
     $rs_duplicate = mysqli_query($link, "select count(*) as total from drug_id where dname='$dname' AND dgname='$dgname' AND size='$size' ") or $err[]=(mysqli_error($link));
     list($total) = mysqli_fetch_row($rs_duplicate);
 
@@ -54,13 +55,13 @@ if($_POST['Reactivate'] != 0)
     if(empty($err))
     {
         //assign ac_no to table acnumber
-        $sql_insert = "INSERT into `acnumber`
+/*        $sql_insert = "INSERT into `acnumber`
                     (`ac_no`, `name`)
                     VALUES
                     ('$ac','$adn')";
         // Now insert Account number for product to "acnumber" table
         mysqli_query($link, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($link));
-
+*/
         // assign insertion pattern
         $sql_insert = "INSERT into `drug_id`
                     (`id`,`dname`,`dgname`,`uses`, `indication`, `size`, `sellprice`, `min_limit`, `typen`, `groupn`, `seti`, `ac_no`, `track`, `disct`,`prod`,`RawMat`,`cat`,`unit`,`candp`,`stcp`)

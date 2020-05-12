@@ -1,6 +1,7 @@
 <?php 
 include '../../config/dbc.php';
 page_protect();
+/************************ DB *************************/
 $sql = "
 
 CREATE TABLE IF NOT EXISTS `rawmat` (
@@ -22,6 +23,33 @@ CREATE TABLE IF NOT EXISTS `rawmat` (
 
 mysqli_query($link, $sql);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='rawmat' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'rawmat\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
+$sql_create = "CREATE TABLE IF NOT EXISTS `deleted_rm` (
+  `id` int(11) NOT NULL UNIQUE KEY,
+  `rawcode` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rawname` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ac_no` int(11) NOT NULL,
+  `dtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bystid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+mysqli_query ($link, $sql_create);
+
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='deleted_rm' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'deleted_rm\', \'1\')";
+    mysqli_query($link, $sql);
+}
+/************************ DB Finished *************************/
 $title = "::ห้องคลังวัตถุดิบ::";
 include '../../main/header.php';
 include '../../main/bodyheader.php';

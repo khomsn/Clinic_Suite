@@ -12,6 +12,7 @@ if($_POST['additem'] == "เพิ่ม")
     {
         $_SESSION['stindrug'.$j]=$_POST['stindrug'.$j];
         $_SESSION['stinvol'.$j]=$_POST['stinvol'.$j];
+        $_SESSION['stinexpd'.$j]=$_POST['stinexpd'.$j];
         $_SESSION['stinbuyprice'.$j]=$_POST['stinbuyprice'.$j];
         $_SESSION['stinexpd'.$j]=$_POST['stinexpd'.$j];
     }
@@ -59,6 +60,7 @@ for($n=1;$n<=$_SESSION['DGinall'];$n++)
             $_SESSION['stinunit'.$m]=$_SESSION['stinunit'.$j];
             $_SESSION['stinexpd'.$m]=$_SESSION['stinexpd'.$j];
             $_SESSION['stinvol'.$m]=$_SESSION['stinvol'.$j];
+            $_SESSION['stinexpd'.$m]=$_SESSION['stinexpd'.$j];
             $_SESSION['stinbuyprice'.$m]=$_SESSION['stinbuyprice'.$j];
         }
         unset($_SESSION['stindname'.$m]);
@@ -68,6 +70,7 @@ for($n=1;$n<=$_SESSION['DGinall'];$n++)
         unset($_SESSION['stinunit'.$m]);
         unset($_SESSION['stinexpd'.$m]);
         unset($_SESSION['stinvol'.$m]);
+        unset($_SESSION['stinexpd'.$m]);
         unset($_SESSION['stinbuyprice'.$m]);
      
         if($_SESSION['DGinall']>1)
@@ -206,6 +209,7 @@ if($_POST['doSave'] == 'Save')
             unset($_SESSION['stindname'.$i]);
             unset($_SESSION['stinunit'.$i]);
             unset($_SESSION['stinvol'.$i]);
+            unset($_SESSION['stinexpd'.$i]);
             unset($_SESSION['stinbuyprice'.$i]);
             unset($_SESSION['stinexpd'.$i]);
         }
@@ -357,7 +361,7 @@ echo "<td>";
 echo $_SESSION['stinsize'.$j];
 echo "</td>";
 echo "<td>";
-echo "<input type='date' name='stinexpd".$j."' min='".date("Y-m-d")."'>";
+echo "<input type='date' tabindex=".($j*2-1)." name='stinexpd".$j."' min='".date("Y-m-d")."' value=".$_SESSION['stinexpd'.$j].">";
 echo "</td>";
 echo "<td>";
 echo "<input type='number' tabindex=".($j*2-1)." class='typenumber' name='stinvol".$j."' min=0 step=1 value=".$_SESSION['stinvol'.$j].">";

@@ -19,6 +19,14 @@ $sql_create = "CREATE TABLE IF NOT EXISTS `daily_account` (
 
 mysqli_query($link,$sql_create);
 
+$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='daily_account' ORDER BY `id`" );
+$tableversion = mysqli_num_rows($sql_select);
+if(!$tableversion)
+{
+    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'daily_account\', \'1\')";
+    mysqli_query($link, $sql);
+}
+
 $title = "::บัญชีและการเงิน::";
 include '../../main/header.php';
 include '../../libs/popup.php';
@@ -53,7 +61,7 @@ include '../../main/bodyheader.php';
 		ในการบันทึกบัญชี ให้ทำการบันทึกใน "ลงบัญชีทั่วไป"
 		</div></td>
 		<td bgcolor="#9999ff"><font color="#000000"> <p>
-		<big>การลงบัญชี ให้ลงเฉพาะส่วนที่ <big><u>ไม่เกี่ยวข้องกับการซื้อขายยาและเวชภัณฑ์</u></big> เช่น จ่ายค่าน้ำค่าไฟ จ่ายเงินเดือน นำเงินสดมาลงทุน ฝากถอนเงินธนาคาร</big>
+		การลงบัญชี ให้ลงเฉพาะส่วนที่ <u>ไม่เกี่ยวข้องกับการซื้อขายยาและเวชภัณฑ์</u> เช่น จ่ายค่าน้ำค่าไฟ จ่ายเงินเดือน นำเงินสดมาลงทุน ฝากถอนเงินธนาคาร
 		</p></font></td>
 		</tr>
 		</table>
