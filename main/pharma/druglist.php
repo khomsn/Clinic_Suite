@@ -91,7 +91,7 @@ include '../../main/bodyheader.php';
                                     echo $row['dname'];
                                     echo "</a>";
                                     echo "<span class=\"popuptext\" id=\"myPopup".$row['id']."\">";
-                                    echo "<img src=\"../".DRUGIMAGE_PATH."drug_".$row['id'].".jpg\" width=150 height=150 />";
+                                    echo "<img class='fill' src=\"../".DRUGIMAGE_PATH."drug_".$row['id'].".jpg\" width=150 height=150 />";
                                     echo "</span>";
                                     echo "</div>";
                                     echo "</td><td>"; 

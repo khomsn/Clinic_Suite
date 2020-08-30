@@ -44,10 +44,5 @@ $(document).ready(function(){
         minLength:1,
         autoFocus:true
     });
-    $("#pref").autocomplete({
-        source:'../../libs/prefixlist.php',
-        minLength:2,
-        autoFocus:true
-    });
 });
 </script>

@@ -191,7 +191,7 @@ $(document).ready(function(){
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr><td width="28%">Username / Email</td><td width="72%"><input name="usr_email" type="text" class="required" id="txtbox" size="25" autofocus></td></tr>
           <tr><td>Password</td><td><input name="pwd" type="password" class="required password" id="txtbox" size="25"></td></tr>
-          <tr><td colspan="2"><div align="center"><input name="remember" type="checkbox" id="remember" value="1">Remember me</div></td></tr>
+          <tr><td colspan="2"><div align="center"><input name="remember" type="checkbox" id="remember" value="1"><label for="remember">Remember me</label></div></td></tr>
           <tr><td colspan="2"><div align="center"> 
                 <p><input name="doLogin" type="submit" id="doLogin3" value="Login"></p>
                 <p><a href="register.php">Register</a><font color="#FF6600">|</font><a href="forgot.php">Forgot Password</a></p>

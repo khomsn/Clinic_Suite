@@ -67,7 +67,7 @@ echo "</head><body>";
                 </div>
                 <hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
                 <br>
-                <div style="text-align:center;"> <input type="checkbox" name="medc" value="1"> ใบรับรองแพทย์ <input type=radio name=medcert value=1>ตรวจโรคสมัครงาน <input type=radio name=medcert value=2 checked>ยืนยันตรวจจริง
+                <div style="text-align:center;"> <input type="checkbox" name="medc" id="medc" value="1"><label for="medc"> ใบรับรองแพทย์</label> <input type=radio name=medcert id='medcert1' value=1><label for='medcert1'>ตรวจโรคสมัครงาน</label> <input type=radio name=medcert id='medcert2' value=2 checked><label for='medcert2'>ยืนยันตรวจจริง</label>
                 <hr style="width: 80%; height: 2px;"><br>
         </td></tr>
         <tr><td>

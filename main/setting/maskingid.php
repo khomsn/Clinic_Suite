@@ -111,9 +111,9 @@ include '../../main/bodyheader.php';
                 }
 */
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo "Masking All-ID <input type='radio' name='mask' value='1'";
-                echo ">ON<input type='radio' name='mask' value='0'";
-                echo ">OFF";
+                echo "Masking All-ID <input type='radio' name='mask' id='m1' value='1'";
+                echo "><label for='m1'>ON</label><input type='radio' name='mask' id='m0' value='0'";
+                echo "><label for='m0'>OFF</label>";
                 echo "</h3>";
                 
                 $result = mysqli_query($link, "SELECT * FROM maskid ORDER BY dgname ASC ");
@@ -143,11 +143,11 @@ include '../../main/bodyheader.php';
                         echo "</th><th>";
                         echo $row_settings['drugid'];
                         echo "</th><th>";
-                        echo "<input type='radio' name='mask".$row_settings['id']."' value='1'";
+                        echo "<input type='radio' name='mask".$row_settings['id']."' id='mask".$row_settings['id']."_1' value='1'";
                         if ($row_settings['mask']=='1') echo "checked";
-                        echo ">ON<input type='radio' name='mask".$row_settings['id']."' value='0'";
+                        echo "><label for='mask".$row_settings['id']."_1'>ON</label><input type='radio' name='mask".$row_settings['id']."' id='mask".$row_settings['id']."_0'  value='0'";
                         if ($row_settings['mask']=='0') echo "checked";
-                        echo ">OFF";
+                        echo "><label for='mask".$row_settings['id']."_0'>OFF</label>";
                         echo "</th><th>";
                         echo $row_settings['dname'];
                         echo "</th><th>";

@@ -1,3 +1,9 @@
+.fill {object-fit: fill;}
+.contain {object-fit: contain;}
+.cover {object-fit: cover;}
+.scale-down {object-fit: scale-down;}
+.none {object-fit: none;}
+
 .forms {
 background-color: #E4F8FA;
 font: normal 12px arial,verdana;

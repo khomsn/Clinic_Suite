@@ -25,8 +25,7 @@ if ($_FILES["fileToUpload"]["size"] > 2000000) {
     $uploadOk = 0;
 }
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
     $err[] ="Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
     $uploadOk = 0;
 }
@@ -34,7 +33,9 @@ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg
 if ($uploadOk == 0) {
     $err[] ="Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
-} else {
+} 
+else 
+{
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $msg[] ="The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
     } else {

@@ -11,6 +11,33 @@ $pttable = "pt_".$ptid;
 $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
 $maxid = mysqli_fetch_array($pin);
 
+function rediagset() {
+  // Start diag count
+  //global $ddx;
+  //$ddx = array();
+  for($j=1;$j<=$_SESSION['DX'];$j++)
+  {
+    if(!empty($_POST['diag'.$j]))
+    {
+        $_SESSION['di'] = $_SESSION['di']+1;
+        $m = $_SESSION['di'];
+        $_SESSION['xdx'][$m] = $_POST['diag'.$j];
+    }
+  }
+  /*
+echo "di=".$_SESSION['di'];
+
+  for ($m=1;$m<=$_SESSION['di'];$m++){
+    echo $m."=";
+    echo $_SESSION['xdx'][$m];
+    echo " ";
+  }
+  print_r(array_unique($_SESSION['xdx'])); 
+  $_SESSION['xdx1'] = array_unique($_SESSION['xdx'],SORT_STRING);
+  print_r($_SESSION['xdx1']);
+  */
+}
+
 if($maxid[0]!=$_SESSION['mrid'])
 {
     
@@ -21,45 +48,36 @@ if($maxid[0]!=$_SESSION['mrid'])
 if ($_POST['todo'] == '<<' )
 {
 	$_SESSION['rid'] = $_SESSION['rid'] - 1;
+	rediagset();
 }
 if ($_POST['todo'] == '>>' ) 
 {
 	$_SESSION['rid'] = $_SESSION['rid'] +1;
+	rediagset();
 }
 if ($_POST['todo'] == 'Last' )
 {
 	$_SESSION['rid'] = $_SESSION['mrid']-1;
+	rediagset();
 }
-
 if($_POST['todo']=='Diag')
 {
-  // Start diag count 
-  $t=0;
-  for($j=1;$j<=$_SESSION['DX'];$j++)
-  {
-    if(!empty($_POST['diag'.$j]))
-    {
-        $t =$t+1;
-        $dxx = $t."-".$_POST['diag'.$j];
-        $_SESSION['ddx'] = $_SESSION['ddx']." ".$dxx;
-    }
-  }
-  if($t==1)
-  {
-    for($j=1;$j<=$_SESSION['DX'];$j++)
-    {
-        if(!empty($_POST['diag'.$j]))
+  rediagset();
+  if($_SESSION['di'] == 1){$_SESSION['ddx'] = $_SESSION['xdx'][1];}
+  else {
+        for($i=1;$i<=$_SESSION['di'];$i++)
         {
-            $_SESSION['ddx'] = $_POST['diag'.$j];
+            $dxal = $dxal.$i."-".$_SESSION['xdx'][$i]." ";
         }
-    }
+        $_SESSION['ddx'] = $dxal;
   }
+  unset($_SESSION['xdx']);
+  unset($_SESSION['di']);
   unset($_SESSION['DX']);
   unset($_SESSION['mrid']);
   unset($_SESSION['rid']);
 echo '<script>window.opener.location.reload()</script>';
 echo '<script>self.close()</script>';
-   
 }
 
 $title = "::ประวัติ Diag::";
@@ -164,7 +182,16 @@ include '../../main/header.php';
             for($i=1;$i<=$n;$i++)
             {
                 echo "<tr><th>";
+                $check = 0;
+                $dxm = rtrim($charsl[$i], "1234567890 ");
+                for($m=0;$m<=$_SESSION['di'];$m++){
+                    if ($dxm == $_SESSION['xdx'][$m]){
+                        $check = 1; 
+                        }
+                }
+                if(!$check){
                 echo "<input type='checkbox' name='diag".$i."' id='checkBoxes' value=\"".rtrim($charsl[$i], "1234567890 ")."\">";
+                }
                 echo "</th><th>";
                 echo $_SESSION['DX'] = $i;
                 echo "</th><th>";
@@ -174,7 +201,15 @@ include '../../main/header.php';
             if(empty($n))
             {
                 echo "<tr><th>";
+                $check = 0;
+                for($m=0;$m<=$_SESSION['di'];$m++){
+                    if ($oldddx[0] == $_SESSION['xdx'][$m]){
+                    $check = 1; 
+                    }
+                }
+                if(!$check){
                 echo "<input type='checkbox' name='diag1' id='checkBoxes' value=\"".$oldddx[0]."\">";
+                }
                 echo "</th><th>";
                 echo $_SESSION['DX'] = 1;
                 echo "</th><th>";

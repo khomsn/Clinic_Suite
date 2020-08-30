@@ -113,7 +113,7 @@ include '../../main/bodyheader.php';
 	    <table class='TFtable' style="width: 100%; text-align: center; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
 		    <tr>
 			    <th>No</th><th >ชื่อ</th><th>Set</th><th>Specimen</th><th>Result</th><th>Unit</th><th>Normal#</th>
-			    <th>Min</th><th>Max</th><th><input name="checkAll" type="checkbox" id="checkAll" value="1" onclick="javascript:checkThemAll(this);" />InPro</th>
+			    <th>Min</th><th>Max</th><th><input name="checkAll" type="checkbox" id="checkAll" value="1" onclick="javascript:checkThemAll(this);" /><label for='checkAll'>InPro</label></th>
 		    </tr>
 		    <?php 
 		    $n=0;

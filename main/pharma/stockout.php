@@ -82,26 +82,24 @@ if($_POST['doSave'] == 'Save')
 	      mysqli_query($link, $sql_insert);
 	 }     
     //record drug use per month in dupm table for statistics
-    $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE())");
+    $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$id' AND rmonth = MONTH(CURRENT_DATE()) AND ryear = MONTH(CURRENT_DATE())");
     $dupmo = mysqli_fetch_array($dupmin);
-    if(empty($dupmo['id']))
+    if(is_null($dupmo['id']))
     {
       $sql_insert = "INSERT into `dupm`
-		(`drugid`,`mon`,`vol`)
+		(`drugid`,`ryear`,`rmonth`,`vol`)
 	    VALUES
-		('$id',now(),'$_POST[volume]')";
+		('$id',year(now()),MONTH(now()),'$_POST[volume]')";
 	mysqli_query($link, $sql_insert);
-    
     }
     else
     {
       $newvol = $dupmo['vol'] + $_POST['volume'];
       
-      $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
-				      WHERE drugid = '$id' AND MONTH(mon) = MONTH(CURRENT_DATE()) AND YEAR(mon) = MONTH(CURRENT_DATE()) LIMIT 1 ; 
+      $sql_update = "UPDATE `dupm` SET `vol` = '$newvol'
+				      WHERE drugid = '$id' AND rmonth = MONTH(CURRENT_DATE()) AND ryear = MONTH(CURRENT_DATE()) LIMIT 1 ; 
 				      ";
-      mysqli_query($link, $sql_insert);
-    
+      mysqli_query($link, $sql_update);
     }
       // go on to other step
       header("Location: drtouse.php");  

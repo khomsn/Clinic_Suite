@@ -1,5 +1,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
+    $("#pref").autocomplete({
+        source:'../../libs/prefixlist.php',
+        minLength:1,
+        autoFocus:true
+    });
     $("#fname").autocomplete({
         source:'../../libs/namelist.php',
         minLength:1,

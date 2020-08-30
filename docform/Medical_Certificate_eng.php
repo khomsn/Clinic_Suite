@@ -49,13 +49,15 @@ if($_POST['finish']=="OK")
 <?php
     $agent = $_SERVER['HTTP_USER_AGENT'];
     
-if(strlen(strstr($agent,"Firefox")) > 0 ){      
+/*if(strlen(strstr($agent,"Firefox")) > 0 ){      
     $browser = 'firefox';
 }
 if($browser=='firefox'){
     echo "<link rel='stylesheet' href='../jscss/css/medcertfirefox.css'>";
 }
 else echo "<link rel='stylesheet' href='../jscss/css/medcert.css'>";
+*/
+echo "<link rel='stylesheet' href='../jscss/css/medcert.css'>";
 ?>
 <script language="javascript">
 function Clickheretoprint()
@@ -68,10 +70,12 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
-if($browser=='firefox'){
+/*if($browser=='firefox'){
     echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcertfirefox_print.css>');";
 }
 else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert_print.css>');";
+*/
+echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert_print.css>');";
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -92,11 +96,8 @@ else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medce
 <?php if($yess){?>
 <div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <?php }?>
-<div class="style3" id="print_content">
-<p class="western"><br>
-</p>
 <form method="post" action="Medical_Certificate_eng.php" name="regForm" id="regForm">
-
+<div class="style3" id="print_content">
 <div class="page"><div class="subpage">
 <?php 
 $para = mysqli_query($link, "SELECT * FROM parameter WHERE ID = 1");
@@ -105,8 +106,8 @@ while($par = mysqli_fetch_array($para))
 ?>
 <div id="logo" style="height:42px;width:42px;float:left;"><img src="<?php echo $par['logo'];?>" alt="logo" width="42" height="42"></div>
 <div id="logo" style="height:42px;width:42px;float:right;"></div>
-<p class="western" style="text-align:center;">Medical Certificate</p>
-<p class="western" style="text-align:center; margin-bottom: 0in; line-height: 150%">
+<p class="westerncentalign">Medical Certificate</p>
+<p class="westerncentalign">
 <?php 
  echo $par['Ename'].", License number ".$par['cliniclcid']."<br>".$par['Eaddress']." Tel.".$par['tel'];
 }
@@ -116,7 +117,7 @@ while($par = mysqli_fetch_array($para))
     $sy = $date->format("Y");
 ?>
 </p>
-<p class="western" style="text-align:center;">Date <?php echo $sd." ";
+<p class="westerncentalign">Date <?php echo $sd." ";
 switch ($sm)
 {
   case 1:
@@ -157,8 +158,8 @@ switch ($sm)
   break;
 }
 echo " ".$sy;?></p>
-<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I, <u><?php echo $_SESSION['Esfname'];?></u> held Thai Medical License number <u><?php echo $_SESSION['sflc'];?></u>.  I had examined and treated <br>
-<u> <?php echo $prefix." ".$fname." ".$lname;?> </u> on date <u> <?php echo $sd." ";
+<p class="westernjustalign">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I, <u><?php echo $_SESSION['Esfname'];?></u> held Thai Medical License number <u><?php echo $_SESSION['sflc'];?></u>.  I had examined and treated <br>
+<u><nobr><?php echo $prefix." ".$fname." ".$lname;?></nobr></u> on date <u> <?php echo $sd." ";
 switch ($sm)
 {
   case 1:
@@ -207,14 +208,16 @@ echo " ".$sy;
  {
     $dofhis = $rows['dofhis'];
     $ddx = $rows['ddx'];
+    $dofhis = mysqli_real_escape_string($linkopdx, $dofhis);
+    $dofhis = str_replace("\\r\\n","<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$dofhis);
  }
 ?> </u> by this information.</p>
-<p class="ctl"  style="margin-bottom: 0in; line-height: 150%"><u>Illness Information:</u> <?php echo $dofhis;?></p>
-<p class="western10"><u>Impression/Diagnosis:</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
+<p class="ctl"><u>Illness Information:</u> <?php echo $dofhis;?></p>
+<p class="westernleftalign"><u>Impression/Diagnosis:</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
 if(empty($diag)) echo $ddx;
 else echo $diag;?>"><?php }
 else echo $_SESSION['diag'];?> </p>
-<p class="western10"><u>Treatment and Advice:</u>
+<p class="westernleftalign"><u>Treatment and Advice:</u>
 <?php 
 if(!$yess)
 {
@@ -225,38 +228,27 @@ if(!$yess)
 else echo $_SESSION['trmtext'];
 ?>
 </p>
-<p class="western10"><u>Summarize doctors opinion/Information:</u></p>
-<ol>
-	<li><p class="western10">
+<div class="drcon"><u>Summarize doctors opinion/Information:</u>
+<ol class='ajt'>
+	<li>
 	Truely came for medical treatment <?php if(!$yess) {echo "on "; echo "<input type='text' name='morewhen' class='intext'  value='".$_SESSION['morewhen']."'>";} else { if(!empty($_SESSION['morewhen']))echo "on "; echo $_SESSION['morewhen'];} ?>.
 	<?php 
 	if(!$yess)
 	{
-	echo "<li><p class='western10'>";
-	?>
-	<input type=submit name=rest value="Y"> <input type=submit name=rest value="N">
-	<?php 
-	echo "Should be rested for ";
-	if($_SESSION['rest'])
-	  {
-	  echo "<input type='number' class='inno' min='1' max='7' name='day' value='1'>";
-	  echo " days";
-	  }
-	echo "<li><p class='western10'>..<input type='text' name='morelist' class='intext'  value='";
-	echo $_SESSION['moretext'];
-	echo "'..</p>";
+        echo "<li><input type='submit' name='rest' value='Y'><input type='submit' name='rest' value='N'>";
+        echo "Should be rested for ";
+        if($_SESSION['rest']){echo "<input type='number' class='inno' min='1' max='7' name='day' value='1'> days";}
+        echo "<li>..<input type='text' name='morelist' class='intext'  value='".$_SESSION['moretext']."'>..";
         if(!empty($_SESSION['moretext']))
         {
-        echo "<li><p class='western10'>..<input type='text' name='morelist1' class='intext'  value='";
-        echo $_SESSION['moretext1'];
-        echo "'..</p>";
+            echo "<li>..<input type='text' name='morelist1' class='intext'  value='".$_SESSION['moretext1']."'>..";
         }
 	}
 	else
 	{ 
 	  if($_SESSION['rest'])
 	  {
-	    echo "<li><p class='western10'>";
+	    echo "<li>";
 	    echo "Should be rested for ";
 	    echo $_SESSION['day'];
 
@@ -314,7 +306,7 @@ else echo $_SESSION['trmtext'];
                 break;
                 }
                 echo " ".$sy;
-	    echo "</u>.</p>";
+	    echo "</u>.";
 	    }
 	    else
 	    {
@@ -361,11 +353,8 @@ else echo $_SESSION['trmtext'];
                 echo " ".$sy.".";
 	    }
 	  }
-	  if(!empty($_SESSION['moretext'])) echo "<li><p class='western10'>".$_SESSION['moretext']."</p>";
-	  if(!empty($_SESSION['moretext1']))
-	  {
-            echo "<li><p class='western10'>".$_SESSION['moretext1']."</p>";
-           }
+	  if(!empty($_SESSION['moretext'])) echo "<li>".$_SESSION['moretext'];
+	  if(!empty($_SESSION['moretext1'])) echo "<li>".$_SESSION['moretext1'];
 	}
 if($yess)
 {
@@ -377,12 +366,11 @@ if($yess)
  unset($_SESSION['day']);
  unset($_SESSION['rest']);
 }
-	
-	?>
-</ol>
+?>
+</ol></div>
 <div class="pos_r">
-<p class="western">Sign..................................................Medical Doctor</p>
-<p class="western"><?php echo $_SESSION['Esfname']." M.D.";?></p>
+<p class="westernleftalign">Sign..................................................Medical Doctor</p>
+<p class="westernleftalign"><?php echo $_SESSION['Esfname']." M.D.";?></p>
 </div>
 </div></div>
 </div>

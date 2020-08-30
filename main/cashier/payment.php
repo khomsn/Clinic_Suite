@@ -229,7 +229,7 @@ echo "</div></h3>";
 </tr>
 <tr></tr><tr></tr><tr></tr>
 <TR BGCOLOR="#FFFFCC">
-<th>ยอดที่จ่าย</th>
+<th><big><big>ยอดที่จ่าย</big></big></th>
 <th>
 <select name='payby'>
 <?php

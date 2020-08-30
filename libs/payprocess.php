@@ -139,36 +139,31 @@
 	//ตัดยอดยา
 	for($i=1;$i<=$drugmax;$i++)
 	{
-		$drgid = $idrxd[$i];
+		//$drgid = $idrxd[$i];
+		$drgid = $_SESSION['idrx'.$i];
+		$drvol = $_SESSION['rxvol'.$i];
+		$idstat = NULL; 
 		//new
 		//record drug use per month in dupm table for statistics MONTH(mon) = '$sm'
 		$month1 = date("m");
 		$year1 = date("Y");
-		$dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$drgid' AND MONTH(mon) = '$month1' AND YEAR(mon) = '$year1'");
-//		$dupmo = mysqli_fetch_array($dupmin);
+//		$dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$drgid' AND rmonth = '$month1' AND ryear = '$year1'");
+		$dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$drgid' AND rmonth = MONTH(NOW()) AND ryear = YEAR(NOW())");
 		while($dupmo = mysqli_fetch_array($dupmin))
 		{
             $idstat = $dupmo['id'];
-            $newvol = $dupmo['vol'] + $vld[$i];
+            $newvol = $dupmo['vol'] + $drvol;
 		}
-		if(!empty($idstat))
+		if(is_null($idstat))
 		{
-		  $sql_insert = "UPDATE `dupm` SET `mon` = now(),`vol` = '$newvol'
-						  WHERE id='$idstat'; 
-						  ";
-		  mysqli_query($link, $sql_insert);
-		
+            $sql_insert = "INSERT INTO `dupm` (`drugid`, `ryear`, `rmonth`, `vol`) VALUES ('$drgid',YEAR(NOW()),MONTH(NOW()),'$drvol')";
+            mysqli_query($link, $sql_insert);
 		}
 		else
 		{
-		  $sql_insert = "INSERT into `dupm`
-			    (`drugid`,`mon`,`vol`)
-			VALUES
-			    ('$drgid',now(),'$vld[$i]')";
-		    mysqli_query($link, $sql_insert);
-		
+            $sql_update = "UPDATE `dupm` SET `vol` = '$newvol'  WHERE id='$idstat';";
+            mysqli_query($link, $sql_update);
 		}
-
 		$drugtable = "drug_".$drgid;
 		//get ctz-id
 		$ptin = mysqli_query($linkopd, "select * from patient_id where id='$ctmid' ");

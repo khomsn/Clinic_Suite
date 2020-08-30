@@ -8,7 +8,7 @@ if(!empty($_SESSION['DDx']) AND !$_SESSION['cddx'])
     //$str = 'hypertext;language;programming';
     $charsl = preg_split('/-/', $_SESSION['DDx']);
     
-    for($i=1;$i<=$n;$i++)
+    for($i=0;$i<=$n;$i++)
     {
 
         $_SESSION['dx'.$i] = rtrim($charsl[$i], "1234567890 ");
@@ -88,7 +88,7 @@ if($_POST['todo']=='Diag')
     if(!empty($_POST['diag'.$j]))
     {
         $dxx = $j."-".$_POST['diag'.$j];
-        $_SESSION['ddx'] = $_SESSION['ddx']." ".$dxx;
+        $_SESSION['ddx'] = $_SESSION['ddx'].$dxx." ";
         unset($_SESSION['dx'.$j]);
     }
   }

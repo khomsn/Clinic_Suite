@@ -317,7 +317,6 @@ else echo "<body onload=\"javascript: poponload();\">";
                                     $rxg = "rxg".$i;
                                     $us = "rx".$i."uses";
                                     $rxv = "rx".$i."v";
-                                    $rxsv = "rx".$i."sv";
                                     $rxby = "rxby".$i;
                                     echo "<tr><td>";
                                     echo $i;
@@ -329,8 +328,7 @@ else echo "<body onload=\"javascript: poponload();\">";
                                     while($ck = mysqli_fetch_array($did))
                                     {
                                         $ckeckt=$ck['typen'];
-                                        $rsvol[$i] = $ck['volreserve'];//get reserve volume
-                                        $inv[$i] = $ck['volume'];//get inventory volume
+                                        $ubinv = $ck['volume'] - $ck['volreserve'] + $row[$rxv];
                                         $prolab = $ck['candp'];//check program lab
                                         if($prolab == 2)
                                         {
@@ -353,7 +351,7 @@ else echo "<body onload=\"javascript: poponload();\">";
                                     echo ">";
                                     echo "</td>";
                                     echo "<td>";
-                                    echo "<input type=number class=typenumber min=0 max=".($inv[$i]-$rsvol[$i]+$row[$rxv])." step=1 name=vl$i value='$row[$rxv]'>";
+                                    echo "<input type=number class=typenumber min=0 max='$ubinv' step=1 name=vl$i value='$row[$rxv]'>";
                                     echo "<input type=hidden name=oldvl$i value='$row[$rxv]'>";//this is old volume 
                                     echo "</td>";
                                     echo "<td>";

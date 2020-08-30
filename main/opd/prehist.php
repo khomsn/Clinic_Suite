@@ -22,9 +22,7 @@ $pttable = "pt_".$id;
 $tmptable = "tmp_".$id;
 
 if($_POST['register'] == 'บันทึก') 
-{ 
-
-    //$date = date("Y-m-d");
+{
     //check for "csf" if blank don't insert
     if (ltrim($_POST['csf'])!=="")
     {
@@ -46,19 +44,17 @@ if($_POST['register'] == 'บันทึก')
         //check if already record
         $tptin = mysqli_query($link, "select * from  `$tmptable` ");
         $row_settings = mysqli_fetch_array($tptin);
-
+        /********************* not yet record *******************************************/
         if (ltrim($row_settings['csf'])==="")
             {
-            // assign insertion pattern
+            // assign insertion pattern to $tmptable
             $sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
-
-            // Now insert Patient to "tmp_#id" table
+            // Now insert data to "tmp_#id" table
             mysqli_query($link, $sql_insert);
             
             // get row index to insert and update to pt_table
             $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
             $_SESSION['rindex'] = $rindex[0];
-
             // assign insertion pattern
             if(empty($_POST['weight'])) $_POST['weight']=0;
             if(empty($_POST['height'])) $_POST['height']=0;
@@ -75,18 +71,19 @@ if($_POST['register'] == 'บันทึก')
                     (`id`,`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
                     VALUES
                     ('$_SESSION[rindex]', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
-
-            while($_SESSION['rindex'] != $MaxRowCheck)
+            
+            $MaxRowCheck=0;
+            while($_SESSION['rindex'] !== $MaxRowCheck)
                 {
                 // Now insert Patient to "pt_#id" table
                 mysqli_query($linkopdx, $sql_insert);
                 // Check back if it is recorded.
-                $result = mysqli_query($linkopdx, "select MAX(id) from $pttable where id='$_SESSION[rindex]'");
+                $result = mysqli_query($linkopdx, "select MAX(id) from `$pttable` where id='$_SESSION[rindex]'");
                 $maxrow = mysqli_fetch_array($result);
                 $MaxRowCheck = $maxrow[0];
                 }
             }
-            
+        /********************* recorded *************************************************/    
         if (ltrim($row_settings['csf']) !=="")
             {
             // get row index to insert and update to pt_table
@@ -94,7 +91,7 @@ if($_POST['register'] == 'บันทึก')
             $_SESSION['rindex'] = $rindex[0];
            // assign insertion pattern
             $sql = "UPDATE $tmptable SET `csf` = '$_POST[csf]', `preg` = '$_POST[preg]',`medcert` = '$medcert',`pricepolicy`= '$staff'";
-            // Now insert Patient to "tmp_#id" table
+            // Now update data to "tmp_#id" table
             mysqli_query($link, $sql);
             
             $pgo = mysqli_query($linkopdx, "select * from $pttable where  id = '$_SESSION[rindex]' ");
@@ -112,7 +109,7 @@ if($_POST['register'] == 'บันทึก')
             else {
             $progupdate = $oldprog;
             }
-        // assign insertion pattern
+        // assign update pattern
             $sql = "UPDATE $pttable SET
                     `weight` = '$_POST[weight]',
                     `height` = '$_POST[height]',
@@ -126,7 +123,7 @@ if($_POST['register'] == 'บันทึก')
                     WHERE `id`='$_SESSION[rindex]'
                     ";
             
-            // Now insert Patient to "pt_#id" table
+            // Now update data to "pt_#id" table
             mysqli_query($linkopdx, $sql);
             }
         //update height at patient_id.
@@ -268,13 +265,13 @@ include '../../main/bodyheader.php';
                                         else $pregmonth = $dmp+$pregmonth;
                                     }
                                 }
-                                echo "<input type=\"radio\" name=\"preg\" class=\"required\" value=\"1\" ";
+                                echo "<input type=\"radio\" id='preg1' name=\"preg\" class=\"required\" value=\"1\" ";
                                 if(($preg == 1) OR ($pregmonth > 0)){echo "checked"; $preg=1;}
-                                echo ">ตั้งครรภ์";
+                                echo "><label for='preg1'>ตั้งครรภ์</label>";
                                 if($pregmonth!=0) echo "<sup>".$pregmonth."</sup>";
-                                echo "<input type=\"radio\" name=\"preg\" class=\"required\" value=\"0\" ";
+                                echo "<input type=\"radio\" id='preg0' name=\"preg\" class=\"required\" value=\"0\" ";
                                 if((empty($preg)) OR ($preg == 0) ) echo "checked";
-                                echo ">ไม่ตั้งครรภ์";
+                                echo "><label for='preg0'>ไม่ตั้งครรภ์</label>";
                             }
                             else
                             {
@@ -290,13 +287,13 @@ include '../../main/bodyheader.php';
                     <hr style="width: 80%; height: 2px;">
                     <div style="text-align: center;">
                     <h4>ตรวจร่างกายเบื้องต้น</h4>
-                    น้ำหนัก: <input maxlength="5" size="5" name="weight" value="<?php echo $weight;?>" > kg.  
+                    น้ำหนัก: <input type="number" name="weight" class="typenumber" step="0.1" value="<?php echo $weight;?>" > kg.  
                     &nbsp; &nbsp; &nbsp;
                     <?php
                     if($_SESSION['age']<=20 or $_SESSION['age']>=50)
                     {
                     ?>
-                    ส่วนสูง: <input maxlength="5" size="5" name="height" value="<?php echo $height;?>" > cm.  
+                    ส่วนสูง: <input type="number" name="height" class="typenumber" value="<?php echo $height;?>" > cm.  
                     &nbsp; &nbsp; &nbsp;
                     <?php
                     }
@@ -306,21 +303,21 @@ include '../../main/bodyheader.php';
                         echo "<input type=hidden name=height value=".$hin[0].">";
                     }
                     ?>
-                    Temp <input maxlength="4" size="5" name="temp" value="<?php echo $_SESSION['oldtemp'] = $temp;?>" > C.
+                    Temp <input type="number" name="temp" class="typenumber" step="0.1" value="<?php echo $_SESSION['oldtemp'] = $temp;?>" > C.
                     &nbsp; &nbsp; &nbsp;
-                    หายใจ <input maxlength="4" size="5" name="rr" value ="16" value="<?php echo $_SESSION['oldrr'] = $rr;?>" > / นาฑี 
+                    หายใจ <input type="number" name="rr" class="typenumber" value ="16" value="<?php echo $_SESSION['oldrr'] = $rr;?>" > / นาฑี 
                     <br><br>
-                    BP  Sys <input maxlength="3" size="4" name="bpsys" value="<?php echo $_SESSION['oldbpsys'] = $bpsys;?>" > / Dia <input  maxlength="3" size="4" name="bpdia" value="<?php echo $_SESSION['oldbpdia'] = $bpdia;?>"  > mmHg.
+                    BP  Sys <input  type="number" name="bpsys" class="typenumber" value="<?php echo $_SESSION['oldbpsys'] = $bpsys;?>" > / Dia <input   type="number" name="bpdia" class="typenumber" value="<?php echo $_SESSION['oldbpdia'] = $bpdia;?>"  > mmHg.
                     &nbsp; &nbsp; &nbsp; 
-                    HR <input maxlength="3" size="4" name="hr" value="<?php echo $_SESSION['oldhr'] = $hr;?>"  > BPM.
+                    HR <input type="number" name="hr" class="typenumber" value="<?php echo $_SESSION['oldhr'] = $hr;?>"  > BPM.
                     <br>
                     </div>
                     <hr style="width: 80%; height: 2px;"><br>
-                    <div style="text-align:center;"> <input type="checkbox" name="medc" value="1" <?php if($medcert != 0) echo "checked";?>> ใบรับรองแพทย์ + ใบเสร็จรับเงิน <input type=radio name=medcert value=1  <?php if($medcert == 1) echo "checked";?>>ตรวจโรคสมัครงาน <input type=radio name=medcert value=2 <?php if($medcert != 1 ) echo "checked";?>>ยืนยันตรวจจริง
+                    <div style="text-align:center;"> <input type="checkbox" name="medc" id="medc" value="1" <?php if($medcert != 0) echo "checked";?>><label for="medc"> ใบรับรองแพทย์ + ใบเสร็จรับเงิน</label><input type="radio" name="medcert" id="medcert1" value="1"  <?php if($medcert == 1) echo "checked";?>><label for="medcert1">ตรวจโรคสมัครงาน</label> <input type="radio" name="medcert" id="medcert2" value="2" <?php if($medcert != 1 ) echo "checked";?>><label for="medcert2">ยืนยันตรวจจริง</label>
                     <hr style="width: 80%; height: 2px;"><br>
-                    <input type="radio" name="policy" value="2" <?php if($pricepolicy == 2 or $pricepolicy == "" or $pricepolicy == 0) echo "checked";?>>ตรวจโรค
-                    <input type="radio" name="policy" value="3" <?php if($pricepolicy == 3 ) echo "checked";?>>ทำหัตการ
-                    <input type="radio" name="policy" value="4" <?php if($pricepolicy == 4 ) echo "checked";?>>มาตามนัด</div>
+                    <input type="radio" name="policy" id="policy2" value="2" <?php if($pricepolicy == 2 or $pricepolicy == "" or $pricepolicy == 0) echo "checked";?>><label for="policy2">ตรวจโรค</label>
+                    <input type="radio" name="policy" id="policy3" value="3" <?php if($pricepolicy == 3 ) echo "checked";?>><label for="policy3">ทำหัตการ</label>
+                    <input type="radio" name="policy" id="policy4" value="4" <?php if($pricepolicy == 4 ) echo "checked";?>><label for="policy4">มาตามนัด</label></div>
                 </td></tr>
                 <tr><td><br><div style="text-align: center;"><input name="register" value="บันทึก" type="submit"></div>
                     <?php 

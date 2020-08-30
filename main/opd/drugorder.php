@@ -47,7 +47,7 @@ if($_SESSION['ORDER']==0)
             {
             $_SESSION['DG']=$_SESSION['DG']+1;
             }*/
-            $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$t]' AND $cat AND $fdout AND $foutlast  AND $fddi");
+            $ptin = mysqli_query($link, "select * from drug_id where id='$idrx[$t]' AND $cat AND $fdout AND $foutlast  AND $fddi AND (volume > volreserve) ");
             while ($row2 = mysqli_fetch_array($ptin))
                 {
                     $rxtypen[$t] =  $row2['typen'];
@@ -356,7 +356,6 @@ if($_POST['todo']=='Close')
         }
         $us = "rx".$a."uses";
         $vl = "rx".$a."v";
-        $svl = "rx".$a."sv";
         $idp = $idrx[$a];
         $rxp = $rx[$a];
         $rgp = $rxgn[$a];
@@ -370,8 +369,7 @@ if($_POST['todo']=='Close')
             `rx$a` = '$rxp',
             `rxg$a` = '$rgp',
             `$us` = '$usp',
-            `$vl` = '$vlp',
-            `$svl` = '$svlp'
+            `$vl` = '$vlp'
             ") or die(mysqli_error($link));
             
         //update reserve volume at drug_id $_SESSION['svolr'
@@ -424,10 +422,10 @@ $(document).ready(function() {
         $_SESSION['ddiltemp_'.$id]=$_SESSION['ddil'];
     }
     ?>
-    <input name='ddiltemp' type='radio' value='0' <?php if($_SESSION['ddiltemp_'.$id]==0) echo 'checked';?>>0 
-    <input name='ddiltemp' type='radio' value='1' <?php if($_SESSION['ddiltemp_'.$id]==1) echo 'checked';?>>|1| 
-    <input name='ddiltemp' type='radio' value='2' <?php if($_SESSION['ddiltemp_'.$id]==2) echo 'checked';?>>|2| 
-    <input name='ddiltemp' type='radio' value='3' <?php if($_SESSION['ddiltemp_'.$id]==3) echo 'checked';?>>|3|]&nbsp; &nbsp; &nbsp; &nbsp;
+    <input name='ddiltemp' type='radio' id='ddlt0' value='0' <?php if($_SESSION['ddiltemp_'.$id]==0) echo 'checked';?>><label for='ddlt0'>0</label> 
+    <input name='ddiltemp' type='radio' id='ddlt1' value='1' <?php if($_SESSION['ddiltemp_'.$id]==1) echo 'checked';?>><label for='ddlt1'>|1| </label> 
+    <input name='ddiltemp' type='radio' id='ddlt2' value='2' <?php if($_SESSION['ddiltemp_'.$id]==2) echo 'checked';?>><label for='ddlt2'>|2| </label> 
+    <input name='ddiltemp' type='radio' id='ddlt3' value='3' <?php if($_SESSION['ddiltemp_'.$id]==3) echo 'checked';?>><label for='ddlt3'>|3|</label> ]&nbsp; &nbsp; &nbsp; &nbsp;
     <a HREF="prescriptold.php" >(ยาเก่า)</a> 
     <table border='1' style='text-align: center; margin-left: auto; margin-right: auto;' >
       <tr><th width = 10 >No</th><th width = 250px >ชื่อ+ขนาด</th><th>วิธีใช้</th><th width =50px>จำนวน</th><th>เพิ่ม</th><th>ลบ</th></tr>

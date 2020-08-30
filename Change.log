@@ -1,3 +1,27 @@
+khomsn-klinic-suite (63.08-30) stable; urgency=low
+  
+    * Version 25630830: Update search page.
+
+khomsn-klinic-suite (63.07-25) stable; urgency=low
+  
+    * Version 25630725: Small update for packaging.
+
+khomsn-klinic-suite (63.07-24) stable; urgency=low
+  
+    * Version 25630724: correction for Register/combine_ptdatatable.php coding.
+
+khomsn-klinic-suite (63.07-23) stable; urgency=low
+  
+    * Version 25630723: correction for remed coding.
+
+khomsn-klinic-suite (63.07-22) stable; urgency=low
+  
+    * Version 25630722: Improve patient opd cardrecording and displaying.
+    
+khomsn-klinic-suite (63.06-29) stable; urgency=low
+  
+    * Version 25630629: correction of coding, label check and radio box.
+    
 khomsn-klinic-suite (63.05-01) stable; urgency=low
   
     * Version 25630501: Rewrite installation process and database configuration

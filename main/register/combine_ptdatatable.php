@@ -202,7 +202,7 @@ if($_POST['search'] == 'ค้นหา')
     $lname1 = $row['lname'];
     $ctz_id1 = $row['ctz_id'];
     $mobile1 = $row['mobile'];
-    $avatar1 = $pdir. "pt_".$y.".jpg";
+    $avatar1 = $pdir. "pt_".$id1.".jpg";
     $address1 = $row['address1']." ม.".$row['address2']." ต.".$row['address3']." อ.".$row['address4']." จ.".$row['address5'];
     } 
     while($row = mysqli_fetch_array($result2))
@@ -213,7 +213,7 @@ if($_POST['search'] == 'ค้นหา')
     $lname2 = $row['lname'];
     $ctz_id2 = $row['ctz_id'];
     $mobile2 = $row['mobile'];
-    $avatar2 = $pdir. "pt_".$y.".jpg";
+    $avatar2 = $pdir. "pt_".$id2.".jpg";
     $address2 = $row['address1']." ม.".$row['address2']." ต.".$row['address3']." อ.".$row['address4']." จ.".$row['address5'];
     } 
 
@@ -252,11 +252,11 @@ echo "</td></tr>";
 echo "<tr><td>";
 echo "เลขประชาชน";
 echo "</td><td>"; 
-echo $ctz_id1;
-echo "<input type='radio' name='ctzid' value='".$ctz_id1."'>";
+echo "<label for='".$ctz_id1."'>".$ctz_id1."</label>";
+echo "<input type='radio' name='ctzid' id='".$ctz_id1."' value='".$ctz_id1."'>";
 echo "</td><td>"; 
-echo $ctz_id2;
-echo "<input type='radio' name='ctzid' value='".$ctz_id2."'>";
+echo "<label for='".$ctz_id2."'>".$ctz_id2."</label>";
+echo "<input type='radio' name='ctzid' id='".$ctz_id2."' value='".$ctz_id2."'>";
 echo "</td></tr>"; 
 echo "<tr><td>";
 echo "โทร";

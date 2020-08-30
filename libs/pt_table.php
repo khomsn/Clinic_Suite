@@ -16,7 +16,7 @@ if(!empty($_SESSION['Patient_id']))
 {
     $tabletocreate = "pt_".$_SESSION['Patient_id'];
 
-    $sql_insert = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
+    $tb_create = " CREATE TABLE IF NOT EXISTS `$tabletocreate` (
 				`id` SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 				`date` DATETIME NOT NULL ,
 				 `ccp` VARCHAR( 500 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
@@ -176,14 +176,14 @@ if(!empty($_SESSION['Patient_id']))
 				 `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL
 				) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         // Now insert Patient to "patient_id" table
-        mysqli_query($linkopdx, $sql_insert) or die("Create Failed:" . mysqli_error($linkopdx));
+        mysqli_query($linkopdx, $tb_create) or die("Create Failed:" . mysqli_error($linkopdx));
 
-    $sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='$tabletocreate' ORDER BY `id`" );
-    $tableversion = mysqli_num_rows($sql_select);
-    if(!$tableversion)
+    $sql_check =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='$tabletocreate' ORDER BY `id`" );
+    $tabcheck = mysqli_num_rows($sql_check);
+    if(!$tabcheck)
     {
-        $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES ('$tabletocreate', '1')";
-        mysqli_query($link, $sql);
+        $sql_insert  = "INSERT INTO `initdb` (`refname`, `version`) VALUES ('$tabletocreate', '1')";
+        mysqli_query($link, $sql_insert);
     }
     else
     {/*********** update data base code here *****************/

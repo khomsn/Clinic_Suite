@@ -98,26 +98,48 @@ while ($row = mysqli_fetch_array($ptin))
     echo "<b><u>ประวัติโรคประจำตัว</u></b>: ".$row['chronicill']."<br>";
     echo "<b><u>อาการนำ</u></b>: ".$row['ccp']."<br>";
     echo "<b><u>ประวัติอาการ</u></b>:";
-    echo "<p class='P1' align=justify>".$row['dofhis']."</p>";
-    echo "<b><u>ตรวจร่างกาย</u></b>:";
+    $hist_ill = $row['dofhis'];
+    $hist_ill = mysqli_real_escape_string($linkopd, $hist_ill);
+    $hist_ill = str_replace("\\r\\n","<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$hist_ill);
+    echo "<p class='P1' align=justify>".$hist_ill."</p>";
     echo "<p class='klpresent'>";
-    echo " BP= ";
+    echo "<b><u>ตรวจร่างกาย</u></b>:";
+    echo " BW = ";
+    echo $row['weight'];
+    echo " kg. ;";
+    echo " Temp = ";
+    echo $row['temp'];
+    echo "°C ;";
+    echo " BP = ";
     echo $row['bpsys'];
     echo "/";
     echo $row['bpdia'];
-    echo " mmHg  HR= ";
+    echo " mmHg ; HR = ";
     echo $row['hr'];
-    echo " BPM";
-    echo "  Temp=";
-    echo $row['temp'];
-    echo "°C  RR=";
+    echo " BPM ;";
+    echo " RR = ";
     echo $row['rr'];
-    echo " /min ";
-    echo "  BW= ";
-    echo $row['weight'];
-    echo " kg";
+    echo "/min";
     echo "</p>";
-    echo "<p class='klpresent'>".$row['phex']."</p>";
+    $oldphex = $row['phex'];
+    $oldphex = mysqli_real_escape_string($linkopdx, $oldphex);
+    $phex = strstr($oldphex, '[PICTURE]', true);
+    if (empty($phex)) {$phex = $oldphex;}
+    $phex = str_replace("\\r\\n","<br>",$phex);
+    echo "<p class='klpresent'>".$phex."</p>";
+    $pic_file = strstr($oldphex, '[PICTURE]');
+    if(!empty($pic_file)) {
+        $num_of_pic = substr_count($pic_file ,";");
+        $j = $num_of_pic + 1;
+        $pic_file = ltrim($pic_file,"[PICTURE]");
+        $pic_file = rtrim($pic_file,"[/PICTURE]");
+        $picsrc = explode(";", $pic_file);
+        echo "<div>";
+        for ($i=0;$i<$j;$i++){
+            echo "<button><img src='".$picsrc[$i]."' width='100' height='100'/></button>";
+        }
+        echo "</div>";
+    }
     $progs = $row['obsandpgnote'];
     ///
     echo "<p class='P1'>";

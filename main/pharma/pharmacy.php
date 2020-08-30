@@ -139,26 +139,6 @@ if(!$tableversion)
     mysqli_query($link, $sql);
 }
 
-$sql = "
-CREATE TABLE IF NOT EXISTS `drandillci` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `chronname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `drugname` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-";
-
-mysqli_query($linkcm, $sql);
-
-$sql_select =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='drandillci' ORDER BY `id`" );
-$tableversion = mysqli_num_rows($sql_select);
-if(!$tableversion)
-{
-    $sql  = "INSERT INTO `initdb` (`refname`, `version`) VALUES (\'drandillci\', \'1\')";
-    mysqli_query($link, $sql);
-}
-
 $sql_create = "CREATE TABLE  IF NOT EXISTS `deleted_drug` (
   `id` int(11) NOT NULL,
   `dname` varchar(50) COLLATE utf8_unicode_ci NOT NULL,

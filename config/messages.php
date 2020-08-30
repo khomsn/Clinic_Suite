@@ -38,6 +38,7 @@ define("FEEDBACK_AVATAR_UPLOAD_WRONG_TYPE", "Only JPEG and PNG files are support
 define("FEEDBACK_AVATAR_UPLOAD_TOO_SMALL", "Avatar source file's width/height is too small. Needs to be 100x100 pixel minimum.");
 define("FEEDBACK_AVATAR_UPLOAD_TOO_BIG", "Avatar source file is too big. 5 Megabyte is the maximum.");
 define("FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE", "Avatar folder is not writeable. Please change this via chmod 775 or 777.");
+define("FEEDBACK_PT_IMAGE_FOLDER_NOT_WRITEABLE", "PT_IMAGE folder is not writeable. Please change this via chmod 775 or 777.");
 define("FEEDBACK_AVATAR_NOT_UPLOAD", "Avatar source is not set or cannot upload or not readable.");
 define("FEEDBACK_PASSWORD_RESET_TOKEN_FAIL", "Could not write token to database.");
 define("FEEDBACK_PASSWORD_RESET_MAIL_SENDING_ERROR", "Password reset mail could not be sent due to: ");

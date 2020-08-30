@@ -105,7 +105,7 @@ include '../../main/bodyheader.php';
                 } 
                 echo $drugbuy[$i];
                 echo "</td><td>";
-                $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$did[$i]' AND MONTH(mon) = '$sm' AND YEAR(mon) = '$sy'");
+                $dupmin = mysqli_query($link, "SELECT * FROM dupm WHERE drugid = '$did[$i]' AND rmonth = '$sm' AND ryear = '$sy'");
                 $dupmo = mysqli_fetch_array($dupmin);
                 echo $dupmo['vol'];
                 //echo $druguse[$i];

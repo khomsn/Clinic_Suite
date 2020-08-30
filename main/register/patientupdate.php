@@ -156,56 +156,6 @@ if($_POST['doRegister'] == 'แก้ไข')
         $sql_insert = "INSERT into `prefix` (name) value ('$_POST[prefix]')";
         mysqli_query($linkcm, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkcm));
     }
-    /*************************** AVATAR PART********************************/
-        
-        if (is_dir($pdir) && is_writable($pdir)) 
-        {
-            if (!empty ($_FILES['avatar_file']['tmp_name'])) 
-            {
-                // get the image width, height and mime type
-                // btw: why does PHP call this getimagesize when it gets much more than just the size ?
-                $image_proportions = getimagesize($_FILES['avatar_file']['tmp_name']);
-
-                // dont handle files > 5MB
-                if ($_FILES['avatar_file']['size'] <= 2000000 ) 
-                {
-                    if ($image_proportions[0] >= 100 && $image_proportions[1] >= 100) 
-                    {
-                        if ($image_proportions['mime'] == 'image/jpeg' || $image_proportions['mime'] == 'image/png') 
-                        {
-                            $target_file_path = $pdir ."pt_". $id . ".jpg";
-                               
-                            // creates a 44x44px avatar jpg file in the avatar folder
-                            // see the function defintion (also in this class) for more info on how to use
-                            resize_image($_FILES['avatar_file']['tmp_name'], $target_file_path, 120, 120, 85, true);
-
-                            $msg[] = FEEDBACK_AVATAR_UPLOAD_SUCCESSFUL;
-                        }
-                        else
-                        {
-                           $err[] = FEEDBACK_AVATAR_UPLOAD_WRONG_TYPE;
-                        }
-                    }
-                    else 
-                    {
-                        $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_SMALL;
-                    }
-                } 
-                else 
-                {
-                    $err[] = FEEDBACK_AVATAR_UPLOAD_TOO_BIG;
-                } 
-            }
-            else
-            {
-                $err[] = FEEDBACK_AVATAR_NOT_UPLOAD;
-            }
-        }
-        else
-        {
-            $err[] = FEEDBACK_AVATAR_FOLDER_NOT_WRITEABLE;
-        }
-    /**********************************AVATAR END*******************************/
 }
 ErrJP:
 
@@ -216,8 +166,10 @@ include '../../libs/autoname.php';
 include '../../libs/autojatz.php';
 $formid = "regForm";
 include '../../libs/validate.php';
+echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../../jscss/css/popuponpage.css\"/>";
+include '../../libs/popup.php';
+include '../../libs/popuponpage.php';
 include '../../main/bodyheader.php';
-
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="main">
 <tr><td width="160" valign="top"><div class="pos_l_fix">
@@ -407,14 +359,21 @@ include '../../main/bodyheader.php';
                 elseif($staff==9) echo "<input type=checkbox name=monk value=9 checked>ภิกษุสงฆ์"; 
                 else echo "<input type=checkbox name=monk value=9>ภิกษุสงฆ์";
                 ?>
-                <div class="avatar">
-                <img src="<?php $avatar = $pdir. "pt_". $id . ".jpg";
-                echo $avatar; ?>" width="44" height="44" /></div>
+                <?php
+                echo "<div class='avatar'>";
+                $avatar = $pdir. "pt_".$id.".jpg";
+                echo "<div class='popup' onmouseover='myFunction()' onmouseout='myFunction()'><span class='popuptext' id='myPopup'>Update รูปคนไข้ คลิกที่รูป คนไข้ ได้เลยครับ!</span>";
+                echo "<a href='../opd/updateptimage.php?msg=".$id."' onClick=\"return popup(this, 'name' , '800' , '500' , 'yes' );\">";
+                echo "<img src='";
+                echo $avatar;
+                echo "' width=44 height=44 />";
+                echo "</a>";
+                echo "</div>";
+                echo "</div>";
+                ?>
+
                 <br>
-                <label for="avatar_file">Avatar:</label>
-                <!-- max size 5 MB (as many people directly upload high res pictures from their digicams) -->
-                <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-                <input type="file" name="avatar_file" /> &nbsp;&nbsp;&nbsp;&nbsp;ใบเสร็จรับเงินในนาม:<select name="compy">
+                ใบเสร็จรับเงินในนาม:<select name="compy">
                 <?php 
                 if($company==0)	echo "<option value='0' selected></option>";
                 else echo "<option value='0'></option>";

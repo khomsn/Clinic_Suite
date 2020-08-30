@@ -1,55 +1,75 @@
 p { margin-bottom: 0.1in; direction: ltr; color: #000000; line-height: 120%; widows: 2; orphans: 2 }
-p.western { line-height: 100%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 11pt; so-language: en-US }
-p.western10 { line-height: 100%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 10pt; so-language: en-US }
-p.cjk { font-family: "Times New Roman", serif; font-size: 12pt }
-p.ctl { font-family: "Angsana New", serif; font-size: 10pt; so-language: th-TH }
+p.westerncentalign { text-align:center; line-height: 150%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 11pt; so-language: en-US }
+p.westernleftalign { text-align:left; line-height: 150%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 11pt; so-language: en-US }
+p.westernjustalign { text-align:justify; line-height: 150%; margin-bottom: 0in; font-family: "Times New Roman", serif; font-size: 11pt; so-language: en-US }
+p.ctl { line-height: 120%; margin-bottom: 0in; font-family: "Angsana New", serif; font-size: 14pt; so-language: th-TH }
 a:link { so-language: zxx }
 
 body {
+    min-height: 148.5mm;
     margin: 0;
     padding: 0;
     background-color: #FAFAFA;
     font: 12pt "Tahoma";
-    height: 148.5mm;
-    width: 210mm;
 }
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 .page {
-    width: 210mm;
     min-height: 148.5mm;
-    padding: 1cm;
-    margin: 1cm auto;
+    max-height: 297mm;
+    width: 210mm;
+    padding: 10mm;
+    margin: 10mm auto;
     border: 1px #FFFFFF solid;
     border-radius: 5px;
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-color:transparent;
 }
 .subpage {
     padding: 0mm;
     border: 5px #FFFFFF solid;
-    height: 138mm;
-    outline: 10mm #FFFFFF solid;
+    min-height: 128.5mm;
+    max-height: 277mm;
+    border-color:transparent;
 }
 @page {
-    size: A5;
+    size: A4;
     margin: 0;
 }
 @media print {
+    * { overflow: visible !important; }
     .page {
-	width: 210mm;
-	height:148.5mm;
         margin: 0;
         border: initial;
         border-radius: initial;
+        width: initial;
+        min-height: initial;
         box-shadow: initial;
         background: initial;
         page-break-after: always;
+        border-color:transparent;
     }
+    .subpage {
+        padding: 0mm;
+        border: 5px #FFFFFF solid;
+        height: initial;
+        max-height: 277mm;
+        border-color:transparent;
+    }  
 }
 div.pos_r {
 	float: right;
 	right: 10px;
+}
+div.drcon { line-height: 120%; margin-bottom: 0in; font-family: "Angsana New", serif; font-size: 14pt; so-language: th-TH }
+ol {
+    line-height:120%
+}
+.ajt li {
+     height: auto;
+     padding-bottom:1px;
+     list-style-position: outside;
 }

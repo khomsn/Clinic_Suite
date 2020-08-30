@@ -3,35 +3,35 @@ include '../../config/dbc.php';
 page_protect();
 
 $ptid = $_SESSION['patdesk'];
+$id = $_SESSION['patdesk'];
 $Patient_id = $ptid;
 include '../../libs/opdxconnection.php';
 
 $pttable = "pt_".$ptid;
-$tmp = "tmp_".$ptid;
 
 $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
 $maxid = mysqli_fetch_array($pin);
 
+$ptin = mysqli_query($linkopd, "select * from patient_id where id='$ptid' ");
+while($row = mysqli_fetch_array($ptin)) 
+{
+    $dl1 = $row['drug_alg_1'];
+    $dl2 = $row['drug_alg_2'];
+    $dl3 = $row['drug_alg_3'];
+    $dl4 = $row['drug_alg_4'];
+    $dl5 = $row['drug_alg_5'];
+}
+
+$catc = $_SESSION['catc'];
+/* check for pregnancy and catc enable for this patient_id
+*  and return $cat = $cat = '(cat = "A" or cat = "B" or cat = "N")';
+*  '(cat = "A" or cat = "B" or cat = "C" or cat = "N")'; or 1;
+*  from catcset.php
+*/
+include '../../libs/catcset.php';
+
 if($maxid[0]!=$_SESSION['mxid'])
 {
-
-    $ptin = mysqli_query($linkopd, "select * from patient_id where id='$ptid' ");
-    while($row = mysqli_fetch_array($ptin)) 
-    {
-        $dl1 = $row['drug_alg_1'];
-        $dl2 = $row['drug_alg_2'];
-        $dl3 = $row['drug_alg_3'];
-        $dl4 = $row['drug_alg_4'];
-        $dl5 = $row['drug_alg_5'];
-    }
-    
-    $pin = mysqli_query($link, "select * from $tmp ");
-    while ($row = mysqli_fetch_array($pin))
-    {
-        //get preg condition
-        $preg = $row['preg'];
-    }
-
     $_SESSION['mxid'] = $maxid[0];
     $_SESSION['rid'] = $maxid[0]-1;
 }
@@ -156,20 +156,29 @@ include '../../libs/reloadopener.php';
             {
                 for($i=1;$i<=14;$i++)
                 {
+                    $idrx = "idrx".$i;
                     $rx ="rx".$i;
                     $rxgn ="rxg".$i;
                     $us = "rx".$i."uses";
                     $rxv ="rx".$i."v";
                     $y=1;//initialize needed!
                     if($row[$rx]!="")
-                    {
+                    {   
+                        $dgn = $row[$rxgn];
+                        
+                        //echo "catc=".$catc;
+                        //echo "cat=".$cat;
+                        $catcheck = mysqli_fetch_array(mysqli_query($link, "select * from drug_id WHERE dgname = '$dgn'  AND $cat"));
+                        //echo " dgname=".$catcheck['dgname'];
+                        //echo " cat=".$catcheck['cat'];
+                        
+                        if(empty($catcheck['dgname'])) {$y=0; goto BKP;}
+                        
                         if(!empty($dl1)) { if($row[$rxgn] != $dl1) $y = 1;else {$y=0; goto BKP;}}
                         if(!empty($dl2)) { if($row[$rxgn] != $dl2) $y = 1;else {$y=0; goto BKP;}}
                         if(!empty($dl3)) { if($row[$rxgn] != $dl3) $y = 1;else {$y=0; goto BKP;}}
                         if(!empty($dl4)) { if($row[$rxgn] != $dl4) $y = 1;else {$y=0; goto BKP;}}
                         if(!empty($dl5)) { if($row[$rxgn] != $dl5) $y = 1;else {$y=0; goto BKP;}}
-
-                        $dgn = $row[$rxgn];
                         
                         $dgr = mysqli_query($link, "select groupn from drug_id WHERE dgname = '$dgn' ");
                         while($row1 = mysqli_fetch_array($dgr)) 
@@ -197,10 +206,27 @@ include '../../libs/reloadopener.php';
                         // goto point
                         BKP://echo "Y=".$y;
                         //
+                        echo "<tr><td>";
                         if($y)
-                        { echo "<tr><td>";?><input type="checkbox" name="<?php echo $i;?>" id="checkBoxes" value=1 ></td><td><?php echo $i."</td><td>";
+                        { 
+                            $idpst = false;
+                            $tmpcheck = mysqli_query($link, "select * from $tmp ");
+                            while ($tmpitem = mysqli_fetch_array($tmpcheck))
+                            {	
+                                for($m=1;$m<=14;$m++)
+                                {
+                                    $chitem = "idrx".$m;
+                                    if($tmpitem[$chitem] == $row[$idrx])
+                                    {
+                                        $idpst = true;
+                                        echo "No</td><td>$i</td><td>";
+                                        break 1;
+                                    }
+                                }
+                            }
+                            if (!$idpst) echo "<input type='checkbox' name='$i' id='checkBoxes' value=1 ></td><td>$i</td><td>";
                         }
-                        else echo "<tr><td>No</td><td>$i</td><td>";
+                        else echo "No</td><td>$i</td><td>";
                         echo $row[$rx];
                         echo "</td>";
                         echo "<td>";

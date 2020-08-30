@@ -70,13 +70,13 @@ include '../../main/bodyheader.php';
 										for ($i = 1;$i<=12;$i++)
 										{
 										echo "<th style='text-align: right;' >";
-										$getdupmp = mysqli_query($link, "SELECT vol FROM dupm WHERE  drugid='$drugid' AND MONTH(mon) ='$i' AND YEAR(mon) ='$sy' ORDER BY `mon` DESC");
+										$getdupmp = mysqli_query($link, "SELECT vol FROM dupm WHERE  drugid='$drugid' AND rmonth ='$i' AND ryear ='$sy' ORDER BY `id` DESC");
                                             while($gs = mysqli_fetch_array($getdupmp))
                                             {
                                                 $allsum = $allsum + $gs['vol'];
                                             }
                                         echo $allsum;
-                                        $allsum = '';
+                                        $allsum = 0;//reset value for new drugid
 										echo "</th>";
 										}
 										echo "</tr>";

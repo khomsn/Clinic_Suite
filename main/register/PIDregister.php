@@ -124,12 +124,13 @@ if($_POST['doRegister'] == 'Register')
     $concurdrug = mysqli_real_escape_string($link, $concurdrug);
     if(empty($_POST['address2'])) $_POST['address2']=0;
     if(empty($_POST['zipcode'])) $_POST['zipcode']=0;
+    $prefix = trim(preg_replace('/\s+/', '', $_POST['prefix']));
     // assign insertion pattern
     $sql_insert = "INSERT into `patient_id`
                 (`id`,`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`
                 , `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`,  `addstr`,`address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `user_id`, `clinic`  )
                 VALUES
-                ('$idtoinsert','$ctzid','$_POST[prefix]','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
+                ('$idtoinsert','$ctzid','$prefix','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
                 '$_POST[chro_ill_1]','$_POST[chro_ill_2]','$_POST[chro_ill_3]','$_POST[chro_ill_4]','$_POST[chro_ill_5]','$concurdrug','$_POST[address1]','$_POST[address2]','$addstr','$_POST[address3]','$_POST[address4]','$_POST[address5]',
                 '$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_SESSION[user_id]','$_SESSION[clinic]')
                 ";
@@ -138,14 +139,13 @@ if($_POST['doRegister'] == 'Register')
     // Now insert Patient to "patient_id" table
     mysqli_query($linkopd, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkopd));
     //update prefix table
-    $imp = mysqli_query($linkcm, "select name from prefix WHERE name = '$_POST[prefix]'");
+    $imp = mysqli_query($linkcm, "select name from prefix WHERE name = '$prefix'");
 
     list($imprs) = mysqli_fetch_row($imp);
     if(empty($imprs))
     {
-        $sql_insert = "INSERT into `prefix` (name) value ('$_POST[prefix]')";
+        $sql_insert = "INSERT into `prefix` (name) value ('$prefix')";
         mysqli_query($linkcm, $sql_insert) or $err[]=("Insertion Failed:" . mysqli_error($linkcm));
-
     }
 
     // Pass Patient ID as a session parameter.
@@ -165,7 +165,8 @@ if($_POST['doRegister'] == 'Register')
     //create Avatar + Image Directory for this id.
     if ( file_exists($ptimagedir)) 
     {
-        mkdir($ptimagedir.$id, 0644, true);
+        mkdir($ptimagedir.$id, 0755, true);
+        chmod($ptimagedir.$id, 0755);
     }
    
     
@@ -269,7 +270,7 @@ include '../../main/bodyheader.php';
                 <form action="PIDregister.php" method="post" name="regForm" id="regForm" enctype="multipart/form-data">
                     <table style="background-color: rgb(204, 204, 204); width: 700px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
                         <tbody>
-                        <tr><td style="text-align: left;">ยศ*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 autofocus>ชื่อ:*<input  align="center" tabindex="2" name="fname" id="fname" size="20" class="required" type="text" >&nbsp; นามสกุล:*  <input tabindex="3" name="lname" id="lname" size="20" class="required" type="text" >&nbsp;เพศ*<input type="radio" tabindex="4" name="Gender" class="required" value="ชาย">ชาย<input type="radio" tabindex="4" name="Gender" class="required" value="หญิง">หญิง
+                        <tr><td style="text-align: left;">ยศ*<input  align="center" name="prefix" size="5" type="text" id="pref" tabindex=1 autofocus>ชื่อ:*<input  align="center" tabindex="2" name="fname" id="fname" size="20" class="required" type="text" >&nbsp; นามสกุล:*  <input tabindex="3" name="lname" id="lname" size="20" class="required" type="text" >&nbsp;เพศ*<input type="radio" tabindex="4" name="Gender" class="required" id="gm" value="ชาย"><label for="gm">ชาย</label><input type="radio" tabindex="4" name="Gender" class="required" id="gf" value="หญิง"><label for="gf">หญิง</label>
                             <br>
                             เลขประจำตัวประชาชน<input name="ctz_id" tabindex="5" type="text" size="18" maxlength="13">
                             วันเกิด: วันที่&nbsp;
@@ -323,7 +324,7 @@ include '../../main/bodyheader.php';
                             <option value="11">พย</option>
                             <option value="12">ธค</option>
                             </select>
-                            <input type="radio" name="Era" value="1" checked>พ.ศ. <input type="radio" name="Era" value="2">ค.ศ. <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="1914" max="2657" step="1" class="typenumber">
+                            <input type="radio" name="Era" value="1" id="Bera" checked><label for="Bera">พ.ศ.</label> <input type="radio" name="Era" id="era" value="2"><label for="era">ค.ศ.</label> <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="1914" max="2657" step="1" class="typenumber">
                             <hr style="width: 100%; height: 2px;">ส่วนสูง:
                             <input tabindex="9" name="height" size="4" maxlength="3" type="number" value="1" class="typenumber"> ซม.
                             &nbsp; &nbsp;

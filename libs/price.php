@@ -5,7 +5,7 @@ $allprice=0; //init value
 $tpptin = mysqli_query($link, "select * from $tmp ");
 while ($row = mysqli_fetch_array($tpptin))
 {
-    $alllabprice = $row['licprice']+$row['lcprice'];
+    $alllabprice = $row['licprice']+$row['lcprice'];//incomplete + completed prices.
     $pricepolicy = $row['pricepolicy'];
     if($row['licprice']) $rmovelab = 0;
     else $rmovelab = 1;

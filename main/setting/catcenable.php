@@ -41,7 +41,7 @@ while ($row_settings = mysqli_fetch_array($rs_settings))
 $title = "::Enable/Disable Catacory C Drug::";
 include '../../main/header.php';
 ?>
-<script type='text/javascript'>
+<script>
 $(document).ready(function() 
 { 
     $('input[name=catc]').change(function(){
@@ -86,7 +86,7 @@ $(document).ready(function()
       <p>Enable or Disable use of Drug Category C in Pregnancy woman!!  Category C is not enable by default. If you want to use this Category C please enable it, but it not recomment to do so. This Category may be save to use in 4-7 months of pregnant.</p>
         <table width="80%" border="0" align="center" cellpadding="3" cellspacing="3" class="forms">
           <tr><td width="31%">Category C status</td>
-              <td width="69%"><input type="radio" tabindex="1" name="catc" class="required" value="1" <?php if ($catcenb ==1) echo "checked";?>>Enable<input type="radio" tabindex="1" name="catc" class="required" value="0" <?php if ($catcenb ==0) echo "checked";?>>Disable</td>
+              <td width="69%"><input type="radio" tabindex="1" name="catc" id="catc1" class="required" value="1" <?php if ($catcenb ==1) echo "checked";?>><label for="catc1">Enable</label><input type="radio" tabindex="1" name="catc" id="catc0" class="required" value="0" <?php if ($catcenb ==0) echo "checked";?>><label for="catc0">Disable</label></td>
           </tr>
         </table>
       <h3 class="titlehdr">Drug Interaction Level</h3>
@@ -95,10 +95,10 @@ $(document).ready(function()
         <table width="80%" border="0" align="center" cellpadding="3" cellspacing="3" class="forms">
           <tr><td width="31%">DDI</td>
             <td width="69%">
-            <input type="radio" tabindex="2" name="ddil" class="required" value="0" <?php if ($ddil ==0) echo "checked";?>>No DDI
-            <input type="radio" tabindex="2" name="ddil" class="required" value="1" <?php if ($ddil ==1) echo "checked";?>>L1-DDI
-            <input type="radio" tabindex="2" name="ddil" class="required" value="2" <?php if ($ddil ==2) echo "checked";?>>L2-DDI
-            <input type="radio" tabindex="2" name="ddil" class="required" value="3" <?php if ($ddil ==3) echo "checked";?>>L3-DDI
+            <input type="radio" tabindex="2" name="ddil" id="ddi0" class="required" value="0" <?php if ($ddil ==0) echo "checked";?>><label for="ddi0">No DDI</label>
+            <input type="radio" tabindex="2" name="ddil" id="ddi1" class="required" value="1" <?php if ($ddil ==1) echo "checked";?>><label for="ddi1">L1-DDI</label>
+            <input type="radio" tabindex="2" name="ddil" id="ddi2" class="required" value="2" <?php if ($ddil ==2) echo "checked";?>><label for="ddi2">L2-DDI</label>
+            <input type="radio" tabindex="2" name="ddil" id="ddi3" class="required" value="3" <?php if ($ddil ==3) echo "checked";?>><label for="ddi3">L3-DDI</label>
             </td></tr>
         </table>
       </form>

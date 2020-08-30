@@ -45,7 +45,7 @@ if($_POST['finish']=="OK")
 <script language="JavaScript" type="text/javascript" src="../jscss/js/autoclick.js"></script>
 <?php
     $agent = $_SERVER['HTTP_USER_AGENT'];
-    
+/*
 if(strlen(strstr($agent,"Firefox")) > 0 ){      
     $browser = 'firefox';
 }
@@ -53,6 +53,8 @@ if($browser=='firefox'){
     echo "<link rel='stylesheet' href='../jscss/css/medcertfirefox.css'>";
 }
 else echo "<link rel='stylesheet' href='../jscss/css/medcert.css'>";
+*/
+echo "<link rel='stylesheet' href='../jscss/css/medcert.css'>";
 ?>
 <script language="javascript">
 function Clickheretoprint()
@@ -65,10 +67,13 @@ function Clickheretoprint()
    docprint.document.open(); 
    docprint.document.write('<html><head><title>Print</title>'); 
 <?php
+/*
 if($browser=='firefox'){
     echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcertfirefox_print.css>');";
 }
 else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert_print.css>');";
+*/
+echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medcert_print.css>');";
 ?>
    docprint.document.write('</head><body onLoad="self.print()">');          
    docprint.document.write(content_vlue);          
@@ -84,16 +89,13 @@ else echo "docprint.document.write('<link rel=stylesheet href=../jscss/css/medce
 .inno { width: 40px; }
 </style>
 </head>
-<body><div style="background-color:rgba(140,205,0,0.5); display:inline-block;">
+<body><div style="background-color:rgba(140,205,0,0.5); display:inline-block; align:center;">
 <a href="Medical_Certificate_eng.php">English</a></div>
 <?php if($yess){?>
 <div align="center"><a href="javascript:Clickheretoprint()" id="ATC">Print</a></div><br>
 <?php }?>
-<div class="style3" id="print_content">
-<p class="western"><br>
-</p>
 <form method="post" action="Medical_Certificate.php" name="regForm" id="regForm">
-
+<div class="style3" id="print_content">
 <div class="page"><div class="subpage">
 <?php 
 $para = mysqli_query($link, "SELECT * FROM parameter WHERE ID = 1");
@@ -102,8 +104,8 @@ while($par = mysqli_fetch_array($para))
 ?>
 <div id="logo" style="height:42px;width:42px;float:left;"><img src="<?php echo $par['logo'];?>" alt="logo" width="42" height="42"></div>
 <div id="logo" style="height:42px;width:42px;float:right;"></div>
-<p class="western" style="text-align:center;">ใบรับรองแพทย์</p>
-<p class="western" style="text-align:center; margin-bottom: 0in; line-height: 150%">
+<p class="westerncentalign">ใบรับรองแพทย์</p>
+<p class="westerncentalign">
 <?php 
  echo $par['name']." ใบอนุญาตเลขที่ ".$par['cliniclcid']."<br>".$par['address']." โทร.".$par['tel'];
 }
@@ -114,7 +116,7 @@ while($par = mysqli_fetch_array($para))
     $bsy = $sy +543;
 ?>
 </p>
-<p class="western" style="text-align:center;">วันที่ <?php echo $sd." ";
+<p class="westerncentalign">วันที่ <?php echo $sd." ";
 switch ($sm)
 {
   case 1:
@@ -154,8 +156,8 @@ switch ($sm)
   echo "ธันวาคม";
   break;
 }?> พ.ศ. <?php echo $bsy;?></p>
-<p class="western"  style="margin-bottom: 0in; line-height: 150%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้า <u><?php echo $_SESSION['sfname'];?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> ได้ทำการตรวจรักษา 
-<u> <?php echo $prefix." ".$fname." ".$lname;?> </u> เมื่อวันที่ <u> <?php echo $sd." ";
+<p class="westernjustalign">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ข้าพเจ้า <u><?php echo $_SESSION['sfname'];?></u> ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ <u><?php echo $_SESSION['sflc'];?></u> ได้ทำการตรวจรักษา 
+<u><nobr><?php echo $prefix." ".$fname." ".$lname;?></nobr></u> เมื่อวันที่ <u> <?php echo $sd." ";
 switch ($sm)
 {
   case 1:
@@ -204,14 +206,16 @@ echo " ".$bsy;
  {
     $dofhis = $rows['dofhis'];
     $ddx = $rows['ddx'];
+    $dofhis = mysqli_real_escape_string($linkopdx, $dofhis);
+    $dofhis = str_replace("\\r\\n","<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$dofhis);
  }
 ?> </u> มีรายละเอียดดังนี้</p>
-<p class="ctl"  style="margin-bottom: 0in; line-height: 150%"><u>รายละเอียดอาการเจ็บป่วย</u> <?php echo $dofhis;?></p>
-<p class="western10"><u>ผลการวินิจฉัยโรค</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
+<p class="ctl"><u>รายละเอียดอาการเจ็บป่วย</u> <?php echo $dofhis;?></p>
+<p class="westernleftalign"><u>ผลการวินิจฉัยโรค</u> <?php if(!$yess){?><input type="text" name="diag" id="text1" value="<?php $diag = $_SESSION['diag'];
 if(empty($diag)) echo $ddx;
 else echo $diag;?>"><?php }
 else echo $_SESSION['diag'];?> </p>
-<p class="western10"><u>การรักษา</u>
+<p class="westernleftalign"><u>การรักษา</u>
 <?php 
 if(!$yess)
 {
@@ -222,38 +226,24 @@ if(!$yess)
 else echo $_SESSION['trmtext'];
 ?>
 </p>
-<p class="western10"><u>สรุปความเห็นแพทย์</u></p>
-<ol>
-	<li><p class="western10">
-	ได้มารับการตรวจรักษาจริง<?php if(!$yess) {echo "เมื่อ "; echo "<input type='text' name='morewhen' class='intext'  value='".$_SESSION['morewhen']."'>";} else { if(!empty($_SESSION['morewhen']))echo "เมื่อ "; echo $_SESSION['morewhen'];} ?>
+<div class="drcon"><u>สรุปความเห็นแพทย์</u>
+<ol class='ajt'>
+	<li>ได้มารับการตรวจรักษาจริง<?php if(!$yess) {echo "เมื่อ "; echo "<input type='text' name='morewhen' class='intext'  value='".$_SESSION['morewhen']."'>";} else { if(!empty($_SESSION['morewhen']))echo "เมื่อ "; echo $_SESSION['morewhen'];} ?>
 	<?php 
 	if(!$yess)
 	{
-	echo "<li><p class='western10'>";
-	?>
-	<input type=submit name=rest value="Y"> <input type=submit name=rest value="N">
-	<?php 
-	echo "สมควรหยุดพักเพื่อรักษาเป็นเวลา ";
-	if($_SESSION['rest'])
-	  {
-	  echo "<input type='number' class='inno' min='1' max='7' name='day' value='1'>";
-	  echo " วัน";
-	  }
-	echo "<li><p class='western10'>..<input type='text' name='morelist' class='intext'  value='";
-	echo $_SESSION['moretext'];
-	echo "'..</p>";
-        if(!empty($_SESSION['moretext']))
-        {
-	echo "<li><p class='western10'>..<input type='text' name='morelist1' class='intext'  value='";
-	echo $_SESSION['moretext1'];
-	echo "'..</p>";
-        }
+        echo "<li>";
+        echo "<input type='submit' name='rest' value='Y'><input type='submit' name='rest' value='N'>"; 
+        echo "สมควรหยุดพักเพื่อรักษาเป็นเวลา ";
+        if($_SESSION['rest']){echo "<input type='number' class='inno' min='1' max='7' name='day' value='1'> วัน";}
+        echo "<li>..<input type='text' name='morelist' class='intext'  value='".$_SESSION['moretext']."'>..";
+        if(!empty($_SESSION['moretext'])){echo "<li>..<input type='text' name='morelist1' class='intext'  value='".$_SESSION['moretext1']."'>..";}
 	}
 	else
 	{ 
 	  if($_SESSION['rest'])
 	  {
-	    echo "<li><p class='western10'>";
+	    echo "<li>";
 	    echo "สมควรหยุดพักเพื่อรักษาเป็นเวลา ";
 	    echo $_SESSION['day'];
 	    echo " วัน ";
@@ -311,7 +301,7 @@ else echo $_SESSION['trmtext'];
 		break;
 	      }
 	      echo " ".$bsy;	    
-	    echo "</u></p>";
+	    echo "</u>";
 	    }
 	    else
 	    {
@@ -358,14 +348,8 @@ else echo $_SESSION['trmtext'];
 	      echo " ".$bsy;
 	    }
 	  }
-	  if(!empty($_SESSION['moretext']))
-	  {
-            echo "<li><p class='western10'>".$_SESSION['moretext']."</p>";
-           }
-	  if(!empty($_SESSION['moretext1']))
-	  {
-            echo "<li><p class='western10'>".$_SESSION['moretext1']."</p>";
-           }
+	  if(!empty($_SESSION['moretext'])) echo "<li>".$_SESSION['moretext'];
+	  if(!empty($_SESSION['moretext1'])) echo "<li>".$_SESSION['moretext1'];
 	}
 if($yess)
 {
@@ -377,13 +361,13 @@ if($yess)
  unset($_SESSION['day']);
  unset($_SESSION['rest']);
 }
-	
-	?>
-</ol>
+?>
+</ol></div>
 <div class="pos_r">
-<p class="western">ลงชื่อ..................................................แพทย์ผู้ตรวจรักษา</p>
-<p class="western"><?php echo $_SESSION['sfname'];?></p>
+<p class="westernleftalign">ลงชื่อ..................................................แพทย์ผู้ตรวจรักษา</p>
+<p class="westernleftalign"><?php echo $_SESSION['sfname'];?></p>
 </div>
+&nbsp;
 </div></div>
 </div>
 <?php if(!$yess){?>

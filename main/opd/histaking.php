@@ -37,6 +37,7 @@ if($_POST['rec'] == "DDx" OR $_POST['rec'] == "ReDDx")
     $_SESSION['history'.$pid]= $_POST['dhist'];
     $_SESSION['DDx'] = $_POST['diag'];
     $_SESSION['phex'.$pid]=$_POST['phex'];
+    unset($_SESSION['cddx']);
     header("Location: histaking.php"); 
 }
 if($_POST['register'] == 'บันทึก') 
@@ -65,16 +66,27 @@ if($_POST['register'] == 'บันทึก')
     mysqli_query($link, "UPDATE $tmp SET `preg` = '$_POST[preg]',`pricepolicy` = '$policy'") or $msg[]=(mysqli_error($link));
     if($_POST['preg'] ==1 )
     {
-        $dhist = $dhist.' # และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน #';
+        $dhist = $dhist.'# และ กำลังตั้งครรภ์ '.$_POST['pregmon']. ' เดือน #';
         $pregmonth = $_POST['pregmon'];
     }
     else
     {
         $pregmonth = 0;
     }
+    
+    $ptin = mysqli_query($linkopdx, "select * from $pttable where  id = '$rid' ");
+    while ($row_settings = mysqli_fetch_array($ptin))
+    {
+        $oldphex = $row_settings['phex'];
+    }
+    $oldphex = mysqli_real_escape_string($linkopd, $oldphex);
+    $pic_file = strstr($oldphex, '[PICTURE]');
+    if(empty($pic_file)) $phex_to_record = $_POST['phex'];
+    else $phex_to_record = $_POST['phex'].$pic_file;
+    
     mysqli_query($linkopdx, "UPDATE $pttable SET
                 `dofhis` = '$dhist',
-                `phex` = '$_POST[phex]',
+                `phex` = '$phex_to_record',
                 `ddx` = '$diags',
                 `bpsys` = '$_POST[bpsys]',
                 `bpdia` = '$_POST[bpdia]',
@@ -96,16 +108,15 @@ if($_POST['register'] == 'บันทึก')
     mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]', `fup` = '$pregmonth' where id='$id'") or $msg[]=(mysqli_error($linkopd));
 
     //update diagnosis table
-    $d1=$_POST['diag'];
-    $d1x=$d1[1];
-    if($d1x!=1 AND $d1x !=" " AND !empty($d1x))
+    $d1=trim($_POST['diag']," ");
+    if(!is_numeric($d1[0]) AND !empty($d1))
     {   
-        $imp = mysqli_query($linkcm, "select name from diag WHERE name = '$diags'");
+        $imp = mysqli_query($linkcm, "select name from diag WHERE name = '$d1'");
 
         list($imprs) = mysqli_fetch_row($imp);
         if(empty($imprs))
         {
-            $sql_insert = "INSERT into `diag` (name) value ('$diags')";
+            $sql_insert = "INSERT into `diag` (name) value ('$d1')";
             mysqli_query($linkcm, $sql_insert) or $msg[]=("Insertion Failed:" . mysqli_error($linkcm));
         }
     }
@@ -181,7 +192,7 @@ include '../../main/bodyheader.php';
                         else $pregmonth = $dmp+$pregmonth;
                     }
                 }
-                echo "<input type=\"radio\" name=\"preg\" value=\"1\"";
+                echo "<input type=\"radio\" name=\"preg\" id='preg1' value=\"1\"";
                 if($preg == 1 OR $pregmonth !=0 )
                 {
                     $ptin2 = mysqli_query($linkopdx, "select * from $pttable where  id = '$rid' ");
@@ -198,10 +209,10 @@ include '../../main/bodyheader.php';
                     echo "checked";
                 }
                 if($pregmonth > 0 AND $pregmonth <= 10) $newstring = $pregmonth;
-                echo ">ตั้งครรภ์<input type=number name=pregmon min=1 max=10 step=1 class=typenumber value='".$newstring."'>";
-                echo "<input type=\"radio\" name=\"preg\" value=\"0\"";
+                echo "><label for='preg1'>ตั้งครรภ์<input type=number name=pregmon min=1 max=10 step=1 class=typenumber value='".$newstring."'></label>";
+                echo "<input type=\"radio\" name=\"preg\" id='preg0' value=\"0\"";
                 if($preg == 0) echo "checked";
-                echo ">ไม่ตั้งครรภ์";
+                echo "><label for='preg0'>ไม่ตั้งครรภ์</label>";
             }
             else
             {
@@ -244,9 +255,9 @@ include '../../main/bodyheader.php';
         ?>
         
         <hr style="width: 80%; height: 2px;"><br>
-        <input type="radio" name="policy" value="2" <?php if($policy==2) echo "checked";?>>ตรวจโรค
-        <input type="radio" name="policy" value="3" <?php if($policy==3) echo "checked";?>>ทำหัตการ
-        <input type="radio" name="policy" value="4" <?php if($policy==4) echo "checked";?>>มาตามนัด</div>
+        <input type="radio" name="policy" id="policy2" value="2" <?php if($policy==2) echo "checked";?>><label for="policy2">ตรวจโรค</label>
+        <input type="radio" name="policy" id="policy3" value="3" <?php if($policy==3) echo "checked";?>><label for="policy3">ทำหัตการ</label>
+        <input type="radio" name="policy" id="policy4" value="4" <?php if($policy==4) echo "checked";?>><label for="policy4">มาตามนัด</label></div>
 
         </div>
     <hr style="width: 80%; height: 2px; margin-left: auto; margin-right: auto;">
@@ -369,13 +380,19 @@ include '../../main/bodyheader.php';
         }
         if($preg == 0) echo $hist;
         ?></textarea><br>
-        <a HREF="PhysExamCheckList.php" onClick="return popup(this,'name','800','600','yes')" >ตรวจร่างกาย</a><span STYLE="Padding-left: 5px; border: 5px groove #ffffff"><a HREF="uploadpicture.php" onClick="return popup(this,'name','400','600','yes')" >Picture</a></span> <br>
+        <a HREF="PhysExamCheckList.php?msg=<?php echo $pid;?>" onClick="return popup(this,'name','800','600','yes')" >ตรวจร่างกาย</a><span STYLE="Padding-left: 5px; border: 5px groove #ffffff">
+        <a HREF="uploadpicture.php?page=0" onClick="return popup(this,'name','800','600','yes')" >Picture</a></span> <br>
         <textarea cols="70%" rows="5" name="phex" type="text"  style="width: 100%;"><?php
         if(empty($phex))
         {
-        echo "HEENT:\nH:\nL:\nAbd:\nExt:";
+        echo "HEENT:\nH:\nL:\nAbd:\nExt:\n";
         }
-        else echo $phex;
+        else 
+        {
+        $phex_new = strstr($phex, '[PICTURE]', true);
+        if(!empty($phex_new)) $phex = $phex_new;
+        echo $phex;
+        }
         ?></textarea>
         <div style="display:none;"><input name="register" value="บันทึก" type="submit"></div>
         <div style="text-align: center;">

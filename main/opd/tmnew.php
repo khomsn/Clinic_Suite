@@ -263,35 +263,30 @@ include '../../main/bodyheader.php';
                         }
 						while ($row = mysqli_fetch_array($filter))
 						{
-							echo "<tr><td><input type=checkbox name="; echo $row[id]; echo " value=1 ></td><td>";
+							echo "<tr><td>";
+							echo "<input type='checkbox' name='".$row[id]."' id='treatment".$row[id]."' value='1'>";
+							echo "</td><td>";
+							echo "<label for='treatment".$row[id]."'>";
                             echo $row['dname'];
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 3 maxlength = 4 value='1' name=trv"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 10  name=Opt1"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 4 maxlength = 5 name=vol1"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 10  name=Opt2"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 4 maxlength = 5 name=vol2"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 10  name=Opt3"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 4 maxlength = 5 name=vol3"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 10  name=Opt4"; echo $row[id]; echo ">";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<input type='text' size= 4 maxlength = 5 name=vol4"; echo $row[id]; echo ">";
+                            echo "</label>";
+							echo "</td><td>";
+                            echo "<input type='text' size='3' maxlength='4' value='1' name='trv".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='10' name='Opt1".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='4' maxlength='5' name='vol1".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='10' name='Opt2".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='4' maxlength='5' name='vol2".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='10' name='Opt3".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='4' maxlength='5' name='vol3".$row[id]."'>";
+							echo "</td><td>";
+                            echo "<input type='text' size='10' name='Opt4".$row[id]."'>";
+                            echo "</td><td>";
+                            echo "<input type='text' size='4' maxlength='5' name='vol4".$row[id]."'>";
                             echo "</td></tr>";
 						}
 					?>

@@ -46,7 +46,6 @@ $stmt->bind_param("ii", $volreserve, $idres);
 	{
 		$us = "rx".$i."uses";
 		$vl = "rx".$i."v";
-		$svl = "rx".$i."sv";
 		$idp = $idrx[$i];
 		$rxp = $rx[$i];
 		$rgp = $rgx[$i];
@@ -62,32 +61,18 @@ $stmt->bind_param("ii", $volreserve, $idres);
            }
 		      $svol = $row2['volume'];
 		      $resvol = $row2['volreserve'];
-		      $cat  = $row2['cat'];     
 		}
 		if ($vlp > $svol-$resvol)
 		{
 		  $vlp = $svol-$resvol;
 		}
-		if($preg==1 and ($cat =='A' or $cat=='B' or $cat=='N'))
 		{
 		mysqli_query($link, "UPDATE $tmp SET
 			`idrx$i` = '$idp',
 			`rx$i` = '$rxp',
 			`rxg$i` = '$rgp',
 			`$us` = '$usp',
-			`$vl` = '$vlp',
-			`$svl` = '$svol'
-			");
-		}
-		elseif($preg==0)
-		{
-		mysqli_query($link, "UPDATE $tmp SET
-			`idrx$i` = '$idp',
-			`rx$i` = '$rxp',
-			`rxg$i` = '$rgp',
-			`$us` = '$usp',
-			`$vl` = '$vlp',
-			`$svl` = '$svol'
+			`$vl` = '$vlp'
 			");
 		}
 		//now update reservolume

@@ -11,6 +11,7 @@ cp -a ../libs ./khomsn-klinic-suite/var/www/html/
 cp -a ../login ./khomsn-klinic-suite/var/www/html/
 cp -a ../main ./khomsn-klinic-suite/var/www/html/
 cp -a ../public ./khomsn-klinic-suite/var/www/html/
+cp -a ../utility ./khomsn-klinic-suite/var/www/html/
 
 cp ../Change.log ./khomsn-klinic-suite/var/www/html/Change.log
 cp ../index.html ./khomsn-klinic-suite/var/www/html/index.html

@@ -223,7 +223,7 @@ if (($_POST['todo'] == 'Confirm') OR ($_POST['todo'] == 'Close') OR ($_POST['tod
 	 }
 	$msg[] = "Lab request complete!";
 	//ACCOUNT PART for lab price
-	//update lab @ labid
+	//update lab @ labid + licprice for untest labs.
 	mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$alllabprice'") or $err[]=(mysqli_error($link));
 	
     }
@@ -265,8 +265,9 @@ $confirm = 1;
 }
 $title = "::Lab Order Form::";
 include '../../main/header.php';
-echo "<script language=\"JavaScript\" type=\"text/javascript\" src=\"../../jscss/js/checkthemall.js\"></script>";
-echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../../jscss/css/table_alt_color.css\"/>";
+//echo "<script src=\"../../jscss/js/checkthemall.js\"></script>";
+echo "<script src=\"../../jscss/js/checkall.js\"></script>";
+echo "<link href=\"../../jscss/css/table_alt_color.css\"/>";
 include '../../libs/reloadopener.php';
 include '../../libs/autolsl.php';
 include '../../main/bodyheader.php';
@@ -290,7 +291,7 @@ include '../../main/bodyheader.php';
 		</td><td>
 				Lab Specimen:<input name='LSpec' id=lsp>
 		</td><td width=100px> 
-			<input type='radio' name='set' value='1' >Lab Set
+			<label for='set'><input type='radio' name='set' id='set' value='1' >Lab Set</label>
 		</td><td> 
 			<input type='submit' name='todo' value='กรอง' >
 		</td>
@@ -321,7 +322,7 @@ if(!empty($msg))
 		<h3 class="titlehdr">Lab ของ <?php echo $fname." ".$lname;?></h3>
 			<table style="text-align: left; width: 100%; " border="1" cellpadding="2" cellspacing="2"  class="forms">
 				<tbody>
-					<tr><th><input name="checkAll" type="checkbox" id="checkAll" value="1" onclick="javascript:checkThemAll(this);" />SL</th><th >ชื่อ</th><th>Set</th><th>Specimen</th><th>Price</th></tr>
+					<tr><th width="20"><!--<input name="checkAll" type="checkbox" id="checkAll" value="1" onclick="javascript:checkThemAll(this);" />--><input type="checkbox" id="checkAll" name="checkAll" data-checkbox-class="selectme" class="selectall" /><label for='checkAll'>SL</label></th><th >ชื่อ</th><th>Set</th><th>Specimen</th><th>Price</th></tr>
 					<?php 
 					$n = 0;
 						while ($row = mysqli_fetch_array($filter))
@@ -329,7 +330,8 @@ if(!empty($msg))
 							$n = $n+1;
 							$oldchecked = 0;
 							echo "<tr><td>";
-							echo "<input type=checkbox name=lab".$n." id='checkBoxes' value=".$row['id'];
+							//echo "<input type=checkbox name=lab".$n." id='checkBoxes' value=".$row['id'];
+							echo "<input type=checkbox name=lab".$n." id='lab".$n."' data-select-all='lab' class='selectme' value=".$row['id'];
 							$labtable = "labtmp_".$ptid."_".$presentrid;
 							$ptin2 = mysqli_query($link, "select * from $labtable");
 							while($row2 = mysqli_fetch_array($ptin2))
@@ -347,7 +349,9 @@ if(!empty($msg))
                             echo "<input type='hidden' name=labold".$n." value=".$row['id'].">";
 							}
 							echo "</td><td>";
+							echo "<label for='lab".$n."'>";
 							echo $row['S_Name']." [".$row['L_Name']."]";
+							echo "</label>";
 							echo "</td><td>";
 							echo substr($row['L_Set'],5);
 							echo "</td><td>";

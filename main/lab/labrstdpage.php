@@ -16,13 +16,13 @@ $sqlm = mysqli_query($linkopdx, "select MAX(id) from $pttable");
 $rid = mysqli_fetch_array($sqlm);
 $maxid = $rid[0];
 $labtable = "labtmp_".$id."_".$maxid;
-$allcpprice=0;
+$labprice=0;
 
 if($_POST['Save']=="Save")
 {
   $nrow = $_POST['Rownum'];
     for($i=1;$i<=$nrow;$i++)
-      {
+    {
 	    $inid = "inid".$i;
 	    $labid = $_POST[$inid];
 	    $labresult = $_POST[$labid];
@@ -50,142 +50,137 @@ if($_POST['Save']=="Save")
 		  $checkid = "RC".$labid;
 		  
 	    if($_POST[$checkid]=="1")
-	    {	
-		if (ltrim($labresult) === '') goto emptyresult;
-		
-		$myin = mysqli_query($link, "select * from $labtable WHERE Labid = '$labid' order by Labid ASC");
-		while($compl = mysqli_fetch_array($myin))
-		{
-		// for stat
-		  $labidin=$compl['Labid'];
-		//lab price
-		  $allcpprice = $compl['price'];
-		  
-		  $compl_name = $compl['Labname'];
-		  $compl_rs = $compl['Labresult'];
-		  if($ltr==1) $compl_rs = $compl_rs.' @('.date('Y-m-d H:i').')'; 
-		  $labsaved = $compl['saved'];
-	         }
-	         
-	         if($labsaved == 1) goto labhassaved;
-	         
-		  $newvolume = $oldvolume+1;
-		  $sql_update = "UPDATE `lab` SET 
-						  `volume` = '$newvolume'
-					  WHERE `id` ='$labidin' LIMIT 1 ; 
-					  ";
-		  // Now update labtable
-		  mysqli_query($link, $sql_update);
-		  // Now in labstat table
-		  // 1st check if this labid exist in this month, if yes-> update, no->insert 
-		  //$sd = date("d");
-		  $sm = date("m");
-		  $sy = date("Y");
-		  
-		  $myin = mysqli_query($link, "select vol from labstat WHERE labid = '$labidin' AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' ");
-		  $cvolume = mysqli_fetch_array($myin);
-		  $oldvolume =$cvolume[0];
-		  
-		  if(empty($oldvolume)) // not yet record
-		  {
-		      $sql_insert = "INSERT into `labstat`
-			      (`labid`,`MandY`,`vol`)
-			  VALUES
-			      ('$labidin',now(),'1')"; //order only 1 test each time
-		      mysqli_query($link, $sql_insert);
-		  }
-		  else
-		  {
-		  $newvol = $oldvolume+1;
-		  $sql_update = "UPDATE `labstat` SET 
-						  `vol` = '$newvol'
-					  WHERE `labid` ='$labidin'  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' LIMIT 1 ; 
-					  ";
-		  // Now update labtable
-		  mysqli_query($link, $sql_update);
-		  }
-		//}
-		//
-		$myla = mysqli_query($linkopdx, "select * from $pttable Where `id` ='$maxid'");
-		while($labinfo = mysqli_fetch_array($myla))
-		{
-		  $Labname=$labinfo['labid'];
-		  $Labresult=$labinfo['labresult'];
-		}
-		if(!empty($Labname)) $compl_name = $Labname.";".$compl_name;
-		if(!empty($Labresult)) $compl_rs = $Labresult.";".$compl_rs;
-		Recheck_Point:
-		  $sql_insert = "UPDATE `$pttable` SET 
-						  `labid` = '$compl_name',
-						  `labresult` = '$compl_rs'
-					  WHERE `id` ='$maxid' LIMIT 1 ; 
-					  ";
-		  // Now update pttable
-		  mysqli_query($linkopdx, $sql_insert);
-		  //recheck if correctly record
-		  $rs_check = mysqli_query($linkopdx, "select count(*) as total FROM `$pttable` WHERE `id` = '$maxid' AND `labid` LIKE '%$compl_name%' AND `labresult` LIKE '%$compl_rs%'") or $err[]=(mysqli_error($linkopdx));
-		  list($total) = mysqli_fetch_array($rs_check);
-		  
-		  if ($total == 0)
-		  {
-            goto Recheck_Point;
-		  }
-		  
-		  //update to prevent double insertion
-		  {
-		    $sql_insert = "UPDATE `$labtable` SET 
-						    `saved` = '1'
-					    WHERE `Labid` ='$labid' LIMIT 1 ; 
-					    ";
-		    // Now update labtable
-		    mysqli_query($link, $sql_insert);
-		  }
-		  //labid has been saved 
-		  labhassaved :
-		  //rawmat cut for lab
-		  
-		  include '../../libs/rawmatcutforlab.php';
-		  
-		//Now remove lab id request from table
-		    $rmlab = "DELETE FROM  `$labtable` WHERE `Labid` = '$labid'";
-		    mysqli_query($link, $rmlab);
-		    
-		  //check lcprice for tmp table
-		  $pr1 = mysqli_query($link, "SELECT * from $tmptable");
-		  while($pr2 = mysqli_fetch_array($pr1))
-		  {
-		    $lincp = $pr2['licprice'];
-		    $lcp = $pr2['lcprice'];
-		  }
-		  $lincp = $lincp - $allcpprice;
-		  $lcp = $lcp + $allcpprice;
-		  //update lab @ labid
-		  mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$lincp', `lcprice` = '$lcp'");
-	       }
+        {	
+            if (ltrim($labresult) === '') goto emptyresult;
+            
+            $myin = mysqli_query($link, "select * from $labtable WHERE Labid = '$labid' order by Labid ASC");
+            while($compl = mysqli_fetch_array($myin))
+            {
+                // for stat
+                $labidin=$compl['Labid'];
+                //lab price
+                $labprice = $compl['price'];
+                
+                $compl_name = $compl['Labname'];
+                $compl_rs = $compl['Labresult'];
+                if($ltr==1) $compl_rs = $compl_rs.' @('.date('Y-m-d H:i').')'; 
+                $labsaved = $compl['saved'];
+            }
+                
+            if($labsaved == 1) goto labhassaved;
+                
+            $newvolume = $oldvolume+1;
+            $sql_update = "UPDATE `lab` SET 
+                            `volume` = '$newvolume'
+                        WHERE `id` ='$labidin' LIMIT 1 ; 
+                        ";
+            // Now update labtable
+            mysqli_query($link, $sql_update);
+            // Now in labstat table
+            // 1st check if this labid exist in this month, if yes-> update, no->insert 
+            //$sd = date("d");
+            $sm = date("m");
+            $sy = date("Y");
+            
+            $myin = mysqli_query($link, "select vol from labstat WHERE labid = '$labidin' AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' ");
+            $cvolume = mysqli_fetch_array($myin);
+            $oldvolume =$cvolume[0];
+            
+            if(empty($oldvolume)) // not yet record
+            {
+                $sql_insert = "INSERT into `labstat`
+                    (`labid`,`MandY`,`vol`)
+                VALUES
+                    ('$labidin',now(),'1')"; //order only 1 test each time
+                mysqli_query($link, $sql_insert);
+            }
+            else
+            {
+                $newvol = $oldvolume+1;
+                $sql_update = "UPDATE `labstat` SET 
+                                `vol` = '$newvol'
+                            WHERE `labid` ='$labidin'  AND MONTH(MandY) = '$sm' AND YEAR(MandY) = '$sy' LIMIT 1 ; 
+                            ";
+                // Now update labtable
+                mysqli_query($link, $sql_update);
+            }
+            $myla = mysqli_query($linkopdx, "select * from $pttable Where `id` ='$maxid'");
+            while($labinfo = mysqli_fetch_array($myla))
+            {
+                $Labname=$labinfo['labid'];
+                $Labresult=$labinfo['labresult'];
+            }
+            if(!empty($Labname)) $compl_name = $Labname.";".$compl_name;
+            if(!empty($Labresult)) $compl_rs = $Labresult.";".$compl_rs;
+            Recheck_Point:
+            $sql_insert = "UPDATE `$pttable` SET 
+                            `labid` = '$compl_name',
+                            `labresult` = '$compl_rs'
+                        WHERE `id` ='$maxid' LIMIT 1 ; 
+                        ";
+            // Now update pttable
+            mysqli_query($linkopdx, $sql_insert);
+            //recheck if correctly record
+            $rs_check = mysqli_query($linkopdx, "select count(*) as total FROM `$pttable` WHERE `id` = '$maxid' AND `labid` LIKE '%$compl_name%' AND `labresult` LIKE '%$compl_rs%'") or $err[]=(mysqli_error($linkopdx));
+            list($total) = mysqli_fetch_array($rs_check);
+            
+            if ($total == 0)
+            {
+                goto Recheck_Point;
+            }
+            
+            //update to prevent double insertion
+            {
+                $sql_insert = "UPDATE `$labtable` SET 
+                                `saved` = '1'
+                            WHERE `Labid` ='$labid' LIMIT 1 ; 
+                            ";
+                // Now update labtable
+                mysqli_query($link, $sql_insert);
+            }
+            //labid has been saved 
+            labhassaved :
+            //rawmat cut for lab
+            
+            include '../../libs/rawmatcutforlab.php';
+            
+            //Now remove lab id request from table
+            $rmlab = "DELETE FROM  `$labtable` WHERE `Labid` = '$labid'";
+            mysqli_query($link, $rmlab);
+                
+            //check lcprice for tmp table
+            $pr1 = mysqli_query($link, "SELECT * from $tmptable");
+            while($pr2 = mysqli_fetch_array($pr1))
+            {
+                $lincp = $pr2['licprice'];
+                $lcp = $pr2['lcprice'];
+            }
+            $lincp = $lincp - $labprice;
+            $lcp = $lcp + $labprice;
+            //update lab @ labid
+            mysqli_query($link, "UPDATE  `$tmptable` SET `licprice` = '$lincp', `lcprice` = '$lcp'") or $err[]=(mysqli_error($link));
+        }
 
 	    // empty result do nothing
 		emptyresult:
-	    
-	  }
+    }
     if($_POST['complete']=="1")
     {
         $myla = mysqli_query($link, "select saved from $labtable");
         while($labinfo = mysqli_fetch_array($myla))
         {
-        $checksaved = $labinfo['saved'];
-        if($checksaved == "0") goto notcomplete;
+            $checksaved = $labinfo['saved'];
+            if($checksaved == "0") goto notcomplete;
         }
-
         //Now remove Pt request table
         $sqlt = "DROP TABLE `$labtable`";
-        mysqli_query($link, $sqlt) or die("Empty table Failed:" . mysqli_error($link));
+        mysqli_query($link, $sqlt) or $err[] = ("Drop table Failed:" . mysqli_error($link));
         
         // Now Delete Patient from "pt_to_lab" table
         mysqli_query($link, "DELETE FROM pt_to_lab WHERE ptid = '$id' ");
                     
         // Now Delete Patient from "labwait" table
         mysqli_query($link, "DELETE FROM labwait WHERE ptid = '$id' ");
-        
     }
     notcomplete:
     header("Location: ../opd/pt_to_lab.php");
