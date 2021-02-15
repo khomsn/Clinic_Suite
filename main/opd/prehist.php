@@ -47,40 +47,43 @@ if($_POST['register'] == 'บันทึก')
         /********************* not yet record *******************************************/
         if (ltrim($row_settings['csf'])==="")
             {
-            // assign insertion pattern to $tmptable
-            $sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
-            // Now insert data to "tmp_#id" table
-            mysqli_query($link, $sql_insert);
-            
-            // get row index to insert and update to pt_table
-            $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
-            $_SESSION['rindex'] = $rindex[0];
-            // assign insertion pattern
-            if(empty($_POST['weight'])) $_POST['weight']=0;
-            if(empty($_POST['height'])) $_POST['height']=0;
-            if(empty($_POST['temp'])) $_POST['temp']=0;
-            if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
-            if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
-            if(empty($_POST['hr'])) $_POST['hr']=0;
-            if(empty($_POST['rr'])) $_POST['rr']=0;
+                // assign insertion pattern to $tmptable
+                $sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
+                // Now insert data to "tmp_#id" table
+                mysqli_query($link, $sql_insert);
+                
+                // get row index to insert and update to pt_table
+                $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
+                $_SESSION['rindex'] = $rindex[0];
+                // assign insertion pattern
+                if(empty($_POST['weight'])) $_POST['weight']=0;
+                if(empty($_POST['height'])) $_POST['height']=0;
+                if(empty($_POST['temp'])) $_POST['temp']=0;
+                if(empty($_POST['bpsys'])) $_POST['bpsys']=0;
+                if(empty($_POST['bpdia'])) $_POST['bpdia']=0;
+                if(empty($_POST['hr'])) $_POST['hr']=0;
+                if(empty($_POST['rr'])) $_POST['rr']=0;
 
-            $vs = "BP:".$_POST['bpsys']."/".$_POST['bpdia']." mmHg, HR:".$_POST['hr']."bpm, T:".$_POST['temp']."C, RR:".$_POST['rr']."tpm";
-            $_SESSION['vs'] = $vs;
-        
-            $sql_insert = "INSERT into `$pttable`
-                    (`id`,`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
-                    VALUES
-                    ('$_SESSION[rindex]', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
+                $vs = "BP:".$_POST['bpsys']."/".$_POST['bpdia']." mmHg, HR:".$_POST['hr']."bpm, T:".$_POST['temp']."C, RR:".$_POST['rr']."tpm";
+                $_SESSION['vs'] = $vs;
             
-            $MaxRowCheck=0;
-            while($_SESSION['rindex'] !== $MaxRowCheck)
-                {
-                // Now insert Patient to "pt_#id" table
-                mysqli_query($linkopdx, $sql_insert);
-                // Check back if it is recorded.
-                $result = mysqli_query($linkopdx, "select MAX(id) from `$pttable` where id='$_SESSION[rindex]'");
-                $maxrow = mysqli_fetch_array($result);
-                $MaxRowCheck = $maxrow[0];
+                $sql_insert = "INSERT into `$pttable`
+                        (`id`,`date`,`weight`,`height`,`temp`,`bpsys`, `bpdia`, `hr`, `rr`, `ccp`, `clinic`)
+                        VALUES
+                        ('$_SESSION[rindex]', NOW(),'$_POST[weight]','$_POST[height]','$_POST[temp]','$_POST[bpsys]','$_POST[bpdia]','$_POST[hr]','$_POST[rr]','$_POST[csf]','$_SESSION[clinic]')";
+            
+                /************ fixed insertion drop bug*****************************/
+                /* check last row then compair with new last-row after insertion **/
+                /******************************************************************/
+                $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
+                $maxrow = mysqli_fetch_row($pin);
+                $maxid = $maxrow[0];
+                while ($maxid < $_SESSION['rindex']){ 
+                    // Now insert Drug order information to "drug_#id" table
+                    mysqli_query($linkopdx, $sql_insert);
+                    // check for newmaxrow
+                    $maxrow = mysqli_fetch_row($din);
+                    $maxid = $maxrow[0];
                 }
             }
         /********************* recorded *************************************************/    

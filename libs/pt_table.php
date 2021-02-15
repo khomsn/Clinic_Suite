@@ -173,20 +173,46 @@ if(!empty($_SESSION['Patient_id']))
 				 `drugallergy` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `concurdrug` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
 				 `obsandpgnote` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL ,
-				 `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL
+				 `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL  DEFAULT '$_SESSION[clinic]'
 				) ENGINE = InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         // Now insert Patient to "patient_id" table
-        mysqli_query($linkopdx, $tb_create) or die("Create Failed:" . mysqli_error($linkopdx));
+        mysqli_query($linkopdx, $tb_create) or die("Create Failed:". mysqli_error($linkopdx));
 
+    /*table version number*/
+    $version = 2;
+    
     $sql_check =  mysqli_query($link, "SELECT * FROM `initdb` WHERE `refname`='$tabletocreate' ORDER BY `id`" );
     $tabcheck = mysqli_num_rows($sql_check);
     if(!$tabcheck)
     {
-        $sql_insert  = "INSERT INTO `initdb` (`refname`, `version`) VALUES ('$tabletocreate', '1')";
+        $sql_insert  = "INSERT INTO `initdb` (`refname`, `version`) VALUES ('$tabletocreate', '$version')";
         mysqli_query($link, $sql_insert);
     }
     else
     {/*********** update data base code here *****************/
+
+        $sql_select = "SELECT `version` FROM `initdb` WHERE `refname` = '$tabletocreate'";
+        $table_version = mysqli_query($link, $sql_select);
+        $ovs = mysqli_fetch_array($table_version);
+        $oldversion = intval($ovs[0]);
+        
+        while ($oldversion < $version) {
+        
+            if ($oldversion == 1)
+            {
+                $sql_alter = "ALTER TABLE `$tabletocreate` CHANGE `clinic` `clinic` VARCHAR(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '$_SESSION[clinic]'; ";
+                mysqli_query($linkopdx, $sql_alter);
+                
+                $sql_update = "UPDATE `initdb` SET `version` = '2' WHERE `initdb`.`refname` = '$tabletocreate';"; 
+                mysqli_query($link, $sql_update);
+            }
+            
+            $table_version = mysqli_query($link, $sql_select);
+            $ovs = mysqli_fetch_array($table_version);
+            $oldversion = intval($ovs[0]);
+        }
+
+    /*end update data base table*/
     }
 }
 ?>

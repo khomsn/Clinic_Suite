@@ -55,9 +55,20 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
             VALUES  ('$bday','$_POST[expd]','$_POST[supplier]','$_POST[inv_num]','$_POST[volume]','$_POST[price]')";
         }
     }
-    // Now insert Drug order information to "drug_#id" table
-    mysqli_query($link, $sql_insert);
-
+    /************ fixed insertion drop bug*****************************/
+    /* check last row then compair with new last-row after insertion **/
+    /******************************************************************/
+    $din = mysqli_query($link, "select MAX(id) from $drugtable ");
+    $maxrow = mysqli_fetch_row($din);
+    $oldmaxrow = $maxrow[0];
+    $newmaxrow = $oldmaxrow;
+    while ($oldmaxrow == $newmaxrow){ 
+        // Now insert Drug order information to "drug_#id" table
+        mysqli_query($link, $sql_insert);
+        // check for newmaxrow
+        $maxrow = mysqli_fetch_row($din);
+        $newmaxrow = $maxrow[0];
+    }
 
     // Update drug_id at volume and buyprice.
     $upvol = $volume + $_POST['volume'];

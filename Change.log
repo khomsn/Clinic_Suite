@@ -1,3 +1,8 @@
+khomsn-klinic-suite (64.02-15) stable; urgency=low
+  
+    * Version 25640215: Fixed for stockin drop for some record in the drug and rawmat table, 
+    and fixed for pt_table not insert new record when prehist taking.
+
 khomsn-klinic-suite (63.08-30) stable; urgency=low
   
     * Version 25630830: Update search page.
