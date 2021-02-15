@@ -61,6 +61,7 @@ if(($_POST['doSave'] == 'Save') AND ($_POST['volume']>0))
     $din = mysqli_query($link, "select MAX(id) from $drugtable ");
     $maxrow = mysqli_fetch_row($din);
     $oldmaxrow = $maxrow[0];
+    if(is_null($oldmaxrow)) $oldmaxrow = 0;
     $newmaxrow = $oldmaxrow;
     while ($oldmaxrow == $newmaxrow){ 
         // Now insert Drug order information to "drug_#id" table

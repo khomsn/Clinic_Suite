@@ -78,11 +78,14 @@ if($_POST['register'] == 'บันทึก')
                 $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
                 $maxrow = mysqli_fetch_row($pin);
                 $maxid = $maxrow[0];
+                
+                if(is_null($maxid)) $maxid = 0;
+                
                 while ($maxid < $_SESSION['rindex']){ 
                     // Now insert Drug order information to "drug_#id" table
                     mysqli_query($linkopdx, $sql_insert);
                     // check for newmaxrow
-                    $maxrow = mysqli_fetch_row($din);
+                    $maxrow = mysqli_fetch_row($pin);
                     $maxid = $maxrow[0];
                 }
             }
