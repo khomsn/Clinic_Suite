@@ -75,17 +75,15 @@ if($_POST['register'] == 'บันทึก')
                 /************ fixed insertion drop bug*****************************/
                 /* check last row then compair with new last-row after insertion **/
                 /******************************************************************/
-                $pin = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
-                $maxrow = mysqli_fetch_row($pin);
-                $maxid = $maxrow[0];
-                
-                if(is_null($maxid)) $maxid = 0;
+                // Let maxid = 0 first
+                $maxid = 0;
                 
                 while ($maxid < $_SESSION['rindex']){ 
                     // Now insert Drug order information to "drug_#id" table
                     mysqli_query($linkopdx, $sql_insert);
                     // check for newmaxrow
-                    $maxrow = mysqli_fetch_row($pin);
+                    $ptmaxindex = mysqli_query($linkopdx, "select MAX(id) from $pttable ");
+                    $maxrow = mysqli_fetch_row($ptmaxindex);
                     $maxid = $maxrow[0];
                 }
             }
