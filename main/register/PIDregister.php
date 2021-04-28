@@ -127,10 +127,10 @@ if($_POST['doRegister'] == 'Register')
     $prefix = trim(preg_replace('/\s+/', '', $_POST['prefix']));
     // assign insertion pattern
     $sql_insert = "INSERT into `patient_id`
-                (`id`,`ctz_id`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`
+                (`id`,`ctz_id`,`ctzid_m`,`ctzid_f`,`prefix`,`fname`,`lname`, `gender`, `birthday`, `bloodgrp`, `height`, `drug_alg_1`, `drug_alg_2`, `drug_alg_3`, `drug_alg_4`, `drug_alg_5`
                 , `chro_ill_1`,`chro_ill_2`, `chro_ill_3`, `chro_ill_4`, `chro_ill_5`, `concurdrug`, `address1`, `address2`,  `addstr`,`address3`, `address4`, `address5`, `zipcode`, `hometel`, `mobile`, `user_id`, `clinic`  )
                 VALUES
-                ('$idtoinsert','$ctzid','$prefix','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
+                ('$idtoinsert','$ctzid','$_POST[ctzid_m]','$_POST[ctzid_f]','$prefix','$fname','$lname','$gender','$birthday','$_POST[Bldgroup]','$_POST[height]','$_POST[drug_alg_1]','$_POST[drug_alg_2]','$_POST[drug_alg_3]','$_POST[drug_alg_4]','$_POST[drug_alg_5]',
                 '$_POST[chro_ill_1]','$_POST[chro_ill_2]','$_POST[chro_ill_3]','$_POST[chro_ill_4]','$_POST[chro_ill_5]','$concurdrug','$_POST[address1]','$_POST[address2]','$addstr','$_POST[address3]','$_POST[address4]','$_POST[address5]',
                 '$_POST[zipcode]','$_POST[hometel]','$_POST[mobile]','$_SESSION[user_id]','$_SESSION[clinic]')
                 ";
@@ -325,6 +325,7 @@ include '../../main/bodyheader.php';
                             <option value="12">ธค</option>
                             </select>
                             <input type="radio" name="Era" value="1" id="Bera" checked><label for="Bera">พ.ศ.</label> <input type="radio" name="Era" id="era" value="2"><label for="era">ค.ศ.</label> <input tabindex="8" name="year" size="5" maxlength="4" type="number" required min="1914" max="2657" step="1" class="typenumber">
+                            <hr style="width: 100%; height: 2px;">เลขประจำตัวประชาชน-แม่<input name="ctzid-m" type="text" size="18" maxlength="13">เลขประจำตัวประชาชน-พ่อ<input name="ctzid-f" type="text" size="18" maxlength="13">
                             <hr style="width: 100%; height: 2px;">ส่วนสูง:
                             <input tabindex="9" name="height" size="4" maxlength="3" type="number" value="1" class="typenumber"> ซม.
                             &nbsp; &nbsp;

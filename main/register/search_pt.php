@@ -38,6 +38,12 @@ elseif($_POST['found'] == 'ชำระหนี้')
 	// go on to other step
 	header("Location: ../cashier/payfordeb.php");
 }
+elseif($_POST['found'] == 'ขอผล-Lab')
+{
+	$_SESSION['patdesk'] = $_POST['ptid'];
+	// go on to other step
+	header("Location: ../opd/labhistory.php");
+}
 $title = "::My Counter::";
 include '../../main/header.php';
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../../jscss/css/table_alt_color1.css\"/>";
@@ -187,7 +193,7 @@ if($_POST['search'] == 'ค้นหา')
     if($y)
     {
     ?>
-    <input name="found" value="ส่งตรวจ" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="แก้ไขข้อมูล" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="OPD Card" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ใบเสร็จรับเงิน" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ชำระหนี้" type="submit">
+    <input name="found" value="ส่งตรวจ" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="แก้ไขข้อมูล" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="OPD Card" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ใบเสร็จรับเงิน" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ชำระหนี้" type="submit">&nbsp;&nbsp;&nbsp;<input name="found" value="ขอผล-Lab" type="submit">
     <?php 
     }
     else

@@ -55,9 +55,18 @@ elseif($_POST['admit']=="มี")
 {
 $_SESSION['admit'] = 1;
 }
+if($_POST['Epilepsy']=="ไม่มี")
+{
+$_SESSION['Epilepsy'] = 0;
+}
+elseif($_POST['Epilepsy']=="มี")
+{
+$_SESSION['Epilepsy'] = 1;
+}
 $_SESSION['ciltext']=$_POST['ciltext'];
 $_SESSION['acsxtext']=$_POST['acsxtext'];
 $_SESSION['admittext']=$_POST['admittext'];
+$_SESSION['Epilepsytext']=$_POST['Epilepsytext'];
 $_SESSION['imphtext']=$_POST['imphtext'];
 if($_POST['phyex']=="ปกติ")
 {
@@ -305,7 +314,25 @@ if(!$yess){
       echo "...";
 }
 ?><br>
-๔.ประวัติอื่นที่สำคัญ..............<?php if(!$yess){?><input type='text' name='imphtext' class='text1' value='<?php 
+๔.โรคลมชัก* <?php if(!$yess){?><input type=submit name=Epilepsy value="ไม่มี"> <input type=submit name=Epilepsy value="มี">
+<?php 
+}
+if(!$_SESSION['Epilepsy'])
+{ echo "<img src='../image/ccb.jpg' width=15 height=15> ไม่มี <img src='../image/checkbox.jpg' width=15 height=15> มี(ระบุ).....................................................................";
+}
+if($_SESSION['Epilepsy'])
+{
+echo "<img src='../image/checkbox.jpg' width=15 height=15> ไม่มี <img src='../image/ccb.jpg' width=15 height=15> มี(ระบุ)...";
+if(!$yess){
+      echo "<input type='text' name='Epilepsy' class='text1' value='";
+      echo $_SESSION['Epilepsytext'];
+      echo "'>";
+      }
+ else echo $_SESSION['Epilepsytext'];
+      echo "...";
+}
+?><br>
+๕.ประวัติอื่นที่สำคัญ..............<?php if(!$yess){?><input type='text' name='imphtext' class='text1' value='<?php 
 echo $_SESSION['imphtext'];?>'><?php } else echo $_SESSION['imphtext'];?>...................................</p>
 <p class="signplace">ลงชื่อ...........................................................................</p>
 <?php 
@@ -315,7 +342,7 @@ echo $_SESSION['imphtext'];?>'><?php } else echo $_SESSION['imphtext'];?>.......
     $sy = $date->format("Y");
     $bsy = $sy +543;
 ?>
-<p class="comment">(ในกรณีเด็กที่ไม่สามารถรับรองตนเองได้ให้ผู้ปกครองลงนามรับรองแทนได้)
+<p class="comment">(ในกรณีเด็กที่ไม่สามารถรับรองตนเองได้ให้ผู้ปกครองลงนามรับรองแทนได้)<br>*ในกรณีมีโรคลมชัก ให้แนบประวัติการรักษาจากแพทย์ผู้รักษาว่าท่านปลอดจากอาการชักมากกว่า 1 ปีเพื่ออนุญาตให้ขับรถได้<br>
   วันที่ <?php echo $sd;?> เดือน <?php switch ($sm)
 {
   case 1:
@@ -606,6 +633,7 @@ if($yess)
 unset($_SESSION['cil']);
 unset($_SESSION['acsx']);
 unset($_SESSION['admit']);
+unset($_SESSION['Epilepsy']);
 unset($_SESSION['phyex']);
 unset($_SESSION['disable']);
 unset($_SESSION['psycho']);

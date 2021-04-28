@@ -2,6 +2,10 @@
 /*************** PHP LOGIN SCRIPT *********************
 (c) Khomsn 2560. All Rights Reserved
 ***********************************************************/
+/********************** silense Notice report *********/
+error_reporting (E_ALL ^ E_NOTICE);
+/******************************************************/
+
 require 'config.php';
 
 require 'connection.php';
