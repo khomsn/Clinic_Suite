@@ -252,7 +252,7 @@ include '../../main/bodyheader.php';
             ?>
             <tr><td style="text-align: left;">*<input  align="center" name="prefix" id="pref" size="10" type="text" value="<?php echo $prefix; ?>">ชื่อ:*<input  align="center" tabindex="1" name="fname" id="fname" size="20" class="required" type="text"  value="<?php echo $fname; ?>">&nbsp; นามสกุล:*  <input tabindex="2" name="lname" id="lname" size="20" class="required" type="text" value="<?php echo $lname; ?>">
             <?php
-                if($_SESSION['user_accode']%13==0 AND $_SESSION['user_level'] == 5)
+                if($_SESSION['user_accode']%3==0 AND $_SESSION['user_level'] == 2)
                 {
                 echo "&nbsp;เพศ: ";
                 echo "<input type=radio name=Gender value='ชาย'";

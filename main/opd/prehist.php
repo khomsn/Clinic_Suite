@@ -14,12 +14,24 @@ while($row_vl = mysqli_fetch_array($staff))
 
 $stb = $stpref.' '.$stfname.' '.$stlname.', '.$stposit;
 
-$id = $_SESSION['patdesk'];
-$Patient_id = $id;
+$Patient_id = $_SESSION['patdesk'];
+
 include '../../libs/opdxconnection.php';
 
-$pttable = "pt_".$id;
-$tmptable = "tmp_".$id;
+$pttable = "pt_".$Patient_id;
+$tmptable = "tmp_".$Patient_id;
+
+/* prepare table for insertion and update */
+$preg=mysqli_fetch_array(mysqli_query($link, "select preg from `$tmptable`"));
+if(is_null($preg[0]))
+{
+    // assign insertion pattern to $tmptable
+    $sql_insert = "INSERT into `$tmptable` (`preg`) VALUES ('0')";
+    mysqli_query($link, $sql_insert);
+}
+// get row index to insert and update to pt_table
+$rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
+$_SESSION['rindex'] = $rindex[0];
 
 if($_POST['register'] == 'บันทึก') 
 {
@@ -34,7 +46,7 @@ if($_POST['register'] == 'บันทึก')
         }
 
         //check staff
-        $pstaff=mysqli_fetch_array(mysqli_query($linkopd, "select staff from patient_id where id='$id'"));
+        $pstaff=mysqli_fetch_array(mysqli_query($linkopd, "select staff from patient_id where id='$Patient_id'"));
         $staff = $pstaff[0];//พนักงาน
         if($staff == 0)
         {
@@ -48,13 +60,14 @@ if($_POST['register'] == 'บันทึก')
         if (ltrim($row_settings['csf'])==="")
             {
                 // assign insertion pattern to $tmptable
-                $sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
+                //$sql_insert = "INSERT into `$tmptable` (`csf`,`preg`,`medcert`,`pricepolicy`) VALUES ('$_POST[csf]','$_POST[preg]','$medcert','$staff')";
+                $sql_insert = "UPDATE $tmptable SET `csf` = '$_POST[csf]', `preg` = '$_POST[preg]',`medcert` = '$medcert',`pricepolicy`= '$staff'";
                 // Now insert data to "tmp_#id" table
                 mysqli_query($link, $sql_insert);
                 
                 // get row index to insert and update to pt_table
-                $rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
-                $_SESSION['rindex'] = $rindex[0];
+                //$rindex=mysqli_fetch_array(mysqli_query($link, "select rindex from `$tmptable`"));
+                //$_SESSION['rindex'] = $rindex[0];
                 // assign insertion pattern
                 if(empty($_POST['weight'])) $_POST['weight']=0;
                 if(empty($_POST['height'])) $_POST['height']=0;
@@ -131,7 +144,7 @@ if($_POST['register'] == 'บันทึก')
             mysqli_query($linkopdx, $sql);
             }
         //update height at patient_id.
-        if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$id'");
+        if($_SESSION['age']<=20 OR $_SESSION['age']>=50) mysqli_query($linkopd, "UPDATE patient_id SET `height` = '$_POST[height]' where id='$Patient_id'");
         // go on to other step
         $ptdoc = 1;
     }
@@ -182,11 +195,11 @@ if($_POST['register']=='ส่งเข้าห้องตรวจ')
     }
     if($_POST['temp']<35.0 or $_POST['temp']>=40 ) $codesum = 90;
     //
-	  $sql_insert = "INSERT INTO `pt_to_doc` (`ID`, `prefix`, `F_Name`, `L_Name`, `code`) VALUES ('$id', '$_SESSION[prefix]', '$_SESSION[fname]', '$_SESSION[lname]', '$codesum')";
+	  $sql_insert = "INSERT INTO `pt_to_doc` (`ID`, `prefix`, `F_Name`, `L_Name`, `code`) VALUES ('$Patient_id', '$_SESSION[prefix]', '$_SESSION[fname]', '$_SESSION[lname]', '$codesum')";
 	  // Now insert Patient to "patient_id" table
 	  mysqli_query($link, $sql_insert);
 	  // Now Delete Patient from "pt_to_doc" table
-	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$id' ");
+	  mysqli_query($link, "DELETE FROM pt_to_scr WHERE id = '$Patient_id' ");
 	  unset($_SESSION['rindex']);
 	  unset($_SESSION['oldbpdia']);
 	  unset($_SESSION['oldbpsys']);
@@ -214,8 +227,6 @@ include '../../main/bodyheader.php';
                             $hrec=$rid1['csf'];
                             $medcert=$rid1['medcert'];
                             $pricepolicy=$rid1['pricepolicy'];
-                            if(empty($_SESSION['rindex']))
-                            $_SESSION['rindex']=$rid1['rindex'];
                         }
                         if(!empty($hrec))
                         {
@@ -233,7 +244,7 @@ include '../../main/bodyheader.php';
                             }
                         }
                         
-                        $ptin = mysqli_query($linkopd, "select * from patient_id where id='$id' ");
+                        $ptin = mysqli_query($linkopd, "select * from patient_id where id='$Patient_id' ");
                         while ($row_settings = mysqli_fetch_array($ptin))
                         { 
                             $_SESSION['prefix']= $row_settings['prefix'];
@@ -258,15 +269,20 @@ include '../../main/bodyheader.php';
                                 //check for pregnancy period
                                 if(!empty($pregmonth))
                                 {
-                                    $oldrid = $rid[0]-1;
+                                    $oldrid = $_SESSION['rindex'] - 1;
                                     $ptin2 = mysqli_query($linkopdx, "select * from $pttable where  id = '$oldrid' ");
                                     while($olddate = mysqli_fetch_array($ptin2))
                                     {
                                         $date2=date_create($olddate['date']);
                                         $diff = date_diff($date2,$date1);
-                                        $dmp = $diff->format("%m");
-                                        if(($dmp+$pregmonth)>10) $pregmonth = 0;
-                                        else $pregmonth = $dmp+$pregmonth;
+                                        $dpass = $diff->format("%a");
+                                        if($dpass < 294){
+                                            $pregmonth = ceil($dpass / 28);
+                                            if ($pregmonth > 10)
+                                            $pregmonth = 10;
+                                        } else {
+                                            $pregmonth = 0;
+                                        }
                                     }
                                 }
                                 echo "<input type=\"radio\" id='preg1' name=\"preg\" class=\"required\" value=\"1\" ";
@@ -303,7 +319,7 @@ include '../../main/bodyheader.php';
                     }
                     else
                     {
-                    $hin = mysqli_fetch_array(mysqli_query($linkopd, "SELECT height FROM patient_id where id='$id' "));
+                    $hin = mysqli_fetch_array(mysqli_query($linkopd, "SELECT height FROM patient_id where id='$Patient_id' "));
                         echo "<input type=hidden name=height value=".$hin[0].">";
                     }
                     ?>
@@ -327,21 +343,20 @@ include '../../main/bodyheader.php';
                     <?php 
                     {
                     // check for reenter or update
-                    $PID = $_SESSION['patdesk'];
                     //check id at any point of service..
-                    $result1 = mysqli_query($link, "SELECT ID FROM pt_to_doc WHERE ID = $PID");
+                    $result1 = mysqli_query($link, "SELECT ID FROM pt_to_doc WHERE ID = $Patient_id");
                     $num = mysqli_num_rows($result1);
                     if($num != 0)
                     {
                     goto checkfound;
                     }
-                    $result1 = mysqli_query($link, "SELECT id FROM pt_to_obs WHERE id = $PID");
+                    $result1 = mysqli_query($link, "SELECT id FROM pt_to_obs WHERE id = $Patient_id");
                     $num = mysqli_num_rows($result1);
                     if($num != 0)
                     {
                     goto checkfound;
                     }
-                    $result1 = mysqli_query($link, "SELECT id FROM pt_to_drug WHERE id = $PID");
+                    $result1 = mysqli_query($link, "SELECT id FROM pt_to_drug WHERE id = $Patient_id");
                     $num = mysqli_num_rows($result1);
                     if($num != 0) 
                     {

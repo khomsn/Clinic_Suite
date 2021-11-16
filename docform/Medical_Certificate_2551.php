@@ -209,6 +209,7 @@ if($yess)
   echo "<div align=\"center\"><a href=\"javascript:Clickheretoprint()\" id=\"ATC\">Print</a></div><br>";
 }
 ?>
+<div><a href="Medical_Certificate_2551E.php">English</a></div>
 <form method="post" action="Medical_Certificate_2551.php" name="regForm" id="regForm">
 <div id="print_content">
 <table width=100% border=<?php if($yess) echo "0"; else echo "1"?>><tr><td>
